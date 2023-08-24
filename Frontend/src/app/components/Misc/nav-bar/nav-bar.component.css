@@ -3,9 +3,15 @@
     display: grid;
     grid-template-columns: 384px auto 300px 4rem;
     color: white;
-    /* height: 80px; */
     height: 75px;
+}
 
+.Userinfo{
+    justify-content: right;
+}
+
+p{
+    font-size: 1rem;
 }
 
 .ModuleAndFiles{
@@ -27,22 +33,42 @@ span{
     justify-content: center;
 }
 
-mat-icon{
+.SettingsIcon{
     --size: 2rem;
     height: var(--size);
     width: var(--size);
     font-size: var(--size);
 }
 
-mat-icon:hover{
+.SettingsIcon:hover{
     animation: roll .75s ease ;
 }
 
-u, mat-icon:hover{
+u, img, mat-icon:hover{
     cursor: pointer;
 }
 
-
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 75px;
+    right: 5px;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    color: black
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content mat-icon:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 @keyframes roll{
     0%{
