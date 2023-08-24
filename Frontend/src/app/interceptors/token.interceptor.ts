@@ -45,7 +45,7 @@ export class TokenInterceptor implements HttpInterceptor {
     authResponse.accessToken = this.authService.getAccessToken()!;
     authResponse.refreshToken = this.authService.getRefreshToken()!;
     authResponse.userId = this.authService.getUserId();
-    // authResponse.userId = Number(localStorage.getItem('userid'));
+    // Get new access token and refresh token
     return this.authService.renewToken(authResponse)
       .pipe(
         switchMap((data: AuthenticatedResponse) => {
