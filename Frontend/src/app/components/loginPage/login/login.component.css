@@ -5,7 +5,7 @@ img{
 }
 
 .OuterPage{
-    background: radial-gradient(circle, #a5a4a4, rgb(230, 230, 230), rgb(230, 230, 230), rgb(230, 230, 230));
+    /* background: radial-gradient(circle, #a5a4a4, rgb(230, 230, 230), rgb(230, 230, 230), rgb(230, 230, 230)); */
     display: grid;
     place-content: center;
     height: 100vh;
@@ -19,7 +19,10 @@ img{
     grid-template-rows: 150px auto 20%;
     place-items: center;
     border-radius: 5px;
-    box-shadow: rgb(177, 177, 177) 5px 5px 10px;
+    /* box-shadow: rgb(177, 177, 177) 5px 5px 10px; */
+    -moz-box-shadow: 0 0 50px 5px #888;
+-webkit-box-shadow: 0 0 50px 5px#888;
+box-shadow: 0 0 50px 5px #888;
 }
 
 input{

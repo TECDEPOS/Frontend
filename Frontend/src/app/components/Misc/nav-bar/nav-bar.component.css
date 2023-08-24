@@ -1,0 +1,65 @@
+.OuterWrapper{
+    background-color: #006E8C;
+    display: grid;
+    grid-template-columns: 384px auto 300px 4rem;
+    color: white;
+    /* height: 80px; */
+    height: 75px;
+
+}
+
+.ModuleAndFiles{
+    display: flex;
+    justify-content: space-around;
+}
+
+img{
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 384px;
+    min-height: 75px;
+}
+
+span{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+mat-icon{
+    --size: 2rem;
+    height: var(--size);
+    width: var(--size);
+    font-size: var(--size);
+}
+
+mat-icon:hover{
+    animation: roll .75s ease ;
+}
+
+u, mat-icon:hover{
+    cursor: pointer;
+}
+
+
+
+@keyframes roll{
+    0%{
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}
+
+
+
