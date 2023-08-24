@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class LoginComponent {
 
   invalidLogin: boolean = false;
-
+  
   submitLogin(): void{
     
   }
