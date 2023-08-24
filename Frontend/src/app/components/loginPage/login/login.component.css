@@ -1,0 +1,80 @@
+img{
+    width: 250px;
+    /* outline: 1px solid black; */
+    margin-top: 20px;
+}
+
+.OuterPage{
+    background: radial-gradient(circle, #a5a4a4, rgb(230, 230, 230), rgb(230, 230, 230), rgb(230, 230, 230));
+    display: grid;
+    place-content: center;
+    height: 100vh;
+}
+
+.InnerPage{
+    background-color: white;
+    width: 500px;
+    height: 550px;
+    display: grid;
+    grid-template-rows: 150px auto 20%;
+    place-items: center;
+    border-radius: 5px;
+    box-shadow: rgb(177, 177, 177) 5px 5px 10px;
+}
+
+input{
+    width: 250px;
+    height: 35px;
+    text-align: center;
+}
+
+.content{
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.content > div{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-evenly; 
+    height: 100%;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+
+button{
+    height: 35px;
+    background-color: #006E8C;
+    color: white;
+    margin-bottom: 50px;
+    border: none;
+    
+    width: 50%;
+}
+
+button:hover{
+    font-weight: bold;
+    width: 51%;
+    height: 36px;
+    border: black 1px solid;
+}
+
+input:hover{
+    font-weight: bold;
+}
+
+button{
+    cursor: pointer;
+}
+
+p{
+   font-weight: 900; 
+   padding-bottom: 5px;
+   padding-left: 5px;
+}
