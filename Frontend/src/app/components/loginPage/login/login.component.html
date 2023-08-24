@@ -1,0 +1,22 @@
+<div class="OuterPage">
+    <form class="InnerPage" > <!--(ngSubmit)="submitLogin()"-->
+        <img src="../../../../assets/LoginImg.jpg" alt="">
+        <!-- <div *ngIf="invalidLogin">Invalid username or password.</div> -->
+        <div class="content">
+            <div>
+                <span>
+                    <!-- <label for="username">Username:</label> -->
+                    <p>BrugerNavn</p>
+                    <input class="usernameinput" placeholder="BrugerNavn" type="text" id="username" name="username"  required> <!--#userName="ngModel" [(ngModel)]="login.username"-->
+                </span>
+                <span>
+                    <p>kodeord</p>
+                    <!-- <label for="password">Password:</label> -->
+                    <input class="passwordinput" placeholder="kodeord" type="password" id="password" name="password" > <!--#password="ngModel" [(ngModel)]="login.password" required-->
+                </span>
+            </div>            
+        </div>
+            <button type="submit">Login</button>
+            <!-- <a routerLink="/register">Dont have an account yet? <u>click here</u></a>    -->
+    </form>
+</div>

@@ -13,7 +13,7 @@ export class PersonModuleService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getPersonModule(personId: number, moduleId: number, date: string): Observable<PersonModule>{
+  getPersonModule(personId: number, moduleId: number, date: Date): Observable<PersonModule>{
     return this.http.get<PersonModule>(this.baseApiUrl + 'PersonModule/' + personId + '/' + moduleId + '/' + date)
   }
 
@@ -29,7 +29,7 @@ export class PersonModuleService {
     return this.http.put<PersonModule>(this.baseApiUrl + 'PersonModule/', personModule)
   }
 
-  deletePersonModule(personId: number, moduleId: number, date: string): Observable<PersonModule>{
+  deletePersonModule(personId: number, moduleId: number, date: Date): Observable<PersonModule>{
     return this.http.delete<PersonModule>(this.baseApiUrl + 'PersonModule/' + personId + '/' + moduleId + '/' + date)
   }
 }
