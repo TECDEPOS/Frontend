@@ -1,5 +1,5 @@
 <div style="position: relative;">
-    <app-nav-bar style="position: sticky; top: 0;"></app-nav-bar>
+    <app-nav-bar *ngIf="router.url !== '/login'" style="position: sticky; top: 0;"></app-nav-bar>
     <router-outlet></router-outlet>
 </div>
 
