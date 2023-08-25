@@ -11,6 +11,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -21,7 +23,8 @@ export function tokenGetter() {
     AppComponent,
     LoginComponent,
     HomePageComponent,
-    NavBarComponent
+    NavBarComponent,
+    ErrorPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,7 @@ export function tokenGetter() {
     MatIconModule,
     HttpClientModule,
     FormsModule,
+    MatDialogModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -40,7 +44,9 @@ export function tokenGetter() {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi: true,
-  }],
+  },
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}}
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,11 +10,13 @@ import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../Services/auth.service';
 import { Router } from '@angular/router';
 import { AuthenticatedResponse } from '../Models/ViewModels/AuthenticatedResponse';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorPopupComponent } from '../components/pop-ups/error-popup/error-popup.component';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService, private route: Router) {}
+  constructor(private authService: AuthService, private route: Router, private dialog: MatDialog) {}
 
   // Modifies every HTTP request sent and adds the access token required to the header before sending it to the server.
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -60,12 +62,15 @@ export class TokenInterceptor implements HttpInterceptor {
         }),
         catchError((err) => {
           console.log('TESTCHEESE      ',err.error);
-          
+          this.dialog.open(ErrorPopupComponent, {
+            data: {
+              icon: 'Error',
+              message: err.error
+            }
+          })
           return throwError(() => {
-            //What happens if we don't log them out?
-            console.log('TOKEN EXPIRED');
-            // this.authService.renewToken(authResponse);
-            this.route.navigate(['/login'])
+            // console.log('TOKEN EXPIRED');
+            // this.route.navigate(['/login'])
           })
         })
       )
