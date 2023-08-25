@@ -18,6 +18,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService, private route: Router, private dialog: MatDialog) {}
 
+  // This needs to match the BadRequest string when checking for RefreshToken's expiration, Look at the 'RefreshToken' method in the AuthController found in the backend.
+  sessionExpiredError: string = 'Your session has expired, please log in again.'
+
   // Modifies every HTTP request sent and adds the access token required to the header before sending it to the server.
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const myToken = this.authService.getAccessToken();
@@ -33,9 +36,10 @@ export class TokenInterceptor implements HttpInterceptor {
           if (err.status === 401) {
             return this.handleUnAuthorizedError(request, next);
           }
-        }
-        console.log('yo what up that error was not a 401');
-        
+          else if (err.error !== this.sessionExpiredError){
+            this.openErrorPopup(err)
+          }
+        }        
         return throwError(() => err)
       })
     );
@@ -56,23 +60,40 @@ export class TokenInterceptor implements HttpInterceptor {
           req = req.clone({
             setHeaders: { Authorization: `Bearer ${data.accessToken}` }
           })
-          console.log('resending request');
-          
+          // Resend the initial request
           return next.handle(req);
         }),
         catchError((err) => {
-          console.log('TESTCHEESE      ',err.error);
-          this.dialog.open(ErrorPopupComponent, {
-            data: {
-              icon: 'Error',
-              message: err.error
-            }
-          })
+          if (err.error == this.sessionExpiredError) {
+            this.sessionExpiredPopup(err);
+          }
+          else{
+            this.openErrorPopup(err)
+          }          
           return throwError(() => {
-            // console.log('TOKEN EXPIRED');
-            // this.route.navigate(['/login'])
+            
           })
         })
-      )
+  )}
+
+  // A popup with the error message, clicking 'Okay' closes the popup.
+  openErrorPopup(err: any){
+    this.dialog.open(ErrorPopupComponent, {
+      data: {
+        icon: 'Error',
+        message: err.error
+      }
+    })
+  }
+
+  // A popup with the error message, clicking 'Okay' logs the user out.
+  sessionExpiredPopup(err: any){
+    this.dialog.open(ErrorPopupComponent, {
+      data: {
+        icon: 'Error',
+        message: err.error,
+        sessionExpired: true
+      }
+    })
   }
 }
