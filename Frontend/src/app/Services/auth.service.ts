@@ -3,28 +3,57 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginViewModel } from '../Models/ViewModels/LoginViewModel';
-import { AutehnticatedResponse } from '../Models/ViewModels/AuthenticatedResponse';
+import { AuthenticatedResponse } from '../Models/ViewModels/AuthenticatedResponse';
 import { changePasswordViewModel } from '../Models/ViewModels/ChangePasswordViewModel';
+import jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private route: Router) { }
 
   baseApiUrl: string = environment.baseApiUrl;
   extendedApiUrl: string = "Auth/"
 
-  addLogin(loginViewModel: LoginViewModel): Observable<AutehnticatedResponse>{
-    return this.http.post<AutehnticatedResponse>(this.baseApiUrl + this.extendedApiUrl + 'login', loginViewModel)
+  login(loginViewModel: LoginViewModel): Observable<AuthenticatedResponse>{
+    return this.http.post<AuthenticatedResponse>(this.baseApiUrl + this.extendedApiUrl + 'login', loginViewModel)
+  }
+
+  logout(){
+    localStorage.clear();
+    this.route.navigate(['/login'])
   }
 
   changePassword(viewModel: changePasswordViewModel): Observable<boolean>{
     return this.http.put<boolean>(this.baseApiUrl +this.extendedApiUrl + 'changepassword', viewModel)
   }
 
-  addRefreshToken(authResponse: AutehnticatedResponse): Observable<AutehnticatedResponse>{
-    return this.http.post<AutehnticatedResponse>(this.baseApiUrl + this.extendedApiUrl + 'refresh', authResponse)
+  renewToken(authResponse: AuthenticatedResponse): Observable<AuthenticatedResponse>{
+    return this.http.post<AuthenticatedResponse>(this.baseApiUrl + this.extendedApiUrl + 'refresh', authResponse)
+  }
+
+  storeAccessToken(tokenValue: string){
+    localStorage.setItem('jwt', tokenValue);
+  }
+
+  storeRefreshToken(tokenValue: string){
+    localStorage.setItem('refreshToken', tokenValue);
+  }
+
+  getAccessToken(){
+    return localStorage.getItem('jwt');
+  }
+
+  getRefreshToken(){
+    return localStorage.getItem('refreshToken');
+  }
+
+  getUserId(): number{
+    let token = localStorage.getItem('jwt')!;
+    var decoded: any = jwt_decode(token)    
+    return Number(decoded['userId']);    
   }
 }
