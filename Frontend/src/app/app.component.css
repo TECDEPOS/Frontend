@@ -1,0 +1,9 @@
+.OuterWrapper{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 75px auto;
+}
+
+.OuterWrapperWOHeader{
+    height: 100%;
+}

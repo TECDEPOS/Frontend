@@ -8,6 +8,6 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   constructor(public router: Router){}
-
+  TT: Boolean = true;
   title = 'Frontend';
 }

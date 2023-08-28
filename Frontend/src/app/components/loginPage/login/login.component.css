@@ -19,10 +19,9 @@ img{
     grid-template-rows: 150px auto 20%;
     place-items: center;
     border-radius: 5px;
-    /* box-shadow: rgb(177, 177, 177) 5px 5px 10px; */
     -moz-box-shadow: 0 0 50px 5px #888;
--webkit-box-shadow: 0 0 50px 5px#888;
-box-shadow: 0 0 50px 5px #888;
+    -webkit-box-shadow: 0 0 50px 5px#888;
+    box-shadow: 0 0 50px 5px #888;
 }
 
 input{
@@ -57,15 +56,12 @@ button{
     color: white;
     margin-bottom: 50px;
     border: none;
-    
     width: 50%;
 }
 
 button:hover{
-    font-weight: bold;
-    width: 51%;
-    height: 36px;
     border: black 1px solid;
+    background-color: #01627c;
 }
 
 input:hover{

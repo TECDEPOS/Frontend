@@ -1,5 +1,5 @@
-<div style="position: relative;">
-    <app-nav-bar *ngIf="router.url !== '/login'" style="position: sticky; top: 0;"></app-nav-bar>
-    <router-outlet></router-outlet>
+<div class="OuterWrapperWOHeader" [ngClass]="{OuterWrapper: router.url !== '/login'}">
+    <app-nav-bar *ngIf="router.url !== '/login'" style="position: sticky; top: 0;z-index: 100;"></app-nav-bar>
+    <router-outlet style="height: auto;"></router-outlet>
 </div>
 
