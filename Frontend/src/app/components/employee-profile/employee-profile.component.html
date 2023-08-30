@@ -1,51 +1,49 @@
-<!-- <p>ID: {{person.personId}}</p>
-<p>Navn: {{person.name}}</p>
-<p>SVU: {{person.svuEligible}}</p>
-<p>Afdeling: {{person.department}}</p>
-<p>Lokation: {{person.location}}</p>
-<p>Pædagogisk Konsulent: {{person.educationalConsultant}}</p>
-<p>Driftskoordinator: {{person.operationCoordinator}}</p> -->
 <div class="container">
     <div class="header">
     </div>
     <div class="profile">
-        <label>ID: </label>
-        <input type="text" [(ngModel)]="person.personId" readonly>
+        <div class="profile-header">
+            <h1>{{person.name}}</h1>
+        </div>
+        <div class="profile-info">
+            <label>ID: </label>
+            <input type="text" [(ngModel)]="person.personId" readonly>
 
-        <label>Navn: </label>
-        <input type="text" [(ngModel)]="person.name" readonly>
+            <label>Navn: </label>
+            <input type="text" [(ngModel)]="person.name" readonly>
 
-        <label>Afdeling:</label>
-        <input type="text" [(ngModel)]="person.department.name" disabled>
+            <label>Afdeling:</label>
+            <input type="text" [(ngModel)]="person.department.name" disabled>
 
-        <label>Lokation:</label>
-        <input type="text" [(ngModel)]="person.location.name" disabled>
+            <label>Lokation:</label>
+            <input type="text" [(ngModel)]="person.location.name" disabled>
 
-        <label>Pædagogisk konsulent:</label>
-        <input type="text" [(ngModel)]="person.educationalConsultant" disabled>
+            <label>Pædagogisk konsulent:</label>
+            <input type="text" [(ngModel)]="person.educationalConsultant" disabled>
 
-        <label>Driftskoordinator:</label>
-        <input type="text" [(ngModel)]="person.operationCoordinator" disabled>
+            <label>Driftskoordinator:</label>
+            <input type="text" [(ngModel)]="person.operationCoordinator" disabled>
 
-        <label>Ansættelses Dato:</label>
-        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label>Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="person.hiringDate">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            <label>Ansættelses Dato:</label>
+            <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                <mat-label>Vælg en dato</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="person.hiringDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
 
-        <label>Slut Dato:</label>
-        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label>Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="person.endDate">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            <label>Slut Dato:</label>
+            <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                <mat-label>Vælg en dato</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="person.endDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
 
-        <label>SVU:</label>
-        <div class="checkbox">
-            <input type="checkbox" [(ngModel)]="person.svuEligible" disabled>
+            <label>SVU:</label>
+            <div class="checkbox">
+                <input type="checkbox" [(ngModel)]="person.svuEligible" disabled>
+            </div>
         </div>
 
         <button>Edit</button>
