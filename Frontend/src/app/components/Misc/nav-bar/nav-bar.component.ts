@@ -9,15 +9,15 @@ export class NavBarComponent {
 
   isOpen: boolean = false;
 
-  onShow(){
+  onShow() {
 
-    if(!this.isOpen){
+    if (!this.isOpen) {
       document.getElementById('dropdown-content')!.style.display = "block";
       this.isOpen = true;
     }
-    else{
+    else {
       document.getElementById('dropdown-content')!.style.display = "none";
       this.isOpen = false;
-    }    
+    }
   }
 }
