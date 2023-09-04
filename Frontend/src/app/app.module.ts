@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon'
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
+import { FilePageComponent } from './components/file/file-page/file-page.component';
+import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
+import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
@@ -48,6 +52,9 @@ export const MY_DATE_FORMATS = {
     HomePageComponent,
     NavBarComponent,
     ErrorPopupComponent,
+    FilePageComponent,
+    FileUploadComponent,
+    CrudEntityPageComponent,,
     EmployeeProfileComponent
   ],
   imports: [
@@ -57,6 +64,7 @@ export const MY_DATE_FORMATS = {
     HttpClientModule,
     FormsModule,
     MatDialogModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
