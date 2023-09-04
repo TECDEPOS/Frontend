@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatIconModule} from '@angular/material/icon'
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
+import { FilePageComponent } from './components/file/file-page/file-page.component';
+import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -24,7 +27,9 @@ export function tokenGetter() {
     LoginComponent,
     HomePageComponent,
     NavBarComponent,
-    ErrorPopupComponent
+    ErrorPopupComponent,
+    FilePageComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +38,7 @@ export function tokenGetter() {
     HttpClientModule,
     FormsModule,
     MatDialogModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
