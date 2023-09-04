@@ -54,7 +54,7 @@ export const MY_DATE_FORMATS = {
     ErrorPopupComponent,
     FilePageComponent,
     FileUploadComponent,
-    CrudEntityPageComponent,,
+    CrudEntityPageComponent,
     EmployeeProfileComponent
   ],
   imports: [
