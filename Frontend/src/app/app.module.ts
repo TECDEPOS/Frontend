@@ -16,6 +16,7 @@ import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/d
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
+import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -30,6 +31,7 @@ export function tokenGetter() {
     ErrorPopupComponent,
     FilePageComponent,
     FileUploadComponent,
+    CrudEntityPageComponent,
   ],
   imports: [
     BrowserModule,
