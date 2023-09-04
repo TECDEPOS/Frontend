@@ -37,14 +37,22 @@
 }
 
 .profile-info{
+    padding-top: 50px;
     display: grid;
-    grid-area: i;
     height: 100%;
     grid-template-columns: 2fr 3fr;
     grid-template-rows: repeat(12, 1fr);
+    border: none;
 }
 
-.profile > .profile-info > label{
+.form{
+    height: 100%;
+    grid-area: i;
+    display: grid;
+    border: none;
+}
+
+.profile > form > .profile-info > label{
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -58,6 +66,74 @@
     display: grid;
     place-content: center;
 }
+
+.profile-buttons{
+    height: 100%;
+    width: 100%;
+    grid-area: b;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    justify-items: center;
+}
+
+.profile > .profile-buttons > .editmode-buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.edit-button{
+    height: 40px;
+    width: 80px;
+    background-color: #006E8C;
+    color: white;
+    border: none;
+    font-weight: 900;
+}
+
+.edit-button:hover{
+    cursor: pointer;
+}
+
+.save-button{
+    height: 40px;
+    width: 80px;
+    background-color: rgb(31, 155, 0);
+    border: 0.5px solid black;
+    color: white;
+    font-weight: bold;
+}
+
+.save-button:disabled{
+    background-color: rgb(146, 202, 132);
+}
+
+.save-button:disabled:hover{
+    cursor: default;
+    background-color: rgb(146, 202, 132);
+}
+
+.save-button:hover{
+    cursor: pointer;
+    background-color: rgb(28, 138, 0);
+    border: 1px solid black;
+}
+
+.cancel-button{
+    height: 40px;
+    width: 80px;
+    border: 0.5px solid black;
+}
+
+.cancel-button:hover{
+    cursor: pointer;
+    background-color: #dadada;
+}
+
+/* button span {
+    text-shadow: 0.5px 0px 5px black;
+} */
 
 .profile label{
     text-align: right;
@@ -87,11 +163,33 @@ input[type=text], select {
 
 .datepicker{
     width: 70%;
-    height: 80%;
+    height: 90%;
+}
+
+::ng-deep .mat-datepicker-content{
+    border: 1px solid black
 }
 
  .checkbox{
     text-align: right;
-    justify-content: start;
+    justify-content: flex-start;
     display: flex;
+ }
+
+ mat-option{
+    /* border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: black; */
+    border: 1px solid #cfcfcf;
+    border-top-style: none;
+ }
+
+ .dropdown{
+    width: 70%;
+    height: 90%;
+    padding-top: 5px;
+ }
+
+ #mat-select-0-panel{
+    color: blue;
  }

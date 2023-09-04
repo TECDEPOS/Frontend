@@ -7,6 +7,8 @@ import { Location } from "./Location";
 export class Person{
     personId: number = 0;
     name: string = "";
+    educationalConsultantUserId: number = 0;
+    operationCoordinatorUserId: number = 0;
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;

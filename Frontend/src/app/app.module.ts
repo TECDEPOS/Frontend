@@ -19,6 +19,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 export function tokenGetter() {
@@ -45,6 +47,7 @@ export function tokenGetter() {
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
+    MatSelectModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -58,7 +61,7 @@ export function tokenGetter() {
     multi: true,
   },
   { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}},
-  { provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}
+  { provide: MAT_DATE_LOCALE, useValue: 'dk-DK'}
 ],
   bootstrap: [AppComponent]
 })
