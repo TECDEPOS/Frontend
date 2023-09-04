@@ -1,0 +1,16 @@
+<form #myForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="filecontainer">
+        <label class="file-upload">
+            <input id="file" type="file" (change)="fileChange($any($event).target.files)">
+            <br />
+        </label>
+        <div class="form-group">
+            <label for="tagId">Tag:</label>
+            <select class="form-control" [(ngModel)]="tagId" name="tagId">
+                <option value="" disabled selected>Select a Tag</option>
+                <option *ngFor="let tag of fileTags" [value]="tag.fileTagId">{{ tag.tagName }}</option>
+            </select>
+        </div><br />
+        <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+    </div>
+</form>

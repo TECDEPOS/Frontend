@@ -4,19 +4,23 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { JwtModule } from '@auth0/angular-jwt';
-import { TokenInterceptor } from './interceptors/token.interceptor';
-import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FilePageComponent } from './components/file/file-page/file-page.component';
+import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
+import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -28,7 +32,10 @@ export function tokenGetter() {
     LoginComponent,
     HomePageComponent,
     NavBarComponent,
-    ErrorPopupComponent
+    ErrorPopupComponent,
+    FilePageComponent,
+    FileUploadComponent,
+    CrudEntityPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +48,7 @@ export function tokenGetter() {
     MatSelectModule,
     FormsModule,
     MatDialogModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
