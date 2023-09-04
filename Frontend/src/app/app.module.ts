@@ -20,12 +20,26 @@ import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
 }
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'D.MM.YY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+}; 
 
 @NgModule({
   declarations: [
@@ -47,6 +61,7 @@ export function tokenGetter() {
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
+    MomentDateModule,
     MatSelectModule,
     JwtModule.forRoot({
       config: {
@@ -61,7 +76,10 @@ export function tokenGetter() {
     multi: true,
   },
   { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}},
-  { provide: MAT_DATE_LOCALE, useValue: 'dk-DK'}
+  // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true },
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  // { provide: MAT_DATE_LOCALE, useValue: 'dk-DK'},
 ],
   bootstrap: [AppComponent]
 })

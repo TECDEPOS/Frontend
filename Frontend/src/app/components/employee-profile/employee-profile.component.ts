@@ -34,26 +34,20 @@ export class EmployeeProfileComponent {
 
   getUsers(){
     this.userService.getUsers().subscribe(res => {
-      console.log(res);
       this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
-      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
-      console.log(this.educationalConsultants);
-      console.log(this.operationCoordinators);
-      
+      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);      
     });
   }
 
   getDepartments(){
     this.departmentService.getDepartment().subscribe(res => {
       this.departments = res;
-      console.log('Departments: ', this.departments);
     });
   }
 
   getLocations(){
     this.locationService.getLocations().subscribe(res => {
       this.locations = res;
-      console.log('Locations: ', this.locations);
     });
   }
 
@@ -61,13 +55,7 @@ export class EmployeeProfileComponent {
     this.personService.getPersonById(11).subscribe(res => {
       this.person = res;
       this.setBackupValues(this.person);
-      console.log(' YOOOOOO',this.person);
     })
-  }
-
-  print() {
-    console.log('Current Values:  ', this.person);
-    console.log('Backup Values:  ', this.backupValues);
   }
 
   onSubmit() {
@@ -75,7 +63,6 @@ export class EmployeeProfileComponent {
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
-      console.log(this.person);
     });
   }
 
@@ -89,6 +76,7 @@ export class EmployeeProfileComponent {
   }
 
   setBackupValues(values: Person){
+    //Sets backup values used if users press Cancel during edit mode.
     this.backupValues = JSON.parse(JSON.stringify(values));
   }
 
@@ -100,6 +88,7 @@ export class EmployeeProfileComponent {
     return o1.name === o2.name && o1.userId === o2.userId;
   }
 
+  //Used for select dropdowns, without this no value will be shown on load even if a value has been set
   compareObjects(o1: any, o2: any): boolean {
     if (o2 == null) {
       return false;
@@ -114,13 +103,6 @@ export class EmployeeProfileComponent {
     else{
       return false;
     }
-  }
-
-  dateChanged(date:Date){    
-    let d = date;
-    console.log(d);
-    
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
   }
 
 
