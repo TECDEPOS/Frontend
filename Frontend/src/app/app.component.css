@@ -1,7 +1,9 @@
 .OuterWrapper{
+    /* display: flex;
+    height: 100vh;
+    flex-direction: column; */
     display: grid;
-    height: 100%;
-    grid-template-rows: 75px auto;
+    grid-template-rows: 75px 0px;
 }
 
 .OuterWrapperWOHeader{

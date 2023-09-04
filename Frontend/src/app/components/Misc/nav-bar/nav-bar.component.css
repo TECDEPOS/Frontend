@@ -3,7 +3,6 @@
     display: grid;
     grid-template-columns: 384px auto 300px 4rem;
     color: white;
-    position: absolute;
     width: 100vw;
     top: 0;
     height: 75px;
@@ -47,17 +46,20 @@ span{
     animation: roll .75s ease ;
 }
 
-u, img, mat-icon:hover{
+u, img, .Exit:hover, mat-icon{
     cursor: pointer;
 }
 
 .dropdown-content {
     display: none;
+    outline: 1px black solid;
     position: absolute;
     top: 75px;
     right: 5px;
     background-color: #f1f1f1;
-    min-width: 160px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* min-width: auto; */
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     color: black
@@ -69,7 +71,7 @@ u, img, mat-icon:hover{
     text-decoration: none;
     display: block;
   }
-  .dropdown-content mat-icon:hover {background-color: #ddd;}
+  .dropdown-content .Exit:hover {background-color: #ddd;}
   
   .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
