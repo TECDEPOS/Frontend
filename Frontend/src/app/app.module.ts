@@ -22,7 +22,6 @@ import { EmployeeProfileComponent } from './components/employee-profile/employee
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
@@ -33,6 +32,7 @@ export function tokenGetter() {
   return localStorage.getItem("jwt");
 }
 
+// Custom date formatting, used as value for MAT_DATE_FORMATS in providers
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD-MM-YYYY',
@@ -84,10 +84,8 @@ export const MY_DATE_FORMATS = {
     multi: true,
   },
   { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}},
-  // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true },
   { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
   { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
-  // { provide: MAT_DATE_LOCALE, useValue: 'dk-DK'},
 ],
   bootstrap: [AppComponent]
 })
