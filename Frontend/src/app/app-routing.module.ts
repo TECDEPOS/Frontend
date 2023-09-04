@@ -8,8 +8,8 @@ import { FileUploadComponent } from './components/file/file-upload/file-upload.c
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomePageComponent, canActivate:[authGuard]},
+  { path: 'login', component: LoginComponent, title: 'JimmyBistGay'},
+  { path: 'home', component: HomePageComponent, canActivate:[authGuard], title: 'Jimmy Bist Very Gay'}
   { path: 'file', component: FilePageComponent, canActivate:[authGuard]},
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]}
 ];
