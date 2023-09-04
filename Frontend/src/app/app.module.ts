@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon'
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -17,10 +18,32 @@ import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popu
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
+import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
+
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
 }
+
+// Custom date formatting, used as value for MAT_DATE_FORMATS in providers
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'D.MM.YY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+}; 
 
 @NgModule({
   declarations: [
@@ -32,6 +55,7 @@ export function tokenGetter() {
     FilePageComponent,
     FileUploadComponent,
     CrudEntityPageComponent,
+    EmployeeProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +65,12 @@ export function tokenGetter() {
     FormsModule,
     MatDialogModule,
     ReactiveFormsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule,
+    MomentDateModule,
+    MatSelectModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -53,7 +83,9 @@ export function tokenGetter() {
     useClass: TokenInterceptor,
     multi: true,
   },
-  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}}
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}},
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
 ],
   bootstrap: [AppComponent]
 })

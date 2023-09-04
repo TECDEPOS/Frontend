@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,9 +8,13 @@ import { Component } from '@angular/core';
 })
 export class NavBarComponent {
 
+  constructor(private authService: AuthService) {}
   isOpen: boolean = false;
 
-  onShow() {
+  logout(){
+    this.authService.logout();
+  }
+  onShow(){
 
     if (!this.isOpen) {
       document.getElementById('dropdown-content')!.style.display = "block";
