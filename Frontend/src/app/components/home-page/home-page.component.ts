@@ -22,8 +22,8 @@ export class HomePageComponent {
   constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
   
   ngOnInit(): void{
-    // this.getTableData()
-    // this.getDepartmentData()
+    this.getTableData()
+    this.getDepartmentData()
   }
   getDepartmentData(){
     this.departmentService.getDepartment().subscribe(res => {
@@ -34,7 +34,7 @@ export class HomePageComponent {
   getTableData(){
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
-      this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
+      this.Hired.sort((a,b) => a.name.localeCompare(b.name))
     })
   }
 

@@ -28,9 +28,9 @@
                     </th> 
                     <th (click)="orderBydate()">
                         Slut dato 
-                        <span *ngIf="Hired[0].endDate == undefined">
-                            <mat-icon *ngIf="Hired[0].endDate > Hired[-1].endDate">keyboard_arrow_down</mat-icon>
-                            <mat-icon *ngIf="Hired[0].endDate < Hired[-1].endDate">keyboard_arrow_up</mat-icon>
+                        <span *ngIf="Hired[0]?.endDate != undefined">
+                            <mat-icon *ngIf="Hired[0].endDate > Hired[Hired.length - 1].endDate">keyboard_arrow_down</mat-icon>
+                            <mat-icon *ngIf="Hired[0].endDate < Hired[Hired.length - 1].endDate">keyboard_arrow_up</mat-icon>
                         </span>
                     </th>
                     <th (click)="orderByCompletModule()">
