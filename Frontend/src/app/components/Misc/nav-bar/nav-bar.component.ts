@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 })
 export class NavBarComponent {
 
-  constructor(private authservice: AuthService){}
+  constructor(private authService: AuthService) {}
   isOpen: boolean = false;
   name: string = "";
   role: string = "";
@@ -25,7 +25,11 @@ export class NavBarComponent {
     this.name
   }
 
-  onShow() {
+  logout(){
+    this.authService.logout();
+  }
+  onShow(){
+
     if (!this.isOpen) {
       document.getElementById('dropdown-content')!.style.display = "block";
       this.isOpen = true;

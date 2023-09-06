@@ -6,9 +6,9 @@ export class Files{
     fileName: string = "";
     fileUrl: String = "";
     contentType: string = "";
-    fileFormat: string = "";
-    
+    fileFormat: string = "";    
     uploadDate: Date = new Date;
+    
     fileTag: FileTag = new FileTag;
-    person: Person[] = []
+    person: Person = new Person
 }

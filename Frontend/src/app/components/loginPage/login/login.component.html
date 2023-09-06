@@ -2,6 +2,7 @@
     <form class="InnerPage" (ngSubmit)="submitLogin()">
         <img src="../../../../assets/LoginImg.jpg" alt="">
         <!-- <button routerLink="/home">HomePage</button> -->
+        <p *ngIf="invalidLogin">Invalid username or password.</p>
         <div class="content">
             <div>
                 <span>

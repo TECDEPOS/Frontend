@@ -48,6 +48,8 @@ export class FileService {
   // }
 
   deleteFile(id: number): Observable<File>{
+    console.log(id);
+    
     return this.http.delete<File>(this.baseApiUrl + 'File/' + id)
   }
 

@@ -13,8 +13,8 @@ export class LocationsService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getLocations(): Observable<Location>{
-    return this.http.get<Location>(this.baseApiUrl + 'Location/')
+  getLocations(): Observable<Location[]>{
+    return this.http.get<Location[]>(this.baseApiUrl + 'Location/')
   }
 
   getLocationById(id: number): Observable<Location>{
