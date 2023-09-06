@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Sort } from '@angular/material/sort';
+import { ActivatedRoute } from '@angular/router';
 import { Department } from 'src/app/Models/Department';
 import { Location } from 'src/app/Models/Location';
 import { Person } from 'src/app/Models/Person';
@@ -23,7 +24,9 @@ export class EmployeeProfileComponent {
   operationCoordinators: User[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
-  constructor(private personService: PersonsService, private userService: UserService, private departmentService: DepartmentsService, private locationService: LocationsService) { }
+  constructor(private personService: PersonsService, private userService: UserService,
+    private departmentService: DepartmentsService, private locationService: LocationsService,
+    private aRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getPerson();
@@ -31,7 +34,9 @@ export class EmployeeProfileComponent {
 
   // Make all the calls at the same time, if not then the RefreshToken in backend gets spammed and gives mismatch of refresh tokens between DB and localstorage
   getPerson() {
-    this.personService.getPersonById(11).subscribe(res => {
+    this.aRoute.paramMap.subscribe(params => {
+    let id = Number(params.get('id'))
+    this.personService.getPersonById(id).subscribe(res => {
       this.person = res;
       this.setBackupValues(this.person);
       this.departmentService.getDepartment().subscribe(res => {
@@ -45,6 +50,7 @@ export class EmployeeProfileComponent {
         this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
       });
     })
+  })
   }
 
   onSubmit() {

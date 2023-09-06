@@ -28,8 +28,6 @@ export class HomePageComponent {
   ngOnInit(): void{
     this.getTableData()
     this.getDepartmentData()
-    this.getTableData()
-    this.getDepartmentData()
   }
 
   getDepartmentData(){
