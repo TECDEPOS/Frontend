@@ -1,7 +1,7 @@
 import { FileTag } from "./FileTag";
 import { Person } from "./Person";
 
-export class Files{
+export class File{
     fileId: number = 0;
     fileName: string = "";
     fileUrl: String = "";

@@ -95,6 +95,25 @@
         Modules
     </div>
     <div class="files">
-        Files
+      <div class="file-table">
+        <table class="TableBox">
+          <tr>
+            <th>Filnavn</th>
+            <th>Filkategori</th>
+            <th>Oploadet</th>
+            <th>Filtype</th>
+            <th><mat-icon>download</mat-icon></th>
+            <th>Slet fil</th>
+          </tr>
+          <tr *ngFor="let file of person.files">
+            <td>{{file.fileName}}</td>
+            <td>{{file.fileTag.tagName}}</td>
+            <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
+            <td>{{file.fileFormat}}</td>
+            <td><mat-icon>download</mat-icon></td>
+            <td><mat-icon>delete</mat-icon></td>
+          </tr>
+        </table>
+      </div>
     </div>
 </div>

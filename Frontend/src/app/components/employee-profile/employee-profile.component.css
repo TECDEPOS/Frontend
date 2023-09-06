@@ -1,42 +1,44 @@
-.container{
+.container {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-areas:
-    "h h"
-    "p m"
-    "p f"
-    "b b";
+        "h h"
+        "p m"
+        "p f"
+        "b b";
     grid-auto-rows: 10% 44% 44% 2%;
     column-gap: 10px;
     padding-left: 10px;
 }
 
-.header{
+.header {
     grid-area: h;
 }
 
-.profile{
+.profile {
     justify-content: center;
     align-items: center;
     border-radius: 5px;
     box-shadow: 0px 0px 5px 1px #888;
+    outline: 1px solid black;
 
-    
+
+
     display: grid;
     height: 100%;
     width: 100%;
     grid-area: p;
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: 15% auto 10%;
-    grid-template-areas: 
-    "n n"
-    "i i"
-    "b b";
+    grid-template-areas:
+        "n n"
+        "i i"
+        "b b";
 }
 
-.profile-info{
+.profile-info {
     padding-top: 50px;
     display: grid;
     height: 100%;
@@ -45,21 +47,21 @@
     border: none;
 }
 
-.form{
+.form {
     height: 100%;
     grid-area: i;
     display: grid;
     border: none;
 }
 
-.profile > form > .profile-info > label{
+.profile>form>.profile-info>label {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     font-weight: 900;
 }
 
-.profile-header{
+.profile-header {
     grid-area: n;
     border-bottom: 1px solid black;
     height: 100%;
@@ -67,7 +69,7 @@
     place-content: center;
 }
 
-.profile-buttons{
+.profile-buttons {
     height: 100%;
     width: 100%;
     grid-area: b;
@@ -77,13 +79,13 @@
     justify-items: center;
 }
 
-.profile > .profile-buttons > .editmode-buttons{
+.profile>.profile-buttons>.editmode-buttons {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
-.edit-button{
+.edit-button {
     height: 40px;
     width: 80px;
     background-color: #006E8C;
@@ -92,11 +94,11 @@
     font-weight: 900;
 }
 
-.edit-button:hover{
+.edit-button:hover {
     cursor: pointer;
 }
 
-.save-button{
+.save-button {
     height: 40px;
     width: 80px;
     background-color: rgb(31, 155, 0);
@@ -105,87 +107,166 @@
     font-weight: bold;
 }
 
-.save-button:disabled{
+.save-button:disabled {
     background-color: rgb(146, 202, 132);
 }
 
-.save-button:disabled:hover{
+.save-button:disabled:hover {
     cursor: default;
     background-color: rgb(146, 202, 132);
 }
 
-.save-button:hover{
+.save-button:hover {
     cursor: pointer;
     background-color: rgb(28, 138, 0);
     border: 1px solid black;
 }
 
-.cancel-button{
+.cancel-button {
     height: 40px;
     width: 80px;
     border: 0.5px solid black;
     font-weight: bold;
 }
 
-.cancel-button:hover{
+.cancel-button:hover {
     cursor: pointer;
     background-color: #dadada;
 }
 
-.profile label{
+.profile label {
     text-align: right;
     padding-right: 15px;
 }
 
-.modules{
+.modules {
     background-color: blueviolet;
     grid-area: m;
     margin-bottom: 10px;
 }
 
-.files{
+.files {
     grid-area: f;
-    background-color: green;
 }
 
-input[type=text], select {
+.file-table {
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 1px #888;
+    width: 98%;
+    max-height: 100%;
+    height: 99%;
+    margin: 1px auto 5px auto;
+    overflow: auto;
+    position: relative;
+    outline: 1px solid black;
+}
+
+.TableBox {
+    width: 100%;
+    position: absolute;
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+}
+
+.TableBox td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
+
+.TableBox th:hover {
+    background-color: #005f79;
+    cursor: pointer;
+}
+
+.TableBox th {
+    position: sticky;
+    top: 0px;
+    font-size: 1rem;
+    border-left: 1px solid #ddd;
+}
+
+.TableBox th:first-child {
+    border-left: 1px solid #006E8C;
+}
+
+.TableBox th:last-child {
+    border-right: 1px solid #006E8C;
+}
+
+th {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+
+.TableBox tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.TableBox tr:hover {
+    background-color: #ddd;
+}
+
+.TableBox th {
+    width: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #006E8C;
+    color: white;
+}
+
+@media screen  and (max-width: 1000px){
+    .TableForPeople{
+        width: 100%;
+        left: 0;
+      }
+    }
+
+input[type=text],
+select {
     width: 70%;
     padding: 12px 20px;
     margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-  }
+}
 
-.datepicker{
+.datepicker {
     width: 70%;
     height: 90%;
     min-width: 70%;
     margin: 5px 0;
 }
 
-::ng-deep .mat-datepicker-content{
+::ng-deep .mat-datepicker-content {
     border: 1px solid black
 }
 
- .checkbox{
+.checkbox {
     text-align: right;
     justify-content: flex-start;
     display: flex;
- }
+}
 
- mat-option{
+mat-option {
     border: 1px solid #cfcfcf;
     border-top-style: none;
- }
+}
 
- .dropdown{
+.dropdown {
     width: 70%;
     height: 90%;
     padding-top: 5px;
     min-width: 70%;
- }
+}
 
- #mat-select-0-panel{
+#mat-select-0-panel {
     color: blue;
- }
+}
