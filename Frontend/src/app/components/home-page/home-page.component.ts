@@ -8,6 +8,7 @@ import { Person } from 'src/app/Models/Person';
 import { DepartmentsService } from 'src/app/Services/departments.service';
 import { Department } from 'src/app/Models/Department';
 import { elementAt } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-home-page',
@@ -50,10 +51,10 @@ export class HomePageComponent {
   onDepartmentQueryInput(event: any){    
     let personList: Person[] = []
     console.log(this.showedList[0].department?.name);
+    console.log(event.value);
     
-    if(this.showedList[0].department?.name == event.value){
-      console.log("Hej");
-      
+    if(this.showedList.length > 1,  this.showedList[0].department?.name == event.value){
+      console.log("Hej");  
     }
     this.Hired.forEach(element => {
       if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
