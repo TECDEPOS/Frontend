@@ -1,4 +1,53 @@
-<div class="card">
+<div class="OuterWrapper">
+  <div class="table">
+    <div class="TableForPeople">
+      <table class="TableBox">
+        <tr>
+          <th (click)="orderByFileName()">
+            Fil navn
+            <mat-icon *ngIf="files[0]?.fileName?.startsWith('A')">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="files[0]?.fileName?.startsWith('Å')">keyboard_arrow_up</mat-icon>
+          </th>
+          <th (click)="orderByPersonName()">
+            Person navn
+            <mat-icon *ngIf="files[0]?.person?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="files[0]?.person?.name?.startsWith('Å')">keyboard_arrow_up</mat-icon>
+          </th>
+          <th (click)="orderByDate()">
+            Upload dato
+            <span *ngIf="files[0]?.uploadDate != undefined">
+              <mat-icon *ngIf="files[0].uploadDate >= files[files.length - 1].uploadDate">keyboard_arrow_down</mat-icon>
+              <mat-icon *ngIf="files[0].uploadDate < files[files.length - 1].uploadDate">keyboard_arrow_up</mat-icon>
+            </span>
+          </th>
+          <th (click)="orderByTagName()">Tag</th>
+          <th>
+            Download
+          </th>
+          <th>
+            Slet
+          </th>
+        </tr>
+        <tr *ngFor="let file of files; let i = index">
+          <td>{{file.fileName}}</td>
+          <td><a href="/home">{{file.person.name}}</a></td>
+          <td class="End--date">
+            <p class="EndDateShow">{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
+            <div class="Progress"></div>
+          </td>
+          <td>{{file.fileTag.tagName}}</td>
+          <td>
+            <mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)" value="Download" >download</mat-icon>
+          </td>
+          <td>
+            <mat-icon (click)="deleteFile(file.fileId, i)" value="Delete" >delete</mat-icon>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- <div class="card">
   <div class="card-header">
     {{pageTitle}}
   </div>
@@ -8,7 +57,7 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>File Name</th>
+            <th>file Name</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -24,4 +73,4 @@
       </table>
     </div>
   </div>
-</div>
+</div> -->
