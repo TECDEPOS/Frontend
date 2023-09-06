@@ -25,6 +25,8 @@ export class LoginComponent {
         this.authService.storeRefreshToken(response.refreshToken);
         this.invalidLogin = false;
         this.authService.getUserId();
+        this.authService.getName();
+        this.authService.getRole();
         this.router.navigate(['/home'])
       },
       error: (err: HttpErrorResponse) => this.invalidLogin = true
