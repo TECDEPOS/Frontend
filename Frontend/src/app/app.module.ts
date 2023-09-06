@@ -21,6 +21,9 @@ import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popu
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
+import { CreateComponent } from './components/crud-entitys/create/create.component';
+import { DeleteComponent } from './components/crud-entitys/delete/delete.component';
+import { EditComponent } from './components/crud-entitys/edit/edit.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -36,6 +39,9 @@ export function tokenGetter() {
     FilePageComponent,
     FileUploadComponent,
     CrudEntityPageComponent,
+    CreateComponent,
+    DeleteComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,

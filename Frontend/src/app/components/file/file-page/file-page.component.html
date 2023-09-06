@@ -28,7 +28,7 @@
             Slet
           </th>
         </tr>
-        <tr *ngFor="let file of files">
+        <tr *ngFor="let file of files; let i = index">
           <td>{{file.fileName}}</td>
           <td><a href="/home">{{file.person.name}}</a></td>
           <td class="End--date">
@@ -40,7 +40,7 @@
             <mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)" value="Download" >download</mat-icon>
           </td>
           <td>
-            <mat-icon (click)="deleteFile(file.fileId)" value="Delete" >delete</mat-icon>
+            <mat-icon (click)="deleteFile(file.fileId, i)" value="Delete" >delete</mat-icon>
           </td>
         </tr>
       </table>

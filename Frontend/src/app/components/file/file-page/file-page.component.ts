@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { findIndex } from 'rxjs';
 import { Files } from 'src/app/Models/Files';
 import { FileService } from 'src/app/Services/file.service';
 
@@ -57,8 +58,13 @@ export class FilePageComponent {
     }
   }
 
-  deleteFile(fileId: number) {
-    this.fileService.deleteFile(fileId).subscribe(data => { })
+  deleteFile(fileId: number, i: number) {
+    this.fileService.deleteFile(fileId).subscribe(data => { 
+      console.log(this.files);
+      this.files.splice(i, 1)
+      console.log(this.files);
+      
+    })
   }
 
   downloadFile(id: number, contentType: string, fileName: string) {
