@@ -10,6 +10,20 @@ export class NavBarComponent {
 
   constructor(private authService: AuthService) {}
   isOpen: boolean = false;
+  name: string = "";
+  role: string = "";
+
+  ngOnInit(){
+    console.log(this.authService.getName());
+    
+    this.name = String(localStorage.getItem('name'))
+    this.role = String(localStorage.getItem('userRole')).replace('_', ' ')
+
+  }
+
+  ngOnChange(){
+    this.name
+  }
 
   logout(){
     this.authService.logout();

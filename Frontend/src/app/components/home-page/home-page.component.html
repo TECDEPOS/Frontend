@@ -2,36 +2,37 @@
     <div class="Searchfield">
         <mat-form-field subscriptSizing="dynamic">
             <mat-label>Søge efter Navn</mat-label>
-            <input matInput placeholder="Skriv navnet her " Value="Afdeling" [(ngModel)]="TextInput">
+            <input matInput placeholder="Skriv navnet her " (input)="onSearchQueryInput($event)">
         </mat-form-field>
         <mat-form-field subscriptSizing="dynamic">
             <mat-label>Vælge afdeling</mat-label>
-            <mat-select [(value)]="selected">
-              <mat-option *ngFor="let x of department" value="option1">{{x.name}}</mat-option>
+            <mat-select (selectionChange)="onDepartmentQueryInput($event)">
+                <mat-option value="Alle">Alle</mat-option>
+                <mat-option *ngFor="let x of department" [value]="x.name">{{x.name}}</mat-option>
             </mat-select>
-        </mat-form-field>         
+        </mat-form-field>      
     </div>
 
     <div class="table"> 
         <div class="TableForPeople">
             <table class="TableBox">
                 <tr>
-                    <th (click)="OrderByName()">
+                    <th (click)="orderByName()">
                         Navn 
-                        <mat-icon *ngIf="Hired[0]?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
-                        <mat-icon *ngIf="Hired[0]?.name?.startsWith('Z')">keyboard_arrow_up</mat-icon>
+                        <mat-icon *ngIf="showedList[0]?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="showedList[0]?.name?.startsWith('å')">keyboard_arrow_up</mat-icon>
                     </th>
                     <th (click)="orderByDepartment()">
                         Afdeling 
-                        <mat-icon *ngIf="Hired[0]?.department?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
-                        <mat-icon *ngIf="Hired[0]?.department?.name?.startsWith('Z')">keyboard_arrow_up</mat-icon> <!--kan fjernes efterfølgende--><p style="font-size: 10px;">skal ses på</p>
+                        <mat-icon *ngIf="showedList[0]?.department?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="showedList[0]?.department?.name?.startsWith('Z')">keyboard_arrow_up</mat-icon> <!--kan fjernes efterfølgende--><p style="font-size: 10px;">skal ses på</p>
                     </th> 
                     <th (click)="orderBydate()">
                         Slut dato 
-                        <span *ngIf="Hired[0]?.endDate != undefined">
-                            <mat-icon *ngIf="Hired[0].endDate > Hired[Hired.length - 1].endDate">keyboard_arrow_down</mat-icon>
-                            <mat-icon *ngIf="Hired[0].endDate < Hired[Hired.length - 1].endDate">keyboard_arrow_up</mat-icon>
-                        </span>
+                        <!-- <span *ngIf="showedList[0].endDate != undefined">
+                            <mat-icon *ngIf="showedList[0].endDate < showedList[showedList.length - 1].endDate">keyboard_arrow_down</mat-icon>
+                            <mat-icon *ngIf="showedList[0].endDate > showedList[showedList.length - 1].endDate">keyboard_arrow_up</mat-icon>
+                        </span> -->
                     </th>
                     <th (click)="orderByCompletModule()">
                         Færdig moduler 
@@ -40,41 +41,26 @@
                     </th>
                     <th (click)="orderBySVUElegible()">
                         SVU 
-                        <mat-icon *ngIf="Hired[0]?.svuEligible == true">keyboard_arrow_down</mat-icon>
-                        <mat-icon *ngIf="Hired[0]?.svuEligible == false">keyboard_arrow_up</mat-icon>
+                        <mat-icon *ngIf="showedList[0]?.svuEligible == true">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="showedList[0]?.svuEligible == false">keyboard_arrow_up</mat-icon>
                     </th>
                 </tr>
-                <tr *ngFor="let x of Hired">
+                <tr *ngFor="let x of showedList">
                     <td><a href="/home">{{x.name}}</a></td>
                     <td>{{x.department?.name}}</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
                         <div class="Progress"></div>
                     </td>
-                    <td>{{x.personModules}}</td>
+                    <td>{{completedModules}}</td>
                     <td>
+                        {{x.svuEligible}}
                         <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
                         <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
                     </td>
                 </tr>
             </table>
         </div>
-        <table class="TableBox">
-            <tr>
-                <th>Navn</th>
-                <th>Afdeling</th>
-                <th>Slut dato</th>
-                <th>Færdig moduler</th>
-                <th>SVU</th>
-            </tr>
-            <tr *ngFor="let x of [1,2,3,4,5,6,7,46,4,3,2,4,5,7,8,98,5,4,2,5,7,8,9,3,4,5,6,7,8,9,3,4,5,6,7,8]">
-                <td><a href="" routerLink="/employee/2">Jeppe Frimann</a></td>
-                <td>HR</td>
-                <td>10-12-27</td>
-                <td>{{x}}</td>
-                <td><input type="checkbox" disabled checked /></td>
-            </tr>
-        </table>
     </div>
     <div class="bunden"></div>
 </div>
