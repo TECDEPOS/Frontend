@@ -22,7 +22,7 @@
 
             <label>Afdeling:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label>Vælg lokation:</mat-label>
+                <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
                   <mat-option *ngFor="let department of departments" [value]="department">
                     {{department.name}}
@@ -32,7 +32,7 @@
 
             <label>Lokation:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label>Vælg lokation:</mat-label>
+                <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
                   <mat-option *ngFor="let location of locations" [value]="location">
                     {{location.name}}
@@ -42,8 +42,8 @@
 
             <label>Pædagogisk konsulent:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label>Vælg konsulent</mat-label>
-                <mat-select [compareWith]="compareUserObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
+                <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
+                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
                   <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
                     {{consultant.name}}
                   </mat-option>
@@ -52,8 +52,8 @@
 
             <label>Driftskoordinator:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label>Vælg Driftskoordinator</mat-label>
-                <mat-select [compareWith]="compareUserObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
+                <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
+                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
                   <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
                     {{coordinator.name}}
                   </mat-option>
@@ -62,7 +62,7 @@
 
             <label>Ansættelses Dato:</label>
             <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                <mat-label>Vælg en dato</mat-label>
+                <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
                 <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate" name="hiringDate" #hiringDate="ngModel">
                 <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker" [disabled]="editDisabled"></mat-datepicker-toggle>
                 <mat-datepicker #hiringDatePicker></mat-datepicker>
@@ -70,7 +70,7 @@
 
             <label>Slut Dato:</label>
             <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                <mat-label>Vælg en dato</mat-label>
+                <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
                 <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker" name="endDate" #endDate="ngModel">
                 <mat-datepicker-toggle matIconSuffix [for]="endDatePicker" [disabled]="editDisabled"></mat-datepicker-toggle>
                 <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
@@ -95,6 +95,25 @@
         Modules
     </div>
     <div class="files">
-        Files
+      <div class="file-table">
+        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+          <tr>
+            <th mat-sort-header="fileName">Filnavn</th>
+            <th mat-sort-header="fileCategory">Filkategori</th>
+            <th mat-sort-header="uploadDate">Oploadet</th>
+            <th mat-sort-header="fileFormat">Filtype</th>
+            <th><mat-icon>download</mat-icon></th>
+            <th>Slet fil</th>
+          </tr>
+          <tr *ngFor="let file of person.files">
+            <td>{{file.fileName}}</td>
+            <td>{{file.fileTag.tagName}}</td>
+            <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
+            <td>{{file.fileFormat}}</td>
+            <td><mat-icon>download</mat-icon></td>
+            <td><mat-icon>delete</mat-icon></td>
+          </tr>
+        </table>
+      </div>
     </div>
 </div>

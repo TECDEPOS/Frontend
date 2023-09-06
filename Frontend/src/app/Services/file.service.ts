@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Files } from '../Models/Files';
+import { File } from '../Models/File';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,8 @@ export class FileService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getFiles(): Observable<Files[]>{
-    return this.http.get<Files[]>(this.baseApiUrl + 'File/')
+  getFiles(): Observable<File[]>{
+    return this.http.get<File[]>(this.baseApiUrl + 'File/')
   }
 
   getFilesById(id: number): Observable<File>{

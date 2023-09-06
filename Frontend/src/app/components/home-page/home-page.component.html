@@ -46,7 +46,7 @@
                     </th>
                 </tr>
                 <tr *ngFor="let x of showedList">
-                    <td><a href="/home">{{x.name}}</a></td>
+                    <td><a href="/employee/{{x.personId}}">{{x.name}}</a></td>
                     <td>{{x.department?.name}}</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
