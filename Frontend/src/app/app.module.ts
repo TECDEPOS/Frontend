@@ -25,6 +25,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import {MatSortModule} from '@angular/material/sort';
 
 
 
@@ -71,6 +72,7 @@ export const MY_DATE_FORMATS = {
     BrowserAnimationsModule,
     MomentDateModule,
     MatSelectModule,
+    MatSortModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

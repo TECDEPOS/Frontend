@@ -270,3 +270,13 @@ mat-option {
 #mat-select-0-panel {
     color: blue;
 }
+
+::ng-deep .mat-sort-header-container {
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
+    color: white;
+}

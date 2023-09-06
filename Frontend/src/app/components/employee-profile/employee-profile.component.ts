@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { Department } from 'src/app/Models/Department';
 import { Location } from 'src/app/Models/Location';
 import { Person } from 'src/app/Models/Person';
@@ -22,39 +23,27 @@ export class EmployeeProfileComponent {
   operationCoordinators: User[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
-  test: string = '';
   constructor(private personService: PersonsService, private userService: UserService, private departmentService: DepartmentsService, private locationService: LocationsService) { }
 
   ngOnInit() {
     this.getPerson();
-    this.getUsers();
-    this.getDepartments();
-    this.getLocations();
   }
 
-  getUsers(){
-    this.userService.getUsers().subscribe(res => {
-      this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
-      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);      
-    });
-  }
-
-  getDepartments(){
-    this.departmentService.getDepartment().subscribe(res => {
-      this.departments = res;
-    });
-  }
-
-  getLocations(){
-    this.locationService.getLocations().subscribe(res => {
-      this.locations = res;
-    });
-  }
-
+  // Make all the calls at the same time, if not then the RefreshToken in backend gets spammed and gives mismatch of refresh tokens between DB and localstorage
   getPerson() {
     this.personService.getPersonById(11).subscribe(res => {
       this.person = res;
       this.setBackupValues(this.person);
+      this.departmentService.getDepartment().subscribe(res => {
+        this.departments = res;
+      });
+      this.locationService.getLocations().subscribe(res => {
+        this.locations = res;
+      });
+      this.userService.getUsers().subscribe(res => {
+        this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+        this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+      });
     })
   }
 
@@ -80,14 +69,6 @@ export class EmployeeProfileComponent {
     this.backupValues = JSON.parse(JSON.stringify(values));
   }
 
-  compareUserObjects(o1: User, o2: User): boolean {
-    if (o2 == null) {
-      return false;
-    }
-    
-    return o1.name === o2.name && o1.userId === o2.userId;
-  }
-
   //Used for select dropdowns, without this no value will be shown on load even if a value has been set
   compareObjects(o1: any, o2: any): boolean {
     if (o2 == null) {
@@ -100,8 +81,37 @@ export class EmployeeProfileComponent {
     else if (typeof(o2 == Department)){
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
+    else if (typeof(o2 == User)){
+      return o1.name === o2.name && o1.userId === o2.userId;
+    }
     else{
       return false;
     }
+  }
+
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      return;
+    }
+
+    this.person.files = this.person.files.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'fileName':
+          return this.compare(a.fileName, b.fileName, isAsc);
+        case 'fileCategory':
+          return this.compare(a.fileTag.tagName, b.fileTag.tagName, isAsc);
+        case 'uploadDate':
+          return this.compare(a.uploadDate, b.uploadDate, isAsc);
+        case 'fileFormat':
+          return this.compare(a.fileFormat, b.fileFormat, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
