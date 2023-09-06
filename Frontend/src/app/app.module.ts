@@ -1,30 +1,38 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon'
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { JwtModule } from '@auth0/angular-jwt';
-import { TokenInterceptor } from './interceptors/token.interceptor';
-import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
+import { CreateComponent } from './components/crud-entitys/create/create.component';
+import { DeleteComponent } from './components/crud-entitys/delete/delete.component';
+import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-import {MatSelectModule} from '@angular/material/select';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
+
 
 
 
@@ -55,13 +63,20 @@ export const MY_DATE_FORMATS = {
     FilePageComponent,
     FileUploadComponent,
     CrudEntityPageComponent,
+    CreateComponent,
+    DeleteComponent,
+    EditComponent,
     EmployeeProfileComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatIconModule,
     HttpClientModule,
+    MatSelectModule,
     FormsModule,
     MatDialogModule,
     ReactiveFormsModule,

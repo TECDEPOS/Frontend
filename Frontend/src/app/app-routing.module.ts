@@ -9,11 +9,11 @@ import { EmployeeProfileComponent } from './components/employee-profile/employee
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomePageComponent, canActivate:[authGuard]},
+  { path: 'login', component: LoginComponent, title: 'JimmyBistGay'},
+  { path: 'home', component: HomePageComponent, canActivate:[authGuard], title: 'Jimmy Bist Very Gay'},
   { path: 'file', component: FilePageComponent, canActivate:[authGuard]},
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]},
-  { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]}
+  { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
 ];
 
 @NgModule({

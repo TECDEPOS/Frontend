@@ -13,7 +13,7 @@ export class PersonsService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getPerson(): Observable<Person[]>{
+  getPersons(): Observable<Person[]>{
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/')
   }
 

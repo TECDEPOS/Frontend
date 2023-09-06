@@ -29,13 +29,35 @@ export class ErrorPopupComponent {
     if (data?.sessionExpired) this.sessionExpired = data.sessionExpired;
   }
 
+  ngOninit(): void{
+    this.disable()
+    console.log("Hej");
+    
+  }
   closeDialog() {
     if (this.sessionExpired === true) {
       this.dialogRef.close();
       this.authService.logout();
+      this.enable
     }
     else{
       this.dialogRef.close();
+      this.enable
     }
   }
+
+  disable()
+{
+ document.onkeydown = function (e) 
+ {
+  return false;
+ }
+}
+enable()
+{
+ document.onkeydown = function (e) 
+ {
+  return true;
+ }
+}
 }

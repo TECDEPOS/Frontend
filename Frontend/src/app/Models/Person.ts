@@ -13,10 +13,11 @@ export class Person{
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;
+  
     educationalConsultant: User = new User;
     operationCoordinator: User = new User;
-    department: Department = new Department;
-    location: Location = new Location
+    department?: Department = new Department;
+    location?: Location = new Location
     files: Files = new Files;
     personModules: PersonModule[] = [];
 }
