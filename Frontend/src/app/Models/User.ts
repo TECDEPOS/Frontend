@@ -1,3 +1,4 @@
+import { Person } from "./Person";
 import { UserRole } from "./UserRole";
 
 export class User{
@@ -6,4 +7,6 @@ export class User{
     name: string = "";
     userRole: UserRole = 0;
     passwordexpiryDate: Date = new Date;
+
+    // persons: Person[] = [];
 }

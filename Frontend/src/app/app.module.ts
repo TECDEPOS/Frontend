@@ -4,6 +4,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material/icon'
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +14,10 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
@@ -24,10 +30,28 @@ import { CrudEntityPageComponent } from './components/crud-entity-page/crud-enti
 import { CreateComponent } from './components/crud-entitys/create/create.component';
 import { DeleteComponent } from './components/crud-entitys/delete/delete.component';
 import { EditComponent } from './components/crud-entitys/edit/edit.component';
+import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+
+
+
+
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
 }
+
+// Custom date formatting, used as value for MAT_DATE_FORMATS in providers
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'D.MM.YY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+}; 
 
 @NgModule({
   declarations: [
@@ -42,6 +66,7 @@ export function tokenGetter() {
     CreateComponent,
     DeleteComponent,
     EditComponent,
+    EmployeeProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +80,12 @@ export function tokenGetter() {
     FormsModule,
     MatDialogModule,
     ReactiveFormsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule,
+    MomentDateModule,
+    MatSelectModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -67,7 +98,9 @@ export function tokenGetter() {
     useClass: TokenInterceptor,
     multi: true,
   },
-  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}}
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true}},
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
 ],
   bootstrap: [AppComponent]
 })
