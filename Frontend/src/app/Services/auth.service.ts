@@ -56,4 +56,18 @@ export class AuthService {
     var decoded: any = jwt_decode(token)    
     return Number(decoded['userId']);    
   }
+
+  getName(): string{
+    let token = localStorage.getItem('jwt')!;
+    var decoded: any = jwt_decode(token)    
+    localStorage.setItem('name', decoded['name'])
+    return (decoded['name']);    
+  }
+
+  getRole(): string{
+    let token = localStorage.getItem('jwt')!;
+    var decoded: any = jwt_decode(token) 
+    localStorage.setItem('userRole', decoded['role'])
+    return (decoded['userRole']);    
+  }
 }
