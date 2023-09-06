@@ -104,6 +104,4 @@ export class EmployeeProfileComponent {
       return false;
     }
   }
-
-
 }
