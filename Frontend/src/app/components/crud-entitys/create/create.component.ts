@@ -16,6 +16,7 @@ import { ModuleService } from 'src/app/Services/module.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
 import { NgModel } from '@angular/forms';
+import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
 
 @Component({
   selector: 'app-create',
@@ -29,14 +30,15 @@ export class CreateComponent {
   location: Location = new Location;
   moduel: Module = new Module;
   person: Person = new Person;
-  user: User = new User;
+  user: userViewModel = new userViewModel;
   departments: Department[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
   resentlyCreated: any[] = [];
-  selected: number = 1;
+  activeForm: string | null = null
+
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -46,7 +48,8 @@ export class CreateComponent {
   personForm: FormGroup;
   userForm: FormGroup;
 
-  public userRole = UserRole;
+  userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
+  .filter(key => !isNaN(Number(UserRole[key])));
 
   constructor(
     private bookService: BookService,
@@ -57,6 +60,7 @@ export class CreateComponent {
     private personService: PersonsService,
     private userService: UserService
   ) {
+    this.activeForm = null;
     this.bookForm = new FormGroup({})
 
     this.depertmentForm = new FormGroup({})
@@ -67,16 +71,16 @@ export class CreateComponent {
 
     this.moduelForm = new FormGroup({})
 
-    // this.personForm = new FormGroup({});
+    this.personForm = new FormGroup({});
 
-    this.personForm = new FormGroup({
-      name: new FormControl(''),
-      initials: new FormControl(''),
-      educationalConsultantUserId: new FormControl(0),
-      operationCoordinatorUserId: new FormControl(0),
-      hiringDate: new FormControl(),
-      svu: new FormControl(false)
-    });
+    // this.personForm = new FormGroup({
+    //   name: new FormControl(''),
+    //   initials: new FormControl(''),
+    //   educationalConsultantUserId: new FormControl(0),
+    //   operationCoordinatorUserId: new FormControl(0),
+    //   hiringDate: new FormControl(),
+    //   svu: new FormControl(false)
+    // });
 
     this.userForm = new FormGroup({
       username: new FormControl(''),
@@ -88,6 +92,19 @@ export class CreateComponent {
   ngOnInit() {
     console.log(this.userRole);
 
+  }
+
+  toggleForm(formName: string) {
+    if (this.activeForm === formName) {
+      this.activeForm = null
+    }
+    else {
+      this.activeForm = formName
+    }
+  }
+
+  isFormActive(formName: string) {
+    return this.activeForm === formName;
   }
 
   createBook() {
@@ -113,11 +130,17 @@ export class CreateComponent {
   createPerson() {
     console.log(this.personForm.controls);
     console.log(this.person);
-    
-    
+
+
   }
 
   createUser() {
-
+    console.log(this.user);
+    console.log(UserRole[this.user.userRole]);
+    
+    // this.user.userRole = UserRole[this.user.userRole];
+    // this.userService.addUsers(this.user).subscribe(data => {
+    //   console.log(data);
+    // })
   }
 }

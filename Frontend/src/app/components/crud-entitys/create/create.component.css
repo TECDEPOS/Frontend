@@ -17,25 +17,6 @@
     grid-area: h;
 }
 
-.profile{
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px 1px #888;
-
-    
-    display: grid;
-    height: 100%;
-    width: 100%;
-    grid-area: p;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 15% auto 10%;
-    grid-template-areas: 
-    "n n"
-    "i i"
-    "b b";
-}
-
 .profile-info{
     padding-top: 50px;
     display: grid;
@@ -45,108 +26,12 @@
     border: none;
 }
 
-.form{
+/* .form{
     height: 100%;
     grid-area: i;
     display: grid;
     border: none;
-}
-
-.profile > form > .profile-info > label{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-weight: 900;
-}
-
-.profile-header{
-    grid-area: n;
-    border-bottom: 1px solid black;
-    height: 100%;
-    display: grid;
-    place-content: center;
-}
-
-.profile-buttons{
-    height: 100%;
-    width: 100%;
-    grid-area: b;
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
-    justify-items: center;
-}
-
-.profile > .profile-buttons > .editmode-buttons{
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.edit-button{
-    height: 40px;
-    width: 80px;
-    background-color: #006E8C;
-    color: white;
-    border: none;
-    font-weight: 900;
-}
-
-.edit-button:hover{
-    cursor: pointer;
-}
-
-.save-button{
-    height: 40px;
-    width: 80px;
-    background-color: rgb(31, 155, 0);
-    border: 0.5px solid black;
-    color: white;
-    font-weight: bold;
-}
-
-.save-button:disabled{
-    background-color: rgb(146, 202, 132);
-}
-
-.save-button:disabled:hover{
-    cursor: default;
-    background-color: rgb(146, 202, 132);
-}
-
-.save-button:hover{
-    cursor: pointer;
-    background-color: rgb(28, 138, 0);
-    border: 1px solid black;
-}
-
-.cancel-button{
-    height: 40px;
-    width: 80px;
-    border: 0.5px solid black;
-    font-weight: bold;
-}
-
-.cancel-button:hover{
-    cursor: pointer;
-    background-color: #dadada;
-}
-
-.profile label{
-    text-align: right;
-    padding-right: 15px;
-}
-
-.modules{
-    background-color: blueviolet;
-    grid-area: m;
-    margin-bottom: 10px;
-}
-
-.files{
-    grid-area: f;
-    background-color: green;
-}
+} */
 
 input[type=text], select {
     width: 70%;
@@ -181,7 +66,7 @@ input[type=text], select {
 
  .dropdown{
     width: 70%;
-    height: 90%;
+    height: 70%;
     padding-top: 5px;
     min-width: 70%;
  }
@@ -189,3 +74,45 @@ input[type=text], select {
  #mat-select-0-panel{
     color: blue;
  }
+
+ /* CSS for the box container */
+.box {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-gap: 10px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* CSS for the picker elements */
+  .picker {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* CSS for the form container */
+  .form {
+    /* display: none;  */
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Show the form when it's active */
+  .form.active {
+    display: block;
+  }
+  .form-visible {
+    display: block;
+  }
