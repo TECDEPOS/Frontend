@@ -30,10 +30,6 @@ import { DeleteComponent } from './components/crud-entitys/delete/delete.compone
 import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 
-
-
-
-
 export function tokenGetter() {
   return localStorage.getItem("jwt");
 }

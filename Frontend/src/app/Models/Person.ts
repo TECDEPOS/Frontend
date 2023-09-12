@@ -18,6 +18,6 @@ export class Person{
     operationCoordinator: User = new User;
     department?: Department = new Department;
     location?: Location = new Location
-    files: Files = new Files;
+    files: Files[] = [];
     personModules: PersonModule[] = [];
 }
