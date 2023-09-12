@@ -1,1 +1,159 @@
-<p>create works!</p>
+<div>
+    <form class="form" #personForm="ngForm">
+        <label>Navn: </label>
+        <div>
+            <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+        </div>
+
+        <label>Initialer: </label>
+        <div>
+            <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
+        </div>
+        <div>
+            <label>Afdeling:</label>
+            <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                <mat-label>Vælg lokation:</mat-label>
+                <mat-select [(ngModel)]="person.department" name="department" #department="ngModel">
+                    <mat-option *ngFor="let department of departments" [value]="department">
+                        {{department.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>Lokation:</label>
+            <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                <mat-label>Vælg lokation:</mat-label>
+                <mat-select [(ngModel)]="person.location" name="location" #location="ngModel">
+                    <mat-option *ngFor="let location of locations" [value]="location">
+                        {{location.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>Pædagogisk konsulent:</label>
+            <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                <mat-label>Vælg konsulent</mat-label>
+                <mat-select [(ngModel)]="person.educationalConsultant" name="educationalConsultant"
+                    #educationalConsultant="ngModel">
+                    <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
+                        {{consultant.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>Driftskoordinator:</label>
+            <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                <mat-label>Vælg Driftskoordinator</mat-label>
+                <mat-select [(ngModel)]="person.operationCoordinator" name="operationCoordinator"
+                    #operationCoordinator="ngModel">
+                    <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                        {{coordinator.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>Ansættelses Dato:</label>
+            <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                <mat-label>Vælg en dato</mat-label>
+                <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate"
+                    name="hiringDate" #hiringDate="ngModel">
+                <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #hiringDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>Slut Dato:</label>
+            <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                <mat-label>Vælg en dato</mat-label>
+                <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
+                    name="endDate" #endDate="ngModel">
+                <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div>
+            <label>SVU Berettiget:</label>
+            <div class="checkbox">
+                <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
+                    #svuEligible="ngModel">
+            </div>
+        </div>
+    </form>
+</div>
+<!-- <div>
+    <div>
+        <form *ngIf="selected == 1" #personForm="ngForm" (ngSubmit)="createPerson()">
+            <div class="filecontainer">
+                <div class="form-group">
+                    <label for="pwd">Navn:</label>
+                    <input placeholder="Name" type="text" id="name" name="name" #name="ngModel"
+                    [(ngModel)]="person.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Initialer:</label>
+                    <input placeholder="Name" type="text" id="name" name="name" #name="ngModel"
+                    [(ngModel)]="person.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="educationalConsultantUserId">Uddannelseskonsulent:</label>
+                    <select class="form-control" formControlName="educationalConsultantUserId"
+                    name="educationalConsultantUserId">
+                    <option value="" disabled selected>Vælg en Uddannelseskonsulent</option>
+                    <option *ngFor="let educationalConsultant of educationalConsultants"
+                    [value]="educationalConsultant.userId">{{ educationalConsultant.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="operationCoordinatorUserId">Driftskoordinator:</label>
+                <select class="form-control" formControlName="operationCoordinatorUserId"
+                name="operationCoordinatorUserId">
+                <option value="" disabled selected>Vælg en Driftskoordinator</option>
+                <option *ngFor="let operationCoordinator of operationCoordinators"
+                [value]="operationCoordinator.userId">{{ operationCoordinator.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Ansættelsesdato:</label>
+            <input type="date" class="form-control" formControlName="hiringDate"
+            placeholder="Enter alternate text" name="hiringDate">
+        </div>
+        <div class="form-group">
+            <label for="pwd">SVU Berediet:</label>
+                    <input type="checkbox" class="form-control" formControlName="svu" placeholder="Enter alternate text"
+                    name="svu">
+                </div>
+                <br />
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <form *ngIf="selected == 2" #userForm="ngForm" (ngSubmit)="createUser()">
+            <div class="filecontainer">
+                <div class="form-group">
+                    <label for="pwd">Brugernavn:</label>
+                    <input type="text" class="form-control" formControlName="Username" placeholder="Skriv Brugernavn"
+                        name="Username">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Navn:</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="Skriv Navn" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Brugerrolle:</label>
+                    <select class="form-control" formControlName="userRole" name="userRole">
+                        <option value="" disabled selected>Vælg en brugerrolle</option>
+                        <option *ngFor="let operationCoordinator of operationCoordinators"
+                            [value]="operationCoordinator.userId">{{ operationCoordinator.name }}</option>
+                    </select>
+                </div>
+                <br />
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div> -->
