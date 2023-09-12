@@ -23,6 +23,8 @@ export class HomePageComponent {
   completedModules: number = 2;
   pickedDepartment: string = "";
   searchName: string = "";
+  alle: string = "";
+  searchDepartment: any = ""
   constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
   
   ngOnInit(): void{
@@ -50,17 +52,12 @@ export class HomePageComponent {
 
   onDepartmentQueryInput(event: any){    
     let personList: Person[] = []
-    console.log(this.showedList[0].department?.name);
-    console.log(event.value);
-    
-    if(this.showedList.length > 1,  this.showedList[0].department?.name == event.value){
-      console.log("Hej");  
-    }
     this.Hired.forEach(element => {
       if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
         personList.push(element);
       }
       this.showedList = personList
+      this.searchDepartment = event.value;
     })
   }
 
@@ -68,11 +65,13 @@ export class HomePageComponent {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let personList: Person[] = []
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && searchQuery !== " "){
+      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.includes(this.searchDepartment.toLocaleLowerCase())){
         personList.push(element);
       }
       this.showedList = personList    
     });
+    console.log(personList);
+    
   }
 
   orderByName(){
@@ -107,11 +106,19 @@ export class HomePageComponent {
   }
 
   orderBySVUElegible(){
-    if(this.Hired[0] === this.Hired.sort(value => {return value ? 1 : -1 /* `false` values first */})[0]){
-      this.Hired.sort(value => {return value ? -1 : 1 /* `True` values first */})
+    if(this.Hired[0].svuEligible === true){
+      //this.Hired.sort(value => {return value ? -1 : 1 /* `True` values first */})
+      console.log("HEj");
+      
+      this.Hired.sort((a, b) => Number(a.svuEligible) - Number(b.svuEligible))
+      console.log(this.Hired.sort((a, b) => Number(a.svuEligible) - Number(b.svuEligible)));
+      
       }
       else{
-        this.Hired.sort(value => {return value ? 1 : -1 /* `false` values first */})
+        //this.Hired.sort(value => {return value ? 1 : -1 /* `false` values first */})
+        this.Hired.sort((a,b) => Number(b.svuEligible) - Number(a.svuEligible))
+        console.log(this.Hired.sort((a,b) => Number(b.svuEligible) - Number(a.svuEligible)));
     }
+    
   }
 }

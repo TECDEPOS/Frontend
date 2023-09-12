@@ -6,8 +6,8 @@
         </mat-form-field>
         <mat-form-field subscriptSizing="dynamic">
             <mat-label>Vælge afdeling</mat-label>
-            <mat-select (selectionChange)="onDepartmentQueryInput($event)">
-                <mat-option value="Alle">Alle</mat-option>
+            <mat-select [value]="alle" (selectionChange)="onDepartmentQueryInput($event)">
+                <mat-option [value]="alle" >Alle</mat-option>
                 <mat-option *ngFor="let x of department" [value]="x.name">{{x.name}}</mat-option>
             </mat-select>
         </mat-form-field>      
@@ -54,7 +54,6 @@
                     </td>
                     <td>{{completedModules}}</td>
                     <td>
-                        {{x.svuEligible}}
                         <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
                         <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
                     </td>
