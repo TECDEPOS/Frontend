@@ -1,5 +1,5 @@
 import { Department } from "./Department";
-import { Files } from "./Files";
+import { File } from "./File";
 import { PersonModule } from "./PersonModule";
 import { User } from "./User";
 import { Location } from "./Location";
@@ -18,6 +18,6 @@ export class Person{
     operationCoordinator: User = new User;
     department?: Department = new Department;
     location?: Location = new Location
-    files: Files = new Files;
+    files: File[] = [];
     personModules: PersonModule[] = [];
 }
