@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { findIndex } from 'rxjs';
-import { Files } from 'src/app/Models/Files';
+import { File } from 'src/app/Models/File';
 import { FileService } from 'src/app/Services/file.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { FileService } from 'src/app/Services/file.service';
 })
 export class FilePageComponent {
   public pageTitle = 'Welcome to View Files component';
-  files: Files[] = [];
+  files: File[] = [];
 
   constructor(private fileService: FileService) {
     this.getAllFiles();

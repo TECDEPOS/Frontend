@@ -12,10 +12,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
@@ -77,6 +73,8 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     MomentDateModule,
+    MatSelectModule,
+    MatSortModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
