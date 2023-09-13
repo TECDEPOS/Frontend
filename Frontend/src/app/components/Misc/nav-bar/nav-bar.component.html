@@ -1,27 +1,32 @@
 <div class="OuterWrapper">
-    <span style="height: 100%;">
+    <div class="imgWrapper">
         <img routerLink="/home" src="../../../../assets/logo-footer.png" alt="">
-    </span>
+    </div>
     <span class="Userinfo">
         <p>{{name}} &nbsp; {{role}}</p>
     </span>
     <span class="ModuleAndFiles">
-        <h2>
-            <u>Moduler</u>
-        </h2>
-        <h2 >
-            <u routerLink="/file">Alle Filer</u>
-        </h2>
+        <h3 routerLink="/module" [ngStyle]="{'text-decoration': router.url === '/module' ? 'underline' : 'none'}">
+            Moduler
+        </h3>
+        <h3 routerLink="/home" [ngStyle]="{'text-decoration': router.url === '/home' ? 'underline' : 'none'}">
+            Ansatte
+        </h3>
+        <h3 routerLink="/file" [ngStyle]="{'text-decoration': router.url === '/file' ? 'underline' : 'none'}">
+            Filer
+        </h3>
     </span>
     <span class="dropdown">
-        <!-- <mat-icon class="SettingsIcon" (click)="onShow()">settings</mat-icon> -->
-        <mat-icon class="SettingsIcon" (click)="logout()">settings</mat-icon>
+        <mat-icon class="SettingsIcon" (click)="onShow()">settings</mat-icon>
         <div class="dropdown-content" id="dropdown-content">
-            <span class="Exit" routerLink="/login">
+            <span (click)="openChangePasswordPopup()" class="Exit">
+                <p>Skift adgangskode</p>
+            </span>
+            <hr>
+            <span class="Exit" routerLink="/login" (click)="logout()">
+                
                 <p>Log ud &nbsp;</p> <mat-icon>exit_to_app</mat-icon>
             </span>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
           </div>
     </span>
 </div>

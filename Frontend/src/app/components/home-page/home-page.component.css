@@ -113,6 +113,9 @@ mat-form-field{
   border-left: 1px solid #ddd;
 }
 
+th{
+  text-align: center;
+}
 .TableBox th:first-child{
   border-left: 1px solid #006E8C;
 }
@@ -148,3 +151,11 @@ th {
     }
   }
 
+  ::ng-deep .mat-sort-header-container {
+    justify-content: center;
+    color: white;
+  }
+
+  ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
+    color: white;
+}

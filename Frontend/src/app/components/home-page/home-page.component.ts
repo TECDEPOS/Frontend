@@ -9,6 +9,7 @@ import { DepartmentsService } from 'src/app/Services/departments.service';
 import { Department } from 'src/app/Models/Department';
 import { elementAt } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-home-page',
@@ -16,7 +17,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent {
-
   department: Department[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
@@ -41,10 +41,8 @@ export class HomePageComponent {
   getTableData(){
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
-      this.showedList = this.Hired
-      console.log(res);
-      
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
+      this.showedList = this.Hired
     })
   }
 
@@ -63,60 +61,37 @@ export class HomePageComponent {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let personList: Person[] = []
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.includes(this.searchDepartment.toLocaleLowerCase())){
-        personList.push(element);
+      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())){
+          personList.push(element);
+          console.log("Afdeling");      
       }
       this.showedList = personList    
-    });
-    console.log(personList);
-    
+    });    
   }
 
-  orderByName(){
-    if(this.Hired[0] === this.Hired.sort((a,b) => b.name.localeCompare(a.name))[0]){
-      this.Hired.sort((a,b) => a.name.localeCompare(b.name))
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      return;
     }
-    else{
-      this.Hired = this.Hired.sort((a,b) => b.name.localeCompare(a.name))  
-    }
-  }
 
-  orderByDepartment(){
-    if(this.Hired[0] === this.Hired.sort((a,b) => b.department!.name.localeCompare(a.department!.name))[0]){
-      this.Hired.sort((a,b) => a.department!.name.localeCompare(b.department!.name))
-    }
-    else{
-      this.Hired.sort((a,b) => b.department!.name.localeCompare(a.department!.name))
-    }
-  }
-
-  orderBydate(){
-    if(this.Hired[0] === this.Hired.sort((a,b) => String(b.endDate).localeCompare(String(a.endDate)))[0]){
-      this.Hired.sort((a,b) => String(a.endDate).localeCompare(String(b.endDate)))
-    }
-    else{
-      this.Hired.sort((a,b) => String(b.endDate).localeCompare(String(a.endDate)))
-    }
-  }
-
-  orderByCompletModule(){
-    console.log("Lol What did you think would happen?");
-  }
-
-  orderBySVUElegible(){
-    if(this.Hired[0].svuEligible === true){
-      //this.Hired.sort(value => {return value ? -1 : 1 /* `True` values first */})
-      console.log("HEj");
-      
-      this.Hired.sort((a, b) => Number(a.svuEligible) - Number(b.svuEligible))
-      console.log(this.Hired.sort((a, b) => Number(a.svuEligible) - Number(b.svuEligible)));
-      
+    this.Hired = this.Hired.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'HiredName':
+          return this.compare(a.name, b.name, isAsc);
+        case 'HiredDepartment':
+          return this.compare(a.department!.name, b.department!.name, isAsc);
+        case 'HiredEndDate':
+          return this.compare(a.endDate, b.endDate, isAsc);
+        case 'HiredSVU':
+          return this.compare(a.svuEligible, b.svuEligible, isAsc);
+        default:
+          return 0;
       }
-      else{
-        //this.Hired.sort(value => {return value ? 1 : -1 /* `false` values first */})
-        this.Hired.sort((a,b) => Number(b.svuEligible) - Number(a.svuEligible))
-        console.log(this.Hired.sort((a,b) => Number(b.svuEligible) - Number(a.svuEligible)));
-    }
-    
+    });
+  }
+
+  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

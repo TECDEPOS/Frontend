@@ -14,6 +14,16 @@
 
 p{
     font-size: 1rem;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+h3{
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .ModuleAndFiles{
@@ -22,10 +32,11 @@ p{
 }
 
 img{
+    margin: 1px 1px 1px 3px;
     max-width: 100%;
     max-height: 100%;
     min-width: 384px;
-    min-height: 75px;
+    min-height: 73px;
 }
 
 span{
@@ -50,19 +61,29 @@ u, img, .Exit:hover, mat-icon{
     cursor: pointer;
 }
 
+.imgWrapper{
+    height: 90%;
+}
+
 .dropdown-content {
     display: none;
     outline: 1px black solid;
     position: absolute;
-    top: 75px;
+    top: 70px;
     right: 5px;
     background-color: #f1f1f1;
     padding-top: 5px;
     padding-bottom: 5px;
-    /* min-width: auto; */
+    z-index: 10;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
     color: black
+  }
+  .dropdown-content > span:first-child{
+    margin-bottom: 15px;
+  }
+
+  .dropdown-content > span{
+    padding: 0px 5px 0px 5px;
   }
   
   .dropdown-content a {
