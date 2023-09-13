@@ -1,0 +1,106 @@
+.container {
+    width: 350px;
+    height: 200px;
+    display: grid;
+    grid-template-areas:
+        "h"
+        "c"
+        "b";
+    grid-auto-rows: 15% 70% 20%;
+}
+
+.content {
+    grid-area: c;
+    display: grid;
+    grid-template-areas: 
+    "fn fn"
+    "ub ft";
+    grid-auto-rows: 30% 70%;
+    grid-auto-columns: 20% 70 10%;
+}
+
+.upload{
+    grid-area: ub;
+    position: relative;
+    height: 100%;
+    display: grid;
+    place-content: end end;
+}
+
+.file-tags{
+    grid-area: ft;
+    height: 100%;
+    display: grid;
+    place-content: end center;
+}
+
+.file-name{
+    grid-area: fn;
+    display: grid;
+    place-content: center center;
+}
+
+.header {
+    grid-area: h;
+    display: grid;
+    place-content: start end;
+}
+
+.bottom {
+    grid-area: b;
+}
+
+.close-button {
+    color: lightslategray;
+}
+
+.close-button:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.upload-button {
+    height: 40px;
+    width: 80px;
+    background-color: #006E8C;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.upload-button:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
+
+.dropdown {
+    width: 100%;
+    height: 48px;
+    padding-top: 5px;
+    /* min-width: 70%; */
+}
+
+mat-option {
+    border: 1px solid #cfcfcf;
+    border-top-style: none;
+}
+
+input[type="file"]{
+    display:none;
+}
+
+.file-upload{
+    margin-left: 15px;
+    width: 25px;
+    padding: 8px 8px;
+    background-color: #006E8C;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    display: grid;
+    place-items: start;
+}
+
+.file-upload:hover{
+    background-color: #005f79;
+}

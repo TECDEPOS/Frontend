@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="header">
+    <mat-icon class="close-button" (click)="closeDialog()">cancel</mat-icon>
+  </div>
+  <form class="content" #myForm="ngForm">
+
+    <div class="file-name">
+      <p *ngIf="file !== undefined">{{file.name}}</p>
+    </div>
+
+    <div class="upload">
+      <label class="file-upload">
+        <mat-icon>attach_file</mat-icon>
+        <input id="file" type="file" (change)="fileChange($any($event).target.files)">
+      </label>
+    </div>
+
+    <div class="file-tags">
+        <!-- <label>Filkategori:</label> -->
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-label *ngIf="fileTagId === 0 || fileTagId === null">Vælg Filkategori:</mat-label>
+          <mat-select [(ngModel)]="fileTagId" name="fileTag">
+            <mat-option [value]="null">- Ingen -</mat-option>
+            <mat-option *ngFor="let tag of fileTags" [value]="tag.fileTagId">{{ tag.tagName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+  </form>
+</div>
+<mat-dialog-actions class="bottom" align="end">
+  <button type="submit" class="upload-button" (click)="onSubmit()">Upload</button>
+  <button (click)="test()">test</button>
+</mat-dialog-actions>

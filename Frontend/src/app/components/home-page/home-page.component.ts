@@ -27,7 +27,6 @@ export class HomePageComponent {
   
   ngOnInit(): void{
     this.getTableData()
-    this.getDepartmentData()
   }
 
   getDepartmentData(){
@@ -41,7 +40,7 @@ export class HomePageComponent {
       this.Hired = res
       this.showedList = this.Hired
       console.log(res);
-      
+      this.getDepartmentData()
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
     })
   }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from 'src/app/Models/Department';
@@ -9,6 +10,7 @@ import { DepartmentsService } from 'src/app/Services/departments.service';
 import { LocationsService } from 'src/app/Services/locations.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
+import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -26,7 +28,7 @@ export class EmployeeProfileComponent {
   locations: Location[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute) { }
+    private aRoute: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getPerson();
@@ -119,5 +121,16 @@ export class EmployeeProfileComponent {
 
   compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+
+  openFileUpload(){
+    this.dialog.open(FileuploadPopupComponent,{
+      data: {
+        personId: this.person.personId,
+        personFiles: this.person.files,
+      },
+      disableClose: false,
+    });
   }
 }
