@@ -58,7 +58,8 @@ export class FileuploadPopupComponent {
     
     this.fileService.uploadFile(this.formData, this.personId, this.fileTagId).subscribe(res => {
       this.personFiles.push(res);
-    });    
+      this.closeDialog();
+    });
   }  
 
   fileChange(files: any) {
