@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { findIndex } from 'rxjs';
 import { File } from 'src/app/Models/File';
+import { FileTag } from 'src/app/Models/FileTag';
+import { FileTagService } from 'src/app/Services/file-tag.service';
 import { FileService } from 'src/app/Services/file.service';
 
 @Component({
@@ -10,52 +13,25 @@ import { FileService } from 'src/app/Services/file.service';
 })
 export class FilePageComponent {
   public pageTitle = 'Welcome to View Files component';
+  showedList: File[] = [];
   files: File[] = [];
+  fileTags: FileTag[] = [];
+  alle: string = "";
+  searchFileTag: string = "";
 
-  constructor(private fileService: FileService) {
+  constructor(private fileService: FileService, private fileTagService: FileTagService) {
     this.getAllFiles();
   }
 
   getAllFiles() {
     this.fileService.getFiles().subscribe(data => {
       this.files = data;
+      this.showedList = this.files;
+      this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate, false))
+      this.fileTagService.getFileTag().subscribe(data => {
+        this.fileTags = data
+      })
     });
-  }
-
-  orderByFileName() {
-    if (this.files[0] === this.files.sort((a, b) => b.fileName.localeCompare(a.fileName))[0]) {
-      this.files.sort((a, b) => a.fileName.localeCompare(b.fileName))
-    }
-    else {
-      this.files = this.files.sort((a, b) => b.fileName.localeCompare(a.fileName))
-    }
-  }
-
-  orderByPersonName() {
-    if (this.files[0] === this.files.sort((a, b) => b.person.name.localeCompare(a.person.name))[0]) {
-      this.files.sort((a, b) => a.person.name.localeCompare(b.person.name))
-    }
-    else {
-      this.files = this.files.sort((a, b) => b.person.name.localeCompare(a.person.name))
-    }
-  }
-
-  orderByDate() {
-    if (this.files[0] === this.files.sort((a, b) => String(b.uploadDate).localeCompare(String(a.uploadDate)))[0]) {
-      this.files.sort((a, b) => String(a.uploadDate).localeCompare(String(b.uploadDate)))
-    }
-    else {
-      this.files.sort((a, b) => String(b.uploadDate).localeCompare(String(a.uploadDate)))
-    }
-  }
-
-  orderByTagName() {
-    if (this.files[0] === this.files.sort((a, b) => b.fileTag.tagName.localeCompare(a.fileTag.tagName))[0]) {
-      this.files.sort((a, b) => a.fileTag.tagName.localeCompare(b.fileTag.tagName))
-    }
-    else {
-      this.files = this.files.sort((a, b) => b.fileTag.tagName.localeCompare(a.fileTag.tagName))
-    }
   }
 
   deleteFile(fileId: number, i: number) {
@@ -63,7 +39,6 @@ export class FilePageComponent {
       console.log(this.files);
       this.files.splice(i, 1)
       console.log(this.files);
-      
     })
   }
 
@@ -90,5 +65,53 @@ export class FilePageComponent {
 
         console.log("Success");
       });
+  }
+
+  onSearchQueryInput(event: Event){
+    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
+    let fileList: File[] = []
+    this.files.forEach(element => {
+      if (element.fileName.toLocaleLowerCase().includes(searchQuery) && element.fileTag?.tagName.toLocaleLowerCase().includes(this.searchFileTag.toLocaleLowerCase())){ 
+          fileList.push(element);   
+      }
+      this.showedList = fileList    
+    });    
+  }
+
+  onFileTagQueryInput(event: any){
+    let fileList: File[] = []
+    this.files.forEach(element => {
+      if(element.fileTag.tagName.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
+        fileList.push(element)
+      }
+      this.showedList = fileList;
+      this.searchFileTag = event.value;
+    })
+  }
+
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      return;
+    }
+
+    this.files = this.files.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'fileName':
+          return this.compare(a.fileName, b.fileName, isAsc);
+        case 'personName':
+          return this.compare(a.person.name, b.person.name, isAsc);
+        case 'uploadDate':
+          return this.compare(a.uploadDate, b.uploadDate, isAsc);
+        case 'tag':
+          return this.compare(a.fileTag.tagName, b.fileTag.tagName, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

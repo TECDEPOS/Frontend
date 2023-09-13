@@ -164,3 +164,8 @@ th {
         left: 0;
     }
 }
+
+::ng-deep .mat-sort-header-container {
+    justify-content: center;
+    color: white;
+  }
