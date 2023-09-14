@@ -30,6 +30,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import {MatSortModule} from '@angular/material/sort';
+import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
 
 
@@ -65,7 +66,8 @@ export const MY_DATE_FORMATS = {
     DeleteComponent,
     EditComponent,
     EmployeeProfileComponent,
-    FileuploadPopupComponent
+    FileuploadPopupComponent,
+    ChangePasswordPopupComponent
   ],
   imports: [
     BrowserModule,

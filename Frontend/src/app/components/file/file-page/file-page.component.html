@@ -1,26 +1,34 @@
 <div class="OuterWrapper">
+  <div class="Searchfield">
+    <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Søge efter filnavn</mat-label>
+        <input matInput placeholder="Skriv filnavnet her " (input)="onSearchQueryInput($event)">
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Vælge tag</mat-label>
+        <mat-select [value]="alle" (selectionChange)="onFileTagQueryInput($event)">
+            <mat-option [value]="alle" >Alle</mat-option>
+            <mat-option *ngFor="let x of fileTags" [value]="x.tagName">{{x.tagName}}</mat-option>
+        </mat-select>
+    </mat-form-field>      
+</div>
+
   <div class="table">
     <div class="TableForPeople">
-      <table class="TableBox">
+      <table class="TableBox"  matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
         <tr>
-          <th (click)="orderByFileName()">
+          <th mat-sort-header="fileName">
             Fil navn
-            <mat-icon *ngIf="files[0]?.fileName?.startsWith('A')">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="files[0]?.fileName?.startsWith('Å')">keyboard_arrow_up</mat-icon>
           </th>
-          <th (click)="orderByPersonName()">
+          <th mat-sort-header="personName">
             Person navn
-            <mat-icon *ngIf="files[0]?.person?.name?.startsWith('A')">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="files[0]?.person?.name?.startsWith('Å')">keyboard_arrow_up</mat-icon>
           </th>
-          <th (click)="orderByDate()">
+          <th mat-sort-header="uploadDate">
             Upload dato
-            <span *ngIf="files[0]?.uploadDate != undefined">
-              <mat-icon *ngIf="files[0].uploadDate >= files[files.length - 1].uploadDate">keyboard_arrow_down</mat-icon>
-              <mat-icon *ngIf="files[0].uploadDate < files[files.length - 1].uploadDate">keyboard_arrow_up</mat-icon>
-            </span>
           </th>
-          <th (click)="orderByTagName()">Tag</th>
+          <th  mat-sort-header="tag">
+            Tag
+          </th>
           <th>
             Download
           </th>
@@ -28,7 +36,7 @@
             Slet
           </th>
         </tr>
-        <tr *ngFor="let file of files; let i = index">
+        <tr *ngFor="let file of showedList; let i = index">
           <td>{{file.fileName}}</td>
           <td><a href="/employee/{{file.person.personId}}">{{file.person.name}}</a></td>
           <td class="End--date">

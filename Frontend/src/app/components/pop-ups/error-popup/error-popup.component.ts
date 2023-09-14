@@ -30,9 +30,7 @@ export class ErrorPopupComponent {
   }
 
   ngOninit(): void{
-    this.disable()
-    console.log("Hej");
-    
+    this.disable()    
   }
   closeDialog() {
     if (this.sessionExpired === true) {

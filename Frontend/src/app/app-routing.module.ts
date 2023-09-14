@@ -6,6 +6,7 @@ import { authGuard } from './guards/auth.guard';
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

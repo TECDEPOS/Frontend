@@ -16,6 +16,14 @@
         "b b b b b b b b";
 }
 
+mat-icon{
+    cursor: pointer;
+}
+mat-icon:hover{
+    background-color: #bbbb;
+    border-radius: 50%;
+}
+
 .SeachBar {
     font-size: 1.3rem;
     color: black;
@@ -60,7 +68,6 @@
 }
 
 mat-form-field {
-    /* height: 35px; */
     margin-left: 50px;
     min-width: 200px;
     margin-bottom: 15px;
@@ -164,3 +171,8 @@ th {
         left: 0;
     }
 }
+
+::ng-deep .mat-sort-header-container {
+    justify-content: center;
+    color: white;
+  }
