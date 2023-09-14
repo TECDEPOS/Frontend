@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from 'src/app/Models/Department';
@@ -9,6 +10,8 @@ import { DepartmentsService } from 'src/app/Services/departments.service';
 import { LocationsService } from 'src/app/Services/locations.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
+import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
+import { FileService } from 'src/app/Services/file.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -26,7 +29,7 @@ export class EmployeeProfileComponent {
   locations: Location[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute) { }
+    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
 
   ngOnInit() {
     this.getPerson();
@@ -119,5 +122,47 @@ export class EmployeeProfileComponent {
 
   compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+
+  openFileUploadPopUp(){
+    this.dialog.open(FileuploadPopupComponent,{
+      data: {
+        personId: this.person.personId,
+        personFiles: this.person.files,
+      },
+      disableClose: false,
+    });
+  }
+
+  downloadFile(id: number, contentType: string, fileName: string) {
+    this.fileService.downloadFile(id)
+      .subscribe((result: Blob) => {
+        console.log(result);
+        const blob = new Blob([result], { type: contentType });
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a temporary anchor element to trigger the download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName; // Set the desired file name
+        a.style.display = 'none';
+        document.body.appendChild(a);
+
+        // Click the anchor element to trigger the download
+        a.click();
+
+        // Clean up
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        console.log("Success");
+      });
+  }
+
+  deleteFile(fileId: number, i: number) {
+    this.fileService.deleteFile(fileId).subscribe(() => { 
+      this.person.files.splice(i, 1)
+    })
   }
 }

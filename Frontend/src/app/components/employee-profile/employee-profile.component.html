@@ -3,10 +3,10 @@
     </div>
     <div class="profile">
         <div class="profile-header">
-            <h1>{{backupValues.name}}</h1>
+            <h1 *ngIf="backupValues">{{backupValues.name}}</h1>
         </div>
         <form class="form" #myForm="ngForm">
-            <fieldset class="profile-info" [disabled]="editDisabled">
+            <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">
             <label>ID: </label>
             <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
 
@@ -24,6 +24,7 @@
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
+                  <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let department of departments" [value]="department">
                     {{department.name}}
                   </mat-option>
@@ -34,6 +35,7 @@
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
+                  <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let location of locations" [value]="location">
                     {{location.name}}
                   </mat-option>
@@ -44,6 +46,7 @@
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
+                  <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
                     {{consultant.name}}
                   </mat-option>
@@ -54,6 +57,7 @@
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
+                  <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
                     {{coordinator.name}}
                   </mat-option>
@@ -95,7 +99,13 @@
         Modules
     </div>
     <div class="files">
-      <div class="file-table">
+      <div class="upload-file">
+        <button class="upload-file-button" (click)="openFileUploadPopUp()">
+          <mat-icon class="upload-icon">add</mat-icon>
+        </button>
+      </div>
+      <!--SKal laves senere :)-->
+      <div class="file-table" *ngIf="person">
         <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
           <tr>
             <th mat-sort-header="fileName">Filnavn</th>
@@ -105,14 +115,15 @@
             <th><mat-icon>download</mat-icon></th>
             <th>Slet fil</th>
           </tr>
-          <tr *ngFor="let file of person.files">
+          <tr *ngFor="let file of person.files; let i = index">
             <td>{{file.fileName}}</td>
             <td>{{file.fileTag.tagName}}</td>
             <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
             <td>{{file.fileFormat}}</td>
-            <td><mat-icon>download</mat-icon></td>
-            <td><mat-icon>delete</mat-icon></td>
+            <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
+            <td><mat-icon (click)="deleteFile(file.fileId, i)">delete</mat-icon></td>
           </tr>
+          <tr>
         </table>
       </div>
     </div>

@@ -1,0 +1,58 @@
+<!-- <div class="container">
+  <div class="header">
+    <mat-icon class="close-button" (click)="closeDialog()">cancel</mat-icon>
+  </div>
+  <form class="content" #myForm="ngForm">
+
+    <div class="file-name">
+      <p *ngIf="file !== undefined">{{file.name}}</p>
+    </div>
+
+    <div class="upload">
+      <label class="file-upload">
+        <mat-icon>attach_file</mat-icon>
+        <input id="file" type="file" (change)="fileChange($any($event).target.files)">
+      </label>
+    </div>
+
+    <div class="file-tags">
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-label *ngIf="fileTagId === 0 || fileTagId === null">Vælg Filkategori:</mat-label>
+          <mat-select [(ngModel)]="fileTagId" name="fileTag">
+            <mat-option [value]="null">- Ingen -</mat-option>
+            <mat-option *ngFor="let tag of fileTags" [value]="tag.fileTagId">{{ tag.tagName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+  </form>
+</div>
+<mat-dialog-actions class="bottom" align="end">
+  <button type="submit" class="upload-button" (click)="onSubmit()">Upload</button>
+  <button (click)="test()">test</button>
+</mat-dialog-actions> -->
+
+<div class="newContainer">
+  <div class="newHeader">
+    <mat-icon class="newCloseButton" (click)="closeDialog()">cancel</mat-icon>
+  </div>
+  <form #myForm="ngForm" class="newFileUpload">
+    <label class="fileInputLabel">
+      <p>Vælg Fil</p>
+      <input id="file" type="file" (change)="fileChange($any($event).target.files)">
+    </label>
+    <mat-form-field subscriptSizing="dynamic" class="newDropdown">
+      <mat-label *ngIf="fileTagId === 0 || fileTagId === null">Vælg Filkategori:</mat-label>
+      <mat-select [(ngModel)]="fileTagId" name="fileTag">
+        <mat-option [value]="null">- Ingen -</mat-option>
+        <mat-option *ngFor="let tag of fileTags" [value]="tag.fileTagId">{{ tag.tagName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div style="grid-area: nfa;" *ngFor="let f of displayFiles">
+    <div class="fileList">
+      <p>tset</p>
+      <p>tset</p>
+      <p>tset</p>
+    </div>
+  </div>
+</div>
