@@ -10,5 +10,5 @@ export class File{
     uploadDate: Date = new Date;
     
     fileTag: FileTag = new FileTag;
-    person: Person = new Person
+    person: Person = new Person;
 }

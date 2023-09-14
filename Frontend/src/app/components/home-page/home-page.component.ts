@@ -41,6 +41,9 @@ export class HomePageComponent {
   getTableData(){
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
+      this.showedList = this.Hired
+      console.log(res);
+      this.getDepartmentData()
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
       this.showedList = this.Hired
     })
