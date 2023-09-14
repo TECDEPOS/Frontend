@@ -17,8 +17,9 @@ export class FileuploadPopupComponent {
   file: any;
   displayFiles: any[] = [];
   fileTagId: number = 0;
+  fileTag: FileTag = new FileTag;
   formData: FormData = new FormData;
-  fileTags: FileTag[] = [];
+  selectorFileTags: FileTag[] = [];
   constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService, 
     @Inject(MAT_DIALOG_DATA)
     private data: {
@@ -31,12 +32,14 @@ export class FileuploadPopupComponent {
 
   ngOnInit(){
     this.getFileTags();    
+    console.log(this.file);
+    
   }
 
   getFileTags(){
     this.tagService.getFileTag().subscribe(res => {
-      this.fileTags = res;
-      console.log(this.fileTags);
+      this.selectorFileTags = res;
+      console.log(this.selectorFileTags);
       
       
     })
@@ -55,22 +58,53 @@ export class FileuploadPopupComponent {
     this.dialogRef.close();
   }
 
+  // onSubmit below works for singular uploads
+
+  // onSubmit(): void {    
+  //   console.log(this.formData);
+    
+  //   this.fileService.uploadFile(this.formData, this.personId, this.fileTagId).subscribe(res => {
+  //     //TODO: Below needs to add all new files to the array
+  //     this.personFiles.push(res);
+  //     this.closeDialog();
+  //   });
+  // }
+
   onSubmit(): void {    
     console.log(this.formData);
     
-    this.fileService.uploadFile(this.formData, this.personId, this.fileTagId).subscribe(res => {
+    this.fileService.uploadMultipleFiles(this.formData, this.personId).subscribe(res => {
+      //TODO: Below needs to add all new files to the array
       this.personFiles.push(res);
       this.closeDialog();
     });
-  }  
+  }
+
 
   fileChange(files: any) {
-    this.displayFiles.push(files);
+    console.log('files', files);
+    
     if (files && files.length > 0) {
-      this.file = files[0];
-      console.log(this.file);
-      
-      this.formData.append('file', this.file);
+      this.file = files[0];      
     }
+  }
+
+  onFileTagChange(test:any){
+    console.log(test);    
+  }
+
+  confirmFile(){
+    if (this.fileTag !== null || this.fileTag !== undefined) {
+      this.file["fileTag"] = this.fileTag;
+      this.fileTag = null!;
+    }
+    else{
+      this.file["fileTag"] = null;
+    }
+    console.log('CURRENT FILE',this.file);
+    
+    this.displayFiles.push(this.file);
+    this.formData.append('file', this.file);
+    this.file = null;
   }
 }

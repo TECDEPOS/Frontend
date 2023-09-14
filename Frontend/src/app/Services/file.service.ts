@@ -41,6 +41,13 @@ export class FileService {
     })
   }
 
+  uploadMultipleFiles(formData: FormData, userId: number): Observable<any>
+  {
+    return this.http.post(this.baseApiUrl + `File/multiple/` + userId, formData, {
+      headers: new HttpHeaders()
+    })
+  }
+
   // Could be used? Dont see why :) 
   // Haven't tested for bug, or if it even works
   // updateFile(file: File): Observable<File>{

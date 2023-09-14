@@ -42,17 +42,35 @@
     </label>
     <mat-form-field subscriptSizing="dynamic" class="newDropdown">
       <mat-label *ngIf="fileTagId === 0 || fileTagId === null">Vælg Filkategori:</mat-label>
-      <mat-select [(ngModel)]="fileTagId" name="fileTag">
+      <mat-select [(ngModel)]="fileTag" name="fileTag" (selectionChange)="onFileTagChange($event.value)">
         <mat-option [value]="null">- Ingen -</mat-option>
-        <mat-option *ngFor="let tag of fileTags" [value]="tag.fileTagId">{{ tag.tagName }}</mat-option>
+        <mat-option *ngFor="let tag of selectorFileTags" [value]="tag">{{ tag.tagName }}</mat-option>
       </mat-select>
     </mat-form-field>
   </form>
-  <div style="grid-area: nfa;" *ngFor="let f of displayFiles">
-    <div class="fileList">
-      <p>tset</p>
-      <p>tset</p>
-      <p>tset</p>
-    </div>
+  <div class="fileConfirmation">
+    <p *ngIf="!file">Ingen fil valgt.</p>
+    <p *ngIf="file">{{file.name}}</p>
+    <button [disabled]="!file" class="confirmButton" (click)="confirmFile()">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
   </div>
+    <div class="fileListActions">
+      <table class="TableBox">
+        <tr>
+          <th>Filnavn</th>
+          <th>Filkategori</th>
+          <th>Fjern</th>
+        </tr>
+        <tr *ngFor="let file of displayFiles; let i = index">
+          <td>{{file.name}}</td>
+          <td *ngIf="!file.fileTag">Ingen</td>
+          <td *ngIf="file.fileTag">{{file.fileTag.tagName}}</td>
+          <td><mat-icon>clear</mat-icon></td>
+        </tr>
+      </table>
+    </div>
+    <div class="newBottom">
+      <button class="upload-button" (click)="onSubmit()">Upload</button>
+    </div>
 </div>
