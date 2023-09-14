@@ -15,6 +15,7 @@ export class FileuploadPopupComponent {
   personId: number = 0;
   personFiles: File[] = [];
   file: any;
+  displayFiles: any[] = [];
   fileTagId: number = 0;
   formData: FormData = new FormData;
   fileTags: FileTag[] = [];
@@ -50,6 +51,7 @@ export class FileuploadPopupComponent {
   }
 
   closeDialog(){
+    this.displayFiles = [];
     this.dialogRef.close();
   }
 
@@ -63,6 +65,7 @@ export class FileuploadPopupComponent {
   }  
 
   fileChange(files: any) {
+    this.displayFiles.push(files);
     if (files && files.length > 0) {
       this.file = files[0];
       console.log(this.file);

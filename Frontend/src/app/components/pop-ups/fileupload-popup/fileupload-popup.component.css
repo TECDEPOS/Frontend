@@ -104,3 +104,101 @@ input[type="file"]{
 .file-upload:hover{
     background-color: #005f79;
 }
+
+
+
+
+
+
+/* ddsakodaspodkaspkdosapkdsaop */
+
+.newCloseButton {
+    color: rgb(53, 53, 53);
+}
+
+.newCloseButton:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.newDropdown {
+    width: 50%;
+    height: 50px;
+    padding-top: 5px;
+    /* min-width: 70%; */
+}
+
+::ng-deep .newDropdown[_ngcontent-ng-c885399306]{
+    padding-top: 0px;
+    outline: 1px solid gray;
+    border-radius: 5px;
+}
+
+.fileInputLabel{
+    border-radius: 5px;
+    width: 100px;
+    height: 30px;
+    background-color: #5e42ff;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    border: none;
+    outline: 1px solid black;
+    display: grid;
+    place-content: center;
+}
+
+.fileInputLabel:hover{
+    background-color: #4d36d1;
+}
+
+/* asidjasojdasiojdasiojdasiojdioasj */
+
+
+
+
+
+
+
+.newContainer{
+    width: 600px;
+    height: 450px;
+
+    display: grid;
+    grid-template-areas: 
+    "nh nh"
+    "nfu nfu"
+    "nfa nfa"
+    "nb nb";
+
+    grid-auto-rows: 5% 25% 50% 20%;
+    grid-auto-columns: 70% 30%;
+}
+
+.newHeader{
+    grid-area: nh;
+    display: grid;
+    /* background-color: red; */
+    place-content: center end;
+}
+
+.newFileUpload{
+    grid-area: nfu;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+}
+
+.fileList{
+    margin: 10px 25px;
+    background-color: red;
+    grid-area: nfa;
+    display: grid;
+    grid-auto-rows: 35px;
+    grid-template-columns: 1fr 50px;
+    
+}
+
+
+
