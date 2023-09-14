@@ -10,6 +10,11 @@
 
 .Userinfo{
     justify-content: right;
+    border-right: 1px white solid;
+}
+
+.Userinfo > P{
+    padding-right: 15px;
 }
 
 p{
@@ -32,11 +37,25 @@ h3{
 }
 
 img{
-    margin: 1px 1px 1px 3px;
-    max-width: 50%;
-    max-height: 50%;
+    max-width: 100%;
+    max-height: 100%;
     min-width: 384/2px;
-    min-height: 73/2 px;
+    min-height: 73/2px;
+}
+
+hr{
+    height: 1px;
+    background-color: white;
+    border: none;
+}
+
+.dropdownOptions{
+    justify-content: left;
+    padding: 0 5px;
+}
+
+.dropdownOptions:hover{
+    background-color: #ddd;
 }
 
 span{
@@ -62,7 +81,8 @@ u, img, .Exit:hover, mat-icon{
 }
 
 .imgWrapper{
-    height: 90%;
+    display: grid;
+    place-content: center;
 }
 
 .dropdown-content {
@@ -76,27 +96,20 @@ u, img, .Exit:hover, mat-icon{
     padding-bottom: 5px;
     z-index: 10;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    color: black
-}
-
-  .dropdown-content > span:first-child{
-    margin-bottom: 15px;
-}
-
-  .dropdown-content > span{
-    padding: 0px 5px 0px 5px;
+    color: black;
+    flex-direction: column;
 }
   
-  .dropdown-content a {
+.dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
-  .dropdown-content .Exit:hover {background-color: #ddd;}
+.dropdown-content .Exit:hover {background-color: #ddd;}
   
-  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 @keyframes roll{
     0%{

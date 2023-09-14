@@ -1,4 +1,4 @@
-import { Component, ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR } from '@angular/core';
+import { Component, ElementRef, ViewChildren, ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR } from '@angular/core';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service'; 
 import {MatSelectModule} from '@angular/material/select';
@@ -25,12 +25,19 @@ export class HomePageComponent {
   searchName: string = "";
   alle: string = "";
   searchDepartment: any = ""
+  @ViewChildren('Progress', {read: ElementRef}) progress: ElementRef[] = [];
+
   constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
   
   ngOnInit(): void{
     this.getTableData()
   }
 
+  ngAfterViewInit(){
+    // console.log(this.progress.getAttribute('data-message-id'));
+    console.log("HEj");
+  }
+  
   getDepartmentData(){
     this.departmentService.getDepartment().subscribe(res => {
       this.department = res
@@ -41,7 +48,6 @@ export class HomePageComponent {
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
       this.showedList = this.Hired
-      console.log(res);
       this.getDepartmentData()
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
       this.showedList = this.Hired

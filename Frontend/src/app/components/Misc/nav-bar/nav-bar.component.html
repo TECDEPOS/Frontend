@@ -1,31 +1,35 @@
 <div class="OuterWrapper">
     <div class="imgWrapper">
-        <img routerLink="/home" src="../../../../assets/logo-footer.png" alt="">
+        <div style="width:80%;">
+            <img routerLink="/home" src="../../../../assets/logo-footer.png" alt="">
+        </div>
     </div>
     <span class="Userinfo">
         <p>{{name}} &nbsp; {{role}}</p>
     </span>
     <span class="ModuleAndFiles">
-        <h3 routerLink="/module" [ngStyle]="{'text-decoration': router.url === '/module' ? 'underline' : 'none'}">
+        <h3 routerLink="/module">
             Moduler
+            <hr [ngStyle]="{'display': router.url === '/module' ? 'block' : 'none'}">
         </h3>
-        <h3 routerLink="/home" [ngStyle]="{'text-decoration': router.url === '/home' ? 'underline' : 'none'}">
+        <h3 routerLink="/home">
             Ansatte
+            <hr [ngStyle]="{'display': router.url === '/home' ? 'block' : 'none'}">
         </h3>
-        <h3 routerLink="/file" [ngStyle]="{'text-decoration': router.url === '/file' ? 'underline' : 'none'}">
+        <h3 routerLink="/file">
             Filer
+            <hr [ngStyle]="{'display': router.url === '/file' ? 'block' : 'none'}">
         </h3>
     </span>
     <span class="dropdown">
         <mat-icon class="SettingsIcon" (click)="onShow()">settings</mat-icon>
         <div class="dropdown-content" id="dropdown-content">
-            <span (click)="openChangePasswordPopup()" class="Exit">
-                <p>Skift adgangskode</p>
+            <span (click)="openChangePasswordPopup()" class="dropdownOptions">
+                <mat-icon>edit</mat-icon> <p>&nbsp; Skift adgangskode</p>
             </span>
-            <hr>
-            <span class="Exit" routerLink="/login" (click)="logout()">
-                
-                <p>Log ud &nbsp;</p> <mat-icon>exit_to_app</mat-icon>
+            <!-- <hr style="background-color: black;"> -->
+            <span class="dropdownOptions" routerLink="/login" (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon> <p>&nbsp; Log ud</p> 
             </span>
           </div>
     </span>
