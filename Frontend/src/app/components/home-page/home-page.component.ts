@@ -29,12 +29,12 @@ export class HomePageComponent {
   
   ngOnInit(): void{
     this.getTableData()
-    this.getDepartmentData()
   }
 
   getDepartmentData(){
     this.departmentService.getDepartment().subscribe(res => {
       this.department = res
+      this.getDepartmentData()
     })
   }
 
