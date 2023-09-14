@@ -34,7 +34,7 @@
 
 .Progress{
   position: absolute;
-  background: linear-gradient(to right, white, 10%, rgb(255, 79, 79));
+  background: linear-gradient(to right, white, 50%, rgb(255, 79, 79));
   width: 100%;
   left: 0;
   top: 0;
@@ -77,10 +77,9 @@ mat-form-field{
 .TableForPeople{ 
   border-radius: 5px;
   box-shadow: 0 1px 3px 3px #888;
-  width: 95%;
   max-height: 100%;
   height: 100%;
-  margin: 0px auto;
+  margin: 0px 2.5%;
   overflow: auto;
   position: relative;
   outline: 1px solid black;

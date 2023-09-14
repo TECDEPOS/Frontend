@@ -4,6 +4,7 @@
         <mat-label>Søge efter filnavn</mat-label>
         <input matInput placeholder="Skriv filnavnet her " (input)="onSearchQueryInput($event)">
     </mat-form-field>
+    
     <mat-form-field subscriptSizing="dynamic">
         <mat-label>Vælge tag</mat-label>
         <mat-select [value]="alle" (selectionChange)="onFileTagQueryInput($event)">
@@ -14,7 +15,7 @@
 </div>
 
   <div class="table">
-    <div class="TableForPeople">
+    <div class="TableForFiles">
       <table class="TableBox"  matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
         <tr>
           <th mat-sort-header="fileName">
