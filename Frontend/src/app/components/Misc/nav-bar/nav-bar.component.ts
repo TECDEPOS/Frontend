@@ -33,7 +33,7 @@ export class NavBarComponent {
   onShow(){
 
     if (!this.isOpen) {
-      document.getElementById('dropdown-content')!.style.display = "block";
+      document.getElementById('dropdown-content')!.style.display = "flex";
       this.isOpen = true;
     }
     else {
