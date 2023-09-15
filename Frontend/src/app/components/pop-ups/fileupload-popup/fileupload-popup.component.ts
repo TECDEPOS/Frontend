@@ -17,7 +17,9 @@ export class FileuploadPopupComponent {
   file: any;
   displayFiles: any[] = [];
   fileTagId: number = 0;
+  fileTag: FileTag = null!;
   formData: FormData = new FormData;
+  selectorFileTags: FileTag[] = [];
   fileTags: FileTag[] = [];
   constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService, 
     @Inject(MAT_DIALOG_DATA)
@@ -35,19 +37,8 @@ export class FileuploadPopupComponent {
 
   getFileTags(){
     this.tagService.getFileTag().subscribe(res => {
-      this.fileTags = res;
-      console.log(this.fileTags);
-      
-      
+      this.selectorFileTags = res;
     })
-  }
-
-  test(){
-    console.log('fileTagId',this.fileTagId);
-    console.log('file',this.file);
-    console.log('personId',this.personId);
-    console.log('personFiles', this.personFiles);
-    
   }
 
   closeDialog(){
@@ -56,21 +47,38 @@ export class FileuploadPopupComponent {
   }
 
   onSubmit(): void {    
-    console.log(this.formData);
-    
-    this.fileService.uploadFile(this.formData, this.personId, this.fileTagId).subscribe(res => {
-      this.personFiles.push(res);
+    this.formData.append('personId', this.personId.toString());
+    this.formData.append('fileTags', JSON.stringify(this.fileTags));
+    this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {      
+      this.personFiles.push(...res);
       this.closeDialog();
     });
-  }  
+  }
 
-  fileChange(files: any) {
-    this.displayFiles.push(files);
+
+  fileChange(files: any) {    
+    console.log(files);
+    
     if (files && files.length > 0) {
-      this.file = files[0];
-      console.log(this.file);
-      
-      this.formData.append('file', this.file);
+      this.file = files[0];      
     }
+  }
+
+  onFileTagChange(newTag:FileTag){
+    this.fileTag = newTag;
+  }
+
+  confirmFile(){
+    this.file.fileTag = this.fileTag;
+    this.displayFiles.push(this.file);
+    this.fileTags.push(this.fileTag);
+    this.formData.append('file', this.file);
+    this.file = null;
+    this.fileTag = null!;
+  }
+
+  removeDisplayFile(i :number){
+    this.displayFiles.splice(i, 1);
+    this.fileTags.splice(i, 1);
   }
 }

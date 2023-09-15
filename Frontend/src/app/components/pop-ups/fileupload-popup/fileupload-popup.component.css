@@ -1,117 +1,3 @@
-.container {
-    width: 350px;
-    height: 200px;
-    display: grid;
-    grid-template-areas:
-        "h"
-        "c"
-        "b";
-    grid-auto-rows: 15% 70% 20%;
-}
-
-.content {
-    grid-area: c;
-    display: grid;
-    grid-template-areas: 
-    "fn fn"
-    "ub ft";
-    grid-auto-rows: 30% 70%;
-    grid-auto-columns: 20% 70 10%;
-}
-
-.upload{
-    grid-area: ub;
-    position: relative;
-    height: 100%;
-    display: grid;
-    place-content: end end;
-}
-
-.file-tags{
-    grid-area: ft;
-    height: 100%;
-    display: grid;
-    place-content: end center;
-}
-
-.file-name{
-    grid-area: fn;
-    display: grid;
-    place-content: center center;
-}
-
-.header {
-    grid-area: h;
-    display: grid;
-    place-content: start end;
-}
-
-.bottom {
-    grid-area: b;
-}
-
-.close-button {
-    color: lightslategray;
-}
-
-.close-button:hover {
-    color: black;
-    cursor: pointer;
-}
-
-.upload-button {
-    height: 40px;
-    width: 80px;
-    background-color: #006E8C;
-    color: white;
-    border: none;
-    font-weight: bold;
-}
-
-.upload-button:hover {
-    cursor: pointer;
-    background-color: #005f79;
-}
-
-.dropdown {
-    width: 100%;
-    height: 48px;
-    padding-top: 5px;
-    /* min-width: 70%; */
-}
-
-mat-option {
-    border: 1px solid #cfcfcf;
-    border-top-style: none;
-}
-
-input[type="file"]{
-    display:none;
-}
-
-.file-upload{
-    margin-left: 15px;
-    width: 25px;
-    padding: 8px 8px;
-    background-color: #006E8C;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    display: grid;
-    place-items: start;
-}
-
-.file-upload:hover{
-    background-color: #005f79;
-}
-
-
-
-
-
-
-/* ddsakodaspodkaspkdosapkdsaop */
-
 .newCloseButton {
     color: rgb(53, 53, 53);
 }
@@ -124,21 +10,13 @@ input[type="file"]{
 .newDropdown {
     width: 50%;
     height: 50px;
-    padding-top: 5px;
-    /* min-width: 70%; */
 }
 
-::ng-deep .newDropdown[_ngcontent-ng-c885399306]{
-    padding-top: 0px;
-    outline: 1px solid gray;
-    border-radius: 5px;
-}
-
-.fileInputLabel{
+.fileInputLabel {
     border-radius: 5px;
     width: 100px;
     height: 30px;
-    background-color: #5e42ff;
+    background-color: #4265ff;
     cursor: pointer;
     color: white;
     font-weight: bold;
@@ -148,57 +26,174 @@ input[type="file"]{
     place-content: center;
 }
 
-.fileInputLabel:hover{
-    background-color: #4d36d1;
+.fileInputLabel:hover {
+    background-color: #3653d4;
 }
 
-/* asidjasojdasiojdasiojdasiojdioasj */
+.confirmButton {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 6px;
+    background-color: #006E8C;
+    border: none;
+    outline: 1px solid black;
+}
 
+.confirmButton:disabled:hover{
+    background-color: #ddd;
+    cursor: default;
+}
 
+.confirmButton:disabled{
+    background-color: #ddd;
+}
 
+.clear-icon{
+    color: red;
+}
 
+.clear-icon:hover{
+    cursor: pointer;
+    background-color: #999999;
+    border-radius: 50%;
+}
 
+.add-icon {
+    color: white;
+    vertical-align: middle;
+}
 
+.confirmButton:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
 
-.newContainer{
+.upload-button {
+    height: 40px;
+    width: 80px;
+    margin-right: 25px;
+    background-color: #006E8C;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.upload-button:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.newContainer {
     width: 600px;
-    height: 450px;
+    height: 500px;
 
     display: grid;
-    grid-template-areas: 
-    "nh nh"
-    "nfu nfu"
-    "nfa nfa"
-    "nb nb";
+    grid-template-areas:
+        "nh nh"
+        "nfu nfu"
+        "fc fc"
+        "nfa nfa"
+        "nb nb";
 
-    grid-auto-rows: 5% 25% 50% 20%;
+    grid-auto-rows: 5% 15% 10% 55% 15%;
     grid-auto-columns: 70% 30%;
 }
 
-.newHeader{
+.newHeader {
     grid-area: nh;
     display: grid;
-    /* background-color: red; */
     place-content: center end;
 }
 
-.newFileUpload{
+.fileConfirmation {
+    grid-area: fc;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    border-bottom: 1px solid #ddd;
+    align-items: center;
+    justify-items: center;
+}
+
+.newFileUpload {
     grid-area: nfu;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    border-bottom: 1px solid black;
 }
 
-.fileList{
-    margin: 10px 25px;
-    background-color: red;
+.fileListActions {
     grid-area: nfa;
-    display: grid;
-    grid-auto-rows: 35px;
-    grid-template-columns: 1fr 50px;
-    
+    margin: 10px 25px;
 }
 
+.newBottom {
+    grid-area: nb;
+    display: grid;
+    place-content: center end;
+}
 
+.fileListNames {
+    grid-area: nfn;
+}
 
+.TableBox {
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+}
+
+.TableBox th:hover {
+    background-color: #005f79;
+    cursor: pointer;
+}
+
+.TableBox th {
+    position: sticky;
+    top: 0px;
+    font-size: 1rem;
+    border-left: 1px solid #ddd;
+}
+
+.TableBox th:first-child {
+    border-left: 1px solid #006E8C;
+}
+
+.TableBox th:last-child {
+    border-right: 1px solid #006E8C;
+}
+
+th {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.TableBox th {
+    width: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #006E8C;
+    color: white;
+}
+
+.TableBox tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.TableBox tr:hover {
+    background-color: #ddd;
+}
+
+.TableBox td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
