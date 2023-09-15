@@ -1,62 +1,72 @@
-.container {
-    width: 350px;
-    height: 200px;
-    display: grid;
-    grid-template-areas:
-        "h"
-        "c"
-        "b";
-    grid-auto-rows: 15% 70% 20%;
+.newCloseButton {
+    color: rgb(53, 53, 53);
 }
 
-.content {
-    grid-area: c;
-    display: grid;
-    grid-template-areas:
-        "fn fn"
-        "ub ft";
-    grid-auto-rows: 30% 70%;
-    grid-auto-columns: 20% 70 10%;
-}
-
-.upload {
-    grid-area: ub;
-    position: relative;
-    height: 100%;
-    display: grid;
-    place-content: end end;
-}
-
-.file-tags {
-    grid-area: ft;
-    height: 100%;
-    display: grid;
-    place-content: end center;
-}
-
-.file-name {
-    grid-area: fn;
-    display: grid;
-    place-content: center center;
-}
-
-.header {
-    grid-area: h;
-    display: grid;
-    place-content: start end;
-}
-
-.bottom {
-    grid-area: b;
-}
-
-.close-button {
-    color: lightslategray;
-}
-
-.close-button:hover {
+.newCloseButton:hover {
     color: black;
     cursor: pointer;
+}
+
+.newDropdown {
+    width: 50%;
+    height: 50px;
+}
+
+.fileInputLabel {
+    border-radius: 5px;
+    width: 100px;
+    height: 30px;
+    background-color: #4265ff;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    border: none;
+    outline: 1px solid black;
+    display: grid;
+    place-content: center;
+}
+
+.fileInputLabel:hover {
+    background-color: #3653d4;
+}
+
+.confirmButton {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 6px;
+    background-color: #006E8C;
+    border: none;
+    outline: 1px solid black;
+}
+
+.confirmButton:disabled:hover{
+    background-color: #ddd;
+    cursor: default;
+}
+
+.confirmButton:disabled{
+    background-color: #ddd;
+}
+
+.clear-icon{
+    color: red;
+}
+
+.clear-icon:hover{
+    cursor: pointer;
+    background-color: #999999;
+    border-radius: 50%;
+}
+
+.add-icon {
+    color: white;
+    vertical-align: middle;
+}
+
+.confirmButton:hover {
+    cursor: pointer;
+    background-color: #005f79;
 }
 
 .upload-button {
@@ -74,112 +84,9 @@
     background-color: #005f79;
 }
 
-.dropdown {
-    width: 100%;
-    height: 48px;
-    padding-top: 5px;
-    /* min-width: 70%; */
-}
-
-mat-option {
-    border: 1px solid #cfcfcf;
-    border-top-style: none;
-}
-
 input[type="file"] {
     display: none;
 }
-
-.file-upload {
-    margin-left: 15px;
-    width: 25px;
-    padding: 8px 8px;
-    background-color: #006E8C;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    display: grid;
-    place-items: start;
-}
-
-.file-upload:hover {
-    background-color: #005f79;
-}
-
-
-
-
-
-
-/* ddsakodaspodkaspkdosapkdsaop */
-
-.newCloseButton {
-    color: rgb(53, 53, 53);
-}
-
-.newCloseButton:hover {
-    color: black;
-    cursor: pointer;
-}
-
-.newDropdown {
-    width: 50%;
-    height: 50px;
-    padding-top: 5px;
-    /* min-width: 70%; */
-}
-
-::ng-deep .newDropdown[_ngcontent-ng-c1714398413] {
-    padding-top: 0px;
-    outline: 1px solid rgb(100, 100, 100);
-    border-radius: 5px;
-}
-
-.fileInputLabel {
-    border-radius: 5px;
-    width: 100px;
-    height: 30px;
-    background-color: #5e42ff;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    border: none;
-    outline: 1px solid black;
-    display: grid;
-    place-content: center;
-}
-
-.fileInputLabel:hover {
-    background-color: #4d36d1;
-}
-
-.confirmButton {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-left: 6px;
-    background-color: #006E8C;
-    border: none;
-    outline: 1px solid black;
-}
-
-.add-icon {
-    color: white;
-    vertical-align: middle;
-}
-
-.confirmButton:hover {
-    cursor: pointer;
-    background-color: #005f79;
-}
-
-/* asidjasojdasiojdasiojdasiojdioasj */
-
-
-
-
-
-
 
 .newContainer {
     width: 600px;
@@ -200,7 +107,6 @@ input[type="file"] {
 .newHeader {
     grid-area: nh;
     display: grid;
-    /* background-color: red; */
     place-content: center end;
 }
 
@@ -223,14 +129,9 @@ input[type="file"] {
 .fileListActions {
     grid-area: nfa;
     margin: 10px 25px;
-    /* display: grid;
-    grid-auto-rows: 35px;
-    grid-template-columns: auto auto 35px;
-    place-content: end center; */
-
 }
 
-.newBottom{
+.newBottom {
     grid-area: nb;
     display: grid;
     place-content: center end;

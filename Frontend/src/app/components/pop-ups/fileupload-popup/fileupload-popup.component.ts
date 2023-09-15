@@ -17,9 +17,10 @@ export class FileuploadPopupComponent {
   file: any;
   displayFiles: any[] = [];
   fileTagId: number = 0;
-  fileTag: FileTag = new FileTag;
+  fileTag: FileTag = null!;
   formData: FormData = new FormData;
   selectorFileTags: FileTag[] = [];
+  fileTags: FileTag[] = [];
   constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService, 
     @Inject(MAT_DIALOG_DATA)
     private data: {
@@ -32,25 +33,12 @@ export class FileuploadPopupComponent {
 
   ngOnInit(){
     this.getFileTags();    
-    console.log(this.file);
-    
   }
 
   getFileTags(){
     this.tagService.getFileTag().subscribe(res => {
       this.selectorFileTags = res;
-      console.log(this.selectorFileTags);
-      
-      
     })
-  }
-
-  test(){
-    console.log('fileTagId',this.fileTagId);
-    console.log('file',this.file);
-    console.log('personId',this.personId);
-    console.log('personFiles', this.personFiles);
-    
   }
 
   closeDialog(){
@@ -58,53 +46,39 @@ export class FileuploadPopupComponent {
     this.dialogRef.close();
   }
 
-  // onSubmit below works for singular uploads
-
-  // onSubmit(): void {    
-  //   console.log(this.formData);
-    
-  //   this.fileService.uploadFile(this.formData, this.personId, this.fileTagId).subscribe(res => {
-  //     //TODO: Below needs to add all new files to the array
-  //     this.personFiles.push(res);
-  //     this.closeDialog();
-  //   });
-  // }
-
   onSubmit(): void {    
-    console.log(this.formData);
-    
-    this.fileService.uploadMultipleFiles(this.formData, this.personId).subscribe(res => {
-      //TODO: Below needs to add all new files to the array
-      this.personFiles.push(res);
+    this.formData.append('personId', this.personId.toString());
+    this.formData.append('fileTags', JSON.stringify(this.fileTags));
+    this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {      
+      this.personFiles.push(...res);
       this.closeDialog();
     });
   }
 
 
-  fileChange(files: any) {
-    console.log('files', files);
+  fileChange(files: any) {    
+    console.log(files);
     
     if (files && files.length > 0) {
       this.file = files[0];      
     }
   }
 
-  onFileTagChange(test:any){
-    console.log(test);    
+  onFileTagChange(newTag:FileTag){
+    this.fileTag = newTag;
   }
 
   confirmFile(){
-    if (this.fileTag !== null || this.fileTag !== undefined) {
-      this.file["fileTag"] = this.fileTag;
-      this.fileTag = null!;
-    }
-    else{
-      this.file["fileTag"] = null;
-    }
-    console.log('CURRENT FILE',this.file);
-    
+    this.file.fileTag = this.fileTag;
     this.displayFiles.push(this.file);
+    this.fileTags.push(this.fileTag);
     this.formData.append('file', this.file);
     this.file = null;
+    this.fileTag = null!;
+  }
+
+  removeDisplayFile(i :number){
+    this.displayFiles.splice(i, 1);
+    this.fileTags.splice(i, 1);
   }
 }
