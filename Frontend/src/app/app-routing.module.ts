@@ -7,6 +7,7 @@ import { FilePageComponent } from './components/file/file-page/file-page.compone
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
+import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'file', component: FilePageComponent, canActivate:[authGuard]},
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]},
   { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
+  { path: 'crud', component: CrudEntityPageComponent, canActivate:[authGuard]},
 ];
 
 @NgModule({

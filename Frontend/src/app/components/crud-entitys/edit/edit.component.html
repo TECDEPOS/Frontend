@@ -1,1 +1,53 @@
-<p>edit works!</p>
+<div class="box">
+    <div>
+        <div class="picker" (click)="toggleList('bookList')">Book</div>
+        <div *ngIf="isListActive('bookList')" class="List" >
+            <div *ngFor="let book of books">
+                book
+            </div>
+            
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('userList')">Bruger</div>
+        <div *ngIf="isListActive('userList')" class="List">
+            <div *ngFor="let user of users">
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('departmentList')">Department</div>
+        <div *ngIf="isListActive('departmentList')" class="List">
+            <div *ngFor="let department of departments">      
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('fileTagList')">Fil Tag</div>
+        <div *ngIf="isListActive('fileTagList')" class="List">
+            <div *ngFor="let fileTag of fileTags">
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('locationList')">Lokation</div>
+        <div *ngIf="isListActive('locationList')" class="List">
+            <div *ngFor="let location of locations">
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('moduleList')">Modul</div>
+        <div *ngIf="isListActive('moduleList')" class="List">
+            <div *ngFor="let module of modules">
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="picker" (click)="toggleList('personList')">Person</div>
+        <div *ngIf="isListActive('personList')" class="List" >
+            <div *ngFor="let person of persons">
+            </div>
+        </div>
+    </div>
+</div>
