@@ -79,6 +79,15 @@
     font-weight: bold;
 }
 
+.upload-button:disabled:hover {
+    background-color: #ddd;
+    cursor: default;
+}
+
+.upload-button:disabled {
+    background-color: #ddd;
+}
+
 .upload-button:hover {
     cursor: pointer;
     background-color: #005f79;

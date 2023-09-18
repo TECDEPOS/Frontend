@@ -12,6 +12,7 @@ import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
 import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 import { FileService } from 'src/app/Services/file.service';
+import { File } from 'src/app/Models/File';
 
 @Component({
   selector: 'app-employee-profile',
@@ -27,6 +28,7 @@ export class EmployeeProfileComponent {
   operationCoordinators: User[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
+  shownFiles: File[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
@@ -41,6 +43,7 @@ export class EmployeeProfileComponent {
     let id = Number(params.get('id'))
     this.personService.getPersonById(id).subscribe(res => {
       this.person = res;
+      this.shownFiles = res.files;
       this.setBackupValues(this.person);
       this.departmentService.getDepartment().subscribe(res => {
         this.departments = res;
@@ -162,7 +165,19 @@ export class EmployeeProfileComponent {
 
   deleteFile(fileId: number, i: number) {
     this.fileService.deleteFile(fileId).subscribe(() => { 
-      this.person.files.splice(i, 1)
+      this.shownFiles.splice(i, 1)
     })
+  }
+
+  onSearchQueryInput(event: Event){
+    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
+    let tempList: File[] = []
+    this.person.files.forEach(element => {
+      if (element.fileName.toLocaleLowerCase().includes(searchQuery)){
+          tempList.push(element);
+          console.log("Afdeling");      
+      }
+      this.shownFiles = tempList;
+    });    
   }
 }

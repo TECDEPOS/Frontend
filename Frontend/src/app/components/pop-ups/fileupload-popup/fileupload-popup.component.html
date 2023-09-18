@@ -38,6 +38,6 @@
       </table>
     </div>
     <div class="newBottom">
-      <button class="upload-button" (click)="onSubmit()">Upload</button>
+      <button [disabled]="displayFiles.length < 1" class="upload-button" (click)="onSubmit()">Upload</button>
     </div>
 </div>
