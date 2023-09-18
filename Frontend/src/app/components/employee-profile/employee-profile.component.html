@@ -103,6 +103,9 @@
         <button class="upload-file-button" (click)="openFileUploadPopUp()">
           <mat-icon class="upload-icon">add</mat-icon>
         </button>
+        <mat-form-field class="search-bar" subscriptSizing="dynamic">
+          <input matInput placeholder="Søg efter filnavn" (input)="onSearchQueryInput($event)">
+      </mat-form-field>
       </div>
       <!--SKal laves senere :)-->
       <div class="file-table" *ngIf="person">
@@ -115,7 +118,7 @@
             <th><mat-icon>download</mat-icon></th>
             <th>Slet fil</th>
           </tr>
-          <tr *ngFor="let file of person.files; let i = index">
+          <tr *ngFor="let file of shownFiles; let i = index">
             <td>{{file.fileName}}</td>
             <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
             <td *ngIf="file.fileTag === null">Ingen</td>
