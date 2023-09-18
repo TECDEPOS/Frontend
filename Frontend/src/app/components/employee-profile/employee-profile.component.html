@@ -117,7 +117,8 @@
           </tr>
           <tr *ngFor="let file of person.files; let i = index">
             <td>{{file.fileName}}</td>
-            <td>{{file.fileTag.tagName}}</td>
+            <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
+            <td *ngIf="file.fileTag === null">Ingen</td>
             <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
             <td>{{file.fileFormat}}</td>
             <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
