@@ -46,9 +46,15 @@ export class FileuploadPopupComponent {
     this.dialogRef.close();
   }
 
-  onSubmit(): void {    
+  onSubmit(): void {
+    // Build formData before sending request to server
     this.formData.append('personId', this.personId.toString());
     this.formData.append('fileTags', JSON.stringify(this.fileTags));
+    
+    for (const file of this.displayFiles) {
+      this.formData.append('file', file);
+    }    
+
     this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {      
       this.personFiles.push(...res);
       this.closeDialog();
@@ -72,13 +78,13 @@ export class FileuploadPopupComponent {
     this.file.fileTag = this.fileTag;
     this.displayFiles.push(this.file);
     this.fileTags.push(this.fileTag);
-    this.formData.append('file', this.file);
     this.file = null;
     this.fileTag = null!;
+    
   }
 
   removeDisplayFile(i :number){
     this.displayFiles.splice(i, 1);
-    this.fileTags.splice(i, 1);
+    this.fileTags.splice(i, 1);    
   }
 }
