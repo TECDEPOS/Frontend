@@ -1,5 +1,5 @@
 import { FormGroup, FormControl } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/Models/Book';
 import { Department } from 'src/app/Models/Department';
 import { FileTag } from 'src/app/Models/FileTag';
@@ -15,22 +15,25 @@ import { LocationsService } from 'src/app/Services/locations.service';
 import { ModuleService } from 'src/app/Services/module.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
-import { NgModel } from '@angular/forms';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
+import { ModuleType } from 'src/app/Models/ModuleType';
+import { Unsub } from 'src/app/classes/unsub';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
-export class CreateComponent {
+export class CreateComponent extends Unsub implements OnInit {
   book: Book = new Book;
   department: Department = new Department;
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
-  moduel: Module = new Module;
+  module: Module = new Module;
   person: Person = new Person;
   user: userViewModel = new userViewModel;
+  books: Book[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
@@ -44,54 +47,36 @@ export class CreateComponent {
   depertmentForm: FormGroup;
   fileTagForm: FormGroup;
   locationForm: FormGroup;
-  moduelForm: FormGroup;
+  moduleForm: FormGroup;
   personForm: FormGroup;
   userForm: FormGroup;
 
+  moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
+    .filter(key => !isNaN(Number(ModuleType[key])));
+
   userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
-  .filter(key => !isNaN(Number(UserRole[key])));
+    .filter(key => !isNaN(Number(UserRole[key])));
 
   constructor(
     private bookService: BookService,
-    private depertmentService: DepartmentsService,
+    private departmentService: DepartmentsService,
     private fileTagService: FileTagService,
     private locationService: LocationsService,
     private moduelService: ModuleService,
     private personService: PersonsService,
     private userService: UserService
   ) {
-    this.activeForm = null;
-    this.bookForm = new FormGroup({})
-
-    this.depertmentForm = new FormGroup({})
-
-    this.fileTagForm = new FormGroup({})
-
-    this.locationForm = new FormGroup({})
-
-    this.moduelForm = new FormGroup({})
-
+    super();
+    this.bookForm = new FormGroup({});
+    this.depertmentForm = new FormGroup({});
+    this.fileTagForm = new FormGroup({});
+    this.locationForm = new FormGroup({});
+    this.moduleForm = new FormGroup({});
     this.personForm = new FormGroup({});
-
-    // this.personForm = new FormGroup({
-    //   name: new FormControl(''),
-    //   initials: new FormControl(''),
-    //   educationalConsultantUserId: new FormControl(0),
-    //   operationCoordinatorUserId: new FormControl(0),
-    //   hiringDate: new FormControl(),
-    //   svu: new FormControl(false)
-    // });
-
-    this.userForm = new FormGroup({
-      username: new FormControl(''),
-      name: new FormControl(''),
-      userRole: new FormControl()
-    });
+    this.userForm = new FormGroup({});
   }
 
   ngOnInit() {
-    console.log(this.userRole);
-
   }
 
   toggleForm(formName: string) {
@@ -100,6 +85,12 @@ export class CreateComponent {
     }
     else {
       this.activeForm = formName
+      if (this.activeForm == 'moduleForm') {
+        this.getBooks();
+      }
+      else if (this.activeForm == 'personForm') {
+        this.getForPerson();
+      }
     }
   }
 
@@ -107,40 +98,63 @@ export class CreateComponent {
     return this.activeForm === formName;
   }
 
-  createBook() {
+  getBooks() {
+    this.bookService.getBook().subscribe(res => {
+      this.books = res;
+    })
+  }
 
+  getForPerson() {
+    this.userService.getUsers().subscribe(res => {
+      this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+      this.departmentService.getDepartment().subscribe(res => {
+        this.departments = res;
+      });
+      this.locationService.getLocations().subscribe(res => {
+        this.locations = res;
+      });
+    });
+  }
+
+  createBook() {
+    this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { console.log(res);
+    });
   }
 
   createDepartment() {
+    this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe( res => {console.log(res);
+    })
 
   }
 
   createFileTag() {
+    this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    })
 
   }
 
   createLocation() {
+    this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    })
 
   }
 
   createModule() {
+    this.moduelService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    })
 
   }
 
   createPerson() {
-    console.log(this.personForm.controls);
-    console.log(this.person);
 
-
+    this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    })    
   }
 
   createUser() {
-    console.log(this.user);
-    console.log(UserRole[this.user.userRole]);
-    
-    // this.user.userRole = UserRole[this.user.userRole];
-    // this.userService.addUsers(this.user).subscribe(data => {
-    //   console.log(data);
-    // })
+    this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      console.log(res);
+    })
   }
 }

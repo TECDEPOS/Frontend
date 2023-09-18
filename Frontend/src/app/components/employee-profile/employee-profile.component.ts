@@ -35,22 +35,22 @@ export class EmployeeProfileComponent {
   // Make all the calls at the same time, if not then the RefreshToken in backend gets spammed and gives mismatch of refresh tokens between DB and localstorage
   getPerson() {
     this.aRoute.paramMap.subscribe(params => {
-    let id = Number(params.get('id'))
-    this.personService.getPersonById(id).subscribe(res => {
-      this.person = res;
-      this.setBackupValues(this.person);
-      this.departmentService.getDepartment().subscribe(res => {
-        this.departments = res;
-      });
-      this.locationService.getLocations().subscribe(res => {
-        this.locations = res;
-      });
-      this.userService.getUsers().subscribe(res => {
-        this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
-        this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
-      });
+      let id = Number(params.get('id'))
+      this.personService.getPersonById(id).subscribe(res => {
+        this.person = res;
+        this.setBackupValues(this.person);
+        this.departmentService.getDepartment().subscribe(res => {
+          this.departments = res;
+        });
+        this.locationService.getLocations().subscribe(res => {
+          this.locations = res;
+        });
+        this.userService.getUsers().subscribe(res => {
+          this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+          this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+        });
+      })
     })
-  })
   }
 
   onSubmit() {
@@ -65,12 +65,12 @@ export class EmployeeProfileComponent {
     this.editDisabled = false;
   }
 
-  cancelEditMode(){
+  cancelEditMode() {
     this.editDisabled = true;
     this.person = JSON.parse(JSON.stringify(this.backupValues));
   }
 
-  setBackupValues(values: Person){
+  setBackupValues(values: Person) {
     //Sets backup values used if users press Cancel during edit mode.
     this.backupValues = JSON.parse(JSON.stringify(values));
   }
@@ -81,16 +81,16 @@ export class EmployeeProfileComponent {
       return false;
     }
 
-    if (typeof(o2 == Location)) {
-      return o1.name === o2.name && o1.locationId === o2.locationId;  
+    if (typeof (o2 == Location)) {
+      return o1.name === o2.name && o1.locationId === o2.locationId;
     }
-    else if (typeof(o2 == Department)){
+    else if (typeof (o2 == Department)) {
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
-    else if (typeof(o2 == User)){
+    else if (typeof (o2 == User)) {
       return o1.name === o2.name && o1.userId === o2.userId;
     }
-    else{
+    else {
       return false;
     }
   }
