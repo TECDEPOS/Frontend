@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'app-crud-entity-page',
@@ -6,5 +6,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./crud-entity-page.component.css']
 })
 export class CrudEntityPageComponent {
+  activeComponent: string | null = null; 
 
+  constructor() {}
+
+  toggleComponent(componentName: string) {
+    if (this.activeComponent === componentName) {
+      this.activeComponent = null
+    }
+    else {
+      this.activeComponent = componentName
+    }
+  }
+
+  isActiveComponent(formName: string) {
+    return this.activeComponent === formName;
+  }
 }

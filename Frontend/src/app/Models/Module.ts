@@ -1,3 +1,4 @@
+import { Book } from "./Book";
 import { ModuleType } from "./ModuleType";
 
 export class Module{
@@ -5,4 +6,6 @@ export class Module{
     name: string = "";
     description: string = "";
     moduleType: ModuleType = 0;
+
+    books: Book[] = []
 }

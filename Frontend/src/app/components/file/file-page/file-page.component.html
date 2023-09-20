@@ -44,7 +44,8 @@
             <p class="EndDateShow">{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
             <div class="Progress"></div>
           </td>
-          <td>{{file.fileTag.tagName}}</td>
+          <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
+          <td *ngIf="file.fileTag === null">Ingen</td>
           <td>
             <mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)" value="Download" >download</mat-icon>
           </td>

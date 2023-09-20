@@ -1,0 +1,122 @@
+.container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+    "h h"
+    "p m"
+    "p f"
+    "b b";
+    grid-auto-rows: 10% 44% 44% 2%;
+    column-gap: 10px;
+    padding-left: 10px;
+}
+
+.header{
+    grid-area: h;
+}
+
+.profile-info{
+    padding-top: 50px;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: repeat(12, 1fr);
+    border: none;
+}
+
+/* .form{
+    height: 100%;
+    grid-area: i;
+    display: grid;
+    border: none;
+} */
+
+input[type=text], select {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+.datepicker{
+    width: 70%;
+    height: 90%;
+    min-width: 70%;
+    margin: 5px 0;
+}
+
+::ng-deep .mat-datepicker-content{
+    border: 1px solid black
+}
+
+ .checkbox{
+    text-align: right;
+    justify-content: flex-start;
+    display: flex;
+ }
+
+ mat-option{
+    border: 1px solid #cfcfcf;
+    border-top-style: none;
+ }
+
+ .dropdown{
+    width: 70%;
+    height: 70%;
+    padding-top: 5px;
+    min-width: 70%;
+ }
+
+ #mat-select-0-panel{
+    color: blue;
+ }
+
+ /* CSS for the box container */
+.box {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-gap: 10px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: fit-content;
+    place-content: center start;
+    max-height: 90%;
+    overflow: auto;
+  }
+  
+  /* CSS for the picker elements */
+  .picker {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* CSS for the form container */
+  .form {
+    /* display: none;  */
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Show the form when it's active */
+  .form.active {
+    display: block;
+  }
+  .form-visible {
+    display: block;
+  }

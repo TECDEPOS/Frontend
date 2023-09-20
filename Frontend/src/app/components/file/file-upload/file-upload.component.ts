@@ -26,10 +26,7 @@ export class FileUploadComponent {
     })
   }
 
-  onSubmit(): void {    
-    console.log(this.tagId);
-    console.log(this.formData);
-    
+  onSubmit(): void {
     this.fileService.uploadFile(this.formData, this.userId, this.tagId).subscribe(() => alert("File uploaded"));    
   }  
 

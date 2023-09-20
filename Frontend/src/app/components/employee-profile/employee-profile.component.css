@@ -1,3 +1,7 @@
+* {
+    overflow-x: hidden;
+}
+
 .container {
     width: auto;
     height: 100%;
@@ -11,6 +15,7 @@
     grid-auto-rows: 10% 44% 44% 2%;
     column-gap: 20px;
     row-gap: 5px;
+    overflow: hidden;
 }
 
 .header {
@@ -43,6 +48,7 @@
     grid-template-columns: 2fr 3fr;
     grid-template-rows: repeat(10, 1fr);
     border: none;
+    align-items: center;
 }
 
 .form {
@@ -153,41 +159,56 @@
     box-shadow: 0px 0px 5px 1px #888;
     outline: 1px solid black;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .file-table {
     border-radius: 5px;
     width: 100%;
     max-height: 100%;
-    height: 90%;
+    height: 88%;
     margin: 1px auto 0px auto;
     position: relative;
+    overflow: auto;
+
 }
 
-.upload-file{
-    height: 10%;
+.upload-file {
+    height: 12%;
     display: grid;
-    place-content: center start;
+    /* place-content: center start; */
+    align-items: center;
+    justify-content: start;
+    grid-template-columns: 100px 1fr;
+
 }
 
-.upload-file-button{
+.upload-file-button {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    margin-left: 6px;
+    margin-left: 8px;
     background-color: #006E8C;
     border: none;
     outline: 1px solid black;
 }
 
-.upload-file-button:hover{
+.upload-file-button:hover {
     cursor: pointer;
     background-color: #005f79;
 }
 
-.upload-icon{
+.upload-icon {
     color: white;
     vertical-align: middle;
+}
+
+.search-bar {
+    margin-left: 10px;
+    min-width: 200px;
+    width: 350px;
+    height: 45px;
+    border-radius: 20px;
 }
 
 .TableBox {
@@ -196,6 +217,7 @@
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    overflow: auto;
 }
 
 .TableBox td {
@@ -250,12 +272,12 @@ th {
     color: white;
 }
 
-@media screen  and (max-width: 1000px){
-    .TableForPeople{
+@media screen and (max-width: 1000px) {
+    .TableForPeople {
         width: 100%;
         left: 0;
-      }
     }
+}
 
 input[type=text],
 select {
@@ -289,7 +311,7 @@ mat-option {
     border-top-style: none;
 }
 
-td > mat-icon:hover{
+td>mat-icon:hover {
     cursor: pointer;
     background-color: #858585;
     border-radius: 50%;
@@ -310,8 +332,8 @@ td > mat-icon:hover{
     align-items: center;
     justify-content: center;
     color: white;
-  }
+}
 
-  ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
+::ng-deep .mat-sort-header-container>.mat-sort-header-arrow {
     color: white;
 }
