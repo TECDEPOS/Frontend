@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 384px auto 300px 4rem;
     color: white;
-    width: 100vw;
+    width: 100%;
     top: 0;
     height: 100%;
 }
