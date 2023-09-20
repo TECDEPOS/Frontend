@@ -73,7 +73,7 @@
     height: 100%;
     align-items: center;
     grid-template-rows: repeat(10, 1fr);
-    font-weight: 900;
+    font-weight: bold;
 }
 
 .grid-input{

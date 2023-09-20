@@ -49,6 +49,35 @@
     background-color: #ddd;
 }
 
+.confirmButton:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
+
+.removeButton {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 6px;
+    background-color: red;
+    border: none;
+    outline: 1px solid black;
+}
+
+.removeButton:disabled:hover{
+    background-color: #ddd;
+    cursor: default;
+}
+
+.removeButton:disabled{
+    background-color: #ddd;
+}
+
+.removeButton:hover {
+    cursor: pointer;
+    background-color: rgb(197, 0, 0);
+}
+
 .clear-icon{
     color: red;
 }
@@ -62,11 +91,6 @@
 .add-icon {
     color: white;
     vertical-align: middle;
-}
-
-.confirmButton:hover {
-    cursor: pointer;
-    background-color: #005f79;
 }
 
 .upload-button {
