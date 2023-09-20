@@ -5,22 +5,25 @@
         <div class="profile-header">
             <h1 *ngIf="backupValues">{{backupValues.name}}</h1>
         </div>
-        <form class="form" #myForm="ngForm">
+        <form class="form" #myForm="ngForm" style="height: 100%;">
             <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">
-            <label>ID: </label>
-            <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
-
-            <label>Navn: </label>
-            <div>
+              <div class="grid-label">
+                <label>ID: </label>
+                <label>Navn: </label>
+                <label>Initialer: </label>
+                <label>Afdeling: </label>
+                <label>Lokation</label>
+                <label>Pædagogisk konsulent: </label>
+                <label>Driftskoordinator: </label>
+                <label>Ansættelses Dato: </label>
+                <label>Slut Dato: </label>
+                <label>SVU Berettiget: </label>
+              </div>
+              <div class="grid-input">
+                <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
                 <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
-            </div>
-
-            <label>Initialer: </label>
-            <div>
                 <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
-            </div>
 
-            <label>Afdeling:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
@@ -31,7 +34,6 @@
                 </mat-select>
               </mat-form-field>
 
-            <label>Lokation:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
@@ -42,7 +44,6 @@
                 </mat-select>
               </mat-form-field>
 
-            <label>Pædagogisk konsulent:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
@@ -53,7 +54,6 @@
                 </mat-select>
               </mat-form-field>
 
-            <label>Driftskoordinator:</label>
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
                 <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
@@ -64,7 +64,6 @@
                 </mat-select>
               </mat-form-field>
 
-            <label>Ansættelses Dato:</label>
             <mat-form-field subscriptSizing="dynamic" class="datepicker">
                 <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
                 <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate" name="hiringDate" #hiringDate="ngModel">
@@ -72,7 +71,6 @@
                 <mat-datepicker #hiringDatePicker></mat-datepicker>
             </mat-form-field>
 
-            <label>Slut Dato:</label>
             <mat-form-field subscriptSizing="dynamic" class="datepicker">
                 <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
                 <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker" name="endDate" #endDate="ngModel">
@@ -80,10 +78,10 @@
                 <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
             </mat-form-field>
 
-            <label>SVU Berettiget:</label>
             <div class="checkbox">
                 <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible" #svuEligible="ngModel">
             </div>
+              </div>
         </fieldset>
         </form>
         <div class="profile-buttons">
