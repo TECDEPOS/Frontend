@@ -83,7 +83,7 @@ mat-form-field{
   overflow: auto;
   position: relative;
   outline: 1px solid black;
-
+  overflow-y: scroll;
 }
   
 .TableBox{    
@@ -128,7 +128,6 @@ th {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
-
   
 .TableBox tr:nth-child(even){background-color: #f2f2f2;}
 
@@ -141,7 +140,6 @@ th {
   background-color: #006E8C;
   color: white;
 }
-
 
 @media screen  and (max-width: 1000px){
   .TableForPeople{

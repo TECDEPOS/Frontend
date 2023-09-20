@@ -38,10 +38,11 @@
                     <td>{{x.department?.name}}</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
-                        <div #Progress class="Progress" [attr.data-message-id]="x.endDate | date: 'dd/MM/yyyy'"></div>
+                        <div #progress class="Progress" id="{{x.personId}}"></div>
                     </td>
                     <td>{{completedModules}}</td>
                     <td>
+                        <button (click)="lalala()">Press me!</button>
                         <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
                         <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
                     </td>
