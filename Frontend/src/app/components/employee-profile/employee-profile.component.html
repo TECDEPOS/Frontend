@@ -12,7 +12,7 @@
                 <label>Navn: </label>
                 <label>Initialer: </label>
                 <label>Afdeling: </label>
-                <label>Lokation</label>
+                <label>Lokation: </label>
                 <label>Pædagogisk konsulent: </label>
                 <label>Driftskoordinator: </label>
                 <label>Ansættelses Dato: </label>
@@ -119,7 +119,7 @@
           <tr *ngFor="let file of shownFiles; let i = index">
             <td>{{file.fileName}}</td>
             <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
-            <td *ngIf="file.fileTag === null">Ingen</td>
+            <td *ngIf="file.fileTag === null">-</td>
             <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
             <td>{{file.fileFormat}}</td>
             <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
