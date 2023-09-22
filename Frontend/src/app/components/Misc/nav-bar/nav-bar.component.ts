@@ -18,7 +18,7 @@ export class NavBarComponent {
   role: string = "";
 
   ngOnInit(){
-    console.log(this.authService.getName());
+    // console.log(this.authService.getName());
     this.name = String(localStorage.getItem('name'))
     this.role = String(localStorage.getItem('userRole')).replace('_', ' ')
   }

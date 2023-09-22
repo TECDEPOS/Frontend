@@ -15,6 +15,8 @@ export class Person{
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;
+
+    // completedModules: number = 0;
   
     educationalConsultant: User = new User;
     operationCoordinator: User = new User;
