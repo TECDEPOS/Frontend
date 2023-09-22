@@ -19,6 +19,7 @@ import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
 import { ModuleType } from 'src/app/Models/ModuleType';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -39,7 +40,7 @@ export class CreateComponent extends Unsub implements OnInit {
   modules: Module[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
-  resentlyCreated: any[] = [];
+  resentlyCreated: Person[] = [];
   activeForm: string | null = null
 
 
@@ -64,7 +65,8 @@ export class CreateComponent extends Unsub implements OnInit {
     private locationService: LocationsService,
     private moduelService: ModuleService,
     private personService: PersonsService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -117,44 +119,51 @@ export class CreateComponent extends Unsub implements OnInit {
     });
   }
 
+  personPicker(id: number) {
+    console.log(id);
+    
+    this.router.navigate(['/employee/',id])
+  }
+
+  created(created: any) {
+    this.resentlyCreated.unshift(created)
+  }
+
   createBook() {
-    this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { console.log(res);
+    this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
     });
   }
 
   createDepartment() {
-    this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe( res => {console.log(res);
+    this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
     })
-
   }
 
   createFileTag() {
-    this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
     })
-
   }
 
   createLocation() {
-    this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
     })
-
   }
 
   createModule() {
-    this.moduelService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
+    this.moduelService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
     })
-
   }
 
   createPerson() {
-
-    this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {console.log(res);
-    })    
+    console.log(this.person);
+    
+    this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.created(res)
+    })
   }
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      console.log(res);
     })
   }
 }

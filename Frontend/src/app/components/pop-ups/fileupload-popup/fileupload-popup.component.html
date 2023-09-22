@@ -18,9 +18,14 @@
   <div class="fileConfirmation">
     <p *ngIf="!file">Ingen fil valgt.</p>
     <p *ngIf="file">{{file.name}}</p>
+    <div>
     <button [disabled]="!file" class="confirmButton" (click)="confirmFile()">
       <mat-icon class="add-icon">add</mat-icon>
     </button>
+    <button [disabled]="!file" class="removeButton" (click)="removeCurrentFile()">
+      <mat-icon class="add-icon">clear</mat-icon>
+    </button>
+  </div>
   </div>
     <div class="fileListActions">
       <table class="TableBox">

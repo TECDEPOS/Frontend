@@ -80,7 +80,10 @@ export class FileuploadPopupComponent {
     this.fileTags.push(this.fileTag);
     this.file = null;
     this.fileTag = null!;
-    
+  }
+
+  removeCurrentFile(){
+    this.file = null;
   }
 
   removeDisplayFile(i :number){

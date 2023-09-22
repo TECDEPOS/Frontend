@@ -1,52 +1,81 @@
-<div class="box">
-    <div>
-        <div class="picker" (click)="toggleList('bookList')">Book</div>
-        <div *ngIf="isListActive('bookList')" class="List" >
-            <div *ngFor="let book of books">
-                book
-            </div>
-            
-        </div>
-    </div>
-    <div>
-        <div class="picker" (click)="toggleList('userList')">Bruger</div>
-        <div *ngIf="isListActive('userList')" class="List">
-            <div *ngFor="let user of users">
+<div class="grid">
+    <div class="box">
+        <div>
+            <div class="picker" (click)="toggleList('departmentList')">Afdeling</div>
+            <div *ngIf="isListActive('departmentList')" class="List">
+                <div *ngFor="let department of departments">
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <div class="picker" (click)="toggleList('departmentList')">Department</div>
-        <div *ngIf="isListActive('departmentList')" class="List">
-            <div *ngFor="let department of departments">      
+        <div>
+            <div class="picker" (click)="toggleList('bookList')">Bøger</div>
+            <div *ngIf="isListActive('bookList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                            <tr>
+                                <th mat-sort-header="BookName">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="Amaunt">
+                                    Mængde
+                                </th>
+                            </tr>
+                            <tr *ngFor="let book of books">
+                                <div (click)="bookSelecter(book.bookId)">
+                                    <td>{{book.name}}</td>
+                                    <td>{{book.amount}}</td>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('userList')">Bruger</div>
+            <div *ngIf="isListActive('userList')" class="List">
+                <div *ngFor="let user of users">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
+            <div *ngIf="isListActive('fileTagList')" class="List">
+                <div *ngFor="let fileTag of fileTags">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('locationList')">Lokation</div>
+            <div *ngIf="isListActive('locationList')" class="List">
+                <div *ngFor="let location of locations">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('moduleList')">Modul</div>
+            <div *ngIf="isListActive('moduleList')" class="List">
+                <div *ngFor="let module of modules">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('personList')">Person</div>
+            <div *ngIf="isListActive('personList')" class="List">
+                <div *ngFor="let person of persons">
+                </div>
             </div>
         </div>
     </div>
-    <div>
-        <div class="picker" (click)="toggleList('fileTagList')">Fil Tag</div>
-        <div *ngIf="isListActive('fileTagList')" class="List">
-            <div *ngFor="let fileTag of fileTags">
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="picker" (click)="toggleList('locationList')">Lokation</div>
-        <div *ngIf="isListActive('locationList')" class="List">
-            <div *ngFor="let location of locations">
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="picker" (click)="toggleList('moduleList')">Modul</div>
-        <div *ngIf="isListActive('moduleList')" class="List">
-            <div *ngFor="let module of modules">
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="picker" (click)="toggleList('personList')">Person</div>
-        <div *ngIf="isListActive('personList')" class="List" >
-            <div *ngFor="let person of persons">
+    <div class="box">
+        Nylig opretet personer
+        <div *ngFor="let created of resentlyCreated">
+            <div class="picker">
+                <span>
+                    Navn: {{created.name}}
+                    Initialer: {{created.initials}}
+                </span>
             </div>
         </div>
     </div>

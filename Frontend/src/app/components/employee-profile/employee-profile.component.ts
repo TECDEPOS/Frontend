@@ -110,21 +110,28 @@ export class EmployeeProfileComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'fileName':
-          return this.compare(a.fileName, b.fileName, isAsc);
+          return this.compare(a.fileName, b.fileName) * (sort.direction == 'asc' ? 1 : -1);
         case 'fileCategory':
-          return this.compare(a.fileTag.tagName, b.fileTag.tagName, isAsc);
+          return this.compare(a.fileTag?.tagName, b.fileTag?.tagName) * (sort.direction == 'asc' ? 1 : -1);
         case 'uploadDate':
-          return this.compare(a.uploadDate, b.uploadDate, isAsc);
+          return this.compare(a.uploadDate, b.uploadDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'fileFormat':
-          return this.compare(a.fileFormat, b.fileFormat, isAsc);
+          return this.compare(a.fileFormat, b.fileFormat) * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }
     });
   }
 
-  compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  compare(itemA: any, itemB: any): number {
+    let retVal: number = 0;
+      if (itemA && itemB) {
+        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+      }
+      else if (itemA) retVal = 1;
+      else if (itemB) retVal = -1;
+      return retVal;
   }
 
 

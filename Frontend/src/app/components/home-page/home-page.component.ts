@@ -122,21 +122,28 @@ export class HomePageComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'HiredName':
-          return this.compare(a.name, b.name, isAsc);
+          return this.compare(a.name, b.name) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredDepartment':
-          return this.compare(a.department!.name, b.department!.name, isAsc);
+          return this.compare(a.department?.name, b.department?.name) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
-          return this.compare(a.endDate, b.endDate, isAsc);
+          return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredSVU':
-          return this.compare(a.svuEligible, b.svuEligible, isAsc);
+          return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }
     });
   }
 
-  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  compare(itemA: any, itemB: any): number {
+    let retVal: number = 0;
+      if (itemA && itemB) {
+        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+      }
+      else if (itemA) retVal = 1;
+      else if (itemB) retVal = -1;
+      return retVal;
   }
 
 

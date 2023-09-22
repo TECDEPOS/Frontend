@@ -27,7 +27,7 @@ export class FilePageComponent {
     this.fileService.getFiles().subscribe(data => {
       this.files = data;
       this.showedList = this.files;
-      this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate, false))
+      this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate) * ('asc' == 'asc' ? 1 : -1))
       this.fileTagService.getFileTag().subscribe(data => {
         this.fileTags = data
       })
@@ -98,20 +98,27 @@ export class FilePageComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'fileName':
-          return this.compare(a.fileName, b.fileName, isAsc);
+          return this.compare(a.fileName, b.fileName) * (sort.direction == 'asc' ? 1 : -1);
         case 'personName':
-          return this.compare(a.person.name, b.person.name, isAsc);
+          return this.compare(a.person.name, b.person.name) * (sort.direction == 'asc' ? 1 : -1);
         case 'uploadDate':
-          return this.compare(a.uploadDate, b.uploadDate, isAsc);
+          return this.compare(a.uploadDate, b.uploadDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'tag':
-          return this.compare(a.fileTag!.tagName, b.fileTag!.tagName, isAsc);
+          return this.compare(a.fileTag?.tagName, b.fileTag?.tagName) * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }
     });
   }
 
-  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  compare(itemA: any, itemB: any): number {
+    let retVal: number = 0;
+      if (itemA && itemB) {
+        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+      }
+      else if (itemA) retVal = 1;
+      else if (itemB) retVal = -1;
+      return retVal;
   }
 }
