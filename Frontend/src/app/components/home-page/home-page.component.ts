@@ -20,7 +20,7 @@ export class HomePageComponent {
   department: Department[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
-  completedModules: number = 2;
+  // completedModules: number = 0;
   pickedDepartment: string = "";
   searchName: string = "";
   alle: string = "";
@@ -31,29 +31,46 @@ export class HomePageComponent {
   
   ngOnInit(): void{
     this.getTableData()
-    
-    this.progress.forEach((element, index) => {
-      console.log(element);
-
-      
-      
-    });
   }
 
   ngAfterViewInit(): void{
-   
-    console.log(this.progress);
-    this.progress.forEach((element, index) => {
-      console.log(element);
-
-      
-      
-    });
-    
+    this.progress.changes.subscribe(elm => {
+      this.progressBar()
+      this.modulesCompleted()
+      console.log(this.Hired);
+    })
   }
 
-  lalala(): void{
-    console.log(this.progress.first);
+  modulesCompleted(): void{
+    this.Hired
+  }
+
+  progressBar(): void{
+    this.Hired.forEach(person => {
+      let objec = this.progress.find(x => x.nativeElement.id == person.personId);
+      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
+      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
+      let inProcent  = 0
+
+      if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
+        inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
+
+      }
+      else{
+        inProcent = 100
+      }
+      objec!.nativeElement.style.width = inProcent + "%"
+      if( inProcent < 75){
+        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+      }
+      if( inProcent > 75 && inProcent < 90){
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+      }
+      if (inProcent > 90){
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+      }
+    });
+    
     
   }
   
@@ -62,19 +79,14 @@ export class HomePageComponent {
       this.department = res
     })
   }
-  
-  tester(){
-  }
 
   getTableData(){
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
       this.showedList = this.Hired
       this.getDepartmentData()
-      this.tester()
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
       this.showedList = this.Hired
-      
     })
   }
 
@@ -125,5 +137,33 @@ export class HomePageComponent {
 
   compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+
+  progressBarDummy(i: number): void{
+    let objec = this.progress.find(x => x.nativeElement.id == i);
+    let person = this.Hired.find(x => x.personId == i)
+    
+    let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
+    let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
+    let inProcent  = 0
+
+    if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
+      inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
+      
+    }
+    else{
+      inProcent = 100
+    }
+    objec!.nativeElement.style.width = inProcent + "%"
+    if( inProcent < 65){
+      objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+    }
+    if( inProcent > 65 && inProcent < 90){
+      objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+    }
+    if (inProcent > 90){
+      objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+    }
   }
 }

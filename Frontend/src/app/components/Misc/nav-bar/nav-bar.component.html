@@ -20,9 +20,10 @@
             Filer
             <hr [ngStyle]="{'display': router.url === '/file' ? 'block' : 'none'}">
         </h3>
-        <h2>
-            <u routerLink="/crud">Crud</u>
-        </h2>
+        <h3 routerLink="/crud">
+            Crud
+            <hr [ngStyle]="{'display': router.url === '/crud' ? 'block' : 'none'}">
+        </h3>
     </span>
     <span class="dropdown">
         <mat-icon class="SettingsIcon" (click)="onShow()">settings</mat-icon>

@@ -34,7 +34,6 @@
 
 .Progress{
   position: absolute;
-  background: linear-gradient(to right, white, 50%, rgb(255, 79, 79));
   width: 100%;
   left: 0;
   top: 0;

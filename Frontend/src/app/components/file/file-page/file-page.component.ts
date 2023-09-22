@@ -104,7 +104,7 @@ export class FilePageComponent {
         case 'uploadDate':
           return this.compare(a.uploadDate, b.uploadDate, isAsc);
         case 'tag':
-          return this.compare(a.fileTag.tagName, b.fileTag.tagName, isAsc);
+          return this.compare(a.fileTag!.tagName, b.fileTag!.tagName, isAsc);
         default:
           return 0;
       }

@@ -42,7 +42,6 @@
           <td><a href="/employee/{{file.person.personId}}">{{file.person.name}}</a></td>
           <td class="End--date">
             <p class="EndDateShow">{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
-            <div class="Progress"></div>
           </td>
           <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
           <td *ngIf="file.fileTag === null">Ingen</td>
