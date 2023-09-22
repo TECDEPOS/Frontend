@@ -9,6 +9,8 @@ import { File } from '../Models/File';
 })
 export class FileService {
 
+  
+
   constructor(private http: HttpClient) { }
 
   baseApiUrl: string = environment.baseApiUrl;
@@ -39,6 +41,11 @@ export class FileService {
     return this.http.post(this.baseApiUrl + `File/` + userId + `/` + tagId, formData, {
       headers: new HttpHeaders()
     })
+  }
+
+  uploadMultipleFiles(formData: FormData): Observable<File[]>
+  {
+    return this.http.post<File[]>(this.baseApiUrl + 'File/multiple', formData);
   }
 
   // Could be used? Dont see why :) 

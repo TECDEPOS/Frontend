@@ -19,7 +19,7 @@ export class Person{
     educationalConsultant: User = new User;
     operationCoordinator: User = new User;
     department?: Department = new Department;
-    location?: Location = new Location
+    location?: Location = new Location;
     files: File[] = [];
     personModules: PersonModule[] = [];
 }

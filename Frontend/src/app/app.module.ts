@@ -29,6 +29,10 @@ import { CrudEntityPageComponent } from './components/crud-entity-page/crud-enti
 import { CreateComponent } from './components/crud-entitys/create/create.component';
 import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
+import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
+
+
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -59,7 +63,9 @@ export const MY_DATE_FORMATS = {
     CrudEntityPageComponent,
     CreateComponent,
     EditComponent,
-    EmployeeProfileComponent
+    EmployeeProfileComponent,
+    FileuploadPopupComponent,
+    ChangePasswordPopupComponent
   ],
   imports: [
     BrowserModule,

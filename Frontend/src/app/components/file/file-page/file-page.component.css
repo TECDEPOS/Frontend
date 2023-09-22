@@ -16,6 +16,14 @@
         "b b b b b b b b";
 }
 
+mat-icon{
+    cursor: pointer;
+}
+mat-icon:hover{
+    background-color: #858585;
+    border-radius: 50%;
+}
+
 .SeachBar {
     font-size: 1.3rem;
     color: black;
@@ -60,7 +68,6 @@
 }
 
 mat-form-field {
-    /* height: 35px; */
     margin-left: 50px;
     min-width: 200px;
     margin-bottom: 15px;
@@ -78,14 +85,12 @@ mat-form-field {
     grid-area: t;
 }
 
-.TableForPeople {
+.TableForFiles {
     border-radius: 5px;
     box-shadow: 0 1px 3px 3px #888;
-    width: 95%;
     max-height: 100%;
     height: 100%;
-    margin: 0px auto;
-    overflow: auto;
+    margin: 0px 2.5%;
     position: relative;
     outline: 1px solid black;
 
@@ -164,3 +169,26 @@ th {
         left: 0;
     }
 }
+
+::ng-deep .mat-sort-header-container {
+    justify-content: center;
+    color: white;
+  }
+
+
+
+
+
+
+
+  
+ 
+  
+
+  
+
+
+
+  
+
+  
