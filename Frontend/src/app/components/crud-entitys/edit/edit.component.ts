@@ -21,6 +21,7 @@ import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
+import { Sort } from '@angular/material/sort';
 
 
 @Component({
@@ -28,14 +29,14 @@ import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswor
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css']
 })
-export class EditComponent extends Unsub{
+export class EditComponent extends Unsub {
   book: Book = new Book;
   department: Department = new Department;
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
   person: Person = new Person;
-  user: userViewModel = new userViewModel;
+  user: User = new User;
   changePasswordViewModel: changePasswordViewModel = new changePasswordViewModel
   books: Book[] = [];
   departments: Department[] = [];
@@ -116,8 +117,34 @@ export class EditComponent extends Unsub{
     }
   }
 
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      return;
+    }
+
+    this.books = this.books.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'BookName':
+          return this.compare(a.name, b.name, isAsc);
+        case 'Amaunt':
+          return this.compare(a.amount, b.amount, isAsc);        
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
   isListActive(formName: string) {
     return this.activeList === formName;
+  }
+
+  bookSelecter(id: number) {
+
   }
 
   getBooks() {
@@ -125,7 +152,6 @@ export class EditComponent extends Unsub{
       this.books = res;
     })
   }
-
 
   getDepartmens() {
     this.departmentService.getDepartment().subscribe(res => {
@@ -177,48 +203,34 @@ export class EditComponent extends Unsub{
   }
 
   editBook() {
-    this.bookService.updateBook(this.book).subscribe(res => {
-    })
+    this.bookService.updateBook(this.book).subscribe(res => { })
   }
 
   editDepartmen() {
-    this.departmentService.updateDepartment(this.department).subscribe(res => {
-    })
+    this.departmentService.updateDepartment(this.department).subscribe(res => { })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).subscribe(res => {
-    })
+    this.fileTagService.updateFileTag(this.fileTag).subscribe(res => { })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).subscribe(res => {
-      
-    })
+    this.locationService.updateLocation(this.location).subscribe(res => { })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).subscribe(res => {
-      
-    })
+    this.moduelService.updateModule(this.module).subscribe(res => { })
   }
 
   editPerson() {
-    this.personService.updatePerson(this.person).subscribe(res => {
-      
-    })
+    this.personService.updatePerson(this.person).subscribe(res => { })
   }
 
-  // editUser() {
-  //   this.userService.updatePerson(this.user).subscribe(res => {
-      
-  //   })
-  // }
+  editUser() {
+    this.userService.updateUser(this.user).subscribe(res => { })
+  }
 
   changePassword() {
-    this.authService.changePassword(this.changePasswordViewModel).subscribe(res => {
-      
-    })
+    this.authService.changePassword(this.changePasswordViewModel).subscribe(res => { })
   }
-
 }

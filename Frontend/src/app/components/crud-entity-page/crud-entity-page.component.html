@@ -1,14 +1,12 @@
 
 <div class="box">
     <div class="button-grid">
-        <div class="action-button" (click)="toggleComponent('create')">Create</div>
-        <div class="action-button" (click)="toggleComponent('edit')">Edit</div>
-        <div class="action-button" (click)="toggleComponent('delete')">Delete</div>
+        <div class="action-button" (click)="toggleComponent('create')">Opret</div>
+        <div class="action-button" (click)="toggleComponent('edit')">Ændre</div>
     </div>
     <div class="crud">
         <app-create *ngIf="isActiveComponent('create')"></app-create>
         <app-edit *ngIf="isActiveComponent('edit')"></app-edit>
-        <app-delete *ngIf="isActiveComponent('delete')"></app-delete>
     </div>
   </div>
   

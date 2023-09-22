@@ -1,9 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../Models/User';
 import { userViewModel } from '../Models/ViewModels/addUserViewModel';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'content-type': 'application/json'
+  })
+}
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +35,9 @@ export class UserService {
   // Ved ikke om den er skrevet rigtig -_-
   addUsers(user: userViewModel): Observable<userViewModel>{
     return this.http.post<userViewModel>(this.baseApiUrl + 'Users/', user)
+  }
+
+  updateUser(user: User): Observable<User>{
+    return this.http.put<User>(this.baseApiUrl + 'User', user, httpOptions)
   }
 }

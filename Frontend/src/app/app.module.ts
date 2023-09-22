@@ -27,7 +27,6 @@ import { FilePageComponent } from './components/file/file-page/file-page.compone
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 import { CreateComponent } from './components/crud-entitys/create/create.component';
-import { DeleteComponent } from './components/crud-entitys/delete/delete.component';
 import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
@@ -63,7 +62,6 @@ export const MY_DATE_FORMATS = {
     FileUploadComponent,
     CrudEntityPageComponent,
     CreateComponent,
-    DeleteComponent,
     EditComponent,
     EmployeeProfileComponent,
     FileuploadPopupComponent,
