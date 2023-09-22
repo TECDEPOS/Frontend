@@ -108,19 +108,20 @@ mat-form-field{
   position: sticky;
   top: 0px;
   font-size: 1rem;
-  border-left: 1px solid #ddd;
+  /* border-left: 1px solid #ddd; */
+  z-index: 101;
 }
 
 th{
   text-align: center;
 }
-.TableBox th:first-child{
+/* .TableBox th:first-child{
   border-left: 1px solid #006E8C;
 }
 
 .TableBox th:last-child{
   border-right: 1px solid #006E8C;
-}
+} */
 
 th {
   -webkit-user-select: none; /* Safari */
