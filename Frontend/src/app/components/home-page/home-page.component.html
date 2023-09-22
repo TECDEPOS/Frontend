@@ -12,7 +12,7 @@
             </mat-select>
         </mat-form-field>      
     </div>
-
+    <button (click)="progressBar()">ddd</button>
     <div class="table"> 
         <div class="TableForPeople">
             <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
@@ -39,10 +39,11 @@
                     <td *ngIf="!x.department">-</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
-                        <div #Progress class="Progress" [attr.data-message-id]="x.endDate | date: 'dd/MM/yyyy'"></div>
+                        <div #progress class="Progress" id="{{x.personId}}"></div>
                     </td>
-                    <td>{{completedModules}}</td>
+                    <td>{{2}}</td>
                     <td>
+                        <!-- <button (click)="lalala(x.personId)">Press me!</button> -->
                         <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
                         <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
                     </td>

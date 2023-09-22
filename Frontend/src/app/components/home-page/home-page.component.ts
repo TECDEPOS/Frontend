@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChildren, ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR } from '@angular/core';
+import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service'; 
 import {MatSelectModule} from '@angular/material/select';
@@ -20,22 +20,58 @@ export class HomePageComponent {
   department: Department[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
-  completedModules: number = 2;
+  // completedModules: number = 0;
   pickedDepartment: string = "";
   searchName: string = "";
   alle: string = "";
   searchDepartment: any = ""
-  @ViewChildren('Progress', {read: ElementRef}) progress: ElementRef[] = [];
+  @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
 
-  constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
+  constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private renderer: Renderer2) { }
   
   ngOnInit(): void{
     this.getTableData()
   }
 
-  ngAfterViewInit(){
-    // console.log(this.progress.getAttribute('data-message-id'));
-    console.log("HEj");
+  ngAfterViewInit(): void{
+    this.progress.changes.subscribe(elm => {
+      this.progressBar()
+      this.modulesCompleted()
+      console.log(this.Hired);
+    })
+  }
+
+  modulesCompleted(): void{
+    this.Hired
+  }
+
+  progressBar(): void{
+    this.Hired.forEach(person => {
+      let objec = this.progress.find(x => x.nativeElement.id == person.personId);
+      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
+      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
+      let inProcent  = 0
+
+      if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
+        inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
+
+      }
+      else{
+        inProcent = 100
+      }
+      objec!.nativeElement.style.width = inProcent + "%"
+      if( inProcent < 75){
+        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+      }
+      if( inProcent > 75 && inProcent < 90){
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+      }
+      if (inProcent > 90){
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+      }
+    });
+    
+    
   }
   
   getDepartmentData(){
@@ -108,5 +144,33 @@ export class HomePageComponent {
       else if (itemA) retVal = 1;
       else if (itemB) retVal = -1;
       return retVal;
+  }
+
+
+  progressBarDummy(i: number): void{
+    let objec = this.progress.find(x => x.nativeElement.id == i);
+    let person = this.Hired.find(x => x.personId == i)
+    
+    let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
+    let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
+    let inProcent  = 0
+
+    if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
+      inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
+      
+    }
+    else{
+      inProcent = 100
+    }
+    objec!.nativeElement.style.width = inProcent + "%"
+    if( inProcent < 65){
+      objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+    }
+    if( inProcent > 65 && inProcent < 90){
+      objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+    }
+    if (inProcent > 90){
+      objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+    }
   }
 }

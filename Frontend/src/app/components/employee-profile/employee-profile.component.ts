@@ -78,12 +78,12 @@ export class EmployeeProfileComponent {
     this.editDisabled = false;
   }
 
-  cancelEditMode(){
+  cancelEditMode() {
     this.editDisabled = true;
     this.person = JSON.parse(JSON.stringify(this.backupValues));
   }
 
-  setBackupValues(values: Person){
+  setBackupValues(values: Person) {
     //Sets backup values used if users press Cancel during edit mode.
     this.backupValues = JSON.parse(JSON.stringify(values));
   }
@@ -94,16 +94,16 @@ export class EmployeeProfileComponent {
       return false;
     }
 
-    if (typeof(o2 == Location)) {
-      return o1.name === o2.name && o1.locationId === o2.locationId;  
+    if (typeof (o2 == Location)) {
+      return o1.name === o2.name && o1.locationId === o2.locationId;
     }
-    else if (typeof(o2 == Department)){
+    else if (typeof (o2 == Department)) {
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
-    else if (typeof(o2 == User)){
+    else if (typeof (o2 == User)) {
       return o1.name === o2.name && o1.userId === o2.userId;
     }
-    else{
+    else {
       return false;
     }
   }

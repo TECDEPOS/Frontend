@@ -12,6 +12,11 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import {MatSortModule} from '@angular/material/sort';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
@@ -22,14 +27,8 @@ import { FilePageComponent } from './components/file/file-page/file-page.compone
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 import { CreateComponent } from './components/crud-entitys/create/create.component';
-import { DeleteComponent } from './components/crud-entitys/delete/delete.component';
 import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import {MatSortModule} from '@angular/material/sort';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
 
@@ -63,7 +62,6 @@ export const MY_DATE_FORMATS = {
     FileUploadComponent,
     CrudEntityPageComponent,
     CreateComponent,
-    DeleteComponent,
     EditComponent,
     EmployeeProfileComponent,
     FileuploadPopupComponent,
