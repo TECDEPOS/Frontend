@@ -115,20 +115,13 @@ mat-form-field {
     cursor: pointer;
 }
 
+
 .TableBox th {
-    z-index: 100;
+    z-index: 101;
     position: sticky;
     top: 0px;
     font-size: 1rem;
-    border-left: 1px solid #ddd;
-}
-
-.TableBox th:first-child {
-    border-left: 1px solid #006E8C;
-}
-
-.TableBox th:last-child {
-    border-right: 1px solid #006E8C;
+    /* outline: 1px solid white; */
 }
 
 .icon {
