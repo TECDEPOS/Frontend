@@ -75,10 +75,22 @@ input[type=text], select {
     color: blue;
  }
 
- /* CSS for the box container */
+ .grid {  
+  display: flex;
+  gap: 10px;
+ }
+
+ .box:first-child {
+  flex: 70%
+ }
+
+ .box:last-child {
+  flex: 30%
+ }
+
 .box {
     display: grid;
-    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-columns: 1fr;
     grid-gap: 10px;
     border: 1px solid #ccc;
     padding: 20px;
@@ -91,7 +103,6 @@ input[type=text], select {
     overflow: auto;
   }
   
-  /* CSS for the picker elements */
   .picker {
     cursor: pointer;
     background-color: #f0f0f0;
@@ -102,10 +113,8 @@ input[type=text], select {
     justify-content: space-between;
     align-items: center;
   }
-  
-  /* CSS for the form container */
+ 
   .form {
-    /* display: none;  */
     background-color: #fff;
     padding: 20px;
     border: 1px solid #ccc;
@@ -113,7 +122,6 @@ input[type=text], select {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
   
-  /* Show the form when it's active */
   .form.active {
     display: block;
   }
