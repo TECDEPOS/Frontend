@@ -267,7 +267,7 @@
     position: sticky;
     top: 0px;
     font-size: 1rem;
-    border-left: 1px solid #ddd;
+    outline: 1px solid #ddd;
 }
 
 .TableBox th:first-child {
