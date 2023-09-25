@@ -58,6 +58,28 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
+                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>
+                    <label>Drift Koordinator:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.dKVisability" id="dKVisability" name="dKVisability"
+                            #dKVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Human Resources:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.hRVisability" id="hRVisability" name="hRVisability"
+                            #hRVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.pKVisability" id="pKVisability" name="pKVisability"
+                            #pKVisability="ngModel">
+                    </div>
+                </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>

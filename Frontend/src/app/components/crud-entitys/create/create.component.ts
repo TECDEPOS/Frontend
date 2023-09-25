@@ -120,8 +120,6 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   personPicker(id: number) {
-    console.log(id);
-    
     this.router.navigate(['/employee/',id])
   }
 

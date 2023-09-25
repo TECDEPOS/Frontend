@@ -117,34 +117,125 @@ export class EditComponent extends Unsub {
     }
   }
 
-  sortData(sort: Sort) {
+  sortData(sort: Sort, type: string) {
     if (!sort.active || sort.direction === '') {
       return;
     }
 
-    this.books = this.books.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'BookName':
-          return this.compare(a.name, b.name, isAsc);
-        case 'Amaunt':
-          return this.compare(a.amount, b.amount, isAsc);        
-        default:
-          return 0;
-      }
-    });
+    switch (type) {
+      case 'book':
+        return this.books = this.books.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            case 'amaunt':
+              return this.compare(a.amount, b.amount) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0;
+          }
+        });
+      case 'department':
+        return this.departments = this.departments.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0;
+          }
+        });
+      case 'fileTag':
+        return this.fileTags = this.fileTags.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.tagName.toLocaleLowerCase(), b.tagName.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            case 'dKVisability':
+              return this.compare(a.dKVisability, b.dKVisability) * (sort.direction == 'asc' ? 1 : -1);
+            case 'hRVisability':
+              return this.compare(a.hRVisability, b.hRVisability) * (sort.direction == 'asc' ? 1 : -1);
+            case 'pKVisability':
+            default:
+              return 0;
+          }
+        });
+      case 'location':
+        return this.locations = this.locations.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0;
+          }
+        });
+      case 'module':
+        return this.modules = this.modules.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            case '':
+              return this.compare(a.moduleType, this.moduleType) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0;
+          }
+        });
+      case 'person':
+        return this.persons = this.persons.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name, b.name) * (sort.direction == 'asc' ? 1 : -1);
+            case 'initials':
+              return this.compare(a.initials, b.initials) * (sort.direction == 'asc' ? 1 : -1);
+            case 'department':
+              return this.compare(a.department?.name, b.department?.name) * (sort.direction == 'asc' ? 1 : -1);
+            case 'location':
+              return this.compare(a.location, b.location) * (sort.direction == 'asc' ? 1 : -1);
+            case 'endDate':
+              return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
+            case 'sVU':
+              return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0
+          }
+        });
+      case 'user':
+        return this.users = this.users.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name':
+              return this.compare(a.name, b.name) * (sort.direction == 'asc' ? 1 : -1);
+            case 'username':
+              return this.compare(a.userName, b.userName) * (sort.direction == 'asc' ? 1 : -1);
+            case 'userRole':
+              return this.compare(a.userRole, b.userRole) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0
+          }
+        });
+      case '':
+      default:
+        return 0;
+    }
+
   }
 
-  compare(a: number | string | Date | boolean, b: number | string | Date | boolean, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  compare(itemA: any, itemB: any): number {
+    let retVal: number = 0;
+    if (itemA && itemB) {
+      if (itemA > itemB) retVal = 1;
+      else if (itemA < itemB) retVal = -1;
+    }
+    else if (itemA) retVal = 1;
+    else if (itemB) retVal = -1;
+    return retVal;
   }
 
   isListActive(formName: string) {
     return this.activeList === formName;
-  }
-
-  bookSelecter(id: number) {
-
   }
 
   getBooks() {
@@ -202,6 +293,35 @@ export class EditComponent extends Unsub {
     });
   }
 
+  bookSelecter(i: number) {
+    this.book = this.books[i];
+  }
+
+  departmentSelecter(i: number) {
+    this.department = this.departments[i];
+  }
+
+  fileTagSelecter(i: number) {
+    this.fileTag = this.fileTags[i];
+  }
+
+  locationSelecter(i: number) {
+    this.location = this.locations[i];
+  }
+
+  moduleSelecter(i: number) {
+    this.module = this.modules[i];
+  }
+
+  personSelecter(i: number) {
+    this.person = this.persons[i];
+    this.getForPerson();
+  }
+
+  userSelecter(i: number) {
+    this.user = this.users[i];
+  }
+
   editBook() {
     this.bookService.updateBook(this.book).subscribe(res => { })
   }
@@ -230,7 +350,7 @@ export class EditComponent extends Unsub {
     this.userService.updateUser(this.user).subscribe(res => { })
   }
 
-  changePassword() {
-    this.authService.changePassword(this.changePasswordViewModel).subscribe(res => { })
+  resetPassword(id: number) {
+    this.authService.resetPassword(id).subscribe(res => { })
   }
 }

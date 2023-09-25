@@ -12,17 +12,17 @@
             <div *ngIf="isListActive('bookList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'book')">
                             <tr>
-                                <th mat-sort-header="BookName">
+                                <th mat-sort-header="name">
                                     Navn
                                 </th>
-                                <th mat-sort-header="Amaunt">
+                                <th mat-sort-header="amaunt">
                                     Mængde
                                 </th>
                             </tr>
-                            <tr *ngFor="let book of books">
-                                <div (click)="bookSelecter(book.bookId)">
+                            <tr *ngFor="let book of books, let i = index">
+                                <div (click)="bookSelecter(i)">
                                     <td>{{book.name}}</td>
                                     <td>{{book.amount}}</td>
                                 </div>
@@ -35,14 +35,71 @@
         <div>
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
             <div *ngIf="isListActive('userList')" class="List">
-                <div *ngFor="let user of users">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'user')">
+                            <tr>
+                                <th mat-sort-header="username">
+                                    Brugernavn
+                                </th>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="userRole">
+                                    Bruger role
+                                </th>
+                            </tr>
+                            <tr *ngFor="let user of users, let i = index">
+                                <div (click)="userSelecter(i)">
+                                    <td>{{user.userName}}</td>
+                                    <td>{{user.name}}</td>
+                                    <td>{{userRole[user.userRole]}}</td>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
-                <div *ngFor="let fileTag of fileTags">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'fileTag')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="dKVisability">
+                                    Drift_Koordinator
+                                </th>
+                                <th mat-sort-header="hRVisability">
+                                    Human_Resources
+                                </th>
+                                <th mat-sort-header="pKVisability">
+                                    Pædagogisk_konsulent
+                                </th>                                
+                            </tr>
+                            <tr *ngFor="let fileTag of fileTags, let i = index">
+                                <div (click)="fileTagSelecter(i)">
+                                    <td>{{fileTag.tagName}}</td>
+                                    <td>
+                                        <input *ngIf="fileTag.dKVisability === true" type="checkbox" disabled checked />
+                                        <input *ngIf="fileTag.dKVisability === false" type="checkbox" disabled unchecked/> 
+                                    </td>
+                                    <td>
+                                        <input *ngIf="fileTag.hRVisability === true" type="checkbox" disabled checked />
+                                        <input *ngIf="fileTag.hRVisability === false" type="checkbox" disabled unchecked/> 
+                                    </td>
+                                    <td>
+                                        <input *ngIf="fileTag.pKVisability === true" type="checkbox" disabled checked />
+                                        <input *ngIf="fileTag.pKVisability === false" type="checkbox" disabled unchecked/> 
+                                    </td>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

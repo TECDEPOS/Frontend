@@ -28,7 +28,11 @@ export class AuthService {
   }
 
   changePassword(viewModel: changePasswordViewModel): Observable<boolean>{
-    return this.http.put<boolean>(this.baseApiUrl +this.extendedApiUrl + 'changepassword', viewModel)
+    return this.http.put<boolean>(this.baseApiUrl + this.extendedApiUrl + 'changepassword', viewModel)
+  }
+
+  resetPassword(id: number): Observable<boolean>{
+    return this.http.put<boolean>(this.baseApiUrl + this.extendedApiUrl + 'resetpassword/', id)
   }
 
   renewToken(authResponse: AuthenticatedResponse): Observable<AuthenticatedResponse>{

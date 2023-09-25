@@ -131,28 +131,3 @@ mat-option {
 .form-visible {
   display: block;
 }
-
-.table {
-  grid-area: t;
-}
-
-.TableForPeople {
-  border-radius: 5px;
-  box-shadow: 0 1px 3px 3px #888;
-  max-height: 100%;
-  height: 100%;
-  margin: 0px 2.5%;
-  overflow: auto;
-  position: relative;
-  outline: 1px solid black;
-
-}
-
-th {
-  -webkit-user-select: none;
-  /* Safari */
-  -ms-user-select: none;
-  /* IE 10 and IE 11 */
-  user-select: none;
-  /* Standard syntax */
-}
