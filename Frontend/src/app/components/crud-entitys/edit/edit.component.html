@@ -9,7 +9,39 @@
         </div>
         <div>
             <div class="picker" (click)="toggleList('bookList')">Bøger</div>
-            <div *ngIf="isListActive('bookList')" class="List">
+            <div class="table" *ngIf="isListActive('bookList')"> 
+                <div class="TableForPeople">
+                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                        <tr>
+                            <th mat-sort-header="BookName">
+                                Navn
+                            </th>
+                            <th mat-sort-header="Amaunt">
+                                Mængde
+                            </th>
+                        </tr>
+                        <tr *ngFor="let book of books" (click)="bookSelecter(book.bookId)">
+                            <td>{{book.name}}</td>
+                            <td>{{book.amount}}</td>
+                        </tr>
+                        <!-- <tr *ngFor="let x of showedList">
+                            <td><a href="/employee/{{x.personId}}">{{x.name}}</a></td>
+                            <td *ngIf="x.department">{{x.department.name}}</td>
+                            <td *ngIf="!x.department">-</td>
+                            <td class="End--date">
+                                <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
+                                <div #progress class="Progress" id="{{x.personId}}"></div>
+                            </td>
+                            <td>{{2}}</td>
+                            <td>
+                                <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
+                                <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
+                            </td>
+                        </tr> -->
+                    </table>
+                </div>
+            </div>
+            <!-- <div *ngIf="isListActive('bookList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
                         <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'book')">
@@ -30,7 +62,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div>
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
