@@ -31,6 +31,7 @@ import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
+import { AddPersonmodulePopupComponent } from './components/pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 
 
 
@@ -65,7 +66,8 @@ export const MY_DATE_FORMATS = {
     EditComponent,
     EmployeeProfileComponent,
     FileuploadPopupComponent,
-    ChangePasswordPopupComponent
+    ChangePasswordPopupComponent,
+    AddPersonmodulePopupComponent
   ],
   imports: [
     BrowserModule,

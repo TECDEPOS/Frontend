@@ -13,6 +13,7 @@ import { UserService } from 'src/app/Services/user.service';
 import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
+import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -44,6 +45,7 @@ export class EmployeeProfileComponent {
       this.locations = res;
     });
   }
+
   getUsers() {
     this.userService.getUsers().subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
@@ -194,4 +196,15 @@ export class EmployeeProfileComponent {
       this.shownFiles = tempList;
     });    
   }
+
+  openAddPersonModulePopup(){
+    this.dialog.open(AddPersonmodulePopupComponent,{
+      data: {
+        person: this.person,
+      },
+      disableClose: false,
+      height: '40%',
+      width: '25%'
+    });
+    }
 }
