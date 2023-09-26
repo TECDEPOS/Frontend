@@ -96,7 +96,9 @@
     <div class="modules">
       <button class="upload-file-button" (click)="openAddPersonModulePopup()">
         <mat-icon class="upload-icon">add</mat-icon>
+        <br>
       </button>
+      <p *ngFor="let mitNavnErStenDiddeliddeliddelumMedDetEkstraBenDiddeliddeliddelum of person.personModules">{{mitNavnErStenDiddeliddeliddelumMedDetEkstraBenDiddeliddeliddelum.module.name}}</p>
     </div>
     <div class="files">
       <div class="upload-file">

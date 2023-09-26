@@ -58,8 +58,8 @@ export class AddPersonmodulePopupComponent {
 
   onSubmit(){
     this.newPersonModule.personId = this.person.personId;
-    this.newPersonModule.person = this.person;
-    this.newPersonModule.moduleId = this.newPersonModule.module.moduleId;
+    this.newPersonModule.module = null!
+    this.newPersonModule.person = null!;
     
     let startDateAfterToday = this.compareDates();
     if (startDateAfterToday) {
@@ -72,7 +72,7 @@ export class AddPersonmodulePopupComponent {
     
     this.personModuleService.addPersonModules(this.newPersonModule).subscribe(res => {
       console.log(res);
-      
+      this.closeDialog();
     });
   }
 }
