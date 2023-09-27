@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PersonModule } from '../Models/PersonModule';
+import { Person } from '../Models/Person';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,20 @@ export class PersonModuleService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getPersonModule(personId: number, moduleId: number, date: Date): Observable<PersonModule>{
-    return this.http.get<PersonModule>(this.baseApiUrl + 'PersonModule/' + personId + '/' + moduleId + '/' + date)
+  getAllPersonModules(): Observable<PersonModule[]>{
+    return this.http.get<PersonModule[]>(this.baseApiUrl + 'PersonModule');
+  }
+
+  getPersonModule(personModuleId: number): Observable<PersonModule>{
+    return this.http.get<PersonModule>(this.baseApiUrl + 'PersonModule/' + personModuleId)
   }
 
   getPersonModules(personId: number, moduleId: number): Observable<PersonModule[]>{
-    return this.http.get<PersonModule[]>(this.baseApiUrl + 'PersonModule/personmodules/' + personId + '/' + moduleId)
+    return this.http.get<PersonModule[]>(this.baseApiUrl + 'PersonModule/' + personId + '/' + moduleId)
+  }
+
+  getPersonModulesByPerson(personId: number): Observable<PersonModule[]>{
+    return this.http.get<PersonModule[]>(this.baseApiUrl + 'PersonModule/person/' + personId);
   }
   
   addPersonModules(personModule: PersonModule): Observable<PersonModule>{
@@ -29,7 +38,7 @@ export class PersonModuleService {
     return this.http.put<PersonModule>(this.baseApiUrl + 'PersonModule/', personModule)
   }
 
-  deletePersonModule(personId: number, moduleId: number, date: Date): Observable<PersonModule>{
-    return this.http.delete<PersonModule>(this.baseApiUrl + 'PersonModule/' + personId + '/' + moduleId + '/' + date)
+  deletePersonModule(personModuleId: number): Observable<PersonModule>{
+    return this.http.delete<PersonModule>(this.baseApiUrl + 'PersonModule/' + personModuleId)
   }
 }
