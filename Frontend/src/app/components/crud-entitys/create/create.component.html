@@ -62,21 +62,21 @@
                 <div>
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.dKVisability" id="dKVisability" name="dKVisability"
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
                             #dKVisability="ngModel">
                     </div>
                 </div>
                 <div>
                     <label>Human Resources:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.hRVisability" id="hRVisability" name="hRVisability"
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
                             #hRVisability="ngModel">
                     </div>
                 </div>
                 <div>
                     <label>Pædagogisk konsulent:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.pKVisability" id="pKVisability" name="pKVisability"
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
                             #pKVisability="ngModel">
                     </div>
                 </div>
@@ -186,8 +186,8 @@
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate" id="hiringDatePicker"
-                            name="hiringDate" #hiringDate="ngModel">
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>

@@ -37,7 +37,6 @@ export class EditComponent extends Unsub {
   module: Module = new Module;
   person: Person = new Person;
   user: User = new User;
-  changePasswordViewModel: changePasswordViewModel = new changePasswordViewModel
   books: Book[] = [];
   departments: Department[] = [];
   fileTags: FileTag[] = [];
@@ -48,7 +47,10 @@ export class EditComponent extends Unsub {
   operationCoordinators: User[] = [];
   users: User[] = [];
   resentlyCreated: any[] = [];
+  activeForm: string | null = null
+  activeFormIndex: number | null = null
   activeList: string | null = null
+  backup: any;
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -87,6 +89,27 @@ export class EditComponent extends Unsub {
   ngOnInit() {
   }
 
+  toggleForm(formName: string, i: number) {
+    if (this.activeForm === formName && this.activeFormIndex === i) {
+      this.activeForm = null;
+      this.activeFormIndex = null;
+    }
+    else {
+      this.activeForm = formName;
+      this.activeFormIndex = i;
+      if (this.activeForm == 'moduleForm') {
+        this.getBooks();
+      }
+      else if (this.activeForm == 'personForm') {
+        this.getForPerson();
+      }
+    }
+  }
+
+  isFormActive(formName: string) {
+    return this.activeForm === formName;
+  }
+
   toggleList(formName: string) {
     if (this.activeList === formName) {
       this.activeList = null
@@ -97,7 +120,7 @@ export class EditComponent extends Unsub {
         this.getBooks();
       }
       else if (this.activeList == 'depertmentList') {
-        this.getDepartmens();
+        this.getDepartments();
       }
       else if (this.activeList == 'fileTagList') {
         this.getFileTags();
@@ -115,6 +138,10 @@ export class EditComponent extends Unsub {
         this.getUsers();
       }
     }
+  }
+
+  isListActive(formName: string) {
+    return this.activeList === formName;
   }
 
   sortData(sort: Sort, type: string) {
@@ -152,9 +179,9 @@ export class EditComponent extends Unsub {
             case 'name':
               return this.compare(a.tagName.toLocaleLowerCase(), b.tagName.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
             case 'dKVisability':
-              return this.compare(a.dKVisability, b.dKVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.dkVisability, b.dkVisability) * (sort.direction == 'asc' ? 1 : -1);
             case 'hRVisability':
-              return this.compare(a.hRVisability, b.hRVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.hrVisability, b.hrVisability) * (sort.direction == 'asc' ? 1 : -1);
             case 'pKVisability':
             default:
               return 0;
@@ -194,8 +221,6 @@ export class EditComponent extends Unsub {
               return this.compare(a.department?.name, b.department?.name) * (sort.direction == 'asc' ? 1 : -1);
             case 'location':
               return this.compare(a.location, b.location) * (sort.direction == 'asc' ? 1 : -1);
-            case 'endDate':
-              return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
             case 'sVU':
               return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
             default:
@@ -234,17 +259,13 @@ export class EditComponent extends Unsub {
     return retVal;
   }
 
-  isListActive(formName: string) {
-    return this.activeList === formName;
-  }
-
   getBooks() {
     this.bookService.getBook().subscribe(res => {
       this.books = res;
     })
   }
 
-  getDepartmens() {
+  getDepartments() {
     this.departmentService.getDepartment().subscribe(res => {
       this.departments = res;
     })
@@ -253,6 +274,8 @@ export class EditComponent extends Unsub {
   getFileTags() {
     this.fileTagService.getFileTag().subscribe(res => {
       this.fileTags = res;
+      console.log(res);
+      
     })
   }
 
@@ -271,6 +294,9 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().subscribe(res => {
       this.persons = res;
+      console.log(res);
+      
+      
     })
   }
 
@@ -293,40 +319,53 @@ export class EditComponent extends Unsub {
     });
   }
 
+  // setBackupValues(values: Person) {
+  //   //Sets backup values used if users press Cancel during edit mode.
+  //   this.backupValues = JSON.parse(JSON.stringify(values));
+  // }
+
   bookSelecter(i: number) {
-    this.book = this.books[i];
+    this.book = JSON.parse(JSON.stringify(this.books[i]));
+    this.backup = JSON.parse(JSON.stringify(this.books[i]));
+    this.toggleForm('bookForm', i)
   }
 
   departmentSelecter(i: number) {
-    this.department = this.departments[i];
+    this.department = JSON.parse(JSON.stringify(this.departments[i]));
+    this.toggleForm('departmentForm', i)
   }
 
   fileTagSelecter(i: number) {
-    this.fileTag = this.fileTags[i];
+    this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
+    this.toggleForm('fileTagForm', i)
   }
 
   locationSelecter(i: number) {
-    this.location = this.locations[i];
+    this.location = JSON.parse(JSON.stringify(this.locations[i]));
+    this.toggleForm('locationForm', i)
   }
 
   moduleSelecter(i: number) {
-    this.module = this.modules[i];
+    this.module = JSON.parse(JSON.stringify(this.modules[i]));
+    this.toggleForm('moduleForm', i)
   }
 
   personSelecter(i: number) {
-    this.person = this.persons[i];
+    this.person = JSON.parse(JSON.stringify(this.persons[i]));
     this.getForPerson();
+    this.toggleForm('personForm', i)
   }
 
   userSelecter(i: number) {
-    this.user = this.users[i];
+    this.user = JSON.parse(JSON.stringify(this.users[i]));
+    this.toggleForm('userForm', i)
   }
 
   editBook() {
     this.bookService.updateBook(this.book).subscribe(res => { })
   }
 
-  editDepartmen() {
+  editDepartment() {
     this.departmentService.updateDepartment(this.department).subscribe(res => { })
   }
 
@@ -352,5 +391,13 @@ export class EditComponent extends Unsub {
 
   resetPassword(id: number) {
     this.authService.resetPassword(id).subscribe(res => { })
+  }
+
+  cancel() {
+    console.log(this.book);
+    
+    this.book = JSON.parse(JSON.stringify(this.backup));
+    console.log(this.book);
+    
   }
 }

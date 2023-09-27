@@ -78,7 +78,7 @@ mat-option {
 
 .grid {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .box:first-child {
@@ -95,12 +95,12 @@ mat-option {
   grid-gap: 10px;
   border: 1px solid #ccc;
   padding: 20px;
-  margin: 20px;
+  margin: 10px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   height: fit-content;
   place-content: center start;
-  max-height: 90%;
+  max-height: 100%;
   overflow: auto;
 }
 

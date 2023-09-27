@@ -8,6 +8,7 @@ export class PersonModule{
     startDate: Date = new Date;
     endDate: Date = new Date;
     status: Status = 0;
+    
     module: Module = new Module
     person: Person = new Person
 }

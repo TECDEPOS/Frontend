@@ -20,6 +20,8 @@ import { ModuleType } from 'src/app/Models/ModuleType';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { PersonModule } from 'src/app/Models/PersonModule';
 
 @Component({
   selector: 'app-create',
@@ -32,23 +34,25 @@ export class CreateComponent extends Unsub implements OnInit {
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
+  personModule: PersonModule = new PersonModule;
   person: Person = new Person;
   user: userViewModel = new userViewModel;
   books: Book[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
+  persons: Person[] = [];
+  resentlyCreated: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
-  resentlyCreated: Person[] = [];
   activeForm: string | null = null
-
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
   fileTagForm: FormGroup;
   locationForm: FormGroup;
   moduleForm: FormGroup;
+  personModuleForm: FormGroup;
   personForm: FormGroup;
   userForm: FormGroup;
 
@@ -63,7 +67,8 @@ export class CreateComponent extends Unsub implements OnInit {
     private departmentService: DepartmentsService,
     private fileTagService: FileTagService,
     private locationService: LocationsService,
-    private moduelService: ModuleService,
+    private moduleService: ModuleService,
+    private personModuleService: PersonModuleService, 
     private personService: PersonsService,
     private userService: UserService,
     private router: Router
@@ -74,6 +79,7 @@ export class CreateComponent extends Unsub implements OnInit {
     this.fileTagForm = new FormGroup({});
     this.locationForm = new FormGroup({});
     this.moduleForm = new FormGroup({});
+    this.personModuleForm = new FormGroup({});
     this.personForm = new FormGroup({});
     this.userForm = new FormGroup({});
   }
@@ -129,39 +135,44 @@ export class CreateComponent extends Unsub implements OnInit {
 
   createBook() {
     this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.book = new Book;
     });
   }
 
   createDepartment() {
     this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.department = new Department;
     })
   }
 
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.fileTag = new FileTag;
     })
   }
 
   createLocation() {
     this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.location = new Location;
     })
   }
 
   createModule() {
-    this.moduelService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.moduleService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.module = new Module;
     })
   }
 
   createPerson() {
-    console.log(this.person);
-    
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
+      this.person = new Person;
     })
   }
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.user = new userViewModel;
     })
   }
 }
