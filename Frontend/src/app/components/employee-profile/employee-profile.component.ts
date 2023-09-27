@@ -14,6 +14,8 @@ import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
 import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
+import { ModuleType } from 'src/app/Models/ModuleType';
+import { Status } from 'src/app/Models/status';
 
 @Component({
   selector: 'app-employee-profile',
@@ -22,6 +24,8 @@ import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup
 })
 export class EmployeeProfileComponent {
 
+  moduleTypes = ModuleType;
+  status = Status;
   editDisabled: boolean = true;
   person: Person = new Person;
   backupValues: Person = new Person;
@@ -63,6 +67,8 @@ export class EmployeeProfileComponent {
       this.personService.getPersonById(id).subscribe(res => {
         this.person = res;
         this.shownFiles = res.files;
+        console.log(this.person.personModules);
+        
         this.setBackupValues(this.person);
       });
     });
