@@ -34,7 +34,6 @@ export class CreateComponent extends Unsub implements OnInit {
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
-  personModule: PersonModule = new PersonModule;
   person: Person = new Person;
   user: userViewModel = new userViewModel;
   books: Book[] = [];
@@ -52,7 +51,6 @@ export class CreateComponent extends Unsub implements OnInit {
   fileTagForm: FormGroup;
   locationForm: FormGroup;
   moduleForm: FormGroup;
-  personModuleForm: FormGroup;
   personForm: FormGroup;
   userForm: FormGroup;
 
@@ -68,7 +66,6 @@ export class CreateComponent extends Unsub implements OnInit {
     private fileTagService: FileTagService,
     private locationService: LocationsService,
     private moduleService: ModuleService,
-    private personModuleService: PersonModuleService, 
     private personService: PersonsService,
     private userService: UserService,
     private router: Router
@@ -79,7 +76,6 @@ export class CreateComponent extends Unsub implements OnInit {
     this.fileTagForm = new FormGroup({});
     this.locationForm = new FormGroup({});
     this.moduleForm = new FormGroup({});
-    this.personModuleForm = new FormGroup({});
     this.personForm = new FormGroup({});
     this.userForm = new FormGroup({});
   }

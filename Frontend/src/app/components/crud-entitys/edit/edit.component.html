@@ -308,24 +308,13 @@
                     <label>Beskrivelse: </label>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
-                </div>
-                <div>
-                    <label>Modul Type:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="module.moduleType" name="moduleType" #userForm="ngModel">
-                            <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
-                                {{type}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+                </div>                
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
                 <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personModuleForm')">
-            <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
+            <form class="form" #moduleForm="ngForm" (ngSubmit)="editPersonModule()">
                 <div>
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
@@ -339,7 +328,7 @@
                     <label>Modul Type:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="module.moduleType" name="moduleType" #userForm="ngModel">
+                        <mat-select [(ngModel)]="personModule.moduleType" name="moduleType" #userForm="ngModel">
                             <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
                                 {{type}}
                             </mat-option>

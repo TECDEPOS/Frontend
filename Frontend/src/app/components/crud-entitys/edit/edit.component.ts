@@ -22,6 +22,8 @@ import { takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
+import { PersonModule } from 'src/app/Models/PersonModule';
+import { PersonModuleService } from 'src/app/Services/person-module.service';
 
 
 @Component({
@@ -35,6 +37,7 @@ export class EditComponent extends Unsub {
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
+  personModule: PersonModule = new PersonModule;
   person: Person = new Person;
   user: User = new User;
   books: Book[] = [];
@@ -42,6 +45,7 @@ export class EditComponent extends Unsub {
   fileTags: FileTag[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
+  personModules: PersonModule[] = [];
   persons: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
@@ -57,6 +61,7 @@ export class EditComponent extends Unsub {
   fileTagForm: FormGroup;
   locationForm: FormGroup;
   moduleForm: FormGroup;
+  personModuleForm: FormGroup;
   personForm: FormGroup;
   userForm: FormGroup;
 
@@ -73,6 +78,7 @@ export class EditComponent extends Unsub {
     private fileTagService: FileTagService,
     private locationService: LocationsService,
     private moduelService: ModuleService,
+    private personModuleService: PersonModuleService, 
     private personService: PersonsService,
     private userService: UserService
   ) {
@@ -82,6 +88,7 @@ export class EditComponent extends Unsub {
     this.fileTagForm = new FormGroup({});
     this.locationForm = new FormGroup({});
     this.moduleForm = new FormGroup({});
+    this.personModuleForm = new FormGroup({});
     this.personForm = new FormGroup({});
     this.userForm = new FormGroup({});
   }
@@ -203,8 +210,28 @@ export class EditComponent extends Unsub {
           switch (sort.active) {
             case 'name':
               return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            default:
+              return 0;
+          }
+        });
+      case 'personModule':
+        return this.personModules = this.personModules.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'personName':
+              return this.compare(a.person.name.toLocaleLowerCase(), b.person.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            case 'initials':
+              return this.compare(a.person.initials.toLocaleLowerCase(), b.person.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+            case 'moduleName':
+              return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
             case '':
-              return this.compare(a.moduleType, this.moduleType) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.status, b.status) * (sort.direction == 'asc' ? 1 : -1);
+            case '':
+              return this.compare(a.moduleType, b.moduleType) * (sort.direction == 'asc' ? 1 : -1);
+            case '':
+              return this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
+            case '':
+              return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
             default:
               return 0;
           }
@@ -275,7 +302,7 @@ export class EditComponent extends Unsub {
     this.fileTagService.getFileTag().subscribe(res => {
       this.fileTags = res;
       console.log(res);
-      
+
     })
   }
 
@@ -291,12 +318,16 @@ export class EditComponent extends Unsub {
     })
   }
 
+  getPersonModules() {
+    // this.personModuleService()
+  }
+
   getPersons() {
     this.personService.getPersons().subscribe(res => {
       this.persons = res;
       console.log(res);
-      
-      
+
+
     })
   }
 
@@ -318,11 +349,6 @@ export class EditComponent extends Unsub {
       });
     });
   }
-
-  // setBackupValues(values: Person) {
-  //   //Sets backup values used if users press Cancel during edit mode.
-  //   this.backupValues = JSON.parse(JSON.stringify(values));
-  // }
 
   bookSelecter(i: number) {
     this.book = JSON.parse(JSON.stringify(this.books[i]));
@@ -381,6 +407,10 @@ export class EditComponent extends Unsub {
     this.moduelService.updateModule(this.module).subscribe(res => { })
   }
 
+  editPersonModule() {
+
+  }
+
   editPerson() {
     this.personService.updatePerson(this.person).subscribe(res => { })
   }
@@ -394,10 +424,7 @@ export class EditComponent extends Unsub {
   }
 
   cancel() {
-    console.log(this.book);
-    
     this.book = JSON.parse(JSON.stringify(this.backup));
     console.log(this.book);
-    
   }
 }
