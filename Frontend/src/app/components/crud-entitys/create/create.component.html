@@ -99,23 +99,12 @@
             <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="createModule()">
                 <div>
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
                     <label>Beskrivelse: </label>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
-                </div>
-                <div>
-                    <label>Modul Type:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="module.moduleType" name="moduleType" #userForm="ngModel">
-                            <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
-                                {{type}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
                 </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>

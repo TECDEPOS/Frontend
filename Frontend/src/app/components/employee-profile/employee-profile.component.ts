@@ -13,6 +13,7 @@ import { UserService } from 'src/app/Services/user.service';
 import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
+import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -33,30 +34,38 @@ export class EmployeeProfileComponent {
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
 
-  ngOnInit() {
+  ngOnInit(){
     this.getPerson();
+    this.getDepartments();
+    this.getUsers();
+    this.getLocations();
+  }
+  getLocations() {
+    this.locationService.getLocations().subscribe(res => {
+      this.locations = res;
+    });
   }
 
-  // Make all the calls at the same time, if not then the RefreshToken in backend gets spammed and gives mismatch of refresh tokens between DB and localstorage
+  getUsers() {
+    this.userService.getUsers().subscribe(res => {
+      this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+    });
+  }
+  getDepartments() {
+    this.departmentService.getDepartment().subscribe(res => {
+      this.departments = res;
+    });
+  }
   getPerson() {
     this.aRoute.paramMap.subscribe(params => {
-    let id = Number(params.get('id'))
-    this.personService.getPersonById(id).subscribe(res => {
-      this.person = res;
-      this.shownFiles = res.files;
-      this.setBackupValues(this.person);
-      this.departmentService.getDepartment().subscribe(res => {
-        this.departments = res;
+      let id = Number(params.get('id'))
+      this.personService.getPersonById(id).subscribe(res => {
+        this.person = res;
+        this.shownFiles = res.files;
+        this.setBackupValues(this.person);
       });
-      this.locationService.getLocations().subscribe(res => {
-        this.locations = res;
-      });
-      this.userService.getUsers().subscribe(res => {
-        this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
-        this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
-      });
-    })
-  })
+    });
   }
 
   onSubmit() {
@@ -187,4 +196,15 @@ export class EmployeeProfileComponent {
       this.shownFiles = tempList;
     });    
   }
+
+  openAddPersonModulePopup(){
+    this.dialog.open(AddPersonmodulePopupComponent,{
+      data: {
+        person: this.person,
+      },
+      disableClose: false,
+      height: '40%',
+      width: '25%'
+    });
+    }
 }
