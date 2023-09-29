@@ -146,18 +146,41 @@
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'module')">
                             <tr>
-                                <th mat-sort-header="name">
-                                    Navn
+                                <th mat-sort-header="personName">
+                                    Person Navn
                                 </th>
-                                <th mat-sort-header="name">
-                                    Navn
+                                <th mat-sort-header="initials">
+                                    Initialer
                                 </th>
-                                <th mat-sort-header="name">
-                                    Navn
+                                <th mat-sort-header="moduleName">
+                                    Modul Navn
+                                </th>
+                                <th mat-sort-header="status">
+                                    Status
+                                </th>
+                                <th mat-sort-header="moduleType">
+                                    Modul Type
+                                </th>
+                                <th mat-sort-header="startDate">
+                                    Start Dato
+                                </th>
+                                <th mat-sort-header="endDate">
+                                    Slut Dato
                                 </th>
                             </tr>
-                            <tr *ngFor="let module of modules, let i = index" (click)="moduleSelecter(i)">
-                                <td>{{module.name}}</td>
+                            <tr *ngFor="let personModule of personModules, let i = index"
+                                (click)="personModuleSelecter(i)">
+                                <td>{{personModule.person.name}}</td>
+                                <td>{{personModule.person.initials}}</td>
+                                <td>{{personModule.module.name}}</td>
+                                <td>{{status[personModule.status]}}</td>
+                                <td>{{moduleType[personModule.moduleType]}}</td>
+                                <td>
+                                    <p>{{personModule.startDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                                <td>
+                                    <p>{{personModule.endDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -308,27 +331,44 @@
                     <label>Beskrivelse: </label>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
-                </div>                
+                </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
                 <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personModuleForm')">
-            <form class="form" #moduleForm="ngForm" (ngSubmit)="editPersonModule()">
+            <form class="form" #personModuleForm="ngForm" (ngSubmit)="editPersonModule()">
                 <div>
-                    <label>Navn: </label>
-                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                    <label>Person Navn: </label>
+                    <input type="text" [(ngModel)]="personModule.person.name" id="personName" name="personName"
+                        #personName="ngModel" required disabled="true">
                 </div>
                 <div>
-                    <label>Beskrivelse: </label>
-                    <input type="text" [(ngModel)]="module.description" id="description" name="description"
-                        #description="ngModel" required>
+                    <label>Initialer: </label>
+                    <input type="text" [(ngModel)]="personModule.person.initials" id="initials" name="initials"
+                        #initials="ngModel" required disabled="true">
+                </div>
+                <div>
+                    <label>Modul Navn: </label>
+                    <input type="text" [(ngModel)]="personModule.module.name" id="moduleName" name="moduleName"
+                        #moduleName="ngModel" required disabled="true">
+                </div>                
+                <div>
+                    <label>Status:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Status</mat-label>
+                        <mat-select [(ngModel)]="personModule.status" name="status" #personModuleForm="ngModel">
+                            <mat-option *ngFor="let status of status; let i = index" [value]="i">
+                                {{status}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div>
                     <label>Modul Type:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="personModule.moduleType" name="moduleType" #userForm="ngModel">
+                        <mat-select [(ngModel)]="personModule.moduleType" name="moduleType" #personModuleForm="ngModel">
                             <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
                                 {{type}}
                             </mat-option>
@@ -347,7 +387,7 @@
                 </div>
                 <div>
                     <label>Initialer: </label>
-                    <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel"
+                    <input type="text" [(ngModel)]="person.initials" id="initials" name="initials" #initials="ngModel"
                         required>
                 </div>
                 <div>

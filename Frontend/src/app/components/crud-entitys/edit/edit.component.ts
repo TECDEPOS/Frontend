@@ -24,6 +24,7 @@ import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswor
 import { Sort } from '@angular/material/sort';
 import { PersonModule } from 'src/app/Models/PersonModule';
 import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { Status } from 'src/app/Models/status';
 
 
 @Component({
@@ -68,6 +69,9 @@ export class EditComponent extends Unsub {
   moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
 
+  status: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
+    .filter(key => !isNaN(Number(UserRole[key])));
+
   userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
     .filter(key => !isNaN(Number(UserRole[key])));
 
@@ -78,7 +82,7 @@ export class EditComponent extends Unsub {
     private fileTagService: FileTagService,
     private locationService: LocationsService,
     private moduelService: ModuleService,
-    private personModuleService: PersonModuleService, 
+    private personModuleService: PersonModuleService,
     private personService: PersonsService,
     private userService: UserService
   ) {
@@ -137,6 +141,9 @@ export class EditComponent extends Unsub {
       }
       else if (this.activeList == 'moduleList') {
         this.getModules();
+      }
+      else if (this.activeList == 'personModuleList') {
+        this.getPersonModules();
       }
       else if (this.activeList == 'personList') {
         this.getPersons();
@@ -224,13 +231,13 @@ export class EditComponent extends Unsub {
               return this.compare(a.person.initials.toLocaleLowerCase(), b.person.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
             case 'moduleName':
               return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-            case '':
+            case 'status':
               return this.compare(a.status, b.status) * (sort.direction == 'asc' ? 1 : -1);
-            case '':
+            case 'moduleType':
               return this.compare(a.moduleType, b.moduleType) * (sort.direction == 'asc' ? 1 : -1);
-            case '':
+            case 'startDate':
               return this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
-            case '':
+            case 'endDate':
               return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
             default:
               return 0;
@@ -287,19 +294,19 @@ export class EditComponent extends Unsub {
   }
 
   getBooks() {
-    this.bookService.getBook().subscribe(res => {
+    this.bookService.getBook().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.books = res;
     })
   }
 
   getDepartments() {
-    this.departmentService.getDepartment().subscribe(res => {
+    this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
     })
   }
 
   getFileTags() {
-    this.fileTagService.getFileTag().subscribe(res => {
+    this.fileTagService.getFileTag().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags = res;
       console.log(res);
 
@@ -307,44 +314,45 @@ export class EditComponent extends Unsub {
   }
 
   getLocations() {
-    this.locationService.getLocations().subscribe(res => {
+    this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
     })
   }
 
   getModules() {
-    this.moduelService.getModule().subscribe(res => {
+    this.moduelService.getModule().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
     })
   }
 
   getPersonModules() {
-    // this.personModuleService()
-  }
-
-  getPersons() {
-    this.personService.getPersons().subscribe(res => {
-      this.persons = res;
+    this.personModuleService.getAllPersonModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.personModules = res;
       console.log(res);
-
 
     })
   }
 
+  getPersons() {
+    this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.persons = res;
+    })
+  }
+
   getUsers() {
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users = res;
     })
   }
 
   getForPerson() {
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
-      this.departmentService.getDepartment().subscribe(res => {
+      this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.departments = res;
       });
-      this.locationService.getLocations().subscribe(res => {
+      this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.locations = res;
       });
     });
@@ -376,6 +384,13 @@ export class EditComponent extends Unsub {
     this.toggleForm('moduleForm', i)
   }
 
+  personModuleSelecter(i: number) {
+    this.personModule = JSON.parse(JSON.stringify(this.personModules[i]));
+    console.log(this.personModule);
+
+    this.toggleForm('personModuleForm', i)
+  }
+
   personSelecter(i: number) {
     this.person = JSON.parse(JSON.stringify(this.persons[i]));
     this.getForPerson();
@@ -388,39 +403,39 @@ export class EditComponent extends Unsub {
   }
 
   editBook() {
-    this.bookService.updateBook(this.book).subscribe(res => { })
+    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editDepartment() {
-    this.departmentService.updateDepartment(this.department).subscribe(res => { })
+    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).subscribe(res => { })
+    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).subscribe(res => { })
+    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).subscribe(res => { })
+    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editPersonModule() {
-
+    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editPerson() {
-    this.personService.updatePerson(this.person).subscribe(res => { })
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   editUser() {
-    this.userService.updateUser(this.user).subscribe(res => { })
+    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   resetPassword(id: number) {
-    this.authService.resetPassword(id).subscribe(res => { })
+    this.authService.resetPassword(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   cancel() {
