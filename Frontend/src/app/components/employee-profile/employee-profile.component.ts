@@ -16,6 +16,8 @@ import { File } from 'src/app/Models/File';
 import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 import { ModuleType } from 'src/app/Models/ModuleType';
 import { Status } from 'src/app/Models/status';
+import { PersonModule } from 'src/app/Models/PersonModule';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-employee-profile',
@@ -34,6 +36,10 @@ export class EmployeeProfileComponent {
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
+
+  currentModules: PersonModule[] = [];
+  futureModules: PersonModule[] = [];
+  completedModules: PersonModule[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
@@ -69,9 +75,19 @@ export class EmployeeProfileComponent {
         this.shownFiles = res.files;
         console.log(this.person.personModules);
         
+        this.setPersonModules();
         this.setBackupValues(this.person);
       });
     });
+  }
+
+  setPersonModules(){
+    let todaysDate = moment().utc();
+    this.currentModules = this.person.personModules.filter(x => moment(todaysDate).isAfter(x.startDate) && moment(x.endDate).isAfter(todaysDate));
+    this.futureModules = this.person.personModules.filter(x => moment(x.startDate).isAfter(todaysDate) && moment(x.endDate).isAfter(todaysDate));
+    this.completedModules = this.person.personModules.filter(x => moment(todaysDate).isAfter(x.startDate) && moment(todaysDate).isAfter(x.endDate));
+    console.log('currentModules',this.currentModules);
+    
   }
 
   onSubmit() {
