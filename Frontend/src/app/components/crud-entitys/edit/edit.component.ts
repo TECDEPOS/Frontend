@@ -121,16 +121,16 @@ export class EditComponent extends Unsub {
     return this.activeForm === formName;
   }
 
-  toggleList(formName: string) {
-    if (this.activeList === formName) {
+  toggleList(listName: string) {
+    if (this.activeList === listName) {
       this.activeList = null
     }
-    else {
-      this.activeList = formName
+    else {      
+      this.activeList = listName
       if (this.activeList == 'bookList') {
         this.getBooks();
       }
-      else if (this.activeList == 'depertmentList') {
+      else if (this.activeList == 'departmentList') {
         this.getDepartments();
       }
       else if (this.activeList == 'fileTagList') {
@@ -279,7 +279,6 @@ export class EditComponent extends Unsub {
       default:
         return 0;
     }
-
   }
 
   compare(itemA: any, itemB: any): number {
@@ -302,6 +301,8 @@ export class EditComponent extends Unsub {
   getDepartments() {
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
+      console.log(this.departments);
+
     })
   }
 
@@ -366,39 +367,44 @@ export class EditComponent extends Unsub {
 
   departmentSelecter(i: number) {
     this.department = JSON.parse(JSON.stringify(this.departments[i]));
+    this.backup = JSON.parse(JSON.stringify(this.departments[i]));
     this.toggleForm('departmentForm', i)
   }
 
   fileTagSelecter(i: number) {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
+    this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.toggleForm('fileTagForm', i)
   }
 
   locationSelecter(i: number) {
     this.location = JSON.parse(JSON.stringify(this.locations[i]));
+    this.backup = JSON.parse(JSON.stringify(this.locations[i]));
     this.toggleForm('locationForm', i)
   }
 
   moduleSelecter(i: number) {
     this.module = JSON.parse(JSON.stringify(this.modules[i]));
+    this.backup = JSON.parse(JSON.stringify(this.modules[i]));
     this.toggleForm('moduleForm', i)
   }
 
   personModuleSelecter(i: number) {
     this.personModule = JSON.parse(JSON.stringify(this.personModules[i]));
-    console.log(this.personModule);
-
+    this.backup = JSON.parse(JSON.stringify(this.personModules[i]));
     this.toggleForm('personModuleForm', i)
   }
 
   personSelecter(i: number) {
     this.person = JSON.parse(JSON.stringify(this.persons[i]));
+    this.backup = JSON.parse(JSON.stringify(this.persons[i]));
     this.getForPerson();
     this.toggleForm('personForm', i)
   }
 
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
+    this.backup = JSON.parse(JSON.stringify(this.users[i]));
     this.toggleForm('userForm', i)
   }
 
@@ -431,6 +437,8 @@ export class EditComponent extends Unsub {
   }
 
   editUser() {
+    console.log('2');
+    
     this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
@@ -438,8 +446,27 @@ export class EditComponent extends Unsub {
     this.authService.resetPassword(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
-  cancel() {
-    this.book = JSON.parse(JSON.stringify(this.backup));
-    console.log(this.book);
+  cancel(type: string) {
+    switch (type) {
+      case 'book':
+        return this.book = this.backup;
+      case 'department':
+        return this.department = this.backup;
+      case 'fileTag':
+        return this.fileTag = this.backup;
+      case 'location':
+        return this.location = this.backup;
+      case 'module':
+        return this.module = this.backup;
+      case 'personModule':
+        return this.personModule = this.backup;
+      case 'person':
+        return this.person = this.backup;
+      case 'user':
+        return this.user = this.backup;
+      case '':
+      default:
+        return 0;
+    }
   }
 }

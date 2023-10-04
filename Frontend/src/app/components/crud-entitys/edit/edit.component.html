@@ -3,29 +3,20 @@
         <div>
             <div class="picker" (click)="toggleList('departmentList')">Afdeling</div>
             <div *ngIf="isListActive('departmentList')" class="List">
-                <div *ngFor="let department of departments">
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="picker" (click)="toggleList('bookList')">Bøger</div>
-            <div class="table" *ngIf="isListActive('bookList')">
-                <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true"
-                        (matSortChange)="sortData($event, 'book')">
-                        <tr>
-                            <th mat-sort-header="BookName">
-                                Navn
-                            </th>
-                            <th mat-sort-header="Amaunt">
-                                Mængde
-                            </th>
-                        </tr>
-                        <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
-                            <td>{{book.name}}</td>
-                            <td>{{book.amount}}</td>
-                        </tr>
-                    </table>
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'location')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                            </tr>
+                            <tr *ngFor="let department of departments, let i = index" (click)="departmentSelecter(i)">
+                                <td>{{department.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,6 +48,28 @@
                 </div>
             </div>
         </div>
+        <div>
+            <div class="picker" (click)="toggleList('bookList')">Bøger</div>
+            <div class="table" *ngIf="isListActive('bookList')">
+                <div class="TableForPeople">
+                    <table class="TableBox" matSort [matSortDisableClear]="true"
+                        (matSortChange)="sortData($event, 'book')">
+                        <tr>
+                            <th mat-sort-header="BookName">
+                                Navn
+                            </th>
+                            <th mat-sort-header="Amaunt">
+                                Mængde
+                            </th>
+                        </tr>
+                        <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
+                            <td>{{book.name}}</td>
+                            <td>{{book.amount}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>        
         <div>
             <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
@@ -236,6 +249,7 @@
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
+                <button (click)="cancel('department')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
@@ -261,7 +275,7 @@
                     </mat-form-field>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('user')" mat-raised-button color="primary">Cancel</button>
                 <button style="float: right;" (click)="resetPassword(user.userId)">Reset Password</button>
             </form>
         </div>
@@ -276,7 +290,7 @@
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('book')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
@@ -308,7 +322,7 @@
                     </div>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('fileTag')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
@@ -318,7 +332,7 @@
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('location')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('moduleForm')">
@@ -333,7 +347,7 @@
                         #description="ngModel" required>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('module')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personModuleForm')">
@@ -376,7 +390,7 @@
                     </mat-form-field>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('personModule')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personForm')">
@@ -468,7 +482,7 @@
                     </div>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Save</button>
-                <button (click)="cancel()" mat-raised-button color="primary">Cancel</button>
+                <button (click)="cancel('person')" mat-raised-button color="primary">Cancel</button>
             </form>
         </div>
     </div>
