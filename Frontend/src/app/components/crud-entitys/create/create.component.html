@@ -1,5 +1,5 @@
-<div class="grid">
-    <span class="box">
+<div class="grid" style="overflow: auto;">
+    <span class="innerBox">
         <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
@@ -11,7 +11,8 @@
                 </div>
             </form>
         </div>
-        <div>
+        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div>
@@ -57,8 +58,30 @@
                 <div>
                     <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
-                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
+                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>
+                    <label>Drift Koordinator:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
+                            #dKVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Human Resources:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
+                            #hRVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
+                            #pKVisability="ngModel">
+                    </div>
+                </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div>
@@ -76,126 +99,112 @@
             <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
             <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="createModule()">
                 <div>
-                    <label>Navn: </label><p>&ensp;</p>
-                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
                     <label>Beskrivelse: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
                 </div>
-                <div>
-                    <label>Modul Type:</label><p>&ensp;</p>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="module.moduleType" name="moduleType" #userForm="ngModel">
-                            <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
-                                {{type}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('personForm')">Person</div>
-            <div>
-                <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="createPerson()">
-                    <div>
-                        <label>Navn: </label><p>&ensp;</p>
-                        <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+            <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="createPerson()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>
+                    <label>Initialer: </label>
+                    <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel"
+                        required>
+                </div>
+                <div>
+                    <label>Afdeling:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.departmentId">Vælg afdeling:</mat-label>
+                        <mat-select [(ngModel)]="person.departmentId" name="departmentId" #departmentId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                {{department.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Lokation:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.locationId">Vælg lokation:</mat-label>
+                        <mat-select [(ngModel)]="person.locationId" name="locationId" #locationId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let location of locations" [value]="location.locationId">
+                                {{location.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.educationalConsultantUserId">Vælg konsulent</mat-label>
+                        <mat-select [(ngModel)]="person.educationalConsultantUserId" name="educationalConsultantUserId"
+                            #educationalConsultantUserId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant.userId">
+                                {{consultant.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Driftskoordinator:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.operationCoordinatorUserId">Vælg Driftskoordinator</mat-label>
+                        <mat-select [(ngModel)]="person.operationCoordinatorUserId" name="operationCoordinatorUserId"
+                            #operationCoordinatorUserId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator.userId">
+                                {{coordinator.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Start Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Slut Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
+                            name="endDate" #endDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>SVU Berettiget:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
+                            #svuEligible="ngModel">
                     </div>
-                    <div>
-                        <label>Initialer: <p>&ensp;</p></label>
-                        <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel"
-                            required>
-                    </div>
-                    <div>
-                        <label>Afdeling:</label><p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                            <mat-label *ngIf="!person.departmentId">Vælg afdeling:</mat-label>
-                            <mat-select [(ngModel)]="person.departmentId" name="departmentId" #departmentId="ngModel">
-                                <mat-option [value]="null">- Ingen -</mat-option>
-                                <mat-option *ngFor="let department of departments" [value]="department.departmentId">
-                                    {{department.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>Lokation:</label><p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                            <mat-label *ngIf="!person.locationId">Vælg lokation:</mat-label>
-                            <mat-select [(ngModel)]="person.locationId" name="locationId" #locationId="ngModel">
-                                <mat-option [value]="null">- Ingen -</mat-option>
-                                <mat-option *ngFor="let location of locations" [value]="location.locationId">
-                                    {{location.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>Pædagogisk konsulent:</label><p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                            <mat-label *ngIf="!person.educationalConsultantUserId">Vælg konsulent</mat-label>
-                            <mat-select [(ngModel)]="person.educationalConsultantUserId" name="educationalConsultantUserId"
-                                #educationalConsultantUserId="ngModel">
-                                <mat-option [value]="null">- Ingen -</mat-option>
-                                <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant.userId">
-                                    {{consultant.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>Driftskoordinator:</label><p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                            <mat-label *ngIf="!person.operationCoordinatorUserId">Vælg Driftskoordinator</mat-label>
-                            <mat-select [(ngModel)]="person.operationCoordinatorUserId" name="operationCoordinatorUserId"
-                                #operationCoordinatorUserId="ngModel">
-                                <mat-option [value]="null">- Ingen -</mat-option>
-                                <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator.userId">
-                                    {{coordinator.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>Ansættelses Dato:</label><p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                            <mat-label>Vælg en dato</mat-label>
-                            <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDatePicker"
-                                name="hiringDate" #hiringDate="ngModel">
-                            <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>Slut Dato:</label> <p>&ensp;</p>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                            <!-- <mat-label>Vælg en dato</mat-label> -->
-                            <input matInput [matDatepicker]="endDatePicker" readonly [(ngModel)]="person.endDate" id="endDatePicker"
-                                name="endDate" #endDate="ngModel">
-                            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker" disabled></mat-datepicker-toggle>
-                            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <label>SVU Berettiget:</label><p>&ensp;</p>
-                        <div class="checkbox">
-                            <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
-                                #svuEligible="ngModel">
-                        </div>
-                    </div>
-                    <div>
-                        <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+            </form>
         </div>
     </span>
-    <div class="box">
+    <div class="innerBox">
         Nylig opretet personer
         <div *ngFor="let created of resentlyCreated">
             <div (click)="personPicker(created.personId)" class="picker">

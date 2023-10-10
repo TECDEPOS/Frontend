@@ -1,17 +1,60 @@
 <div class="grid">
-    <div class="box">
+    <div class="innerBox">
         <div>
             <div class="picker" (click)="toggleList('departmentList')">Afdeling</div>
             <div *ngIf="isListActive('departmentList')" class="List">
-                <div *ngFor="let department of departments">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'location')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                            </tr>
+                            <tr *ngFor="let department of departments, let i = index" (click)="departmentSelecter(i)">
+                                <td>{{department.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        || this.role === 'Drift_Koordinator_Admin'">
+            <div class="picker" (click)="toggleList('userList')">Bruger</div>
+            <div *ngIf="isListActive('userList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'user')">
+                            <tr>
+                                <th mat-sort-header="username">
+                                    Brugernavn
+                                </th>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="userRole">
+                                    Bruger role
+                                </th>
+                            </tr>
+                            <tr *ngFor="let user of users, let i = index" (click)="userSelecter(i)">
+                                <td>{{user.userName}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{userRole[user.userRole]}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <div class="picker" (click)="toggleList('bookList')">Bøger</div>
-            <div class="table" *ngIf="isListActive('bookList')"> 
+            <div class="table" *ngIf="isListActive('bookList')">
                 <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                    <table class="TableBox" matSort [matSortDisableClear]="true"
+                        (matSortChange)="sortData($event, 'book')">
                         <tr>
                             <th mat-sort-header="BookName">
                                 Navn
@@ -20,95 +63,428 @@
                                 Mængde
                             </th>
                         </tr>
-                        <tr *ngFor="let book of books" (click)="bookSelecter(book.bookId)">
+                        <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
                             <td>{{book.name}}</td>
                             <td>{{book.amount}}</td>
                         </tr>
-                        <!-- <tr *ngFor="let x of showedList">
-                            <td><a href="/employee/{{x.personId}}">{{x.name}}</a></td>
-                            <td *ngIf="x.department">{{x.department.name}}</td>
-                            <td *ngIf="!x.department">-</td>
-                            <td class="End--date">
-                                <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
-                                <div #progress class="Progress" id="{{x.personId}}"></div>
-                            </td>
-                            <td>{{2}}</td>
-                            <td>
-                                <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
-                                <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
-                            </td>
-                        </tr> -->
                     </table>
                 </div>
             </div>
-            <!-- <div *ngIf="isListActive('bookList')" class="List">
-                <div class="table">
-                    <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
-                            <tr>
-                                <th mat-sort-header="BookName">
-                                    Navn
-                                </th>
-                                <th mat-sort-header="Amaunt">
-                                    Mængde
-                                </th>
-                            </tr>
-                            <tr *ngFor="let book of books">
-                                <div (click)="bookSelecter(book.bookId)">
-                                    <td>{{book.name}}</td>
-                                    <td>{{book.amount}}</td>
-                                </div>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-        <div>
-            <div class="picker" (click)="toggleList('userList')">Bruger</div>
-            <div *ngIf="isListActive('userList')" class="List">
-                <div *ngFor="let user of users">
-                </div>
-            </div>
-        </div>
+        </div>        
         <div>
             <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
-                <div *ngFor="let fileTag of fileTags">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'fileTag')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="dKVisability">
+                                    Drift Koordinator Synlighed
+                                </th>
+                                <th mat-sort-header="hRVisability">
+                                    Human Resources Synlighed
+                                </th>
+                                <th mat-sort-header="pKVisability">
+                                    Pædagogisk Konsulent Synlighed
+                                </th>
+                            </tr>
+                            <tr *ngFor="let fileTag of fileTags, let i = index" (click)="fileTagSelecter(i)">
+                                <td>{{fileTag.tagName}}</td>
+                                <td>
+                                    <input *ngIf="fileTag.dkVisability === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.dkVisability === false" type="checkbox" disabled unchecked />
+                                </td>
+                                <td>
+                                    <input *ngIf="fileTag.hrVisability === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.hrVisability === false" type="checkbox" disabled unchecked />
+                                </td>
+                                <td>
+                                    <input *ngIf="fileTag.pkVisability === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.pkVisability === false" type="checkbox" disabled unchecked />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <div class="picker" (click)="toggleList('locationList')">Lokation</div>
             <div *ngIf="isListActive('locationList')" class="List">
-                <div *ngFor="let location of locations">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'location')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                            </tr>
+                            <tr *ngFor="let location of locations, let i = index" (click)="locationSelecter(i)">
+                                <td>{{location.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <div class="picker" (click)="toggleList('moduleList')">Modul</div>
             <div *ngIf="isListActive('moduleList')" class="List">
-                <div *ngFor="let module of modules">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                            </tr>
+                            <tr *ngFor="let module of modules, let i = index" (click)="moduleSelecter(i)">
+                                <td>{{module.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('personModuleList')">Person Modul</div>
+            <div *ngIf="isListActive('personModuleList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="personName">
+                                    Person Navn
+                                </th>
+                                <th mat-sort-header="initials">
+                                    Initialer
+                                </th>
+                                <th mat-sort-header="moduleName">
+                                    Modul Navn
+                                </th>
+                                <th mat-sort-header="status">
+                                    Status
+                                </th>
+                                <th mat-sort-header="moduleType">
+                                    Modul Type
+                                </th>
+                                <th mat-sort-header="startDate">
+                                    Start Dato
+                                </th>
+                                <th mat-sort-header="endDate">
+                                    Slut Dato
+                                </th>
+                            </tr>
+                            <tr *ngFor="let personModule of personModules, let i = index"
+                                (click)="personModuleSelecter(i)">
+                                <td>{{personModule.person.name}}</td>
+                                <td>{{personModule.person.initials}}</td>
+                                <td>{{personModule.module.name}}</td>
+                                <td>{{status[personModule.status]}}</td>
+                                <td>{{moduleType[personModule.moduleType]}}</td>
+                                <td>
+                                    <p>{{personModule.startDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                                <td>
+                                    <p>{{personModule.endDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <div class="picker" (click)="toggleList('personList')">Person</div>
             <div *ngIf="isListActive('personList')" class="List">
-                <div *ngFor="let person of persons">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'person')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                                <th mat-sort-header="initials">
+                                    Initialer
+                                </th>
+                                <th mat-sort-header="department">
+                                    Afdeling
+                                </th>
+                                <th mat-sort-header="location">
+                                    Lokation
+                                </th>
+                                <th mat-sort-header="sVU">
+                                    SVU
+                                </th>
+                            </tr>
+                            <tr *ngFor="let person of persons, let i = index" (click)="personSelecter(i)">
+                                <td>{{person.name}}</td>
+                                <td>{{person.initials}}</td>
+                                <td>{{person.department?.name}}</td>
+                                <td>{{person.location?.name}}</td>
+                                <td>
+                                    <input *ngIf="person.svuEligible === true" type="checkbox" disabled checked />
+                                    <input *ngIf="person.svuEligible === false" type="checkbox" disabled unchecked />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="box">
-        Nylig opretet personer
-        <div *ngFor="let created of resentlyCreated">
-            <div class="picker">
-                <span>
-                    Navn: {{created.name}}
-                    Initialer: {{created.initials}}
-                </span>
-            </div>
+    <div class="innerBox">
+        Rediger
+        <div *ngIf="isFormActive('departmentForm')">
+            <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('department')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('userForm')">
+            <form class="form" #userForm="ngForm" (ngSubmit)="editUser()">
+                <div>
+                    <label>Brugernavn: </label>
+                    <input type="text" [(ngModel)]="user.userName" id="userName" name="userName" #userName="ngModel"
+                        required>
+                </div>
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>
+                    <label>Role:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Brugerrole</mat-label>
+                        <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
+                            <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
+                                {{role}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('user')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Reset Password</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('bookForm')">
+            <form class="form" #bookForm="ngForm" (ngSubmit)="editBook()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>
+                    <label>Mængde: </label>
+                    <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('book')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('fileTagForm')">
+            <form class="form" #fileTagForm="ngForm" (ngSubmit)="editFileTag()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>
+                    <label>Drift Koordinator:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
+                            #dKVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Human Resources:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
+                            #hRVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
+                            #pKVisability="ngModel">
+                    </div>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
+                <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('locationForm')">
+            <form class="form" #locationForm="ngForm" (ngSubmit)="editLocation()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('location')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('moduleForm')">
+            <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>
+                    <label>Beskrivelse: </label>
+                    <input type="text" [(ngModel)]="module.description" id="description" name="description"
+                        #description="ngModel" required>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('module')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('personModuleForm')">
+            <form class="form" #personModuleForm="ngForm" (ngSubmit)="editPersonModule()">
+                <div>
+                    <label>Person Navn: </label>
+                    <input type="text" [(ngModel)]="personModule.person.name" id="personName" name="personName"
+                        #personName="ngModel" required disabled="true">
+                </div>
+                <div>
+                    <label>Initialer: </label>
+                    <input type="text" [(ngModel)]="personModule.person.initials" id="initials" name="initials"
+                        #initials="ngModel" required disabled="true">
+                </div>
+                <div>
+                    <label>Modul Navn: </label>
+                    <input type="text" [(ngModel)]="personModule.module.name" id="moduleName" name="moduleName"
+                        #moduleName="ngModel" required disabled="true">
+                </div>                
+                <div>
+                    <label>Status:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Status</mat-label>
+                        <mat-select [(ngModel)]="personModule.status" name="status" #personModuleForm="ngModel">
+                            <mat-option *ngFor="let status of status; let i = index" [value]="i">
+                                {{status}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Modul Type:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Modul Type</mat-label>
+                        <mat-select [(ngModel)]="personModule.moduleType" name="moduleType" #personModuleForm="ngModel">
+                            <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
+                                {{type}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('personModule')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isFormActive('personForm')">
+            <form class="form" #personForm="ngForm" (ngSubmit)="editPerson()">
+                <div>
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>
+                    <label>Initialer: </label>
+                    <input type="text" [(ngModel)]="person.initials" id="initials" name="initials" #initials="ngModel"
+                        required>
+                </div>
+                <div>
+                    <label>Afdeling:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.departmentId">Vælg afdeling:</mat-label>
+                        <mat-select [(ngModel)]="person.departmentId" name="departmentId" #departmentId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
+                                {{department.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Lokation:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.locationId">Vælg lokation:</mat-label>
+                        <mat-select [(ngModel)]="person.locationId" name="locationId" #locationId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let location of locations" [value]="location.locationId">
+                                {{location.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.educationalConsultantUserId">Vælg konsulent</mat-label>
+                        <mat-select [(ngModel)]="person.educationalConsultantUserId" name="educationalConsultantUserId"
+                            #educationalConsultantUserId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant.userId">
+                                {{consultant.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Driftskoordinator:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.operationCoordinatorUserId">Vælg Driftskoordinator</mat-label>
+                        <mat-select [(ngModel)]="person.operationCoordinatorUserId" name="operationCoordinatorUserId"
+                            #operationCoordinatorUserId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator.userId">
+                                {{coordinator.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Start Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>Slut Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
+                            name="endDate" #endDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label>SVU Berettiget:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
+                            #svuEligible="ngModel">
+                    </div>
+                </div>
+                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button (click)="cancel('person')" mat-raised-button color="primary" type="button">Cancel</button>
+            </form>
         </div>
     </div>
 </div>

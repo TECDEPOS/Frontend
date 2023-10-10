@@ -20,6 +20,9 @@ import { ModuleType } from 'src/app/Models/ModuleType';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { PersonModule } from 'src/app/Models/PersonModule';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-create',
@@ -38,11 +41,12 @@ export class CreateComponent extends Unsub implements OnInit {
   departments: Department[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
+  persons: Person[] = [];
+  resentlyCreated: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
-  resentlyCreated: Person[] = [];
   activeForm: string | null = null
-
+  role: string = '';
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -59,11 +63,12 @@ export class CreateComponent extends Unsub implements OnInit {
     .filter(key => !isNaN(Number(UserRole[key])));
 
   constructor(
+    private authService: AuthService,
     private bookService: BookService,
     private departmentService: DepartmentsService,
     private fileTagService: FileTagService,
     private locationService: LocationsService,
-    private moduelService: ModuleService,
+    private moduleService: ModuleService,
     private personService: PersonsService,
     private userService: UserService,
     private router: Router
@@ -79,6 +84,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
+    this.role = this.authService.getUserRole();
   }
 
   toggleForm(formName: string) {
@@ -87,7 +93,7 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
-      if (this.activeForm == 'moduleForm') {
+      if (this.activeForm == 'moduleForm') {        
         this.getBooks();
       }
       else if (this.activeForm == 'personForm') {
@@ -120,9 +126,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   personPicker(id: number) {
-    console.log(id);
-    
-    this.router.navigate(['/employee/',id])
+    this.router.navigate(['/employee/', id])
   }
 
   created(created: any) {
@@ -131,39 +135,44 @@ export class CreateComponent extends Unsub implements OnInit {
 
   createBook() {
     this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.book = new Book;
     });
   }
 
   createDepartment() {
     this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.department = new Department;
     })
   }
 
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.fileTag = new FileTag;
     })
   }
 
   createLocation() {
     this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.location = new Location;
     })
   }
 
   createModule() {
-    this.moduelService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.moduleService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.module = new Module;
     })
   }
 
   createPerson() {
-    console.log(this.person);
-    
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
+      this.person = new Person;
     })
   }
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.user = new userViewModel;
     })
   }
 }
