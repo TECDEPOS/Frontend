@@ -1,5 +1,5 @@
-<div class="grid">
-    <span class="box">
+<div class="grid" style="overflow: auto;">
+    <span class="innerBox">
         <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
@@ -11,7 +11,8 @@
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
-        <div>
+        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div>
@@ -202,7 +203,7 @@
             </form>
         </div>
     </span>
-    <div class="box">
+    <div class="innerBox">
         Nylig opretet personer
         <div *ngFor="let created of resentlyCreated">
             <div (click)="personPicker(created.personId)" class="picker">

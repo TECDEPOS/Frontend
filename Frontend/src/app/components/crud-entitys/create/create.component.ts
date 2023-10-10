@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { PersonModuleService } from 'src/app/Services/person-module.service';
 import { PersonModule } from 'src/app/Models/PersonModule';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-create',
@@ -45,6 +46,7 @@ export class CreateComponent extends Unsub implements OnInit {
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
   activeForm: string | null = null
+  role: string = '';
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -61,6 +63,7 @@ export class CreateComponent extends Unsub implements OnInit {
     .filter(key => !isNaN(Number(UserRole[key])));
 
   constructor(
+    private authService: AuthService,
     private bookService: BookService,
     private departmentService: DepartmentsService,
     private fileTagService: FileTagService,
@@ -81,6 +84,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
+    this.role = this.authService.getUserRole();
   }
 
   toggleForm(formName: string) {
@@ -89,7 +93,7 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
-      if (this.activeForm == 'moduleForm') {
+      if (this.activeForm == 'moduleForm') {        
         this.getBooks();
       }
       else if (this.activeForm == 'personForm') {
@@ -122,7 +126,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   personPicker(id: number) {
-    this.router.navigate(['/employee/',id])
+    this.router.navigate(['/employee/', id])
   }
 
   created(created: any) {

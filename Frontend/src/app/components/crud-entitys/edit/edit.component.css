@@ -26,13 +26,6 @@
   border: none;
 }
 
-/* .form{
-    height: 100%;
-    grid-area: i;
-    display: grid;
-    border: none;
-} */
-
 input[type=text],
 select {
   width: 70%;
@@ -78,30 +71,42 @@ mat-option {
 
 .grid {
   display: flex;
-  gap: 5px;
+  overflow: auto;
 }
 
-.box:first-child {
-  flex: 70%
+.innerBox:first-child {
+  flex: 70%;
 }
 
-.box:last-child {
-  flex: 30%
+.innerBox:last-child {
+  height: fit-content;
+  flex: 30%;
 }
 
-.box {
+.innerBox {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 10px;
   border: 1px solid #ccc;
   padding: 20px;
-  margin: 10px;
+  margin: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  height: fit-content;
-  place-content: center start;
   max-height: 100%;
+  place-content: center start;
   overflow: auto;
+}
+
+.TableForPeople{ 
+  border-radius: 5px;
+  box-shadow: 0 1px 3px 3px #888;
+  max-height: 100%;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  position: relative;
+  outline: 1px solid black;
+  overflow-y: auto;
 }
 
 .picker {
@@ -142,7 +147,6 @@ mat-option {
   max-height: 100%;
   height: 100%;
   width: 100%;
-  /* margin: 0px 2.5%; */
   overflow: auto;
   position: relative;
   outline: 1px solid black;

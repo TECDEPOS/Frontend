@@ -41,6 +41,7 @@ export class EditComponent extends Unsub {
   personModule: PersonModule = new PersonModule;
   person: Person = new Person;
   user: User = new User;
+  change: changePasswordViewModel = new changePasswordViewModel;
   books: Book[] = [];
   departments: Department[] = [];
   fileTags: FileTag[] = [];
@@ -55,6 +56,7 @@ export class EditComponent extends Unsub {
   activeForm: string | null = null
   activeFormIndex: number | null = null
   activeList: string | null = null
+  role: string= '';
   backup: any;
 
   bookForm: FormGroup;
@@ -98,7 +100,9 @@ export class EditComponent extends Unsub {
   }
 
   ngOnInit() {
+    this.role = this.authService.getUserRole();
   }
+
 
   toggleForm(formName: string, i: number) {
     if (this.activeForm === formName && this.activeFormIndex === i) {
@@ -125,7 +129,7 @@ export class EditComponent extends Unsub {
     if (this.activeList === listName) {
       this.activeList = null
     }
-    else {      
+    else {
       this.activeList = listName
       if (this.activeList == 'bookList') {
         this.getBooks();
@@ -301,16 +305,12 @@ export class EditComponent extends Unsub {
   getDepartments() {
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
-      console.log(this.departments);
-
     })
   }
 
   getFileTags() {
     this.fileTagService.getFileTag().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags = res;
-      console.log(res);
-
     })
   }
 
@@ -329,8 +329,6 @@ export class EditComponent extends Unsub {
   getPersonModules() {
     this.personModuleService.getAllPersonModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.personModules = res;
-      console.log(res);
-
     })
   }
 
@@ -437,33 +435,32 @@ export class EditComponent extends Unsub {
   }
 
   editUser() {
-    console.log('2');
-    
     this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   resetPassword(id: number) {
-    this.authService.resetPassword(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.change.userId = id
+    this.authService.resetPassword(this.change).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
   cancel(type: string) {
     switch (type) {
       case 'book':
-        return this.book = this.backup;
+        return this.book = JSON.parse(JSON.stringify(this.backup));
       case 'department':
-        return this.department = this.backup;
+        return this.department = JSON.parse(JSON.stringify(this.backup));
       case 'fileTag':
-        return this.fileTag = this.backup;
+        return this.fileTag = JSON.parse(JSON.stringify(this.backup));
       case 'location':
-        return this.location = this.backup;
+        return this.location = JSON.parse(JSON.stringify(this.backup));
       case 'module':
-        return this.module = this.backup;
+        return this.module = JSON.parse(JSON.stringify(this.backup));
       case 'personModule':
-        return this.personModule = this.backup;
+        return this.personModule = JSON.parse(JSON.stringify(this.backup));
       case 'person':
-        return this.person = this.backup;
+        return this.person = JSON.parse(JSON.stringify(this.backup));
       case 'user':
-        return this.user = this.backup;
+        return this.user = JSON.parse(JSON.stringify(this.backup));
       case '':
       default:
         return 0;

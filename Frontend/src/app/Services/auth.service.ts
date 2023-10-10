@@ -31,7 +31,7 @@ export class AuthService {
     return this.http.put<boolean>(this.baseApiUrl + this.extendedApiUrl + 'changepassword', viewModel)
   }
 
-  resetPassword(id: number): Observable<boolean>{
+  resetPassword(id: changePasswordViewModel): Observable<boolean>{
     return this.http.put<boolean>(this.baseApiUrl + this.extendedApiUrl + 'resetpassword/', id)
   }
 
@@ -73,5 +73,11 @@ export class AuthService {
     var decoded: any = jwt_decode(token) 
     localStorage.setItem('userRole', decoded['role'])
     return (decoded['userRole']);    
+  }
+
+  getUserRole(): string{
+    let token = localStorage.getItem('jwt')!;
+    var decoded: any = jwt_decode(token)
+    return (decoded['role']);    
   }
 }
