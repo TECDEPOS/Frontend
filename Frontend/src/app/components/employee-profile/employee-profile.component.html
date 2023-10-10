@@ -25,7 +25,7 @@
                 <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
 
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
+                <mat-label *ngIf="!person.department || person.department.name === ''">Vælg afdeling:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
                   <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let department of departments" [value]="department">
@@ -35,7 +35,7 @@
               </mat-form-field>
 
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
+                <mat-label *ngIf="!person.location || person.location.name === ''">Vælg lokation:</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
                   <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let location of locations" [value]="location">
@@ -45,7 +45,7 @@
               </mat-form-field>
 
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
+                <mat-label *ngIf="!person.educationalConsultant || person.educationalConsultant.name === ''">Vælg konsulent</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
                   <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
@@ -55,7 +55,7 @@
               </mat-form-field>
 
             <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
+                <mat-label *ngIf="!person.operationCoordinator || person.operationCoordinator.name === ''">Vælg Driftskoordinator</mat-label>
                 <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
                   <mat-option [value]="null">- Ingen -</mat-option>
                   <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">

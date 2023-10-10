@@ -13,6 +13,21 @@
     padding-left: 10px;
 }
 
+button{
+
+  height: 40px;
+  width: 80px;
+  background-color: #006E8C;
+  color: white;
+  border: none;
+  font-weight: 900;
+}
+
+button:hover{
+  background-color: #005f79;
+  cursor: pointer;
+}
+
 .header{
     grid-area: h;
 }
@@ -102,7 +117,15 @@ input[type=text], select {
     max-height: 90%;
     overflow: auto;
   }
-  
+  .Test{
+    position: relative;
+    background-color: #fff;
+    /* padding: 20px; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
   .picker {
     cursor: pointer;
     background-color: #f0f0f0;
@@ -115,8 +138,9 @@ input[type=text], select {
   }
  
   .form {
+    position: relative;
     background-color: #fff;
-    padding: 20px;
+    /* padding: 20px; */
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

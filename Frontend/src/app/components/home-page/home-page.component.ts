@@ -1,14 +1,8 @@
-import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { AuthService } from 'src/app/Services/auth.service';
-import { UserService } from 'src/app/Services/user.service'; 
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { Person } from 'src/app/Models/Person';
 import { DepartmentsService } from 'src/app/Services/departments.service';
 import { Department } from 'src/app/Models/Department';
-import { elementAt } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Sort } from '@angular/material/sort';
 
 @Component({
@@ -20,14 +14,15 @@ export class HomePageComponent {
   department: Department[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
-  // completedModules: number = 0;
+  completedModules: number = 0;
   pickedDepartment: string = "";
   searchName: string = "";
   alle: string = "";
-  searchDepartment: any = ""
+  searchDepartment: any = "";
+
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
 
-  constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private renderer: Renderer2) { }
+  constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
   
   ngOnInit(): void{
     this.getTableData()
@@ -37,7 +32,6 @@ export class HomePageComponent {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
       this.modulesCompleted()
-      console.log(this.Hired);
     })
   }
 
@@ -54,19 +48,23 @@ export class HomePageComponent {
 
       if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
         inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
-
       }
       else{
         inProcent = 100
       }
+
+      if(objec === undefined){
+        return 
+      }
+
       objec!.nativeElement.style.width = inProcent + "%"
       if( inProcent < 75){
         objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
       }
-      if( inProcent > 75 && inProcent < 90){
+      else if( inProcent > 75 && inProcent < 90){
         objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
       }
-      if (inProcent > 90){
+      else if (inProcent > 90){
         objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
       }
     });
@@ -83,34 +81,57 @@ export class HomePageComponent {
   getTableData(){
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
+      this.Hired.forEach(element => {
+        element.completedModules = this.modulesCompletedMethod(element)
+      });
+      
       this.showedList = this.Hired
       this.getDepartmentData()
       this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
       this.showedList = this.Hired
+      console.log(this.showedList);
+      
     })
+  }
+
+  modulesCompletedMethod(x: Person){    
+    return  x.personModules.filter(x => x.status === 3).length 
   }
 
   onDepartmentQueryInput(event: any){    
     let personList: Person[] = []
-    this.Hired.forEach(element => {
-      if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
+    //Returns all, even null
+    if(event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == ""){
+      this.showedList = this.Hired
+      this.searchDepartment = event.value;
+      return
+    }
+    //Checks for what matches with the department and name
+    this.Hired.forEach(element => {     
+      if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)){
         personList.push(element);
       }
-      this.showedList = personList
-      this.searchDepartment = event.value;
     })
+    this.showedList = personList
+    this.searchDepartment = event.value;
   }
 
-  onSearchQueryInput(event: Event){
+  onSearchQueryInput(event: any){
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let personList: Person[] = []
+    if( searchQuery.toLocaleLowerCase() === "" && this.searchDepartment === ""){
+      this.showedList = this.Hired
+      this.searchName = searchQuery
+      return
+    }
+
     this.Hired.forEach(element => {
       if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())){
           personList.push(element);
-          console.log("Afdeling");      
       }
-      this.showedList = personList    
-    });    
+    });
+    this.showedList = personList     
+    this.searchName = searchQuery;
   }
 
   sortData(sort: Sort) {
@@ -118,17 +139,19 @@ export class HomePageComponent {
       return;
     }
 
-    this.Hired = this.Hired.sort((a, b) => {
+    this.showedList = this.showedList.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'HiredName':
-          return this.compare(a.name, b.name) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredDepartment':
-          return this.compare(a.department?.name, b.department?.name) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.department?.name.toLocaleLowerCase(), b.department?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
           return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredSVU':
           return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
+        case 'HiredModules':
+          return this.compare(a.personModules.filter(x => x.status === 3).length, b.personModules.filter(x => x.status === 3).length)  * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }
@@ -138,14 +161,13 @@ export class HomePageComponent {
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
       if (itemA && itemB) {
-        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
-        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+        if (itemA > itemB) retVal = 1;
+        else if (itemA < itemB) retVal = -1;
       }
       else if (itemA) retVal = 1;
       else if (itemB) retVal = -1;
       return retVal;
   }
-
 
   progressBarDummy(i: number): void{
     let objec = this.progress.find(x => x.nativeElement.id == i);

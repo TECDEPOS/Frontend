@@ -17,19 +17,19 @@
         <div class="TableForPeople">
             <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
                 <tr>
-                    <th mat-sort-header="HiredName">
+                    <th mat-sort-header="HiredName" style="min-width: 39.5%;">
                         Navn 
                     </th>
-                    <th mat-sort-header="HiredDepartment">
+                    <th mat-sort-header="HiredDepartment" style="min-width: 21.5%;">
                         Afdeling 
                     </th> 
-                    <th mat-sort-header="HiredEndDate">
+                    <th mat-sort-header="HiredEndDate" style="min-width: 12%;">
                         Slut dato 
                     </th>
-                    <th mat-sort-header="HiredModules">
+                    <th mat-sort-header="HiredModules" style="min-width: 20.20%;">
                         Færdig moduler 
                     </th>
-                    <th mat-sort-header="HiredSVU">
+                    <th mat-sort-header="HiredSVU" style="min-width: 6.80%;">
                         SVU 
                     </th>
                 </tr>
@@ -41,7 +41,8 @@
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
                         <div #progress class="Progress" id="{{x.personId}}"></div>
                     </td>
-                    <td>{{2}}</td>
+                    <td>{{x.completedModules}}</td> 
+               
                     <td>
                         <!-- <button (click)="lalala(x.personId)">Press me!</button> -->
                         <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />

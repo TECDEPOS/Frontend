@@ -16,7 +16,6 @@ export class Person{
     endDate: Date = new Date;
     svuEligible: boolean = false;
 
-    // completedModules: number = 0;
   
     educationalConsultant: User = new User;
     operationCoordinator: User = new User;
@@ -24,4 +23,6 @@ export class Person{
     location?: Location = new Location;
     files: File[] = [];
     personModules: PersonModule[] = [];
+
+    completedModules: number = 1;
 }
