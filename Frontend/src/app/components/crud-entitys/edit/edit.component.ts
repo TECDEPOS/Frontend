@@ -41,6 +41,7 @@ export class EditComponent extends Unsub {
   personModule: PersonModule = new PersonModule;
   person: Person = new Person;
   user: User = new User;
+  change: changePasswordViewModel = new changePasswordViewModel;
   books: Book[] = [];
   departments: Department[] = [];
   fileTags: FileTag[] = [];
@@ -55,6 +56,7 @@ export class EditComponent extends Unsub {
   activeForm: string | null = null
   activeFormIndex: number | null = null
   activeList: string | null = null
+  role: string= '';
   backup: any;
 
   bookForm: FormGroup;
@@ -98,7 +100,9 @@ export class EditComponent extends Unsub {
   }
 
   ngOnInit() {
+    this.role = this.authService.getUserRole();
   }
+
 
   toggleForm(formName: string, i: number) {
     if (this.activeForm === formName && this.activeFormIndex === i) {
@@ -121,16 +125,16 @@ export class EditComponent extends Unsub {
     return this.activeForm === formName;
   }
 
-  toggleList(formName: string) {
-    if (this.activeList === formName) {
+  toggleList(listName: string) {
+    if (this.activeList === listName) {
       this.activeList = null
     }
     else {
-      this.activeList = formName
+      this.activeList = listName
       if (this.activeList == 'bookList') {
         this.getBooks();
       }
-      else if (this.activeList == 'depertmentList') {
+      else if (this.activeList == 'departmentList') {
         this.getDepartments();
       }
       else if (this.activeList == 'fileTagList') {
@@ -279,7 +283,6 @@ export class EditComponent extends Unsub {
       default:
         return 0;
     }
-
   }
 
   compare(itemA: any, itemB: any): number {
@@ -308,8 +311,6 @@ export class EditComponent extends Unsub {
   getFileTags() {
     this.fileTagService.getFileTag().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags = res;
-      console.log(res);
-
     })
   }
 
@@ -328,8 +329,6 @@ export class EditComponent extends Unsub {
   getPersonModules() {
     this.personModuleService.getAllPersonModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.personModules = res;
-      console.log(res);
-
     })
   }
 
@@ -366,39 +365,44 @@ export class EditComponent extends Unsub {
 
   departmentSelecter(i: number) {
     this.department = JSON.parse(JSON.stringify(this.departments[i]));
+    this.backup = JSON.parse(JSON.stringify(this.departments[i]));
     this.toggleForm('departmentForm', i)
   }
 
   fileTagSelecter(i: number) {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
+    this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.toggleForm('fileTagForm', i)
   }
 
   locationSelecter(i: number) {
     this.location = JSON.parse(JSON.stringify(this.locations[i]));
+    this.backup = JSON.parse(JSON.stringify(this.locations[i]));
     this.toggleForm('locationForm', i)
   }
 
   moduleSelecter(i: number) {
     this.module = JSON.parse(JSON.stringify(this.modules[i]));
+    this.backup = JSON.parse(JSON.stringify(this.modules[i]));
     this.toggleForm('moduleForm', i)
   }
 
   personModuleSelecter(i: number) {
     this.personModule = JSON.parse(JSON.stringify(this.personModules[i]));
-    console.log(this.personModule);
-
+    this.backup = JSON.parse(JSON.stringify(this.personModules[i]));
     this.toggleForm('personModuleForm', i)
   }
 
   personSelecter(i: number) {
     this.person = JSON.parse(JSON.stringify(this.persons[i]));
+    this.backup = JSON.parse(JSON.stringify(this.persons[i]));
     this.getForPerson();
     this.toggleForm('personForm', i)
   }
 
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
+    this.backup = JSON.parse(JSON.stringify(this.users[i]));
     this.toggleForm('userForm', i)
   }
 
@@ -435,11 +439,31 @@ export class EditComponent extends Unsub {
   }
 
   resetPassword(id: number) {
-    this.authService.resetPassword(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.change.userId = id
+    this.authService.resetPassword(this.change).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
   }
 
-  cancel() {
-    this.book = JSON.parse(JSON.stringify(this.backup));
-    console.log(this.book);
+  cancel(type: string) {
+    switch (type) {
+      case 'book':
+        return this.book = JSON.parse(JSON.stringify(this.backup));
+      case 'department':
+        return this.department = JSON.parse(JSON.stringify(this.backup));
+      case 'fileTag':
+        return this.fileTag = JSON.parse(JSON.stringify(this.backup));
+      case 'location':
+        return this.location = JSON.parse(JSON.stringify(this.backup));
+      case 'module':
+        return this.module = JSON.parse(JSON.stringify(this.backup));
+      case 'personModule':
+        return this.personModule = JSON.parse(JSON.stringify(this.backup));
+      case 'person':
+        return this.person = JSON.parse(JSON.stringify(this.backup));
+      case 'user':
+        return this.user = JSON.parse(JSON.stringify(this.backup));
+      case '':
+      default:
+        return 0;
+    }
   }
 }

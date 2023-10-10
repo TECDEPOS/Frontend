@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'file', component: FilePageComponent, canActivate:[authGuard]},
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]},
   { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
-  { path: 'crud', component: CrudEntityPageComponent, canActivate:[authGuard]},
+  { path: 'administration', component: CrudEntityPageComponent, canActivate:[authGuard]},
 ];
 
 @NgModule({
