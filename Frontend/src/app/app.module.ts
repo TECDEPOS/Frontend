@@ -33,6 +33,7 @@ import { EmployeeProfileComponent } from './components/employee-profile/employee
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
 import { AddPersonmodulePopupComponent } from './components/pop-ups/add-personmodule-popup/add-personmodule-popup.component';
+import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 
 
 
@@ -68,7 +69,8 @@ export const MY_DATE_FORMATS = {
     EmployeeProfileComponent,
     FileuploadPopupComponent,
     ChangePasswordPopupComponent,
-    AddPersonmodulePopupComponent
+    AddPersonmodulePopupComponent,
+    EditPersonmodulePopupComponent
   ],
   imports: [
     BrowserModule,

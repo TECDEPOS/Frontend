@@ -143,7 +143,7 @@
     <div class="allModules">
       <div class="newModuleItem" *ngFor="let x of currentModules">
         <div class="moduleItemInfo">
-          <p><b>{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
+          <p><b (click)="openEditPersonModulePopup(x)">{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
           <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
           <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
           <p *ngIf="x.status == 0">Status: Ikke Startet</p>
@@ -151,15 +151,15 @@
       </div>
       <div class="newModuleItem" *ngFor="let x of inactiveModules">
         <div class="moduleItemInfo">
-          <p><b>{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
+          <p><b (click)="openEditPersonModulePopup(x)">{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
           <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
           <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
           <p *ngIf="x.status == 0">Status: Ikke Startet</p>
         </div>
         <div class="moduleItemColor">
           <div *ngIf="x.status === 0" class="moduleItemColorIndicator" style="background-color: #ddd;"></div>
-          <div *ngIf="x.status === 2" class="moduleItemColorIndicator" style="background-color: green;"></div>
-          <div *ngIf="x.status === 3" class="moduleItemColorIndicator" style="background-color: red;"></div>
+          <div *ngIf="x.status === 3" class="moduleItemColorIndicator" style="background-color: green;"></div>
+          <div *ngIf="x.status === 2" class="moduleItemColorIndicator" style="background-color: red;"></div>
         </div>
       </div>
     </div>
