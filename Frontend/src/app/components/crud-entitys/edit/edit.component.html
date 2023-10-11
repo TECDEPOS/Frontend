@@ -241,8 +241,8 @@
             </div>
         </div>
     </div>
-    <div class="innerBox">
-        Rediger
+    <div class="innerBox" id="test">
+        rediger
         <div *ngIf="isFormActive('departmentForm')">
             <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
                 <div>
@@ -459,7 +459,7 @@
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                        <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate"
                             id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>

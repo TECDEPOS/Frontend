@@ -44,24 +44,28 @@ export class HomePageComponent {
   }
 
   progressBar(): void {
-    this.Hired.forEach(person => {
+    this.Hired.forEach(person => {      
       let objec = this.progress.find(x => x.nativeElement.id == person.personId);
       let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
       let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
       let inProcent = 0
 
+      if(howManyDaysSinceStart < 0){
+        howManyDaysSinceStart = 0
+      }
+      
       if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
         inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
-
       }
       else {
         inProcent = 100
       }
+      
 
       if(objec === undefined){
         return 
       }
-
+      
       objec!.nativeElement.style.width = inProcent + "%"
       if (inProcent < 75) {
         objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
@@ -72,9 +76,18 @@ export class HomePageComponent {
       if (inProcent > 90) {
         objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
       }
+      
+      console.log(person.name, "      ", inProcent, "     ", howManyDaysSinceStart, "      ", howManyDaysInTotal);
     });
+  }
 
-
+  //Fun for fun, hvornår er vi halvejs med vores uddannelse
+  findHalf(){
+    var start = 1596441600,
+        slut = 1755158400,
+        mid = slut - ((slut - start) / 2)
+        console.log(mid);
+        
   }
 
   getDepartmentData() {
@@ -97,10 +110,22 @@ export class HomePageComponent {
     })
   }
 
+  modulesCompletedMethod(x: Person){    
+    return  x.personModules.filter(x => x.status === 3).length 
+  }
+
   onDepartmentQueryInput(event: any) {
     let personList: Person[] = []
-    this.Hired.forEach(element => {
-      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())) {
+     //Returns all, even null
+     if(event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == ""){
+      this.showedList = this.Hired
+      this.searchDepartment = event.value;
+      return
+    }
+    
+    //Checks for what matches with the department and name
+    this.Hired.forEach(element => {     
+      if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)){
         personList.push(element);
       }
     })
@@ -116,14 +141,14 @@ export class HomePageComponent {
       this.searchName = searchQuery
       return
     }
-
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
-        personList.push(element);
-        console.log("Afdeling");
-      }
-      this.showedList = personList
-    });
+      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())){
+          personList.push(element);
+          console.log("Afdeling");      
+      } 
+    });    
+    this.showedList = personList     
+    this.searchName = searchQuery;
   }
 
   sortData(sort: Sort) {
