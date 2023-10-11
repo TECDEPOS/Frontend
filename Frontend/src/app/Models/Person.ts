@@ -9,9 +9,9 @@ export class Person{
     name: string = "";
     initials: string = "";
     departmentId: number = 0;
-    educationalConsultantUserId: number = 0;
+    educationalConsultantId: number = 0;
     locationId: number = 0;
-    operationCoordinatorUserId: number = 0;
+    operationCoordinatorId: number = 0;
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;

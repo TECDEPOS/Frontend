@@ -150,8 +150,8 @@
                 <div>
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.educationalConsultantUserId">Vælg konsulent</mat-label>
-                        <mat-select [(ngModel)]="person.educationalConsultantUserId" name="educationalConsultantUserId"
+                        <mat-label *ngIf="!person.educationalConsultantId">Vælg konsulent</mat-label>
+                        <mat-select [(ngModel)]="person.educationalConsultantId" name="educationalConsultantUserId"
                             #educationalConsultantUserId="ngModel">
                             <mat-option [value]="null">- Ingen -</mat-option>
                             <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant.userId">
@@ -163,8 +163,8 @@
                 <div>
                     <label>Driftskoordinator:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.operationCoordinatorUserId">Vælg Driftskoordinator</mat-label>
-                        <mat-select [(ngModel)]="person.operationCoordinatorUserId" name="operationCoordinatorUserId"
+                        <mat-label *ngIf="!person.operationCoordinatorId">Vælg Driftskoordinator</mat-label>
+                        <mat-select [(ngModel)]="person.operationCoordinatorId" name="operationCoordinatorUserId"
                             #operationCoordinatorUserId="ngModel">
                             <mat-option [value]="null">- Ingen -</mat-option>
                             <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator.userId">
@@ -177,20 +177,10 @@
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                        <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate"
                             id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div>
-                    <label>Slut Dato:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                        <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
-                            name="endDate" #endDate="ngModel">
-                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
                 <div>
