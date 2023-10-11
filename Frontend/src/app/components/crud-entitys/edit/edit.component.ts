@@ -431,38 +431,57 @@ export class EditComponent extends Unsub {
   editBook() {
     this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {       
       this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
-      this.backup = res
+      this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editDepartment() {
-    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.departments[this.departments.findIndex(x => x.departmentId == res.departmentId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.fileTags[this.fileTags.findIndex(x => x.fileTagId == res.fileTagId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.locations[this.locations.findIndex(x => x.locationId == res.locationId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.modules[this.modules.findIndex(x => x.moduleId == res.moduleId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editPersonModule() {
-    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.personModules[this.personModules.findIndex(x => x.moduleId == res.moduleId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editPerson() {
-    console.log();
-    
-    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editUser() {
-    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.users[this.users.findIndex(x => x.userId == res.userId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   deleteBook(id: number) {
@@ -515,6 +534,8 @@ export class EditComponent extends Unsub {
   }
 
   deleteUser(id: number) {
+    console.log(id);
+    
     this.userService.deleteUser(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users = this.users.filter(x => x.userId != id);
       this.activeForm = null;
