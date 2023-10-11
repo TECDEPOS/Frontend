@@ -1,99 +1,109 @@
 <div class="container">
-    <div class="header">
+  <div class="header">
+  </div>
+  <div class="profile">
+    <div class="profile-header">
+      <h1 *ngIf="backupValues">{{backupValues.name}}</h1>
     </div>
-    <div class="profile">
-        <div class="profile-header">
-            <h1 *ngIf="backupValues">{{backupValues.name}}</h1>
+    <form class="form" #myForm="ngForm" style="height: 100%;">
+      <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">
+        <div class="grid-label">
+          <label>ID: </label>
+          <label>Navn: </label>
+          <label>Initialer: </label>
+          <label>Afdeling: </label>
+          <label>Lokation: </label>
+          <label>Pædagogisk konsulent: </label>
+          <label>Driftskoordinator: </label>
+          <label>Ansættelses Dato: </label>
+          <label>Slut Dato: </label>
+          <label>SVU Berettiget: </label>
         </div>
-        <form class="form" #myForm="ngForm" style="height: 100%;">
-            <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">
-              <div class="grid-label">
-                <label>ID: </label>
-                <label>Navn: </label>
-                <label>Initialer: </label>
-                <label>Afdeling: </label>
-                <label>Lokation: </label>
-                <label>Pædagogisk konsulent: </label>
-                <label>Driftskoordinator: </label>
-                <label>Ansættelses Dato: </label>
-                <label>Slut Dato: </label>
-                <label>SVU Berettiget: </label>
-              </div>
-              <div class="grid-input">
-                <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
-                <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
-                <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
+        <div class="grid-input">
+          <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
+          <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+          <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let department of departments" [value]="department">
-                    {{department.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department"
+              name="department" #department="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let department of departments" [value]="department">
+                {{department.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let location of locations" [value]="location">
-                    {{location.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location"
+              name="location" #location="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let location of locations" [value]="location">
+                {{location.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
-                    {{consultant.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled"
+              [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
+                {{consultant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
-                    {{coordinator.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled"
+              [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                {{coordinator.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
-                <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate" name="hiringDate" #hiringDate="ngModel">
-                <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker" [disabled]="editDisabled"></mat-datepicker-toggle>
-                <mat-datepicker #hiringDatePicker></mat-datepicker>
-            </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="datepicker">
+            <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate"
+              name="hiringDate" #hiringDate="ngModel">
+            <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"
+              [disabled]="editDisabled"></mat-datepicker-toggle>
+            <mat-datepicker #hiringDatePicker></mat-datepicker>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
-                <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker" name="endDate" #endDate="ngModel">
-                <mat-datepicker-toggle matIconSuffix [for]="endDatePicker" [disabled]="editDisabled"></mat-datepicker-toggle>
-                <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
-            </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="datepicker">
+            <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
+              name="endDate" #endDate="ngModel">
+            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"
+              [disabled]="editDisabled"></mat-datepicker-toggle>
+            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+          </mat-form-field>
 
-            <div class="checkbox">
-                <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible" #svuEligible="ngModel">
-            </div>
-              </div>
-        </fieldset>
-        </form>
-        <div class="profile-buttons">
-            <button class="edit-button" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
-            <div class="editmode-buttons">
-                <button class="save-button" (click)="onSubmit()" type="submit" *ngIf="!editDisabled" [disabled]="myForm.invalid">Save</button>
-                <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Cancel</button>
-            </div>
+          <div class="checkbox">
+            <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
+              #svuEligible="ngModel">
+          </div>
         </div>
-        
+      </fieldset>
+    </form>
+    <div class="profile-buttons">
+      <button class="edit-button" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
+      <div class="editmode-buttons">
+        <button class="save-button" (click)="onSubmit()" type="submit" *ngIf="!editDisabled"
+          [disabled]="myForm.invalid">Save</button>
+        <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Cancel</button>
+      </div>
     </div>
-    <div class="modules">
+
+  </div>
+  <!-- <div class="modules">
       <div class="moduleToolbar">
         <button class="upload-file-button" (click)="openAddPersonModulePopup()">
           <mat-icon class="upload-icon">add</mat-icon>
@@ -123,38 +133,68 @@
         <p>{{moduleTypes[x.moduleType]}} | {{x.module.name}}</p>
       </div>
     </div>
+    </div> -->
+  <div class="newModules">
+    <div class="moduleToolbar">
+      <button class="upload-file-button" (click)="openAddPersonModulePopup()">
+        <mat-icon class="upload-icon">add</mat-icon>
+      </button>
     </div>
-    <div class="files">
-      <div class="upload-file">
-        <button class="upload-file-button" (click)="openFileUploadPopUp()">
-          <mat-icon class="upload-icon">attach_file</mat-icon>
-        </button>
-        <mat-form-field class="search-bar" subscriptSizing="dynamic">
-          <input matInput placeholder="Søg efter filnavn" (input)="onSearchQueryInput($event)">
+    <div class="allModules">
+      <div class="newModuleItem" *ngFor="let x of currentModules">
+        <div class="moduleItemInfo">
+          <p><b>{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
+          <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+          <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
+          <p *ngIf="x.status == 0">Status: Ikke Startet</p>
+        </div>
+      </div>
+      <div class="newModuleItem" *ngFor="let x of inactiveModules">
+        <div class="moduleItemInfo">
+          <p><b>{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
+          <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+          <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
+          <p *ngIf="x.status == 0">Status: Ikke Startet</p>
+        </div>
+        <div class="moduleItemColor">
+          <div *ngIf="x.status === 0" class="moduleItemColorIndicator" style="background-color: #ddd;"></div>
+          <div *ngIf="x.status === 2" class="moduleItemColorIndicator" style="background-color: green;"></div>
+          <div *ngIf="x.status === 3" class="moduleItemColorIndicator" style="background-color: red;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="files">
+    <div class="upload-file">
+      <button class="upload-file-button" (click)="openFileUploadPopUp()">
+        <mat-icon class="upload-icon">attach_file</mat-icon>
+      </button>
+      <mat-form-field class="search-bar" subscriptSizing="dynamic">
+        <input matInput placeholder="Søg efter filnavn" (input)="onSearchQueryInput($event)">
       </mat-form-field>
-      </div>
-      <!--SKal laves senere :)-->
-      <div class="file-table" *ngIf="person">
-        <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
-          <tr>
-            <th mat-sort-header="fileName">Filnavn</th>
-            <th mat-sort-header="fileCategory">Filkategori</th>
-            <th mat-sort-header="uploadDate">Oploadet</th>
-            <th mat-sort-header="fileFormat">Filtype</th>
-            <th><mat-icon>download</mat-icon></th>
-            <th>Slet fil</th>
-          </tr>
-          <tr *ngFor="let file of shownFiles; let i = index">
-            <td>{{file.fileName}}</td>
-            <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
-            <td *ngIf="file.fileTag === null">-</td>
-            <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
-            <td>{{file.fileFormat}}</td>
-            <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
-            <td><mat-icon (click)="deleteFile(file.fileId, i)">delete</mat-icon></td>
-          </tr>
-          <tr>
-        </table>
-      </div>
     </div>
+    <!--SKal laves senere :)-->
+    <div class="file-table" *ngIf="person">
+      <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+        <tr>
+          <th mat-sort-header="fileName">Filnavn</th>
+          <th mat-sort-header="fileCategory">Filkategori</th>
+          <th mat-sort-header="uploadDate">Oploadet</th>
+          <th mat-sort-header="fileFormat">Filtype</th>
+          <th><mat-icon>download</mat-icon></th>
+          <th>Slet fil</th>
+        </tr>
+        <tr *ngFor="let file of shownFiles; let i = index">
+          <td>{{file.fileName}}</td>
+          <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
+          <td *ngIf="file.fileTag === null">-</td>
+          <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
+          <td>{{file.fileFormat}}</td>
+          <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
+          <td><mat-icon (click)="deleteFile(file.fileId, i)">delete</mat-icon></td>
+        </tr>
+        <tr>
+      </table>
+    </div>
+  </div>
 </div>

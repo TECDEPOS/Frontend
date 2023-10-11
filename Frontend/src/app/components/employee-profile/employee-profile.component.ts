@@ -38,8 +38,7 @@ export class EmployeeProfileComponent {
   shownFiles: File[] = [];
 
   currentModules: PersonModule[] = [];
-  futureModules: PersonModule[] = [];
-  completedModules: PersonModule[] = [];
+  inactiveModules: PersonModule[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
@@ -84,12 +83,10 @@ export class EmployeeProfileComponent {
   }
 
   setPersonModules(){
-    let todaysDate = moment().utc();
-    this.currentModules = this.person.personModules.filter(x => moment(todaysDate).isAfter(x.startDate) && moment(x.endDate).isAfter(todaysDate));
-    this.futureModules = this.person.personModules.filter(x => moment(x.startDate).isAfter(todaysDate) && moment(x.endDate).isAfter(todaysDate));
-    this.completedModules = this.person.personModules.filter(x => moment(todaysDate).isAfter(x.startDate) && moment(todaysDate).isAfter(x.endDate));
-    console.log('currentModules',this.currentModules);
-    
+    this.person.personModules = this.person.personModules.sort((a, b) => a.status - b.status);
+    this.currentModules = this.person.personModules.filter(x => x.status === 1);
+    this.inactiveModules = this.person.personModules.filter(x => x.status !== 1);
+    console.log(this.person.personModules);    
   }
 
   onSubmit() {

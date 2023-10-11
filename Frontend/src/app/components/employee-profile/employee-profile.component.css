@@ -194,7 +194,7 @@ h1{
     border-radius: 5px;
 } */
 
-.modules {
+/* .modules {
     background-color: whitesmoke;
     grid-area: m;
     width: auto;
@@ -209,11 +209,40 @@ h1{
     "cm fm pm";
     grid-template-rows: 10% 90%;
     grid-template-columns: 1fr 1fr 1fr;
+} */
+
+.newModules {
+    /* background-color: whitesmoke; */
+    grid-area: m;
+    width: auto;
+    margin-right: 10px;
+    box-shadow: 0px 0px 5px 1px #888;
+    outline: 1px solid black;
+    border-radius: 5px;
+
+    display: grid;
+    grid-template-areas: 
+    "mt mt"
+    "am am";
+    grid-template-rows: 11% 89%;
+    grid-template-columns: 1fr 1fr;
+}
+
+.allModules{
+    background-color: whitesmoke;
+    grid-area: am;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: visible;
+    grid-auto-rows: 25%;
+    justify-items: center;
 }
 
 .moduleToolbar{
     grid-area: mt;
     border-bottom: 1px solid black;
+    display: grid;
+    align-content: center;
 }
 
 .currentModules{
@@ -237,6 +266,44 @@ h1{
     /* border-radius: 5px; */
     outline: 1px solid black;
     background-color: white;
+}
+
+.newModuleItem{
+    /* margin-bottom: 5px; */
+    margin: 5px 0px;
+    width: 98%;
+    display: grid;
+    border-radius: 5px;
+    outline: 1px solid black;
+    background-color: white;
+
+    grid-template-areas: 
+    "mii colo";
+    grid-template-columns: 97% 3%;
+}
+
+.moduleItemInfo{
+    grid-area: mii;
+    display: grid;
+}
+
+.moduleItemColor{
+    grid-area: colo;
+}
+
+.moduleItemColorIndicator{
+    width: 100%;
+    height: 100%;
+}
+
+.moduleItemInfo > p {
+    margin-left: 5px;
+    margin-top: 3px;
+}
+
+.moduleItemInfo > p > b:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .moduleItem:hover{
