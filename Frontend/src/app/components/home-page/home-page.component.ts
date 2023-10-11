@@ -1,8 +1,8 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { AuthService } from 'src/app/Services/auth.service';
-import { UserService } from 'src/app/Services/user.service'; 
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { UserService } from 'src/app/Services/user.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { Person } from 'src/app/Models/Person';
 import { DepartmentsService } from 'src/app/Services/departments.service';
@@ -28,12 +28,12 @@ export class HomePageComponent {
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
 
   constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private renderer: Renderer2) { }
-  
-  ngOnInit(): void{
+
+  ngOnInit(): void {
     this.getTableData()
   }
 
-  ngAfterViewInit(): void{
+  ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
       this.modulesCompleted()
@@ -41,59 +41,59 @@ export class HomePageComponent {
     })
   }
 
-  modulesCompleted(): void{
+  modulesCompleted(): void {
     this.Hired
   }
 
-  progressBar(): void{
+  progressBar(): void {
     this.Hired.forEach(person => {
       let objec = this.progress.find(x => x.nativeElement.id == person.personId);
-      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
-      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
-      let inProcent  = 0
+      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
+      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
+      let inProcent = 0
 
-      if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
-        inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
+      if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
+        inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
 
       }
-      else{
+      else {
         inProcent = 100
       }
       objec!.nativeElement.style.width = inProcent + "%"
-      if( inProcent < 75){
+      if (inProcent < 75) {
         objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
       }
-      if( inProcent > 75 && inProcent < 90){
+      if (inProcent > 75 && inProcent < 90) {
         objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
       }
-      if (inProcent > 90){
+      if (inProcent > 90) {
         objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
       }
     });
-    
-    
+
+
   }
-  
-  getDepartmentData(){
+
+  getDepartmentData() {
     this.departmentService.getDepartment().subscribe(res => {
       this.department = res
     })
   }
 
-  getTableData(){
+  getTableData() {
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
       this.showedList = this.Hired
       this.getDepartmentData()
-      this.Hired.sort((a,b) => a.name.localeCompare(b.name))   
+      this.Hired.sort((a, b) => a.name.localeCompare(b.name))
       this.showedList = this.Hired
     })
   }
 
-  onDepartmentQueryInput(event: any){    
+  onDepartmentQueryInput(event: any) {
     let personList: Person[] = []
     this.Hired.forEach(element => {
-      if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
+      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())) {
         personList.push(element);
       }
       this.showedList = personList
@@ -101,16 +101,16 @@ export class HomePageComponent {
     })
   }
 
-  onSearchQueryInput(event: Event){
+  onSearchQueryInput(event: Event) {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let personList: Person[] = []
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())){
-          personList.push(element);
-          console.log("Afdeling");      
+      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
+        personList.push(element);
+        console.log("Afdeling");
       }
-      this.showedList = personList    
-    });    
+      this.showedList = personList
+    });
   }
 
   sortData(sort: Sort) {
@@ -137,39 +137,39 @@ export class HomePageComponent {
 
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
-      if (itemA && itemB) {
-        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
-        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
-      }
-      else if (itemA) retVal = 1;
-      else if (itemB) retVal = -1;
-      return retVal;
+    if (itemA && itemB) {
+      if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+      else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+    }
+    else if (itemA) retVal = 1;
+    else if (itemB) retVal = -1;
+    return retVal;
   }
 
 
-  progressBarDummy(i: number): void{
+  progressBarDummy(i: number): void {
     let objec = this.progress.find(x => x.nativeElement.id == i);
     let person = this.Hired.find(x => x.personId == i)
-    
-    let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 ) / 86400
-    let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000 )/ 86400
-    let inProcent  = 0
 
-    if(new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000){
-      inProcent = (howManyDaysSinceStart/howManyDaysInTotal) * 100
-      
+    let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
+    let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
+    let inProcent = 0
+
+    if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
+      inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
+
     }
-    else{
+    else {
       inProcent = 100
     }
     objec!.nativeElement.style.width = inProcent + "%"
-    if( inProcent < 65){
+    if (inProcent < 65) {
       objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
     }
-    if( inProcent > 65 && inProcent < 90){
+    if (inProcent > 65 && inProcent < 90) {
       objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
     }
-    if (inProcent > 90){
+    if (inProcent > 90) {
       objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
     }
   }

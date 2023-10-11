@@ -1,37 +1,8 @@
-.box {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 5%;
-    grid-auto-flow: row;
-    grid-gap: 10px;
+.outerBox {
     border: 1px solid #ccc;
-    padding: 20px;
     margin: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    height: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);    
+    max-height: 100%
+    /* overflow: hidden; */
 }
-
-.button-grid {
-    height: fit-content;
-}
-
-.action-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.action-button:hover {
-    background-color: #0056b3;
-}
-
-.crud {
-    /* height: 50%; */
-}
-

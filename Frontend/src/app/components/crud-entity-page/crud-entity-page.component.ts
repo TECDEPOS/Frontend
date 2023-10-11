@@ -6,9 +6,14 @@ import { Component, ComponentFactoryResolver, ViewContainerRef } from '@angular/
   styleUrls: ['./crud-entity-page.component.css']
 })
 export class CrudEntityPageComponent {
-  activeComponent: string | null = null; 
+  activeComponent: string | null = null;
+  activeTabIndex: number = 0;
 
-  constructor() {}
+  constructor() { }
+
+  setActiveTab(index: number) {
+    this.activeTabIndex = index;
+  }
 
   toggleComponent(componentName: string) {
     if (this.activeComponent === componentName) {

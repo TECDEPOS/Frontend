@@ -1,5 +1,5 @@
-<div class="grid">
-    <span class="box">
+<div class="grid" style="overflow: auto;">
+    <span class="innerBox">
         <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
@@ -11,7 +11,8 @@
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
-        <div>
+        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div>
@@ -57,6 +58,28 @@
                 <div>
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
+                </div>
+                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>
+                    <label>Drift Koordinator:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
+                            #dKVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Human Resources:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
+                            #hRVisability="ngModel">
+                    </div>
+                </div>
+                <div>
+                    <label>Pædagogisk konsulent:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
+                            #pKVisability="ngModel">
+                    </div>
                 </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
@@ -153,8 +176,8 @@
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate" id="hiringDatePicker"
-                            name="hiringDate" #hiringDate="ngModel">
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
@@ -180,7 +203,7 @@
             </form>
         </div>
     </span>
-    <div class="box">
+    <div class="innerBox">
         Nylig opretet personer
         <div *ngFor="let created of resentlyCreated">
             <div (click)="personPicker(created.personId)" class="picker">

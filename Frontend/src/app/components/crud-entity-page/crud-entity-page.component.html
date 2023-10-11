@@ -1,5 +1,19 @@
-
-<div class="box">
+<div class="outerBox">
+    <mat-tab-group [(selectedIndex)]="activeTabIndex" animationDuration="0ms" >
+        <mat-tab label="Opret" (click)="setActiveTab(0)">
+            <div class="crud" *ngIf="activeTabIndex === 0">
+                
+                <app-create></app-create>
+            </div>
+        </mat-tab>
+        <mat-tab label="Ændre/Slet" (click)="setActiveTab(1)">
+            <div class="crud" *ngIf="activeTabIndex === 1">
+                <app-edit></app-edit>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<!-- <div class="box">
     <div class="button-grid">
         <div class="action-button" (click)="toggleComponent('create')">Opret</div>
         <div class="action-button" (click)="toggleComponent('edit')">Ændre</div>
@@ -8,5 +22,4 @@
         <app-create *ngIf="isActiveComponent('create')"></app-create>
         <app-edit *ngIf="isActiveComponent('edit')"></app-edit>
     </div>
-  </div>
-  
+  </div> -->
