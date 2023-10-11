@@ -18,7 +18,7 @@ import { UserService } from 'src/app/Services/user.service';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
 import { ModuleType } from 'src/app/Models/ModuleType';
 import { Unsub } from 'src/app/classes/unsub';
-import { takeUntil } from 'rxjs';
+import { findIndex, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
@@ -56,7 +56,7 @@ export class EditComponent extends Unsub {
   activeForm: string | null = null
   activeFormIndex: number | null = null
   activeList: string | null = null
-  role: string= '';
+  role: string = '';
   backup: any;
 
   bookForm: FormGroup;
@@ -71,8 +71,8 @@ export class EditComponent extends Unsub {
   moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
 
-  status: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
-    .filter(key => !isNaN(Number(UserRole[key])));
+  status: string[] = (Object.values(Status) as Array<keyof typeof Status>)
+    .filter(key => !isNaN(Number(Status[key])));
 
   userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
     .filter(key => !isNaN(Number(UserRole[key])));
@@ -105,9 +105,12 @@ export class EditComponent extends Unsub {
 
 
   toggleForm(formName: string, i: number) {
+    let body = document.getElementById("test")
     if (this.activeForm === formName && this.activeFormIndex === i) {
       this.activeForm = null;
       this.activeFormIndex = null;
+      body?.classList.remove("innerBoxV2")
+      body?.classList.add("innerBox")
     }
     else {
       this.activeForm = formName;
@@ -118,6 +121,8 @@ export class EditComponent extends Unsub {
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
       }
+      body?.classList.remove("innerBox")
+      body?.classList.add("innerBoxV2")
     }
   }
 
@@ -296,6 +301,26 @@ export class EditComponent extends Unsub {
     return retVal;
   }
 
+  compareObjects(o1: any, o2: any): boolean {
+    if (o2 == null) {
+      return false;
+    }
+
+    if (typeof (o2 == Location)) {
+      return o1.name === o2.name && o1.locationId === o2.locationId;
+    }
+    else if (typeof (o2 == Department)) {
+      console.log("2");
+      return o1.name === o2.name && o1.departmentId === o2.departmentId;
+    }
+    else if (typeof (o2 == User)) {
+      return o1.name === o2.name && o1.userId === o2.userId;
+    }
+    else {
+      return false;
+    }
+  }
+
   getBooks() {
     this.bookService.getBook().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.books = res;
@@ -335,6 +360,8 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons = res;
+      console.log(res);
+
     })
   }
 
@@ -407,35 +434,117 @@ export class EditComponent extends Unsub {
   }
 
   editBook() {
-    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {       
+      this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editDepartment() {
-    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.departments[this.departments.findIndex(x => x.departmentId == res.departmentId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.fileTags[this.fileTags.findIndex(x => x.fileTagId == res.fileTagId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.locations[this.locations.findIndex(x => x.locationId == res.locationId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.modules[this.modules.findIndex(x => x.moduleId == res.moduleId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editPersonModule() {
-    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.personModules[this.personModules.findIndex(x => x.moduleId == res.moduleId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editPerson() {
-    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
   }
 
   editUser() {
-    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { })
+    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.users[this.users.findIndex(x => x.userId == res.userId)] = res;
+      this.backup = JSON.parse(JSON.stringify(res));
+    })
+  }
+
+  deleteBook(id: number) {
+    this.bookService.deleteBook(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.books = this.books.filter(x => x.bookId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deleteDepartment(id: number) {
+    this.departmentService.deleteDepartment(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.departments = this.departments.filter(x => x.departmentId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deleteFileTag(id: number) {
+    this.fileTagService.deleteFiletag(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.fileTags = this.fileTags.filter(x => x.fileTagId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deleteLocation(id: number) {
+    this.locationService.deleteLocation(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.locations = this.locations.filter(x => x.locationId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deleteModule(id: number) {
+    this.moduelService.deleteModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.modules = this.modules.filter(x => x.moduleId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deletePersonModule(id: number) {
+    this.personModuleService.deletePersonModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.personModules = this.personModules.filter(x => x.moduleId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deletePerson(id: number) {
+    this.personService.deletePerson(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.persons = this.persons.filter(x => x.personId != id);
+      this.activeForm = null;
+    })
+  }
+
+  deleteUser(id: number) {
+    console.log(id);
+    
+    this.userService.deleteUser(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.users = this.users.filter(x => x.userId != id);
+      this.activeForm = null;
+    })
   }
 
   resetPassword(id: number) {

@@ -17,6 +17,7 @@ export class FilePageComponent {
   files: File[] = [];
   fileTags: FileTag[] = [];
   alle: string = "";
+  searchName: string = "";
   searchFileTag: string = "";
 
   constructor(private fileService: FileService, private fileTagService: FileTagService) {
@@ -66,27 +67,42 @@ export class FilePageComponent {
         console.log("Success");
       });
   }
+  
+  onFileTagQueryInput(event: any){
+    console.log(this.files);
+    
+    let fileList: File[] = []
+    if(event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() === ""){
+      this.showedList = this.files
+      this.searchFileTag = event.value;
+      return
+    }
+
+    this.files.forEach(element => {
+      if(element.fileTag?.tagName.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.fileName.toLocaleLowerCase().includes(this.searchName.toLocaleLowerCase())){
+        fileList.push(element)
+      }
+    })
+    this.showedList = fileList;
+    this.searchFileTag = event.value;
+  }
 
   onSearchQueryInput(event: Event){
-    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
+    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();    
     let fileList: File[] = []
+    if(searchQuery.toLocaleLowerCase() === "" && this.searchFileTag.toLocaleLowerCase() == ""){
+      this.showedList = this.files
+      this.searchName = searchQuery
+      return
+    }
+
     this.files.forEach(element => {
       if (element.fileName.toLocaleLowerCase().includes(searchQuery) && element.fileTag?.tagName.toLocaleLowerCase().includes(this.searchFileTag.toLocaleLowerCase())){ 
           fileList.push(element);   
       }
-      this.showedList = fileList    
     });    
-  }
-
-  onFileTagQueryInput(event: any){
-    let fileList: File[] = []
-    this.files.forEach(element => {
-      if(element.fileTag.tagName.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())){
-        fileList.push(element)
-      }
-      this.showedList = fileList;
-      this.searchFileTag = event.value;
-    })
+    this.showedList = fileList
+    this.searchName = searchQuery    
   }
 
   sortData(sort: Sort) {
@@ -94,7 +110,7 @@ export class FilePageComponent {
       return;
     }
 
-    this.files = this.files.sort((a, b) => {
+    this.showedList = this.showedList.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'fileName':

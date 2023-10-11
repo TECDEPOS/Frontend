@@ -72,7 +72,7 @@ export class AuthService {
     let token = localStorage.getItem('jwt')!;
     var decoded: any = jwt_decode(token) 
     localStorage.setItem('userRole', decoded['role'])
-    return (decoded['userRole']);    
+    return this.getUserRole();    
   }
 
   getUserRole(): string{

@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        <div *ngIf="this.role === 'Super_Admin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
         || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
             <div *ngIf="isListActive('userList')" class="List">
@@ -241,8 +241,8 @@
             </div>
         </div>
     </div>
-    <div class="innerBox">
-        Rediger
+    <div class="innerBox" id="test">
+        rediger
         <div *ngIf="isFormActive('departmentForm')">
             <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
                 <div>
@@ -251,6 +251,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('department')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet Afdeling</button>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
@@ -277,6 +278,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('user')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet Bruger</button>
                 <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Reset Password</button>
             </form>
         </div>
@@ -292,6 +294,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('book')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteBook(book.bookId)" type="button">Slet Bog</button>
             </form>
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
@@ -324,6 +327,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
                 <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet File Tag</button>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
@@ -334,13 +338,14 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('location')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet Location</button>
             </form>
         </div>
         <div *ngIf="isFormActive('moduleForm')">
             <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
                 <div>
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
                     <label>Beskrivelse: </label>
@@ -349,6 +354,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('module')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet Modul</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personModuleForm')">
@@ -392,6 +398,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('personModule')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deletePersonModule(personModule.personModuleId)" type="button">Slet Person Modul</button>
             </form>
         </div>
         <div *ngIf="isFormActive('personForm')">
@@ -408,58 +415,56 @@
                 <div>
                     <label>Afdeling:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.departmentId">Vælg afdeling:</mat-label>
-                        <mat-select [(ngModel)]="person.departmentId" name="departmentId" #departmentId="ngModel">
-                            <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let department of departments" [value]="department.departmentId">
-                                {{department.name}}
-                            </mat-option>
+                        <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.department" name="department" #department="ngModel">
+                          <mat-option [value]="null">- Ingen -</mat-option>
+                          <mat-option *ngFor="let department of departments" [value]="department">
+                            {{department.name}}
+                          </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                      </mat-form-field>
                 </div>
                 <div>
                     <label>Lokation:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.locationId">Vælg lokation:</mat-label>
-                        <mat-select [(ngModel)]="person.locationId" name="locationId" #locationId="ngModel">
-                            <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let location of locations" [value]="location.locationId">
-                                {{location.name}}
-                            </mat-option>
+                        <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.location" name="location" #location="ngModel">
+                          <mat-option [value]="null">- Ingen -</mat-option>
+                          <mat-option *ngFor="let location of locations" [value]="location">
+                            {{location.name}}
+                          </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                      </mat-form-field>
                 </div>
                 <div>
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.educationalConsultantUserId">Vælg konsulent</mat-label>
-                        <mat-select [(ngModel)]="person.educationalConsultantUserId" name="educationalConsultantUserId"
-                            #educationalConsultantUserId="ngModel">
-                            <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant.userId">
-                                {{consultant.name}}
-                            </mat-option>
+                        <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
+                          <mat-option [value]="null">- Ingen -</mat-option>
+                          <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
+                            {{consultant.name}}
+                          </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                      </mat-form-field>
                 </div>
                 <div>
                     <label>Driftskoordinator:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.operationCoordinatorUserId">Vælg Driftskoordinator</mat-label>
-                        <mat-select [(ngModel)]="person.operationCoordinatorUserId" name="operationCoordinatorUserId"
-                            #operationCoordinatorUserId="ngModel">
-                            <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator.userId">
-                                {{coordinator.name}}
-                            </mat-option>
+                        <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
+                          <mat-option [value]="null">- Ingen -</mat-option>
+                          <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                            {{coordinator.name}}
+                          </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                      </mat-form-field>
                 </div>
                 <div>
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.hiringDate"
+                        <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate"
                             id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
@@ -484,6 +489,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('person')" mat-raised-button color="primary" type="button">Cancel</button>
+                <button style="float: right;" (click)="deletePerson(person.personId)" type="button">Slet Person</button>
             </form>
         </div>
     </div>

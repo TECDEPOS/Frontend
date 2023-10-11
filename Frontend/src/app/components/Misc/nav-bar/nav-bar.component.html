@@ -8,10 +8,11 @@
         <p>{{name}} &nbsp; {{role}}</p>
     </span>
     <span class="ModuleAndFiles">
-        <h3 routerLink="/module">
+        <!-- Look at this when return -->
+        <!-- <h3 routerLink="/module">
             Moduler
             <hr [ngStyle]="{'display': router.url === '/module' ? 'block' : 'none'}">
-        </h3>
+        </h3> -->
         <h3 routerLink="/home">
             Ansatte
             <hr [ngStyle]="{'display': router.url === '/home' ? 'block' : 'none'}">
@@ -21,8 +22,8 @@
             <hr [ngStyle]="{'display': router.url === '/file' ? 'block' : 'none'}">
         </h3>
         <h3 routerLink="/administration">
-            Administration
-            <hr [ngStyle]="{'display': router.url === '/crud' ? 'block' : 'none'}">
+            Admin
+            <hr [ngStyle]="{'display': router.url === '/administration' ? 'block' : 'none'}">
         </h3>
     </span>
     <span class="dropdown">

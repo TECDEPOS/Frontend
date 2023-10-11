@@ -93,7 +93,7 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
-      if (this.activeForm == 'moduleForm') {        
+      if (this.activeForm == 'moduleForm') {
         this.getBooks();
       }
       else if (this.activeForm == 'personForm') {
@@ -115,7 +115,11 @@ export class CreateComponent extends Unsub implements OnInit {
   getForPerson() {
     this.userService.getUsers().subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+      console.log(this.educationalConsultants);
+      
       this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+      console.log(this.operationCoordinators);
+      
       this.departmentService.getDepartment().subscribe(res => {
         this.departments = res;
       });
@@ -164,6 +168,9 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   createPerson() {
+    this.person.endDate = this.person.hiringDate;
+    console.log(this.person);
+    
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
