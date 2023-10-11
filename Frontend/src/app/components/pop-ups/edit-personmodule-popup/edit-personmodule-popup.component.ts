@@ -40,11 +40,21 @@ export class EditPersonmodulePopupComponent {
     })
   }
 
+  //TODO - Jimmy: show the updated changes on employee-profile page after saving
   onSubmit(){
-    this.personModuleService.updatepersonModules(this.personModule).subscribe(res => {
+    this.personModuleService.updatepersonModules(this.tempModule).subscribe(res => {
       console.log(res);
+      this.personModule = this.tempModule;
       
     })
+  }
+
+  //TODO - Jimmy: Remove the deleted PersonModule from the list on the employee-profile page
+  deletePersonModule(){
+    this.personModuleService.deletePersonModule(this.personModule.personModuleId).subscribe(res => {
+      console.log(res);
+      
+    });
   }
 
   closeDialog(){
