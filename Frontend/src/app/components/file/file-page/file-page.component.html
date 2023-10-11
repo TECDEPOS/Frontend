@@ -18,22 +18,22 @@
     <div class="TableForFiles">
       <table class="TableBox"  matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
         <tr>
-          <th mat-sort-header="fileName">
+          <th mat-sort-header="fileName" style="min-width: 640px;">
             Fil navn
           </th>
-          <th mat-sort-header="personName">
+          <th mat-sort-header="personName" style="min-width: 311.5px;">
             Person navn
           </th>
-          <th mat-sort-header="uploadDate">
+          <th mat-sort-header="uploadDate" style="min-width: 159px;">
             Upload dato
           </th>
-          <th  mat-sort-header="tag">
+          <th  mat-sort-header="tag" style="min-width: 520px;">
             Tag
           </th>
-          <th>
+          <th style="min-width: 110px;">
             Download
           </th>
-          <th>
+          <th style="min-width: 59.5px;">
             Slet
           </th>
         </tr>

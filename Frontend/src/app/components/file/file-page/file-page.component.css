@@ -20,7 +20,7 @@ mat-icon{
     cursor: pointer;
 }
 mat-icon:hover{
-    background-color: #858585;
+    background-color: #cfcfcf;
     border-radius: 50%;
 }
 

@@ -5,10 +5,10 @@
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
                 (ngSubmit)="createDepartment()">
                 <div>
-                    <label>Navn: </label>
+                    <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
+                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
@@ -16,16 +16,16 @@
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div>
-                    <label>Brugernavn: </label>
+                    <label>Brugernavn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="user.username" id="userName" name="userName" #userName="ngModel"
                         required>
                 </div>
                 <div>
-                    <label>Navn: </label>
+                    <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
-                    <label>Role:</label>
+                    <label>Role:</label><p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
                         <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
@@ -34,29 +34,29 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('bookForm')">Bøger</div>
             <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm" (ngSubmit)="createBook()">
                 <div>
-                    <label>Navn: </label>
+                    <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
-                    <label>Mængde: </label>
+                    <label>Mængde: </label><p>&ensp;</p>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
+                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Fil-tag</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
                 <div>
-                    <label>Navn: </label>
+                    <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>Vælg hvem der kan se denne fil kadegori:</div>
@@ -89,10 +89,10 @@
             <form *ngIf="isFormActive('locationForm')" class="form" #locationForm="ngForm"
                 (ngSubmit)="createLocation()">
                 <div>
-                    <label>Navn: </label>
+                    <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
+                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div>
@@ -103,12 +103,13 @@
                     <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
-                    <label>Beskrivelse: </label>
+                    <label>Beskrivelse: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
                 </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
-            </form>
+                
+                </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('personForm')">Person</div>
