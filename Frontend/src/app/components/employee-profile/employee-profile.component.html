@@ -103,20 +103,23 @@
         <h1 style="text-align: center;background-color: white;">Aktive Moduler</h1>
       <div class="moduleItem" *ngFor="let x of currentModules">
         <p style="font-weight: bold;">{{moduleTypes[x.moduleType]}} | {{x.module.name}}</p>
-        <p>Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status == 0">Status: Ikke startet | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status != 0">Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
       </div>
     </div>
     <div class="futureModules">
       <h1 style="text-align: center;background-color: white;">Fremtidige Moduler</h1>
       <div class="moduleItem" *ngFor="let x of futureModules">
         <p style="font-weight: bold;">{{moduleTypes[x.moduleType]}} | {{x.module.name}}</p>
-        <p>Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status == 0">Status: Ikke startet | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status != 0">Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
       </div>
     </div>
     <div class="pastModules">
       <h1 style="text-align: center;background-color: white;">Færdige Moduler</h1>
       <div class="moduleItem" *ngFor="let x of completedModules">
-        <p style="font-weight: bold;">Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status == 0">Status: Ikke Startet | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+        <p *ngIf="x.status != 0">Status: {{status[x.status]}} | {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
         <p>{{moduleTypes[x.moduleType]}} | {{x.module.name}}</p>
       </div>
     </div>

@@ -74,6 +74,8 @@ export class EmployeeProfileComponent {
         this.person = res;
         this.shownFiles = res.files;
         console.log(this.person.personModules);
+        console.log(this.person);
+        
         
         this.setPersonModules();
         this.setBackupValues(this.person);
