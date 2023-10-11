@@ -105,9 +105,12 @@ export class EditComponent extends Unsub {
 
 
   toggleForm(formName: string, i: number) {
+    let body = document.getElementById("test")
     if (this.activeForm === formName && this.activeFormIndex === i) {
       this.activeForm = null;
       this.activeFormIndex = null;
+      body?.classList.remove("innerBoxV2")
+      body?.classList.add("innerBox")
     }
     else {
       this.activeForm = formName;
@@ -118,6 +121,8 @@ export class EditComponent extends Unsub {
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
       }
+      body?.classList.remove("innerBox")
+      body?.classList.add("innerBoxV2")
     }
   }
 

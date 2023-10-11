@@ -26,6 +26,10 @@
   border: none;
 }
 
+td:hover{
+  cursor: pointer;
+}
+
 input[type=text],
 select {
   width: 70%;
@@ -76,6 +80,7 @@ mat-option {
 
 .innerBox:first-child {
   flex: 70%;
+  height: fit-content;
 }
 
 .innerBox:last-child {
@@ -96,6 +101,19 @@ mat-option {
   place-content: center start;
   overflow: auto;
 }
+
+.innerBoxV2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+  max-height: 100%;
+  place-content: start;
+  overflow: auto;
+}
+
 
 .TableForPeople{ 
   border-radius: 5px;
