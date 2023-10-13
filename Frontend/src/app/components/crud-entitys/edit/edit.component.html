@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="this.role === 'SuperAdmin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
+        <div *ngIf="this.role === 'Super_Admin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
         || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
             <div *ngIf="isListActive('userList')" class="List">
@@ -345,7 +345,7 @@
             <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
                 <div>
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="moduleForm.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>
                     <label>Beskrivelse: </label>

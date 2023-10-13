@@ -38,10 +38,10 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User>{
-    return this.http.put<User>(this.baseApiUrl + 'User', user, httpOptions)
+    return this.http.put<User>(this.baseApiUrl + 'Users', user, httpOptions)
   }
 
   deleteUser(id: number): Observable<User>{
-    return this.http.delete<User>(this.baseApiUrl + 'User/' + id)
+    return this.http.delete<User>(this.baseApiUrl + 'Users/' + id)
   }
 }

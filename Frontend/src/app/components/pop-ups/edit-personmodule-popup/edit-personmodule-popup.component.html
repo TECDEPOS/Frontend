@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="header">
+        <h1 style="color: white;">Rediger</h1>
+        <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
+    </div>
+    <div class="content">
+    <div class="labels">
+        <label>Modul: </label>
+        <label>Type: </label>
+        <label>Status: </label>
+        <label>Start Dato: </label>
+        <label>Slut Dato: </label>
+    </div>
+    <form #myForm="ngForm" class="inputs">
+
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!tempModule.module">Vælg modul:</mat-label>
+            <mat-select [compareWith]="compareObjects" [(ngModel)]="tempModule.module"
+              name="module" #module="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let module of modules" [value]="module">
+                {{module.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label>Vælg modul type:</mat-label>
+            <mat-select [(ngModel)]="tempModule.moduleType" name="moduleType" #module="ngModel">
+              <mat-option *ngFor="let moduleType of moduleTypes; let i = index" [value]="i">
+                {{moduleType}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label>Vælg personens status:</mat-label>
+            <mat-select [(ngModel)]="tempModule.status" name="status" #module="ngModel">
+              <mat-option *ngFor="let status of statuses let i = index" [value]="i">
+                {{status}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="datepicker">
+            <mat-label *ngIf="!tempModule.startDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="tempModule.startDate" id="startDate" name="startDate" #startDate="ngModel">
+            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+            <mat-label *ngIf="!tempModule.endDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="tempModule.endDate" id="endDate" name="endDate" #endDate="ngModel">
+            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+        </mat-form-field>
+
+    </form>
+  </div>
+    <div class="buttons">
+        <button class="create-button" (click)="onSubmit()">Gem</button>
+        <button class="delete-button" (click)="deletePersonModule()">Slet</button>
+    </div>
+</div>
