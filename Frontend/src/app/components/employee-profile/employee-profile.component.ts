@@ -219,6 +219,18 @@ export class EmployeeProfileComponent {
     });
   }
 
+  checkSvuApplied(e:any){
+    if (this.person.svuEligible && e === true) {
+      this.person.svuEligible = false;
+    }
+  }
+
+  checkSvuEligible(e:any){
+    if (this.person.svuApplied && e === true) {
+      this.person.svuApplied = false;
+    }
+  }
+
   openAddPersonModulePopup() {
     this.dialog.open(AddPersonmodulePopupComponent, {
       data: {
