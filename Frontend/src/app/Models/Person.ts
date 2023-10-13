@@ -15,6 +15,7 @@ export class Person{
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;
+    SvuApplied: boolean = false;
 
   
     educationalConsultant: User = new User;
