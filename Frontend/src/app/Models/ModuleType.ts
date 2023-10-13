@@ -1,5 +1,5 @@
 export enum ModuleType{
-    FullTime = 0,
-    FlexTime = 1,
-    PartTime = 2
+    Heltid = 0,
+    Flex = 1,
+    Deltid = 2
 }

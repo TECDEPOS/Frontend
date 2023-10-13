@@ -16,6 +16,9 @@ import { File } from 'src/app/Models/File';
 import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 import { ModuleType } from 'src/app/Models/ModuleType';
 import { Status } from 'src/app/Models/status';
+import { PersonModule } from 'src/app/Models/PersonModule';
+import * as moment from 'moment';
+import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -34,11 +37,14 @@ export class EmployeeProfileComponent {
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
+
+  currentModules: PersonModule[] = [];
+  inactiveModules: PersonModule[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getPerson();
     this.getDepartments();
     this.getUsers();
@@ -68,10 +74,20 @@ export class EmployeeProfileComponent {
         this.person = res;
         this.shownFiles = res.files;
         console.log(this.person.personModules);
-        
+        console.log(this.person);
+
+
+        this.setPersonModules();
         this.setBackupValues(this.person);
       });
     });
+  }
+
+  setPersonModules() {
+    this.person.personModules = this.person.personModules.sort((a, b) => a.status - b.status);
+    this.currentModules = this.person.personModules.filter(x => x.status === 1);
+    this.inactiveModules = this.person.personModules.filter(x => x.status !== 1);
+    console.log(this.person.personModules);
   }
 
   onSubmit() {
@@ -140,18 +156,18 @@ export class EmployeeProfileComponent {
 
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
-      if (itemA && itemB) {
-        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
-        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
-      }
-      else if (itemA) retVal = 1;
-      else if (itemB) retVal = -1;
-      return retVal;
+    if (itemA && itemB) {
+      if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+      else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+    }
+    else if (itemA) retVal = 1;
+    else if (itemB) retVal = -1;
+    return retVal;
   }
 
 
-  openFileUploadPopUp(){
-    this.dialog.open(FileuploadPopupComponent,{
+  openFileUploadPopUp() {
+    this.dialog.open(FileuploadPopupComponent, {
       data: {
         personId: this.person.personId,
         personFiles: this.person.files,
@@ -186,25 +202,25 @@ export class EmployeeProfileComponent {
   }
 
   deleteFile(fileId: number, i: number) {
-    this.fileService.deleteFile(fileId).subscribe(() => { 
+    this.fileService.deleteFile(fileId).subscribe(() => {
       this.shownFiles.splice(i, 1)
     })
   }
 
-  onSearchQueryInput(event: Event){
+  onSearchQueryInput(event: Event) {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let tempList: File[] = []
     this.person.files.forEach(element => {
-      if (element.fileName.toLocaleLowerCase().includes(searchQuery)){
-          tempList.push(element);
-          console.log("Afdeling");      
+      if (element.fileName.toLocaleLowerCase().includes(searchQuery)) {
+        tempList.push(element);
+        console.log("Afdeling");
       }
       this.shownFiles = tempList;
-    });    
+    });
   }
 
-  openAddPersonModulePopup(){
-    this.dialog.open(AddPersonmodulePopupComponent,{
+  openAddPersonModulePopup() {
+    this.dialog.open(AddPersonmodulePopupComponent, {
       data: {
         person: this.person,
       },
@@ -212,5 +228,17 @@ export class EmployeeProfileComponent {
       height: '40%',
       width: '25%'
     });
-    }
+  }
+
+  openEditPersonModulePopup(personModule: PersonModule) {
+    this.dialog.open(EditPersonmodulePopupComponent, {
+      data: {
+        personModule: personModule,
+        personModules: this.person.personModules
+      },
+      disableClose: false,
+      height: '50%',
+      width: '25%'
+    });
+  }
 }

@@ -2,6 +2,14 @@
     overflow-x: hidden;
 }
 
+.moduleItem > p{
+    overflow: hidden;
+}
+
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .container {
     width: auto;
     height: 100%;
@@ -12,7 +20,7 @@
         "p m"
         "p f"
         "b b";
-    grid-auto-rows: 10% 44% 44% 2%;
+    grid-auto-rows: 2% 48% 48% 2%;
     column-gap: 20px;
     row-gap: 5px;
     overflow: hidden;
@@ -176,18 +184,104 @@
     padding-right: 15px;
 }
 
-.modules {
-    background-color: whitesmoke;
+.newModules {
+    /* background-color: whitesmoke; */
     grid-area: m;
     width: auto;
     margin-right: 10px;
     box-shadow: 0px 0px 5px 1px #888;
     outline: 1px solid black;
     border-radius: 5px;
+
+    display: grid;
+    grid-template-areas: 
+    "mt mt"
+    "am am";
+    grid-template-rows: 13% 87%;
+    grid-template-columns: 1fr 1fr;
 }
 
-.moduleInfo{
-    
+.allModules{
+    background-color: whitesmoke;
+    grid-area: am;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: visible;
+    grid-auto-rows: 25%;
+    justify-items: center;
+}
+
+.moduleToolbar{
+    grid-area: mt;
+    border-bottom: 1px solid black;
+    display: grid;
+    align-content: center;
+    height: fit-content;
+}
+
+.currentModules{
+    grid-area: cm;
+    border-right: 1px solid black;
+}
+
+.futureModules{
+    grid-area: fm;
+    border-right: 1px solid black;
+}
+
+.pastModules{
+    grid-area: pm;
+}
+
+.moduleItem{
+    height: 15%;
+    margin-bottom: 5px;
+    display: grid;
+    /* border-radius: 5px; */
+    outline: 1px solid black;
+    background-color: white;
+}
+
+.newModuleItem{
+    /* margin-bottom: 5px; */
+    margin: 5px 0px;
+    width: 98%;
+    display: grid;
+    border-radius: 5px;
+    outline: 1px solid black;
+    background-color: white;
+
+    grid-template-areas: 
+    "mii colo";
+    grid-template-columns: 97% 3%;
+}
+
+.moduleItemInfo{
+    grid-area: mii;
+    display: grid;
+}
+
+.moduleItemColor{
+    grid-area: colo;
+}
+
+.moduleItemColorIndicator{
+    width: 100%;
+    height: 100%;
+}
+
+.moduleItemInfo > p {
+    margin-left: 5px;
+    margin-top: 3px;
+}
+
+.moduleItemInfo > p > b:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.moduleItem:hover{
+    background-color: #e2e2e2;
 }
 
 .files {
@@ -227,6 +321,17 @@
     background-color: #006E8C;
     border: none;
     outline: 1px solid black;
+}
+
+.add-module-button {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-left: 8px;
+    background-color: #006E8C;
+    border: none;
+    outline: 1px solid black;
+    margin: 5px 0px 5px 8px;
 }
 
 .upload-file-button:hover {
