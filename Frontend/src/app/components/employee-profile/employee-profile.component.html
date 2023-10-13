@@ -17,6 +17,7 @@
           <label>Driftskoordinator: </label>
           <label>Ansættelses Dato: </label>
           <label>Slut Dato: </label>
+          <label>SVU Søgt: </label>
           <label>SVU Berettiget: </label>
         </div>
         <div class="grid-input">
@@ -81,6 +82,11 @@
               [disabled]="editDisabled"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
           </mat-form-field>
+
+          <div class="checkbox">
+            <input type="checkbox" [(ngModel)]="person.svuApplied" id="svuApplied" name="svuApplied"
+              #svuApplied="ngModel">
+          </div>
 
           <div class="checkbox">
             <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
