@@ -335,6 +335,11 @@ h1{
     margin: 5px 0px 5px 8px;
 }
 
+.add-module-button:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
+
 .upload-file-button:hover {
     cursor: pointer;
     background-color: #005f79;
