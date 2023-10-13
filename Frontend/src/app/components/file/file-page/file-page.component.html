@@ -39,7 +39,7 @@
         </tr>
         <tr *ngFor="let file of showedList; let i = index">
           <td>{{file.fileName}}</td>
-          <td><a href="/employee/{{file.person.personId}}">{{file.person.name}}</a></td>
+          <td><p routerLink="/employee/{{file.person.personId}}" class="employeeName">{{file.person.name}}</p></td>
           <td class="End--date">
             <p class="EndDateShow">{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
           </td>

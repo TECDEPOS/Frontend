@@ -43,6 +43,11 @@ select {
   margin: 5px 0;
 }
 
+.test{
+  display: flex; 
+  justify-content: space-between;
+}
+
 ::ng-deep .mat-datepicker-content {
   border: 1px solid black
 }
