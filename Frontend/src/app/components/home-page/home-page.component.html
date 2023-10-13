@@ -12,7 +12,6 @@
             </mat-select>
         </mat-form-field>      
     </div>
-    <button (click)="progressBar()">ddd</button>
     <div class="table"> 
         <div class="TableForPeople">
             <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
@@ -34,7 +33,7 @@
                     </th>
                 </tr>
                 <tr *ngFor="let x of showedList">
-                    <td><a href="/employee/{{x.personId}}">{{x.name}}</a></td>
+                    <td><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
                     <td *ngIf="x.department">{{x.department.name}}</td>
                     <td *ngIf="!x.department">-</td>
                     <td class="End--date">
