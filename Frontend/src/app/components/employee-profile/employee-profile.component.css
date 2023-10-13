@@ -20,7 +20,7 @@ h1{
         "p m"
         "p f"
         "b b";
-    grid-auto-rows: 10% 44% 44% 2%;
+    grid-auto-rows: 2% 48% 48% 2%;
     column-gap: 20px;
     row-gap: 5px;
     overflow: hidden;
@@ -197,7 +197,7 @@ h1{
     grid-template-areas: 
     "mt mt"
     "am am";
-    grid-template-rows: 11% 89%;
+    grid-template-rows: 13% 87%;
     grid-template-columns: 1fr 1fr;
 }
 
@@ -216,6 +216,7 @@ h1{
     border-bottom: 1px solid black;
     display: grid;
     align-content: center;
+    height: fit-content;
 }
 
 .currentModules{
@@ -320,6 +321,17 @@ h1{
     background-color: #006E8C;
     border: none;
     outline: 1px solid black;
+}
+
+.add-module-button {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-left: 8px;
+    background-color: #006E8C;
+    border: none;
+    outline: 1px solid black;
+    margin: 5px 0px 5px 8px;
 }
 
 .upload-file-button:hover {
