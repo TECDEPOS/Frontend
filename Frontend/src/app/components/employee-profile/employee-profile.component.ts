@@ -223,6 +223,8 @@ export class EmployeeProfileComponent {
     this.dialog.open(AddPersonmodulePopupComponent, {
       data: {
         person: this.person,
+        currentModules: this.currentModules,
+        inactiveModules: this.inactiveModules
       },
       disableClose: false,
       height: '40%',
