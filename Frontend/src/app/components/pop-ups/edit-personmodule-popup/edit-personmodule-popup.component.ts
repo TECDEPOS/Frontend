@@ -74,11 +74,15 @@ export class EditPersonmodulePopupComponent {
     })
   }
 
-  //TODO - Jimmy: Remove the deleted PersonModule from the list on the employee-profile page
   deletePersonModule(){
     this.personModuleService.deletePersonModule(this.personModule.personModuleId).subscribe(res => {
-      console.log(res);
-      
+      if (this.personModule.status === 1) {
+        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1)
+      }
+      else{
+        this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
+      }
+      this.closeDialog();
     });
   }
 
