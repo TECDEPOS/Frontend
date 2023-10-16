@@ -18,29 +18,29 @@ export class AddPersonmodulePopupComponent {
   person: Person = new Person;
   modules: Module[] = [];
   newPersonModule: PersonModule = new PersonModule;
+  currentModules: PersonModule[] = [];
+  inactiveModules: PersonModule[] = [];
   moduleTypes: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
   constructor(private dialogRef: MatDialogRef<AddPersonmodulePopupComponent>, private personModuleService: PersonModuleService, private moduleService: ModuleService,
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
+      currentModules: PersonModule[];
+      inactiveModules: PersonModule[];
     }) {
     if (data.person) this.person = data.person;
+    if (data.currentModules) this.currentModules = data.currentModules;
+    if (data.inactiveModules) this.inactiveModules = data.inactiveModules;
   }
 
   ngOnInit(){
-    this.getModules();
-    console.log(this.person);
-    
-    console.log(this.moduleTypes);
-    
+    this.getModules();    
   }
 
   getModules() {
     this.moduleService.getModule().subscribe(res => {
       this.modules = res;
-      console.log(this.modules);
-      
     })
   }
 
@@ -58,8 +58,7 @@ export class AddPersonmodulePopupComponent {
 
   onSubmit(){
     this.newPersonModule.personId = this.person.personId;
-    this.newPersonModule.module = null!
-    this.newPersonModule.person = null!;
+    this.newPersonModule.moduleId = this.newPersonModule.module.moduleId
     
     let startDateAfterToday = this.compareDates();
     if (startDateAfterToday) {
@@ -71,7 +70,15 @@ export class AddPersonmodulePopupComponent {
     }
     
     this.personModuleService.addPersonModules(this.newPersonModule).subscribe(res => {
-      console.log(res);
+      // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh
+      this.newPersonModule.personModuleId = res.personModuleId;
+      
+      if (res.status === 1) {
+        this.currentModules.push(this.newPersonModule);
+      }
+      else{
+        this.inactiveModules.push(this.newPersonModule);
+      }
       this.closeDialog();
     });
   }
