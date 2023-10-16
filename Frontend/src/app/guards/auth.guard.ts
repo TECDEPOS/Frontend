@@ -22,6 +22,7 @@ export const authGuardRole: CanActivateFn = (route, state) => {
     role = inject(AuthService),
     reg = new RegExp('*Admin')
 
+
   if(token && reg.test(role.getUserRole())){
     console.log("It works!!!");
     return true

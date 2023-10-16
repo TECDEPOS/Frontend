@@ -3,6 +3,7 @@ import { Sort } from '@angular/material/sort';
 import { findIndex } from 'rxjs';
 import { File } from 'src/app/Models/File';
 import { FileTag } from 'src/app/Models/FileTag';
+import { AuthService } from 'src/app/Services/auth.service';
 import { FileTagService } from 'src/app/Services/file-tag.service';
 import { FileService } from 'src/app/Services/file.service';
 
@@ -20,12 +21,13 @@ export class FilePageComponent {
   searchName: string = "";
   searchFileTag: string = "";
 
-  constructor(private fileService: FileService, private fileTagService: FileTagService) {
+  constructor(private fileService: FileService, private fileTagService: FileTagService, private authService: AuthService) {
     this.getAllFiles();
   }
 
   getAllFiles() {
-    this.fileService.getFiles().subscribe(data => {
+    let roleId = this.authService.getUserRoleId();
+    this.fileService.getFiles(roleId).subscribe(data => {
       this.files = data;
       this.showedList = this.files;
       this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate) * ('asc' == 'asc' ? 1 : -1))

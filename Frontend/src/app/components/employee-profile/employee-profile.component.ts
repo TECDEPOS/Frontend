@@ -19,6 +19,7 @@ import { Status } from 'src/app/Models/status';
 import { PersonModule } from 'src/app/Models/PersonModule';
 import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -42,7 +43,7 @@ export class EmployeeProfileComponent {
   inactiveModules: PersonModule[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService) { }
+    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService) { }
 
   ngOnInit() {
     this.getPerson();
@@ -68,12 +69,14 @@ export class EmployeeProfileComponent {
     });
   }
   getPerson() {
+    let roleId = this.authService.getUserRoleId();
+    console.log('Role id: ',roleId);
+    
     this.aRoute.paramMap.subscribe(params => {
-      let id = Number(params.get('id'))
-      this.personService.getPersonById(id).subscribe(res => {
+      let personId = Number(params.get('id'))
+      this.personService.getPersonById(personId, roleId).subscribe(res => {
         this.person = res;
         this.shownFiles = res.files;
-        console.log(this.person.personModules);
         console.log(this.person);
 
 
@@ -87,7 +90,6 @@ export class EmployeeProfileComponent {
     this.person.personModules = this.person.personModules.sort((a, b) => a.status - b.status);
     this.currentModules = this.person.personModules.filter(x => x.status === 1);
     this.inactiveModules = this.person.personModules.filter(x => x.status !== 1);
-    console.log(this.person.personModules);
   }
 
   onSubmit() {

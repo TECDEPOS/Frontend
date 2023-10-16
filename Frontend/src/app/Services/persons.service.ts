@@ -17,8 +17,8 @@ export class PersonsService {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/')
   }
 
-  getPersonById(id: number): Observable<Person>{
-    return this.http.get<Person>(this.baseApiUrl + 'Person/' + id)
+  getPersonById(personId: number, roleId: number): Observable<Person>{
+    return this.http.get<Person>(this.baseApiUrl + 'Person/' + personId + '/role/' + roleId)
   }
 
   getPersonByName(name: string): Observable<Person[]>{

@@ -80,4 +80,10 @@ export class AuthService {
     var decoded: any = jwt_decode(token)
     return (decoded['role']);    
   }
+
+  getUserRoleId(): number{
+    let token = localStorage.getItem('jwt')!;
+    var decoded: any = jwt_decode(token);
+    return Number(decoded['roleId'])
+  }
 }
