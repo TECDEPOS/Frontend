@@ -8,10 +8,10 @@ export class Person{
     personId: number = 0;
     name: string = "";
     initials: string = "";
-    departmentId: number = 0;
-    educationalConsultantId: number = 0;
-    locationId: number = 0;
-    operationCoordinatorId: number = 0;
+    departmentId: number|null = null;
+    educationalConsultantId: number|null = null;
+    locationId: number|null = null;
+    operationCoordinatorId: number|null = null;
     hiringDate: Date = new Date;
     endDate: Date = new Date;
     svuEligible: boolean = false;
