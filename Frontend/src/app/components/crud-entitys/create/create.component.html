@@ -4,27 +4,27 @@
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
                 (ngSubmit)="createDepartment()">
-                <div>
+                <div class="test">
                     <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
-                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div *ngIf="this.role === 'Super_Admin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
         || this.role === 'Drift_Koordinator_Admin'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
-                <div>
+                <div class="test">
                     <label>Brugernavn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="user.username" id="userName" name="userName" #userName="ngModel"
                         required>
                 </div>
-                <div>
+                <div class="test">
                     <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="test">
                     <label>Role:</label><p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
@@ -33,48 +33,48 @@
                                 {{role}}
                             </mat-option>
                         </mat-select>
-                    </mat-form-field>
-                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                    </mat-form-field>    
                 </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <!-- <div>
             <div class="picker" (click)="toggleForm('bookForm')">Bøger</div>
             <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm" (ngSubmit)="createBook()">
-                <div>
+                <div class="test">
                     <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="test">
                     <label>Mængde: </label><p>&ensp;</p>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
-                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div> -->
         <div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Fil-tag</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
-                <div>
+                <div class="test">
                     <label>Navn: </label><p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>Vælg hvem der kan se denne fil kadegori:</div>
-                <div>
+                <div class="test">
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
                             #dKVisability="ngModel">
                     </div>
                 </div>
-                <div>
+                <div class="test">
                     <label>Human Resources:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
                             #hRVisability="ngModel">
                     </div>
                 </div>
-                <div>
+                <div class="test">
                     <label>Pædagogisk konsulent:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
@@ -88,22 +88,22 @@
             <div class="picker" (click)="toggleForm('locationForm')">Lokation</div>
             <form *ngIf="isFormActive('locationForm')" class="form" #locationForm="ngForm"
                 (ngSubmit)="createLocation()">
-                <div>
-                    <label>Navn: </label><p>&ensp;</p>
-                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
-                    <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <div class="test">
+                    <label>Navn: </label>
+                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>    
                 </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
             <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="createModule()">
-                <div>
+                <div class="test">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
-                    <label>Beskrivelse: </label><p>&ensp;</p>
+                <div class="test">
+                    <label>Beskrivelse: </label>
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
                 </div>
@@ -114,16 +114,16 @@
         <div>
             <div class="picker" (click)="toggleForm('personForm')">Person</div>
             <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="createPerson()">
-                <div>
+                <div class="test">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="test">
                     <label>Initialer: </label>
                     <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel"
                         required>
                 </div>
-                <div>
+                <div class="test">
                     <label>Afdeling:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.departmentId">Vælg afdeling:</mat-label>
@@ -135,7 +135,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="test">
                     <label>Lokation:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.locationId">Vælg lokation:</mat-label>
@@ -147,7 +147,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="test">
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.educationalConsultantId">Vælg konsulent</mat-label>
@@ -160,7 +160,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="test">
                     <label>Driftskoordinator:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.operationCoordinatorId">Vælg Driftskoordinator</mat-label>
@@ -173,7 +173,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="test">
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>

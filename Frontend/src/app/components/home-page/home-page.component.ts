@@ -35,7 +35,7 @@ export class HomePageComponent {
   ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
-      this.modulesCompleted()
+      this.modulesCompleted()      
     })
   }
 
@@ -76,8 +76,6 @@ export class HomePageComponent {
       if (inProcent > 90) {
         objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
       }
-      
-      console.log(person.name, "      ", inProcent, "     ", howManyDaysSinceStart, "      ", howManyDaysInTotal);
     });
   }
 
@@ -178,39 +176,11 @@ export class HomePageComponent {
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
     if (itemA && itemB) {
-      if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
-      else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+      if (itemA > itemB) retVal = 1;
+      else if (itemA < itemB) retVal = -1;
     }
     else if (itemA) retVal = 1;
     else if (itemB) retVal = -1;
     return retVal;
-  }
-
-
-  progressBarDummy(i: number): void {
-    let objec = this.progress.find(x => x.nativeElement.id == i);
-    let person = this.Hired.find(x => x.personId == i)
-
-    let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
-    let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
-    let inProcent = 0
-
-    if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
-      inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
-
-    }
-    else {
-      inProcent = 100
-    }
-    objec!.nativeElement.style.width = inProcent + "%"
-    if (inProcent < 65) {
-      objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
-    }
-    if (inProcent > 65 && inProcent < 90) {
-      objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
-    }
-    if (inProcent > 90) {
-      objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
-    }
   }
 }

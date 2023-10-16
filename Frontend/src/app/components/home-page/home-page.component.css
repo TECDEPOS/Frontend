@@ -96,8 +96,19 @@ mat-form-field{
 .TableBox td{
   border: 1px solid #ddd;
   text-align: center;
-  padding: 8px;
+  padding: 4px;
+  font-size: large;
 }
+
+.employeeName{
+  text-decoration: underline; 
+  color: rgb(0, 26, 255);
+}
+
+.employeeName:hover{
+  cursor: pointer;
+}
+
 
 .TableBox th:hover{
   background-color: #005f79;
