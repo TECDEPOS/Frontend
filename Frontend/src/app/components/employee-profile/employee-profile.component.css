@@ -370,7 +370,11 @@ h1{
 .TableBox td {
     border: 1px solid #ddd;
     text-align: center;
-    padding: 8px;
+    padding: 2px;
+    font-size: medium;
+}
+
+*{
 }
 
 .TableBox th:hover {
