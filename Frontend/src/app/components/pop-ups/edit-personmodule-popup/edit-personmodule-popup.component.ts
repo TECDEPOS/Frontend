@@ -16,7 +16,8 @@ export class EditPersonmodulePopupComponent {
 
   tempModule: PersonModule = new PersonModule;
   personModule: PersonModule = new PersonModule;
-  personModules: PersonModule[] = [];
+  currentModules: PersonModule[] = [];
+  inactiveModules: PersonModule[] = [];
   modules: Module[] = [];
   moduleTypes: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
@@ -24,7 +25,13 @@ export class EditPersonmodulePopupComponent {
     .filter(key => !isNaN(Number(Status[key])));
 
   constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personModuleService: PersonModuleService,
-    @Inject(MAT_DIALOG_DATA) private data: { personModule: PersonModule; personModules: PersonModule[]; }) { if (data.personModule) this.personModule = data.personModule }
+    @Inject(MAT_DIALOG_DATA) private data: { personModule: PersonModule; currentModules: PersonModule[]; inactiveModules: PersonModule[]; })
+    { 
+      if (data.personModule) this.personModule = data.personModule;
+      if (data.currentModules) this.currentModules = data.currentModules;
+      if (data.inactiveModules) this.inactiveModules = data.inactiveModules;
+
+     }
 
 
   ngOnInit(){
@@ -40,12 +47,30 @@ export class EditPersonmodulePopupComponent {
     })
   }
 
-  //TODO - Jimmy: show the updated changes on employee-profile page after saving
   onSubmit(){
     this.personModuleService.updatepersonModules(this.tempModule).subscribe(res => {
-      console.log(res);
-      this.personModule = this.tempModule;
-      
+      console.log('Injected: ', this.personModule);
+      console.log('Updated: ',this.tempModule);
+
+      // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
+      if (this.personModule.status === 1 && this.tempModule.status === 1) {
+        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
+      }
+      // If old and edited personModule is -NOT- "Startet" then replace the old with edited in injected inactiveModules variable to update immediately
+      else if (this.personModule.status !== 1 && this.tempModule.status !== 1) {
+        this.inactiveModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
+      }
+      // If status has changed FROM "Startet", Remove old personModule from currentModules and add the updated one to inactiveModules
+      else if (this.personModule.status === 1 && this.tempModule.status !== 1) {
+        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1);
+        this.inactiveModules.push(this.tempModule);
+      }
+      // If status has changed TO "Startet", Remove old personModule from inactiveModules and add the updated one to currentModules
+      else if (this.personModule.status !== 1 && this.tempModule.status === 1) {
+        this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
+        this.currentModules.push(this.tempModule);
+      }
+      this.closeDialog();
     })
   }
 
