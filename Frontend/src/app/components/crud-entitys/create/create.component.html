@@ -38,7 +38,7 @@
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
-        <div>
+        <!-- <div>
             <div class="picker" (click)="toggleForm('bookForm')">Bøger</div>
             <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm" (ngSubmit)="createBook()">
                 <div class="test">
@@ -51,7 +51,7 @@
                 </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
-        </div>
+        </div> -->
         <div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Fil-tag</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">

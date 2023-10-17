@@ -48,6 +48,7 @@ export class FileuploadPopupComponent {
 
   onSubmit(): void {
     // Build formData before sending request to server
+    // let filetags: string = JSON.stringify(this.fileTags);
     this.formData.append('personId', this.personId.toString());
     this.formData.append('fileTags', JSON.stringify(this.fileTags));
     
