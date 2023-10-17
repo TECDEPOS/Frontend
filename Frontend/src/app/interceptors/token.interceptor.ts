@@ -114,7 +114,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   sessionExpiredPopup(err: any) {
-    if (this.dialog.openDialogs.filter(x => x.componentInstance.data.message == err.error).length == 0) {
+    if (this.dialog.openDialogs.filter(x => x.componentInstance.data?.message == err.error).length == 0) {
       this.dialog.open(ErrorPopupComponent, {
         data: {
           icon: 'Error',
@@ -126,8 +126,8 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
 
-  openErrorPopup(err: any) {
-    if (this.dialog.openDialogs.filter(x => x.componentInstance.data.message == err.error).length == 0){
+  openErrorPopup(err: any) {    
+    if (this.dialog.openDialogs.filter(x => x.componentInstance.data?.message == err.error).length == 0){
       this.dialog.open(ErrorPopupComponent, {
         data: {
           icon: 'Error',

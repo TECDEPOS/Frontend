@@ -34,6 +34,7 @@ import { ChangePasswordPopupComponent } from './components/pop-ups/change-passwo
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
 import { AddPersonmodulePopupComponent } from './components/pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
+import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 
 
 
@@ -70,7 +71,8 @@ export const MY_DATE_FORMATS = {
     FileuploadPopupComponent,
     ChangePasswordPopupComponent,
     AddPersonmodulePopupComponent,
-    EditPersonmodulePopupComponent
+    EditPersonmodulePopupComponent,
+    PasswordExpiredPopupComponent
   ],
   imports: [
     BrowserModule,
