@@ -15,8 +15,8 @@ export class FileService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getFiles(): Observable<File[]>{
-    return this.http.get<File[]>(this.baseApiUrl + 'File/')
+  getFiles(roleId: number): Observable<File[]>{
+    return this.http.get<File[]>(this.baseApiUrl + 'File/role/' + roleId)
   }
 
   getFilesById(id: number): Observable<File>{

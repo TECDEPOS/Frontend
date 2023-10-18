@@ -4,4 +4,5 @@ export class AuthenticatedResponse{
     name: string = "";
     accessToken: string = "";
     refreshToken: string = "";
+    passwordExpiryDate: Date = new Date;
 }
