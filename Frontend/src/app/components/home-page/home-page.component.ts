@@ -35,7 +35,7 @@ export class HomePageComponent {
   ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
-      this.modulesCompleted()      
+      this.modulesCompleted()
     })
   }
 
@@ -44,28 +44,28 @@ export class HomePageComponent {
   }
 
   progressBar(): void {
-    this.Hired.forEach(person => {      
+    this.Hired.forEach(person => {
       let objec = this.progress.find(x => x.nativeElement.id == person.personId);
       let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
       let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
       let inProcent = 0
 
-      if(howManyDaysSinceStart < 0){
+      if (howManyDaysSinceStart < 0) {
         howManyDaysSinceStart = 0
       }
-      
+
       if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
         inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
       }
       else {
         inProcent = 100
       }
-      
 
-      if(objec === undefined){
-        return 
+
+      if (objec === undefined) {
+        return
       }
-      
+
       objec!.nativeElement.style.width = inProcent + "%"
       if (inProcent < 75) {
         objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
@@ -80,12 +80,12 @@ export class HomePageComponent {
   }
 
   //Fun for fun, hvornår er vi halvejs med vores uddannelse
-  findHalf(){
+  findHalf() {
     var start = 1596441600,
-        slut = 1755158400,
-        mid = slut - ((slut - start) / 2)
-        console.log(mid);
-        
+      slut = 1755158400,
+      mid = slut - ((slut - start) / 2)
+    console.log(mid);
+
   }
 
   getDepartmentData() {
@@ -100,7 +100,7 @@ export class HomePageComponent {
       this.Hired.forEach(element => {
         element.completedModules = this.modulesCompletedMethod(element)
       });
-      
+
       this.showedList = this.Hired
       this.getDepartmentData()
       this.Hired.sort((a, b) => a.name.localeCompare(b.name))
@@ -108,22 +108,22 @@ export class HomePageComponent {
     })
   }
 
-  modulesCompletedMethod(x: Person){    
-    return  x.personModules.filter(x => x.status === 3).length 
+  modulesCompletedMethod(x: Person) {
+    return x.personModules.filter(x => x.status === 3).length
   }
 
   onDepartmentQueryInput(event: any) {
     let personList: Person[] = []
-     //Returns all, even null
-     if(event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == ""){
+    //Returns all, even null
+    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
       this.showedList = this.Hired
       this.searchDepartment = event.value;
       return
     }
-    
+
     //Checks for what matches with the department and name
-    this.Hired.forEach(element => {     
-      if(element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)){
+    this.Hired.forEach(element => {
+      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)) {
         personList.push(element);
       }
     })
@@ -134,18 +134,18 @@ export class HomePageComponent {
   onSearchQueryInput(event: Event) {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     let personList: Person[] = []
-    if( searchQuery.toLocaleLowerCase() === "" && this.searchDepartment === ""){
+    if (searchQuery.toLocaleLowerCase() === "" && this.searchDepartment === "") {
       this.showedList = this.Hired
       this.searchName = searchQuery
       return
     }
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())){
-          personList.push(element);
-          console.log("Afdeling");      
-      } 
-    });    
-    this.showedList = personList     
+      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
+        personList.push(element);
+        console.log("Afdeling");
+      }
+    });
+    this.showedList = personList
     this.searchName = searchQuery;
   }
 
@@ -159,6 +159,8 @@ export class HomePageComponent {
       switch (sort.active) {
         case 'HiredName':
           return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+        case 'Initials':
+          return this.compare(a.initials.toLocaleLowerCase(), b.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredDepartment':
           return this.compare(a.department?.name.toLocaleLowerCase(), b.department?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
@@ -166,7 +168,7 @@ export class HomePageComponent {
         case 'HiredSVU':
           return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredModules':
-          return this.compare(a.personModules.filter(x => x.status === 3).length, b.personModules.filter(x => x.status === 3).length)  * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.personModules.filter(x => x.status === 3).length, b.personModules.filter(x => x.status === 3).length) * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }

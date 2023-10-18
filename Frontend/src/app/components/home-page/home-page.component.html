@@ -19,6 +19,9 @@
                     <th mat-sort-header="HiredName" style="min-width: 39.5%;">
                         Navn 
                     </th>
+                    <th mat-sort-header="Initials" style="min-width: 39.5%;">
+                        Initialer 
+                    </th>
                     <th mat-sort-header="HiredDepartment" style="min-width: 21.5%;">
                         Afdeling 
                     </th> 
@@ -34,6 +37,7 @@
                 </tr>
                 <tr *ngFor="let x of showedList">
                     <td><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
+                    <td>{{x.initials}}</td>
                     <td *ngIf="x.department">{{x.department.name}}</td>
                     <td *ngIf="!x.department">-</td>
                     <td class="End--date">
