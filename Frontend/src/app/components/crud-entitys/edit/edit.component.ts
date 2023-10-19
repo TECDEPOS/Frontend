@@ -68,6 +68,7 @@ export class EditComponent extends Unsub {
   personForm: FormGroup;
   userForm: FormGroup;
 
+  // Takes the Enums and only get the strings and not the numbers
   moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
 
@@ -310,7 +311,6 @@ export class EditComponent extends Unsub {
       return o1.name === o2.name && o1.locationId === o2.locationId;
     }
     else if (typeof (o2 == Department)) {
-      console.log("2");
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
     else if (typeof (o2 == User)) {

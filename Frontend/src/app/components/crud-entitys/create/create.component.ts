@@ -56,6 +56,7 @@ export class CreateComponent extends Unsub implements OnInit {
   personForm: FormGroup;
   userForm: FormGroup;
 
+  // Takes the Enums and only get the strings and not the numbers
   moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
     .filter(key => !isNaN(Number(ModuleType[key])));
 
@@ -168,9 +169,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   createPerson() {
-    this.person.endDate = this.person.hiringDate;
-    console.log(this.person);
-    
+    this.person.endDate = this.person.hiringDate;    
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
