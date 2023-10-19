@@ -19,6 +19,8 @@ export class AuthService {
   extendedApiUrl: string = "Auth/"
 
   login(loginViewModel: LoginViewModel): Observable<AuthenticatedResponse>{
+    console.log(this.baseApiUrl);
+    
     return this.http.post<AuthenticatedResponse>(this.baseApiUrl + this.extendedApiUrl + 'login', loginViewModel)
   }
 

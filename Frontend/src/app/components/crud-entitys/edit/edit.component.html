@@ -72,7 +72,7 @@
             </div>
         </div> -->
         <div>
-            <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
+            <div class="picker" (click)="toggleList('fileTagList')">Fil katogori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
@@ -303,7 +303,7 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>Vælg hvem der kan se denne fil katogori:</div>
                 <div>
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
@@ -327,7 +327,7 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
                 <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet File Tag</button>
+                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet Filkategori</button>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
