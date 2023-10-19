@@ -72,7 +72,7 @@
             </div>
         </div> -->
         <div>
-            <div class="picker" (click)="toggleList('fileTagList')">Fil-tag</div>
+            <div class="picker" (click)="toggleList('fileTagList')">Fil type</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
@@ -303,7 +303,7 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne fil kadegori:</div>
+                <div>Vælg hvem der kan se denne fil type:</div>
                 <div>
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
