@@ -99,8 +99,8 @@
       <button class="edit-button" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
       <div class="editmode-buttons">
         <button class="save-button" (click)="onSubmit()" type="submit" *ngIf="!editDisabled"
-          [disabled]="myForm.invalid">Save</button>
-        <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Cancel</button>
+          [disabled]="myForm.invalid">Gem</button>
+        <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Annuller</button>
       </div>
     </div>
 

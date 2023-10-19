@@ -6,7 +6,7 @@
                 <span>
                     <p>Brugernavn</p>
                     <input class="usernameinput" placeholder="Brugernavn" type="text" id="username" name="username"  required #userName="ngModel" [(ngModel)]="loginRequest.username">
-                    <p class="InvalidPassword" *ngIf="invalidLogin">Invalid username or password.</p>
+                    <p class="InvalidPassword" *ngIf="invalidLogin">Forkert brugernavn eller kodeord.</p>
                 </span>
                 <span>
                     <p>Kodeord</p>

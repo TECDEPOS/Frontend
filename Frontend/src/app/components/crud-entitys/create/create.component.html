@@ -53,7 +53,7 @@
             </form>
         </div> -->
         <div>
-            <div class="picker" (click)="toggleForm('fileTagForm')">Fil katogori</div>
+            <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
                 <div class="test">
                     <label>Navn: </label><p>&ensp;</p>
@@ -194,8 +194,8 @@
             </form>
         </div>
     </span>
-    <div class="innerBox">
-        Nylig opretet personer
+    <div class="innerBox" *ngIf="resentlyCreated.length > 0">
+        Nyoprettede personer:
         <div *ngFor="let created of resentlyCreated">
             <div (click)="personPicker(created.personId)" class="picker">
                 <span>
