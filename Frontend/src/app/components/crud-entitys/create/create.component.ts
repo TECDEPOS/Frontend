@@ -115,10 +115,10 @@ export class CreateComponent extends Unsub implements OnInit {
 
   getForPerson() {
     this.userService.getUsers().subscribe(res => {
-      this.educationalConsultants = res.filter(x => x.userRole === 1 || x.userRole === 4);
+      this.educationalConsultants = res.filter(x => x.userRole === 4);
       console.log(this.educationalConsultants);
       
-      this.operationCoordinators = res.filter(x => x.userRole === 3 || x.userRole === 6);
+      this.operationCoordinators = res.filter(x => x.userRole === 6);
       console.log(this.operationCoordinators);
       
       this.departmentService.getDepartment().subscribe(res => {
