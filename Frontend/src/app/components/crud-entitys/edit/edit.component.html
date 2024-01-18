@@ -153,20 +153,14 @@
             </div>
         </div>
         <div>
-            <div class="picker" (click)="toggleList('personModuleList')">Person Modul</div>
-            <div *ngIf="isListActive('personModuleList')" class="List">
+            <div class="picker" (click)="toggleList('courseList')">Person Modul</div>
+            <div *ngIf="isListActive('courseList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'module')">
                             <tr>
-                                <th mat-sort-header="personName">
-                                    Person Navn
-                                </th>
-                                <th mat-sort-header="initials">
-                                    Initialer
-                                </th>
-                                <th mat-sort-header="moduleName">
+                                <th mat-sort-header="name">
                                     Modul Navn
                                 </th>
                                 <th mat-sort-header="status">
@@ -182,18 +176,15 @@
                                     Slut Dato
                                 </th>
                             </tr>
-                            <tr *ngFor="let personModule of personModules, let i = index"
+                            <tr *ngFor="let course of courses, let i = index"
                                 (click)="personModuleSelecter(i)">
-                                <td>{{personModule.person.name}}</td>
-                                <td>{{personModule.person.initials}}</td>
-                                <td>{{personModule.module.name}}</td>
-                                <td>{{status[personModule.status]}}</td>
-                                <td>{{moduleType[personModule.moduleType]}}</td>
+                                <td>{{course.module.name}}</td>
+                                <td>{{moduleType[course.courseType]}}</td>
                                 <td>
-                                    <p>{{personModule.startDate | date: 'dd/MM/yyyy'}}</p>
+                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
                                 <td>
-                                    <p>{{personModule.endDate | date: 'dd/MM/yyyy'}}</p>
+                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
                             </tr>
                         </table>
@@ -357,7 +348,8 @@
                 <button style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet Modul</button>
             </form>
         </div>
-        <div *ngIf="isFormActive('personModuleForm')">
+        <!-- ToDo: Omskriv -->
+        <!-- <div *ngIf="isFormActive('personModuleForm')">
             <form class="form" #personModuleForm="ngForm" (ngSubmit)="editPersonModule()">
                 <div>
                     <label>Person Navn: </label>
@@ -400,7 +392,7 @@
                 <button (click)="cancel('personModule')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deletePersonModule(personModule.personModuleId)" type="button">Slet Person Modul</button>
             </form>
-        </div>
+        </div> -->
         <div *ngIf="isFormActive('personForm')">
             <form class="form" #personForm="ngForm" (ngSubmit)="editPerson()">
                 <div>

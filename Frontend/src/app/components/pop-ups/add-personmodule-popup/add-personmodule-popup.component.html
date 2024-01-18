@@ -30,14 +30,15 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <!-- ToDo: Omskriv -->
+          <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label>Vælg modul type:</mat-label>
             <mat-select [(ngModel)]="newPersonModule.moduleType" name="moduleType" #module="ngModel">
               <mat-option *ngFor="let moduleType of moduleTypes; let i = index" [value]="i">
                 {{moduleType}}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field subscriptSizing="dynamic" class="datepicker">
             <mat-label *ngIf="!newPersonModule.startDate">Vælg en dato</mat-label>

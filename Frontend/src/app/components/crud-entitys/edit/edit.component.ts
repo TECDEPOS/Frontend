@@ -16,13 +16,13 @@ import { ModuleService } from 'src/app/Services/module.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
-import { ModuleType } from 'src/app/Models/ModuleType';
+import { CourseType } from 'src/app/Models/CourseType';
 import { Unsub } from 'src/app/classes/unsub';
 import { findIndex, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
-import { PersonModule } from 'src/app/Models/PersonModule';
+import { Course } from 'src/app/Models/Course';
 import { PersonModuleService } from 'src/app/Services/person-module.service';
 import { Status } from 'src/app/Models/status';
 
@@ -38,7 +38,7 @@ export class EditComponent extends Unsub {
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
-  personModule: PersonModule = new PersonModule;
+  course: Course = new Course;
   person: Person = new Person;
   user: User = new User;
   change: changePasswordViewModel = new changePasswordViewModel;
@@ -47,7 +47,7 @@ export class EditComponent extends Unsub {
   fileTags: FileTag[] = [];
   locations: Location[] = [];
   modules: Module[] = [];
-  personModules: PersonModule[] = [];
+  courses: Course[] = [];
   persons: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
@@ -69,8 +69,8 @@ export class EditComponent extends Unsub {
   userForm: FormGroup;
 
   // Takes the Enums and only get the strings and not the numbers
-  moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
-    .filter(key => !isNaN(Number(ModuleType[key])));
+  moduleType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+    .filter(key => !isNaN(Number(CourseType[key])));
 
   status: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
@@ -152,7 +152,7 @@ export class EditComponent extends Unsub {
       else if (this.activeList == 'moduleList') {
         this.getModules();
       }
-      else if (this.activeList == 'personModuleList') {
+      else if (this.activeList == 'courseList') {
         this.getPersonModules();
       }
       else if (this.activeList == 'personList') {
@@ -231,20 +231,14 @@ export class EditComponent extends Unsub {
               return 0;
           }
         });
-      case 'personModule':
-        return this.personModules = this.personModules.sort((a, b) => {
+      case 'course':
+        return this.courses = this.courses.sort((a, b) => {
           const isAsc = sort.direction === 'asc';
           switch (sort.active) {
-            case 'personName':
-              return this.compare(a.person.name.toLocaleLowerCase(), b.person.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-            case 'initials':
-              return this.compare(a.person.initials.toLocaleLowerCase(), b.person.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-            case 'moduleName':
-              return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-            case 'status':
-              return this.compare(a.status, b.status) * (sort.direction == 'asc' ? 1 : -1);
-            case 'moduleType':
-              return this.compare(a.moduleType, b.moduleType) * (sort.direction == 'asc' ? 1 : -1);
+            case 'name':
+              return this.compare(a.module.name, b.module.name) * (sort.direction == 'asc' ? 1 : -1);
+            case 'courseType':
+              return this.compare(a.courseType, b.courseType) * (sort.direction == 'asc' ? 1 : -1);
             case 'startDate':
               return this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
             case 'endDate':
@@ -353,7 +347,7 @@ export class EditComponent extends Unsub {
 
   getPersonModules() {
     this.personModuleService.getAllPersonModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.personModules = res;
+      this.courses = res;
     })
   }
 
@@ -415,8 +409,8 @@ export class EditComponent extends Unsub {
   }
 
   personModuleSelecter(i: number) {
-    this.personModule = JSON.parse(JSON.stringify(this.personModules[i]));
-    this.backup = JSON.parse(JSON.stringify(this.personModules[i]));
+    this.course = JSON.parse(JSON.stringify(this.courses[i]));
+    this.backup = JSON.parse(JSON.stringify(this.courses[i]));
     this.toggleForm('personModuleForm', i)
   }
 
@@ -469,8 +463,8 @@ export class EditComponent extends Unsub {
   }
 
   editPersonModule() {
-    this.personModuleService.updatepersonModules(this.personModule).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
-      this.personModules[this.personModules.findIndex(x => x.moduleId == res.moduleId)] = res;
+    this.personModuleService.updatepersonModules(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+      this.courses[this.courses.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
@@ -526,7 +520,7 @@ export class EditComponent extends Unsub {
 
   deletePersonModule(id: number) {
     this.personModuleService.deletePersonModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.personModules = this.personModules.filter(x => x.moduleId != id);
+      this.courses = this.courses.filter(x => x.moduleId != id);
       this.activeForm = null;
     })
   }
@@ -565,7 +559,7 @@ export class EditComponent extends Unsub {
       case 'module':
         return this.module = JSON.parse(JSON.stringify(this.backup));
       case 'personModule':
-        return this.personModule = JSON.parse(JSON.stringify(this.backup));
+        return this.course = JSON.parse(JSON.stringify(this.backup));
       case 'person':
         return this.person = JSON.parse(JSON.stringify(this.backup));
       case 'user':

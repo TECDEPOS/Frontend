@@ -16,12 +16,12 @@ import { ModuleService } from 'src/app/Services/module.service';
 import { PersonsService } from 'src/app/Services/persons.service';
 import { UserService } from 'src/app/Services/user.service';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
-import { ModuleType } from 'src/app/Models/ModuleType';
+import { CourseType } from 'src/app/Models/CourseType';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { PersonModuleService } from 'src/app/Services/person-module.service';
-import { PersonModule } from 'src/app/Models/PersonModule';
+import { Course } from 'src/app/Models/Course';
 import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
@@ -57,8 +57,8 @@ export class CreateComponent extends Unsub implements OnInit {
   userForm: FormGroup;
 
   // Takes the Enums and only get the strings and not the numbers
-  moduleType: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
-    .filter(key => !isNaN(Number(ModuleType[key])));
+  moduleType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+    .filter(key => !isNaN(Number(CourseType[key])));
 
   userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
     .filter(key => !isNaN(Number(UserRole[key])));
