@@ -20,7 +20,7 @@ import { CourseType } from 'src/app/Models/CourseType';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { CourseService } from 'src/app/Services/course.service';
 import { Course } from 'src/app/Models/Course';
 import { AuthService } from 'src/app/Services/auth.service';
 

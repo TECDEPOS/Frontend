@@ -23,8 +23,8 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
 import { Course } from 'src/app/Models/Course';
-import { PersonModuleService } from 'src/app/Services/person-module.service';
 import { Status } from 'src/app/Models/status';
+import { CourseService } from 'src/app/Services/course.service';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class EditComponent extends Unsub {
   fileTagForm: FormGroup;
   locationForm: FormGroup;
   moduleForm: FormGroup;
-  personModuleForm: FormGroup;
+  courseForm: FormGroup;
   personForm: FormGroup;
   userForm: FormGroup;
 
@@ -85,7 +85,7 @@ export class EditComponent extends Unsub {
     private fileTagService: FileTagService,
     private locationService: LocationsService,
     private moduelService: ModuleService,
-    private personModuleService: PersonModuleService,
+    private courseService: CourseService,
     private personService: PersonsService,
     private userService: UserService
   ) {
@@ -95,7 +95,7 @@ export class EditComponent extends Unsub {
     this.fileTagForm = new FormGroup({});
     this.locationForm = new FormGroup({});
     this.moduleForm = new FormGroup({});
-    this.personModuleForm = new FormGroup({});
+    this.courseForm = new FormGroup({});
     this.personForm = new FormGroup({});
     this.userForm = new FormGroup({});
   }
@@ -153,7 +153,7 @@ export class EditComponent extends Unsub {
         this.getModules();
       }
       else if (this.activeList == 'courseList') {
-        this.getPersonModules();
+        this.getCourses();
       }
       else if (this.activeList == 'personList') {
         this.getPersons();
@@ -345,8 +345,8 @@ export class EditComponent extends Unsub {
     })
   }
 
-  getPersonModules() {
-    this.personModuleService.getAllPersonModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+  getCourses() {
+    this.courseService.getAllCourses().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.courses = res;
     })
   }
@@ -408,10 +408,10 @@ export class EditComponent extends Unsub {
     this.toggleForm('moduleForm', i)
   }
 
-  personModuleSelecter(i: number) {
+  courseSelecter(i: number) {
     this.course = JSON.parse(JSON.stringify(this.courses[i]));
     this.backup = JSON.parse(JSON.stringify(this.courses[i]));
-    this.toggleForm('personModuleForm', i)
+    this.toggleForm('courseForm', i)
   }
 
   personSelecter(i: number) {
@@ -462,8 +462,8 @@ export class EditComponent extends Unsub {
     })
   }
 
-  editPersonModule() {
-    this.personModuleService.updatepersonModules(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+  editCourse() {
+    this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
       this.courses[this.courses.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
@@ -518,8 +518,8 @@ export class EditComponent extends Unsub {
     })
   }
 
-  deletePersonModule(id: number) {
-    this.personModuleService.deletePersonModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+  deleteCourse(id: number) {
+    this.courseService.deleteCourse(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.courses = this.courses.filter(x => x.moduleId != id);
       this.activeForm = null;
     })
@@ -558,7 +558,7 @@ export class EditComponent extends Unsub {
         return this.location = JSON.parse(JSON.stringify(this.backup));
       case 'module':
         return this.module = JSON.parse(JSON.stringify(this.backup));
-      case 'personModule':
+      case 'course':
         return this.course = JSON.parse(JSON.stringify(this.backup));
       case 'person':
         return this.person = JSON.parse(JSON.stringify(this.backup));

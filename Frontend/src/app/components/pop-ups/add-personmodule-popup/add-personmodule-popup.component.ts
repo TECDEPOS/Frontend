@@ -6,7 +6,7 @@ import { CourseType } from 'src/app/Models/CourseType';
 import { Person } from 'src/app/Models/Person';
 import { Course } from 'src/app/Models/Course';
 import { ModuleService } from 'src/app/Services/module.service';
-import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { CourseService } from 'src/app/Services/course.service';
 
 @Component({
   selector: 'app-add-personmodule-popup',
@@ -22,7 +22,7 @@ export class AddPersonmodulePopupComponent {
   inactiveModules: Course[] = [];
   moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
-  constructor(private dialogRef: MatDialogRef<AddPersonmodulePopupComponent>, private personModuleService: PersonModuleService, private moduleService: ModuleService,
+  constructor(private dialogRef: MatDialogRef<AddPersonmodulePopupComponent>, private personModuleService: CourseService, private moduleService: ModuleService,
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;

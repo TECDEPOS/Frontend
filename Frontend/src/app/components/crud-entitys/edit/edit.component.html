@@ -177,7 +177,7 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let course of courses, let i = index"
-                                (click)="personModuleSelecter(i)">
+                                (click)="courseSelecter(i)">
                                 <td>{{course.module.name}}</td>
                                 <td>{{moduleType[course.courseType]}}</td>
                                 <td>
@@ -349,39 +349,18 @@
             </form>
         </div>
         <!-- ToDo: Omskriv -->
-        <!-- <div *ngIf="isFormActive('personModuleForm')">
-            <form class="form" #personModuleForm="ngForm" (ngSubmit)="editPersonModule()">
-                <div>
-                    <label>Person Navn: </label>
-                    <input type="text" [(ngModel)]="personModule.person.name" id="personName" name="personName"
-                        #personName="ngModel" required disabled="true">
-                </div>
-                <div>
-                    <label>Initialer: </label>
-                    <input type="text" [(ngModel)]="personModule.person.initials" id="initials" name="initials"
-                        #initials="ngModel" required disabled="true">
-                </div>
+        <div *ngIf="isFormActive('personModuleForm')">
+            <form class="form" #personModuleForm="ngForm" (ngSubmit)="editCourse()">
                 <div>
                     <label>Modul Navn: </label>
-                    <input type="text" [(ngModel)]="personModule.module.name" id="moduleName" name="moduleName"
+                    <input type="text" [(ngModel)]="course.module.name" id="moduleName" name="moduleName"
                         #moduleName="ngModel" required disabled="true">
-                </div>                
-                <div>
-                    <label>Status:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Status</mat-label>
-                        <mat-select [(ngModel)]="personModule.status" name="status" #personModuleForm="ngModel">
-                            <mat-option *ngFor="let status of status; let i = index" [value]="i">
-                                {{status}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
                 </div>
                 <div>
                     <label>Modul Type:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="personModule.moduleType" name="moduleType" #personModuleForm="ngModel">
+                        <mat-select [(ngModel)]="course.courseType" name="moduleType" #personModuleForm="ngModel">
                             <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
                                 {{type}}
                             </mat-option>
@@ -390,9 +369,9 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('personModule')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deletePersonModule(personModule.personModuleId)" type="button">Slet Person Modul</button>
+                <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
             </form>
-        </div> -->
+        </div>
         <div *ngIf="isFormActive('personForm')">
             <form class="form" #personForm="ngForm" (ngSubmit)="editPerson()">
                 <div>
