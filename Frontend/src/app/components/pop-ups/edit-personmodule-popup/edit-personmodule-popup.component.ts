@@ -5,7 +5,7 @@ import { CourseType } from 'src/app/Models/CourseType';
 import { Course } from 'src/app/Models/Course';
 import { Status } from 'src/app/Models/status';
 import { ModuleService } from 'src/app/Services/module.service';
-import { PersonModuleService } from 'src/app/Services/person-module.service';
+import { CourseService } from 'src/app/Services/course.service';
 
 @Component({
   selector: 'app-edit-personmodule-popup',
@@ -24,7 +24,7 @@ export class EditPersonmodulePopupComponent {
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
-  constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personModuleService: PersonModuleService,
+  constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personModuleService: CourseService,
     @Inject(MAT_DIALOG_DATA) private data: { personModule: Course; currentModules: Course[]; inactiveModules: Course[]; })
     { 
       if (data.personModule) this.personModule = data.personModule;
@@ -49,7 +49,7 @@ export class EditPersonmodulePopupComponent {
 
   // ToDo: Omskriv
   onSubmit(){
-    this.personModuleService.updatepersonModules(this.tempModule).subscribe(res => {
+    this.personModuleService.updateCourse(this.tempModule).subscribe(res => {
       console.log('Injected: ', this.personModule);
       console.log('Updated: ',this.tempModule);
 
