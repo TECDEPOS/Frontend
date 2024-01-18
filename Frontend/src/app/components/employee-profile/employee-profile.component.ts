@@ -14,9 +14,9 @@ import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
 import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
-import { ModuleType } from 'src/app/Models/ModuleType';
+import { CourseType } from 'src/app/Models/CourseType';
 import { Status } from 'src/app/Models/status';
-import { PersonModule } from 'src/app/Models/PersonModule';
+import { Course } from 'src/app/Models/Course';
 import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -28,7 +28,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 })
 export class EmployeeProfileComponent {
 
-  moduleTypes = ModuleType;
+  moduleTypes = CourseType;
   status = Status;
   editDisabled: boolean = true;
   person: Person = new Person;
@@ -39,8 +39,8 @@ export class EmployeeProfileComponent {
   locations: Location[] = [];
   shownFiles: File[] = [];
 
-  currentModules: PersonModule[] = [];
-  inactiveModules: PersonModule[] = [];
+  currentModules: Course[] = [];
+  inactiveModules: Course[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService) { }
@@ -87,10 +87,11 @@ export class EmployeeProfileComponent {
     });
   }
 
+  // ToDo: Omskriv
   setPersonModules() {
-    this.person.personModules = this.person.personModules.sort((a, b) => a.status - b.status);
-    this.currentModules = this.person.personModules.filter(x => x.status === 1);
-    this.inactiveModules = this.person.personModules.filter(x => x.status !== 1);
+    this.person.personCourse = this.person.personCourse.sort((a, b) => a.status - b.status);
+    // this.currentModules = this.person.personCourse.filter(x => x.status === 1);
+    // this.inactiveModules = this.person.personCourse.filter(x => x.status !== 1);
   }
 
   onSubmit() {
@@ -235,7 +236,7 @@ export class EmployeeProfileComponent {
     });
   }
 
-  openEditPersonModulePopup(personModule: PersonModule) {
+  openEditPersonModulePopup(personModule: Course) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personModule: personModule,

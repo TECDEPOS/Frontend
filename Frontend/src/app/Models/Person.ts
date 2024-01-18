@@ -1,8 +1,8 @@
 import { Department } from "./Department";
 import { File } from "./File";
-import { PersonModule } from "./PersonModule";
 import { User } from "./User";
 import { Location } from "./Location";
+import { PersonCourse } from "./PersonCourse";
 
 export class Person{
     personId: number = 0;
@@ -23,7 +23,7 @@ export class Person{
     department?: Department = new Department;
     location?: Location = new Location;
     files: File[] = [];
-    personModules: PersonModule[] = [];
+    personCourse: PersonCourse[] = [];
 
     completedModules: number = 1;
 }

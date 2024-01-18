@@ -1,9 +1,9 @@
 export enum UserRole
 {
     Super_Admin,
-    Pædagogisk_Konsulent_Admin,
-    Human_Resources_Admin,
-    Drift_Koordinator_Admin,    
+    Controller,
+    Uddannelseschef,
+    Uddannelsesleder,
     Pædagogisk_konsulent,
     Human_Resources,
     Drift_Koordinator

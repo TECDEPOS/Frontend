@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Module } from 'src/app/Models/Module';
-import { ModuleType } from 'src/app/Models/ModuleType';
-import { PersonModule } from 'src/app/Models/PersonModule';
+import { CourseType } from 'src/app/Models/CourseType';
+import { Course } from 'src/app/Models/Course';
 import { Status } from 'src/app/Models/status';
 import { ModuleService } from 'src/app/Services/module.service';
 import { PersonModuleService } from 'src/app/Services/person-module.service';
@@ -14,18 +14,18 @@ import { PersonModuleService } from 'src/app/Services/person-module.service';
 })
 export class EditPersonmodulePopupComponent {
 
-  tempModule: PersonModule = new PersonModule;
-  personModule: PersonModule = new PersonModule;
-  currentModules: PersonModule[] = [];
-  inactiveModules: PersonModule[] = [];
+  tempModule: Course = new Course;
+  personModule: Course = new Course;
+  currentModules: Course[] = [];
+  inactiveModules: Course[] = [];
   modules: Module[] = [];
-  moduleTypes: string[] = (Object.values(ModuleType) as Array<keyof typeof ModuleType>)
-    .filter(key => !isNaN(Number(ModuleType[key])));
+  moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+    .filter(key => !isNaN(Number(CourseType[key])));
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
   constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personModuleService: PersonModuleService,
-    @Inject(MAT_DIALOG_DATA) private data: { personModule: PersonModule; currentModules: PersonModule[]; inactiveModules: PersonModule[]; })
+    @Inject(MAT_DIALOG_DATA) private data: { personModule: Course; currentModules: Course[]; inactiveModules: Course[]; })
     { 
       if (data.personModule) this.personModule = data.personModule;
       if (data.currentModules) this.currentModules = data.currentModules;
@@ -47,43 +47,45 @@ export class EditPersonmodulePopupComponent {
     })
   }
 
+  // ToDo: Omskriv
   onSubmit(){
     this.personModuleService.updatepersonModules(this.tempModule).subscribe(res => {
       console.log('Injected: ', this.personModule);
       console.log('Updated: ',this.tempModule);
 
-      // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
-      if (this.personModule.status === 1 && this.tempModule.status === 1) {
-        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
-      }
-      // If old and edited personModule is -NOT- "Startet" then replace the old with edited in injected inactiveModules variable to update immediately
-      else if (this.personModule.status !== 1 && this.tempModule.status !== 1) {
-        this.inactiveModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
-      }
-      // If status has changed FROM "Startet", Remove old personModule from currentModules and add the updated one to inactiveModules
-      else if (this.personModule.status === 1 && this.tempModule.status !== 1) {
-        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1);
-        this.inactiveModules.push(this.tempModule);
-      }
-      // If status has changed TO "Startet", Remove old personModule from inactiveModules and add the updated one to currentModules
-      else if (this.personModule.status !== 1 && this.tempModule.status === 1) {
-        this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
-        this.currentModules.push(this.tempModule);
-      }
+      // // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
+      // if (this.personModule.status === 1 && this.tempModule.status === 1) {
+      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
+      // }
+      // // If old and edited personModule is -NOT- "Startet" then replace the old with edited in injected inactiveModules variable to update immediately
+      // else if (this.personModule.status !== 1 && this.tempModule.status !== 1) {
+      //   this.inactiveModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
+      // }
+      // // If status has changed FROM "Startet", Remove old personModule from currentModules and add the updated one to inactiveModules
+      // else if (this.personModule.status === 1 && this.tempModule.status !== 1) {
+      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1);
+      //   this.inactiveModules.push(this.tempModule);
+      // }
+      // // If status has changed TO "Startet", Remove old personModule from inactiveModules and add the updated one to currentModules
+      // else if (this.personModule.status !== 1 && this.tempModule.status === 1) {
+      //   this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
+      //   this.currentModules.push(this.tempModule);
+      // }
       this.closeDialog();
     })
   }
 
+  // ToDo: Omskriv
   deletePersonModule(){
-    this.personModuleService.deletePersonModule(this.personModule.personModuleId).subscribe(res => {
-      if (this.personModule.status === 1) {
-        this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1)
-      }
-      else{
-        this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
-      }
-      this.closeDialog();
-    });
+    // this.personModuleService.deletePersonModule(this.personModule.personModuleId).subscribe(res => {
+      // if (this.personModule.status === 1) {
+      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1)
+      // }
+      // else{
+      //   this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
+      // }
+      // this.closeDialog();
+    // });
   }
 
   closeDialog(){
