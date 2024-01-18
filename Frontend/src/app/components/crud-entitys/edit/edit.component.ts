@@ -69,7 +69,7 @@ export class EditComponent extends Unsub {
   userForm: FormGroup;
 
   // Takes the Enums and only get the strings and not the numbers
-  moduleType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+  courseType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
 
   status: string[] = (Object.values(Status) as Array<keyof typeof Status>)
