@@ -13,9 +13,9 @@ import { UserService } from 'src/app/Services/user.service';
 import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
-import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
+import { AddPersonCourseComponent } from '../pop-ups/add-person-course/add-person-course.component';
 import { CourseType } from 'src/app/Models/CourseType';
-import { Status } from 'src/app/Models/status';
+import { Status } from 'src/app/Models/Status';
 import { Course } from 'src/app/Models/Course';
 import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
@@ -224,7 +224,7 @@ export class EmployeeProfileComponent {
   }
 
   openAddPersonModulePopup() {
-    this.dialog.open(AddPersonmodulePopupComponent, {
+    this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
         currentModules: this.currentModules,

@@ -1,6 +1,6 @@
 import { Course } from "./Course";
 import { Person } from "./Person";
-import { Status } from "./status";
+import { Status } from "./Status";
 
 export class PersonCourse{
     personId: number = 0;

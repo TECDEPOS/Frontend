@@ -23,7 +23,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
 import { Course } from 'src/app/Models/Course';
-import { Status } from 'src/app/Models/status';
+import { Status } from 'src/app/Models/Status';
 import { CourseService } from 'src/app/Services/course.service';
 
 
