@@ -32,10 +32,10 @@ import { EditComponent } from './components/crud-entitys/edit/edit.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
-import { AddPersonmodulePopupComponent } from './components/pop-ups/add-personmodule-popup/add-personmodule-popup.component';
 import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
+import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
 
 
 
@@ -71,7 +71,7 @@ export const MY_DATE_FORMATS = {
     EmployeeProfileComponent,
     FileuploadPopupComponent,
     ChangePasswordPopupComponent,
-    AddPersonmodulePopupComponent,
+    AddPersonCourseComponent,
     EditPersonmodulePopupComponent,
     ModuleComponent,
     PasswordExpiredPopupComponent
