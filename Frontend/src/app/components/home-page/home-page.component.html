@@ -37,14 +37,14 @@
                 </tr>
                 <tr *ngFor="let x of showedList">
                     <td><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
-                    <td>{{x.initials}}</td>
+                    <td><p> {{x.initials}}</p></td>
                     <td *ngIf="x.department">{{x.department.name}}</td>
                     <td *ngIf="!x.department">-</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
                         <div #progress class="Progress" id="{{x.personId}}"></div>
                     </td>
-                    <td>{{x.completedModules}}</td> 
+                    <td> <p>{{x.completedModules}}</p></td> 
                
                     <td>
                         <!-- <button (click)="lalala(x.personId)">Press me!</button> -->

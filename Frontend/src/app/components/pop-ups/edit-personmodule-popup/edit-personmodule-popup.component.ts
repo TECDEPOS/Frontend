@@ -53,7 +53,10 @@ export class EditPersonmodulePopupComponent {
       console.log('Injected: ', this.personModule);
       console.log('Updated: ',this.tempModule);
 
-      // // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
+      // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
+      if(this.personModule)      
+
+
       // if (this.personModule.status === 1 && this.tempModule.status === 1) {
       //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
       // }

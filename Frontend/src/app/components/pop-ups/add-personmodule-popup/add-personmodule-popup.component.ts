@@ -17,7 +17,7 @@ export class AddPersonmodulePopupComponent {
 
   person: Person = new Person;
   modules: Module[] = [];
-  newPersonModule: Course = new Course;
+  newPersonCourse: Course = new Course;
   currentModules: Course[] = [];
   inactiveModules: Course[] = [];
   moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
@@ -50,7 +50,7 @@ export class AddPersonmodulePopupComponent {
 
   compareDates(): boolean{
     let todaysDate = moment().utc();
-    let startDate = moment(this.newPersonModule.startDate);
+    let startDate = moment(this.newPersonCourse.startDate);
     let startDateAfterToday = moment(startDate).isAfter(todaysDate, 'date');
     
     return startDateAfterToday
@@ -58,27 +58,27 @@ export class AddPersonmodulePopupComponent {
 
   // ToDo: Omskriv
   onSubmit(){
-    this.newPersonModule.courseId = this.person.personId;
-    this.newPersonModule.moduleId = this.newPersonModule.module.moduleId
+    this.newPersonCourse.courseId = this.person.personId;
+    this.newPersonCourse.moduleId = this.newPersonCourse.module.moduleId
     
     // let startDateAfterToday = this.compareDates();
     // if (startDateAfterToday) {
     //   // Sets 'NotStarted' if startDate is after today
-    //   this.newPersonModule.status = 0;
+    //   this.newPersonCourse.personCourses.status = 0;
     // } else {
     //   // Sets 'Started' if startDate is before or same as today's date
-    //   this.newPersonModule.status = 1
+    //   this.newPersonCourse.status = 1
     // }
     
-    // this.personModuleService.addPersonModules(this.newPersonModule).subscribe(res => {
+    // this.personModuleService.addCourses(this.newPersonCourse).subscribe(res => {
     //   // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh
-    //   this.newPersonModule.personModuleId = res.personModuleId;
+    //   this.newPersonCourse.personModuleId = res.personModuleId;
       
     //   if (res.status === 1) {
-    //     this.currentModules.push(this.newPersonModule);
+    //     this.currentModules.push(this.newPersonCourse);
     //   }
     //   else{
-    //     this.inactiveModules.push(this.newPersonModule);
+    //     this.inactiveModules.push(this.newPersonCourse);
     //   }
     //   this.closeDialog();
     // });

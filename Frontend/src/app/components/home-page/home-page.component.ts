@@ -109,7 +109,7 @@ export class HomePageComponent {
   }
 
   modulesCompletedMethod(x: Person) {
-    return x.personCourse.filter(x => x.status === 3).length
+    return x.personCourses.filter(x => x.status === 3).length
   }
 
   onDepartmentQueryInput(event: any) {
@@ -168,7 +168,7 @@ export class HomePageComponent {
         case 'HiredSVU':
           return this.compare(a.svuEligible, b.svuEligible) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredModules':
-          return this.compare(a.personCourse.filter(x => x.status === 3).length, b.personCourse.filter(x => x.status === 3).length) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.personCourses.filter(x => x.status === 3).length, b.personCourses.filter(x => x.status === 3).length) * (sort.direction == 'asc' ? 1 : -1);
         default:
           return 0;
       }

@@ -111,22 +111,21 @@
         <mat-icon class="upload-icon">add</mat-icon>
       </button>
     </div>
-    <!-- ToDo: Omskriv -->
-    <!-- <div class="allModules">
+    <div class="allModules">
       <div class="newModuleItem" *ngFor="let x of currentModules">
-        <div class="moduleItemInfo">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
-          <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
-          <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
-          <p *ngIf="x.status == 0">Status: Ikke Startet</p>
+        <div class="moduleItemInfo" *ngIf="x.status == 1">
+          <p><b (click)="openEditPersonModulePopup(x.course)">{{x.course.module.name}}</b> | {{moduleTypes[x.course.courseType]}}</p>
+          <p> Periode: {{x.course.startDate | date: 'dd/MM/YY'}} - {{x.course.endDate | date: 'dd/MM/YY'}}</p>
+          <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
+          <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
         </div>
       </div>
-      <div class="newModuleItem" *ngFor="let x of inactiveModules">
-        <div class="moduleItemInfo">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.module.name}}</b> | {{moduleTypes[x.moduleType]}}</p>
-          <p> Periode: {{x.startDate | date: 'dd/MM/YY'}} - {{x.endDate | date: 'dd/MM/YY'}}</p>
+      <div class="newModuleItem" *ngFor="let x of currentModules">
+        <div class="moduleItemInfo" *ngIf="x.status != 1">
+          <p><b (click)="openEditPersonModulePopup(x.course)">{{x.course.module.name}}</b> | {{moduleTypes[x.course.courseType]}}</p>
+          <p> Periode: {{x.course.startDate | date: 'dd/MM/YY'}} - {{x.course.endDate | date: 'dd/MM/YY'}}</p>
           <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
-          <p *ngIf="x.status == 0">Status: Ikke Startet</p>
+          <p *ngIf="x.status == 0">Status: Ikke Startet</p> 
         </div>
         <div class="moduleItemColor">
           <div *ngIf="x.status === 0" class="moduleItemColorIndicator" style="background-color: #ddd;"></div>
@@ -134,7 +133,7 @@
           <div *ngIf="x.status === 2" class="moduleItemColorIndicator" style="background-color: red;"></div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
   <div class="files">
     <div class="upload-file">
@@ -145,6 +144,8 @@
         <input matInput placeholder="Søg efter filnavn" (input)="onSearchQueryInput($event)">
       </mat-form-field>
     </div>
+
+
     <!--SKal laves senere :)-->
     <div class="file-table" *ngIf="person">
       <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">

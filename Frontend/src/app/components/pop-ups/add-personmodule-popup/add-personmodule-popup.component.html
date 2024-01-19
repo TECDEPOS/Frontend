@@ -23,7 +23,7 @@
 
           <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label>Vælg modul:</mat-label>
-            <mat-select [(ngModel)]="newPersonModule.module" name="location" #module="ngModel">
+            <mat-select [(ngModel)]="newPersonCourse.module" name="location" #module="ngModel">
               <mat-option *ngFor="let module of modules" [value]="module">
                 {{module.name}}
               </mat-option>
@@ -31,25 +31,25 @@
           </mat-form-field>
 
           <!-- ToDo: Omskriv -->
-          <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label>Vælg modul type:</mat-label>
-            <mat-select [(ngModel)]="newPersonModule.moduleType" name="moduleType" #module="ngModel">
+            <mat-select [(ngModel)]="newPersonCourse.courseType" name="moduleType" #module="ngModel">
               <mat-option *ngFor="let moduleType of moduleTypes; let i = index" [value]="i">
                 {{moduleType}}
               </mat-option>
             </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>
 
           <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label *ngIf="!newPersonModule.startDate">Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="newPersonModule.startDate" id="startDate" name="startDate" #startDate="ngModel">
+            <mat-label *ngIf="!newPersonCourse.startDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="newPersonCourse.startDate" id="startDate" name="startDate" #startDate="ngModel">
             <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label *ngIf="!newPersonModule.endDate">Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="newPersonModule.endDate" id="endDate" name="endDate" #endDate="ngModel">
+            <mat-label *ngIf="!newPersonCourse.endDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="newPersonCourse.endDate" id="endDate" name="endDate" #endDate="ngModel">
             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
         </mat-form-field>

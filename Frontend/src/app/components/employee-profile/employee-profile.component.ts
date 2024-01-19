@@ -20,6 +20,7 @@ import { Course } from 'src/app/Models/Course';
 import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 import { AuthService } from 'src/app/Services/auth.service';
+import { PersonCourse } from 'src/app/Models/PersonCourse';
 
 @Component({
   selector: 'app-employee-profile',
@@ -39,7 +40,7 @@ export class EmployeeProfileComponent {
   locations: Location[] = [];
   shownFiles: File[] = [];
 
-  currentModules: Course[] = [];
+  currentModules: PersonCourse[] = [];
   inactiveModules: Course[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
@@ -87,11 +88,12 @@ export class EmployeeProfileComponent {
     });
   }
 
-  // ToDo: Omskriv
   setPersonModules() {
-    this.person.personCourse = this.person.personCourse.sort((a, b) => a.status - b.status);
-    // this.currentModules = this.person.personCourse.filter(x => x.status === 1);
-    // this.inactiveModules = this.person.personCourse.filter(x => x.status !== 1);
+    this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
+
+    if(this.person.personCourses.length !== 0){      
+      this.currentModules = this.person.personCourses.filter(x => x.status === 1).concat(this.person.personCourses.filter(x => x.status !== 1));
+    }
   }
 
   onSubmit() {
