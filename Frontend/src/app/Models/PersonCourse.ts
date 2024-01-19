@@ -1,3 +1,4 @@
+
 import { Course } from "./Course";
 import { Person } from "./Person";
 import { Status } from "./Status";
@@ -8,6 +9,6 @@ export class PersonCourse{
     
     status: Status = 0;
 
-    course: Course = new Course;
-    person: Person = new Person;
+    course?: Course;
+    person?: Person;
 }

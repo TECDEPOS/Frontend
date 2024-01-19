@@ -21,6 +21,7 @@ export class EditPersonmodulePopupComponent {
   modules: Module[] = [];
   moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
+    
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
