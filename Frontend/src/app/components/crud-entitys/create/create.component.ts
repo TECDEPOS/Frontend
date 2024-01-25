@@ -1,5 +1,5 @@
 import { FormGroup, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/Models/Book';
 import { Department } from 'src/app/Models/Department';
 import { FileTag } from 'src/app/Models/FileTag';
@@ -43,8 +43,10 @@ export class CreateComponent extends Unsub implements OnInit {
   modules: Module[] = [];
   persons: Person[] = [];
   resentlyCreated: Person[] = [];
+  educationBosses: User[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  showEducationBoss: boolean = false;
   activeForm: string | null = null
   role: string = '';
 
@@ -72,7 +74,8 @@ export class CreateComponent extends Unsub implements OnInit {
     private moduleService: ModuleService,
     private personService: PersonsService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -94,7 +97,11 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
-      if (this.activeForm == 'moduleForm') {
+      if (this.activeForm == 'userForm')
+      {
+        this.getForUser();
+      }
+      else if (this.activeForm == 'moduleForm') {
         this.getBooks();
       }
       else if (this.activeForm == 'personForm') {
@@ -112,7 +119,7 @@ export class CreateComponent extends Unsub implements OnInit {
       this.books = res;
     })
   }
-
+  
   getForPerson() {
     this.userService.getUsers().subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
@@ -129,9 +136,35 @@ export class CreateComponent extends Unsub implements OnInit {
       });
     });
   }
+  
+  getForUser() {    
+    this.userService.getUsersByUserRole(2).subscribe(res => {
+      this.educationBosses = res;
+    });
+    this.departmentService.getDepartment().subscribe(res => {
+      this.departments = res;
+    });
+    this.locationService.getLocations().subscribe(res => {
+      this.locations = res;
+    });
+  }
 
   personPicker(id: number) {
     this.router.navigate(['/employee/', id])
+  }
+
+  onRoleChange(userRole: UserRole) {
+    if(userRole == 3)
+    {
+      this.showEducationBoss = true;      
+    }
+    else
+    {
+      this.showEducationBoss = false;
+      this.user.educationBossId = null;
+    }
+
+    this.cdr.detectChanges();
   }
 
   created(created: any) {

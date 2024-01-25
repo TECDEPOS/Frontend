@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../Models/User';
 import { userViewModel } from '../Models/ViewModels/addUserViewModel';
+import { UserRole } from '../Models/UserRole';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,6 +23,14 @@ export class UserService {
 
   getUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.baseApiUrl + 'Users/')  
+  }
+
+  getUsersByEducationBossId(id: number): Observable<User[]>{
+    return this.http.get<User[]>(this.baseApiUrl + 'Users/edicationleader/' + id)  
+  }
+
+  getUsersByUserRole(userRole: UserRole): Observable<User[]>{
+    return this.http.get<User[]>(this.baseApiUrl + 'Users/userrole?userRole=' + userRole)  
   }
 
   getUsersById(id: number): Observable<User>{
