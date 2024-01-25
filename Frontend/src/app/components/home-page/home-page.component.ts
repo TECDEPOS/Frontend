@@ -98,7 +98,7 @@ export class HomePageComponent {
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
       this.Hired.forEach(element => {
-        element.completedModules = this.modulesCompletedMethod(element)
+        //element.completedModules = this.modulesCompletedMethod(element)
       });
 
       this.showedList = this.Hired
@@ -109,7 +109,7 @@ export class HomePageComponent {
   }
 
   modulesCompletedMethod(x: Person) {
-    return x.personCourse.filter(x => x.status === 3).length
+    //return x.personCourse.filter(x => x.status === 3).length
   }
 
   onDepartmentQueryInput(event: any) {

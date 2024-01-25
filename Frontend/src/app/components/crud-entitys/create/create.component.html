@@ -11,8 +11,7 @@
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
             </form>
         </div>
-        <div *ngIf="this.role === 'Super_Admin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
-        || this.role === 'Drift_Koordinator_Admin'">
+        <div *ngIf="this.role === 'Administrator'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div class="test">

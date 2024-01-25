@@ -72,7 +72,7 @@
             </div>
         </div> -->
         <div>
-            <div class="picker" (click)="toggleList('fileTagList')">Fil katogori</div>
+            <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
@@ -153,7 +153,7 @@
             </div>
         </div>
         <div>
-            <div class="picker" (click)="toggleList('courseList')">Person Modul</div>
+            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
             <div *ngIf="isListActive('courseList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
@@ -163,11 +163,8 @@
                                 <th mat-sort-header="name">
                                     Modul Navn
                                 </th>
-                                <th mat-sort-header="status">
-                                    Status
-                                </th>
                                 <th mat-sort-header="moduleType">
-                                    Modul Type
+                                    Kursustype
                                 </th>
                                 <th mat-sort-header="startDate">
                                     Start Dato
