@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div>
+        <div>
             <div class="picker" (click)="toggleList('bookList')">Bøger</div>
             <div class="table" *ngIf="isListActive('bookList')">
                 <div class="TableForPeople">
@@ -59,18 +59,59 @@
                             <th mat-sort-header="BookName">
                                 Navn
                             </th>
+                            <th mat-sort-header="Module">
+                                Navn
+                            </th>
                             <th mat-sort-header="Amaunt">
                                 Mængde
                             </th>
                         </tr>
                         <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
                             <td>{{book.name}}</td>
+                            <td>{{book.module.name}}</td>
                             <td>{{book.amount}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
-        </div> -->
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
+            <div *ngIf="isListActive('courseList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Modul Navn
+                                </th>
+                                <th mat-sort-header="courseType">
+                                    Kursus Type
+                                </th>
+                                <th mat-sort-header="startDate">
+                                    Start Dato
+                                </th>
+                                <th mat-sort-header="endDate">
+                                    Slut Dato
+                                </th>
+                            </tr>
+                            <tr *ngFor="let course of courses, let i = index"
+                                (click)="courseSelecter(i)">
+                                <td>{{course.module.name}}</td>
+                                <td>{{courseType[course.courseType]}}</td>
+                                <td>
+                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div>
             <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
@@ -151,44 +192,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
-            <div *ngIf="isListActive('courseList')" class="List">
-                <div class="table">
-                    <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true"
-                            (matSortChange)="sortData($event, 'module')">
-                            <tr>
-                                <th mat-sort-header="name">
-                                    Modul Navn
-                                </th>
-                                <th mat-sort-header="moduleType">
-                                    Kursustype
-                                </th>
-                                <th mat-sort-header="startDate">
-                                    Start Dato
-                                </th>
-                                <th mat-sort-header="endDate">
-                                    Slut Dato
-                                </th>
-                            </tr>
-                            <tr *ngFor="let course of courses, let i = index"
-                                (click)="courseSelecter(i)">
-                                <td>{{course.module.name}}</td>
-                                <td>{{moduleType[course.courseType]}}</td>
-                                <td>
-                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                                <td>
-                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>        
         <div>
             <div class="picker" (click)="toggleList('personList')">Person</div>
             <div *ngIf="isListActive('personList')" class="List">
@@ -346,26 +350,26 @@
             </form>
         </div>
         <!-- ToDo: Omskriv -->
-        <div *ngIf="isFormActive('personModuleForm')">
-            <form class="form" #personModuleForm="ngForm" (ngSubmit)="editCourse()">
+        <div *ngIf="isFormActive('courseForm')">
+            <form class="form" #courseForm="ngForm" (ngSubmit)="editCourse()">
                 <div>
                     <label>Modul Navn: </label>
                     <input type="text" [(ngModel)]="course.module.name" id="moduleName" name="moduleName"
                         #moduleName="ngModel" required disabled="true">
                 </div>
                 <div>
-                    <label>Modul Type:</label>
+                    <label>Kursus Type:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Modul Type</mat-label>
-                        <mat-select [(ngModel)]="course.courseType" name="moduleType" #personModuleForm="ngModel">
-                            <mat-option *ngFor="let type of moduleType; let i = index" [value]="i">
+                        <mat-label>Vælg Kursus Type</mat-label>
+                        <mat-select [(ngModel)]="course.courseType" name="courseType" #courseForm="ngModel">
+                            <mat-option *ngFor="let type of courseType; let i = index" [value]="i">
                                 {{type}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('personModule')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
             </form>
         </div>
