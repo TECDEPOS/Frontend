@@ -7,7 +7,7 @@
     <div class="labels">
       <label>Modul: </label>
       <br>
-      <label *ngIf="showStatus">Type: </label>
+      <label>Type: </label>
     </div>
     <form #myForm="ngForm" class="inputs">
 
@@ -29,10 +29,10 @@
           </mat-select>
         </mat-form-field>
       </div><br>
-      <div *ngIf="showStatus">
+      <div>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Status</mat-label>
-          <mat-select [(ngModel)]="newPersonCourse.status" name="status" #module="ngModel">
+          <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn" [value]="showStatus">
             <mat-option *ngFor="let status of status; let i = index" [value]="i">
               {{status}}
             </mat-option>

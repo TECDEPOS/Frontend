@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { CourseType } from 'src/app/Models/CourseType';
@@ -16,7 +16,7 @@ import { PersonCourseService } from 'src/app/Services/person-course.service';
   styleUrls: ['./add-person-course.component.css']
 })
 export class AddPersonCourseComponent {
-  showStatus: boolean = false;
+  showStatus: number = 0;
   person: Person = new Person;
   newPersonCourse: PersonCourse = new PersonCourse;
   courses: Course[] = [];
@@ -29,7 +29,7 @@ export class AddPersonCourseComponent {
   status: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
-  constructor(private dialogRef: MatDialogRef<AddPersonCourseComponent>, private courseService: CourseService, private personCourseService: PersonCourseService,
+  constructor(private dialogRef: MatDialogRef<AddPersonCourseComponent>, private courseService: CourseService, private personCourseService: PersonCourseService, private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
@@ -43,13 +43,13 @@ export class AddPersonCourseComponent {
 
   ngOnInit() {
     this.getCourses();
-    
+
   }
 
   getCourses() {
     this.courseService.getAllCourses().subscribe(res => {
       this.courses = res;
-      
+
     })
   }
 
@@ -73,28 +73,36 @@ export class AddPersonCourseComponent {
     return startDateAfterToday
   }
 
-  onCourseChange(course: Course){
+  onCourseChange(course: Course) {
     let endDateBeforeToday = this.compareEndDates();
-        
-    if (endDateBeforeToday)
-    {
-      this.showStatus = false;
+
+    if (endDateBeforeToday) {
+      let startDateAfterToday = this.compareStartDates();
+      if (startDateAfterToday) {
+        this.showStatus = 0;
+      } else {
+        this.showStatus = 1;
+      }
     }
-    else
-    {
-      this.showStatus = true;
+    else {
+      this.showStatus = 3;
     }
+
+    this.cdr.detectChanges();
   }
 
-  // ToDo: Omskriv
+  // Add this method in your component class
+  compareFn(optionValue: any, selectionValue: any): boolean {
+    return optionValue === selectionValue;
+  }
+
   onSubmit() {
     this.newPersonCourse.personId = this.person.personId;
     this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
     this.newPersonCourse.course = null!;
     this.newPersonCourse.person = null!;
 
-    if (this.newPersonCourse.status != 2 || 3)
-    {
+    if (this.newPersonCourse.status != 2 || 3) {
       let startDateAfterToday = this.compareStartDates();
       if (startDateAfterToday) {
         // Sets 'NotStarted' if startDate is after today
@@ -103,14 +111,14 @@ export class AddPersonCourseComponent {
         // Sets 'Started' if startDate is before or same as today's date
         this.newPersonCourse.status = 1
       }
-    }    
+    }
 
     this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
       // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh      
       if (res.status === 1) {
         this.currentCourses.push(this.newPersonCourse);
       }
-      else{
+      else {
         this.inactiveCourses.push(this.newPersonCourse);
       }
       this.closeDialog();

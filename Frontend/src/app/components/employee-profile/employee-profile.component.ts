@@ -232,7 +232,7 @@ export class EmployeeProfileComponent {
       },
       disableClose: false,
       height: '40%',
-      width: '25%'
+      width: '30%'
     });
   }
 
