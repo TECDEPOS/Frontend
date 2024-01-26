@@ -3,40 +3,45 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Module } from 'src/app/Models/Module';
 import { CourseType } from 'src/app/Models/CourseType';
 import { Course } from 'src/app/Models/Course';
-import { Status } from 'src/app/Models/status';
+import { Status } from 'src/app/Models/Status';
 import { ModuleService } from 'src/app/Services/module.service';
 import { CourseService } from 'src/app/Services/course.service';
+import { PersonCourse } from 'src/app/Models/PersonCourse';
+import { PersonCourseService } from 'src/app/Services/person-course.service';
 
 @Component({
-  selector: 'app-edit-personmodule-popup',
+  selector: 'app-edit-personCourse-popup',
   templateUrl: './edit-personmodule-popup.component.html',
   styleUrls: ['./edit-personmodule-popup.component.css']
 })
 export class EditPersonmodulePopupComponent {
 
-  tempModule: Course = new Course;
-  personModule: Course = new Course;
-  currentModules: Course[] = [];
-  inactiveModules: Course[] = [];
+
+  tempPersonCourse: PersonCourse = new PersonCourse;
+  personCourse: PersonCourse = new PersonCourse;
+  currentPersoncourse: PersonCourse[] = [];
+  inactiveModules: PersonCourse[] = [];
+  test ="hej"
   modules: Module[] = [];
+  courseType: CourseType = 0
   moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
+    
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
-  constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personModuleService: CourseService,
-    @Inject(MAT_DIALOG_DATA) private data: { personModule: Course; currentModules: Course[]; inactiveModules: Course[]; })
+  constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personCourseService: PersonCourseService,
+    @Inject(MAT_DIALOG_DATA) private data: { personCourse: PersonCourse; currentModules: PersonCourse[]; inactiveModules: PersonCourse[]; })
     { 
-      if (data.personModule) this.personModule = data.personModule;
-      if (data.currentModules) this.currentModules = data.currentModules;
-      if (data.inactiveModules) this.inactiveModules = data.inactiveModules;
+      if (data.personCourse) this.personCourse = data.personCourse;
+      if (data.currentModules) this.currentPersoncourse = data.currentModules;
 
      }
 
 
   ngOnInit(){
-    console.log(this.personModule);
-    this.tempModule = JSON.parse(JSON.stringify(this.personModule));
+    console.log(this.personCourse);
+    this.tempPersonCourse = JSON.parse(JSON.stringify(this.personCourse));
     this.getModules();
   }
 
@@ -49,46 +54,39 @@ export class EditPersonmodulePopupComponent {
 
   // ToDo: Omskriv
   onSubmit(){
-    this.personModuleService.updateCourse(this.tempModule).subscribe(res => {
-      console.log('Injected: ', this.personModule);
-      console.log('Updated: ',this.tempModule);
+    this.personCourseService.updatePersonCourse(this.tempPersonCourse).subscribe(res => {
+      console.log('Injected: ', this.personCourse);
+      console.log('Updated: ',this.tempPersonCourse);
 
-      // If old and edited personModule is "Startet" then replace the old with edited in injected currentModules variable to update immediately
-      if(this.personModule)      
+      // If old and edited personCourse is "Startet" then replace the old with edited in injected currentModules variable to update immediately
+       if((this.personCourse.status === 1 && this.tempPersonCourse.status === 1))  {
+        this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1, this.tempPersonCourse);        
+      }
 
+      // If old and edited personCourse is -NOT- "Startet" then replace the old with edited in injected inactiveModules variable to update immediately
+      if((this.personCourse.status !== 1 && this.tempPersonCourse.status !== 1)){
+        this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1, this.tempPersonCourse);
+      }
 
-      // if (this.personModule.status === 1 && this.tempModule.status === 1) {
-      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
-      // }
-      // // If old and edited personModule is -NOT- "Startet" then replace the old with edited in injected inactiveModules variable to update immediately
-      // else if (this.personModule.status !== 1 && this.tempModule.status !== 1) {
-      //   this.inactiveModules.splice(this.currentModules.indexOf(this.personModule), 1, this.tempModule);
-      // }
-      // // If status has changed FROM "Startet", Remove old personModule from currentModules and add the updated one to inactiveModules
-      // else if (this.personModule.status === 1 && this.tempModule.status !== 1) {
-      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1);
-      //   this.inactiveModules.push(this.tempModule);
-      // }
-      // // If status has changed TO "Startet", Remove old personModule from inactiveModules and add the updated one to currentModules
-      // else if (this.personModule.status !== 1 && this.tempModule.status === 1) {
-      //   this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
-      //   this.currentModules.push(this.tempModule);
-      // }
-      this.closeDialog();
+      // If status has changed FROM "Startet", Remove old personCourse from currentModules and add the updated one to inactiveModules
+      if(this.personCourse.status === 1 && this.tempPersonCourse.status !== 1){
+        this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1, (this.tempPersonCourse));
+      }
+
+      // If status has changed TO "Startet", Remove old personCourse from inactiveModules and add the updated one to currentModules
+      if(this.personCourse.status !== 1 && this.tempPersonCourse.status === 1){
+        this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1, this.tempPersonCourse)
+      }
+      this.closeDialog(); 
     })
   }
 
   // ToDo: Omskriv
-  deletePersonModule(){
-    // this.personModuleService.deletePersonModule(this.personModule.personModuleId).subscribe(res => {
-      // if (this.personModule.status === 1) {
-      //   this.currentModules.splice(this.currentModules.indexOf(this.personModule), 1)
-      // }
-      // else{
-      //   this.inactiveModules.splice(this.inactiveModules.indexOf(this.personModule), 1);
-      // }
-      // this.closeDialog();
-    // });
+  deletepersonCourse(){
+    this.personCourseService.deletePersonCourse(this.personCourse.personId, this.personCourse.courseId).subscribe(res => {
+        this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1)
+      this.closeDialog();
+    });
   }
 
   closeDialog(){

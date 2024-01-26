@@ -13,9 +13,9 @@ import { UserService } from 'src/app/Services/user.service';
 import { FileuploadPopupComponent } from '../pop-ups/fileupload-popup/fileupload-popup.component';
 import { FileService } from 'src/app/Services/file.service';
 import { File } from 'src/app/Models/File';
-import { AddPersonmodulePopupComponent } from '../pop-ups/add-personmodule-popup/add-personmodule-popup.component';
+import { AddPersonCourseComponent } from '../pop-ups/add-person-course/add-person-course.component';
 import { CourseType } from 'src/app/Models/CourseType';
-import { Status } from 'src/app/Models/status';
+import { Status } from 'src/app/Models/Status';
 import { Course } from 'src/app/Models/Course';
 import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
@@ -92,7 +92,8 @@ export class EmployeeProfileComponent {
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentModules = this.person.personCourses.filter(x => x.status === 1).concat(this.person.personCourses.filter(x => x.status !== 1));
+      this.currentModules = this.person.personCourses.filter(x => x.status === 1)
+      .concat(this.person.personCourses.filter(x => x.status !== 1));
     }
   }
 
@@ -226,7 +227,7 @@ export class EmployeeProfileComponent {
   }
 
   openAddPersonModulePopup() {
-    this.dialog.open(AddPersonmodulePopupComponent, {
+    this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
         currentModules: this.currentModules,
@@ -234,16 +235,15 @@ export class EmployeeProfileComponent {
       },
       disableClose: false,
       height: '40%',
-      width: '25%'
+      width: '30%'
     });
   }
 
-  openEditPersonModulePopup(personModule: Course) {
+  openEditPersonModulePopup(personCourse: PersonCourse) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
-        personModule: personModule,
-        currentModules: this.currentModules,
-        inactiveModules: this.inactiveModules
+        personCourse: personCourse,
+        currentModules: this.currentModules
       },
       disableClose: false,
       height: '50%',

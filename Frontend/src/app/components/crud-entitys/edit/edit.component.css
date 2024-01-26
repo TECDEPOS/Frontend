@@ -112,6 +112,7 @@ mat-option {
   max-height: 100%;
   place-content: start;
   overflow: auto;
+  min-width: 450px;
 }
 
 
@@ -148,7 +149,7 @@ mat-option {
 }
 
 .form.active {
-  display: block;
+  display: flex;
 }
 
 .form-visible {
@@ -241,4 +242,10 @@ th {
 
   ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
     color: white;
+}
+
+.formItem{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
