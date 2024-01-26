@@ -4,32 +4,35 @@
     <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
   </div>
   <div class="content">
-    <div class="labels">
-      <label>Modul: </label>
-      <br>
-      <label>Type: </label>
-    </div>
     <form #myForm="ngForm" class="inputs">
-
-      <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
-            <mat-label>Vælg modul:</mat-label>
-            <mat-select [(ngModel)]="newPersonModule.moduleId" name="location" #module="ngModel">
-              <mat-option *ngFor="let module of modules" [value]="module.moduleId">
-                {{module.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-      <div>
+      <div class="test">
+        <label>Modul: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Kursus:</mat-label>
-          <mat-select [(ngModel)]="newPersonCourse.course" name="course" (selectionChange)="onCourseChange($event.value)">
-            <mat-option *ngFor="let course of courses" [value]="course">
-              {{course.module.name}}
+          <mat-select [(ngModel)]="newPersonCourse.course" name="course"
+            (selectionChange)="onModuleChange($event.value)">
+            <mat-option *ngFor="let module of modules" [value]="module">
+              {{module.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div><br>
-      <div>
+      <div class="test" *ngIf="moduleSelected">
+        <label>Kursus</label>
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">          
+          <mat-label>Vælg Kursus:</mat-label>
+          <mat-select [(ngModel)]="newPersonCourse.course" name="course"
+            (selectionChange)="onCourseChange($event.value)">
+            <mat-option *ngFor="let course of courses" [value]="course">
+              {{course.startDate | date: 'dd/MM/yyyy'}} - {{course.endDate | date: 'dd/MM/yyyy'}}
+              <br>
+              Type: {{ getCourseTypeName(course.courseType) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div><br>
+      <div class="test" *ngIf="moduleSelected">
+        <label>Type: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Status</mat-label>
           <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn" [value]="showStatus">
