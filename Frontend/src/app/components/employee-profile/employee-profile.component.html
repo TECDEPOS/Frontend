@@ -114,8 +114,8 @@
     <div class="allModules">
       <div class="newModuleItem" *ngFor="let x of currentModules">
         <div class="moduleItemInfo" *ngIf="x.status == 1">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.course.module.name}}</b> | {{moduleTypes[x.course.courseType]}}</p>
-          <p> Periode: {{x.course.startDate | date: 'dd/MM/YY'}} - {{x.course.endDate | date: 'dd/MM/YY'}}</p>
+          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
+          <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
           <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
           <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
           <p>ffff</p>
@@ -123,8 +123,8 @@
       </div>
       <div class="newModuleItem" *ngFor="let x of currentModules">
         <div class="moduleItemInfo" *ngIf="x.status != 1">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.course.module.name}}</b> | {{moduleTypes[x.course.courseType]}}</p>
-          <p> Periode: {{x.course.startDate | date: 'dd/MM/YY'}} - {{x.course.endDate | date: 'dd/MM/YY'}}dddd</p>
+          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
+          <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}dddd</p>
           <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
           <p *ngIf="x.status == 0">Status: Ikke Startet</p> 
           
