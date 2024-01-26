@@ -20,8 +20,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="this.role === 'Super_Admin' || this.role === 'Pædagogisk_Konsulent_Admin' || this.role === 'Human_Resources_Admin'
-        || this.role === 'Drift_Koordinator_Admin'">
+        <div *ngIf="this.role === 'Administrator'">
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
             <div *ngIf="isListActive('userList')" class="List">
                 <div class="table">
@@ -113,7 +112,7 @@
             </div>
         </div>
         <div>
-            <div class="picker" (click)="toggleList('fileTagList')">Fil katogori</div>
+            <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
                     <div class="TableForPeople">
@@ -233,11 +232,11 @@
             </div>
         </div>
     </div>
-    <div class="innerBox" id="test">
+    <div class="innerBox" id="test" *ngIf="activeForm">
         Rediger:
         <div *ngIf="isFormActive('departmentForm')">
             <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
@@ -248,16 +247,16 @@
         </div>
         <div *ngIf="isFormActive('userForm')">
             <form class="form" #userForm="ngForm" (ngSubmit)="editUser()">
-                <div>
+                <div class="formItem">
                     <label>Brugernavn: </label>
                     <input type="text" [(ngModel)]="user.userName" id="userName" name="userName" #userName="ngModel"
                         required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Role:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
@@ -276,11 +275,11 @@
         </div>
         <div *ngIf="isFormActive('bookForm')">
             <form class="form" #bookForm="ngForm" (ngSubmit)="editBook()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Mængde: </label>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
@@ -291,26 +290,26 @@
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
             <form class="form" #fileTagForm="ngForm" (ngSubmit)="editFileTag()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div>Vælg hvem der kan se denne fil katogori:</div>
-                <div>
+                <div class="formItem">
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
                             #dKVisability="ngModel">
                     </div>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Human Resources:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
                             #hRVisability="ngModel">
                     </div>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
@@ -324,7 +323,7 @@
         </div>
         <div *ngIf="isFormActive('locationForm')">
             <form class="form" #locationForm="ngForm" (ngSubmit)="editLocation()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
@@ -335,14 +334,14 @@
         </div>
         <div *ngIf="isFormActive('moduleForm')">
             <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Beskrivelse: </label>
-                    <input type="text" [(ngModel)]="module.description" id="description" name="description"
-                        #description="ngModel" required>
+                    <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
+                        #description="ngModel" required></textarea>
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
@@ -352,12 +351,12 @@
         <!-- ToDo: Omskriv -->
         <div *ngIf="isFormActive('courseForm')">
             <form class="form" #courseForm="ngForm" (ngSubmit)="editCourse()">
-                <div>
-                    <label>Modul Navn: </label>
+                <div class="formItem">
+                    <label>Modul: </label>
                     <input type="text" [(ngModel)]="course.module.name" id="moduleName" name="moduleName"
                         #moduleName="ngModel" required disabled="true">
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Kursus Type:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Kursus Type</mat-label>
@@ -368,6 +367,26 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+                    <div class="formItem">
+                        <label>Start Dato:</label>
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                            <mat-label>Vælg en dato</mat-label>
+                            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
+                                id="startDatePicker" name="startDate" #startDate="ngModel">
+                            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="formItem">
+                        <label>Start Dato:</label>
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                            <mat-label>Vælg en dato</mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
+                                id="endDatePicker" name="endDate" #endDate="ngModel">
+                            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
@@ -375,16 +394,16 @@
         </div>
         <div *ngIf="isFormActive('personForm')">
             <form class="form" #personForm="ngForm" (ngSubmit)="editPerson()">
-                <div>
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Initialer: </label>
                     <input type="text" [(ngModel)]="person.initials" id="initials" name="initials" #initials="ngModel"
                         required>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Afdeling:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
@@ -396,7 +415,7 @@
                         </mat-select>
                       </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Lokation:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
@@ -408,7 +427,7 @@
                         </mat-select>
                       </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
@@ -420,7 +439,7 @@
                         </mat-select>
                       </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Driftskoordinator:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
@@ -432,7 +451,7 @@
                         </mat-select>
                       </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Start Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
@@ -442,7 +461,7 @@
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>Slut Dato:</label>
                     <mat-form-field subscriptSizing="dynamic" class="datepicker">
                         <mat-label>Vælg en dato</mat-label>
@@ -452,7 +471,7 @@
                         <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="formItem">
                     <label>SVU Berettiget:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
