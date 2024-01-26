@@ -44,8 +44,11 @@ select {
 }
 
 .test{
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: flex; 
   justify-content: space-between;
+  align-items: center;
 }
 
 ::ng-deep .mat-datepicker-content {

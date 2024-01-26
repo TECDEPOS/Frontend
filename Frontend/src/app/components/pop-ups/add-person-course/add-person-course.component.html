@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="header">
+    <h1 style="color: white;">Tilføj til Modul</h1>
+    <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
+  </div>
+  <div class="content">
+    <div class="labels">
+      <label>Modul: </label>
+      <br>
+      <label>Type: </label>
+    </div>
+    <form #myForm="ngForm" class="inputs">
+
+      <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label>Vælg modul:</mat-label>
+            <mat-select [(ngModel)]="newPersonModule.moduleId" name="location" #module="ngModel">
+              <mat-option *ngFor="let module of modules" [value]="module.moduleId">
+                {{module.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+      <div>
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-label>Vælg Kursus:</mat-label>
+          <mat-select [(ngModel)]="newPersonCourse.course" name="course" (selectionChange)="onCourseChange($event.value)">
+            <mat-option *ngFor="let course of courses" [value]="course">
+              {{course.module.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div><br>
+      <div>
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-label>Vælg Status</mat-label>
+          <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn" [value]="showStatus">
+            <mat-option *ngFor="let status of status; let i = index" [value]="i">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="buttons">
+    <button class="create-button" (click)="onSubmit()">Tilføj</button>
+    <!-- <button class="cancel-button" (click)="closeDialog()">Luk</button> -->
+  </div>
+</div>

@@ -72,6 +72,8 @@ export class FileuploadPopupComponent {
   }
 
   onFileTagChange(newTag:FileTag){
+    console.log(newTag);
+    
     this.fileTag = newTag;
   }
 

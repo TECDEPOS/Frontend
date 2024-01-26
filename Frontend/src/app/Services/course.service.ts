@@ -18,16 +18,12 @@ export class CourseService {
     return this.http.get<Course[]>(this.baseApiUrl + 'Courses');
   }
 
+  getCoursesByModuleId(id: number): Observable<Course[]>{
+    return this.http.get<Course[]>(this.baseApiUrl + 'Courses/module/' + id)
+  }
+
   getCourse(courseId: number): Observable<Course>{
     return this.http.get<Course>(this.baseApiUrl + 'Courses/' + courseId)
-  }
-
-  getCourses(personId: number, moduleId: number): Observable<Course[]>{
-    return this.http.get<Course[]>(this.baseApiUrl + 'Courses/' + personId + '/' + moduleId)
-  }
-
-  getCoursesByPerson(personId: number): Observable<Course[]>{
-    return this.http.get<Course[]>(this.baseApiUrl + 'Courses/person/' + personId);
   }
   
   addCourses(Course: Course): Observable<Course>{
