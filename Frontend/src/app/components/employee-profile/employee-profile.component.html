@@ -118,8 +118,6 @@
           <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
           <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
           <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
-          <p>ffff</p>
-          <p>ffff</p>
         </div>
       </div>
       <div class="newModuleItem" *ngFor="let x of currentModules">
