@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { CourseService } from 'src/app/Services/course.service';
 import { Course } from 'src/app/Models/Course';
 import { AuthService } from 'src/app/Services/auth.service';
+import { getLocaleDateTimeFormat, getLocaleTimeFormat } from '@angular/common';
 
 @Component({
   selector: 'app-create',
@@ -32,6 +33,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 export class CreateComponent extends Unsub implements OnInit {
   book: Book = new Book;
   department: Department = new Department;
+  course: Course = new Course;
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
@@ -51,6 +53,7 @@ export class CreateComponent extends Unsub implements OnInit {
   role: string = '';
 
   bookForm: FormGroup;
+  courseForm: FormGroup;
   depertmentForm: FormGroup;
   fileTagForm: FormGroup;
   locationForm: FormGroup;
@@ -59,7 +62,7 @@ export class CreateComponent extends Unsub implements OnInit {
   userForm: FormGroup;
 
   // Takes the Enums and only get the strings and not the numbers
-  moduleType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+  courseType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
 
   userRole: string[] = (Object.values(UserRole) as Array<keyof typeof UserRole>)
@@ -70,6 +73,7 @@ export class CreateComponent extends Unsub implements OnInit {
     private bookService: BookService,
     private departmentService: DepartmentsService,
     private fileTagService: FileTagService,
+    private courseService: CourseService,
     private locationService: LocationsService,
     private moduleService: ModuleService,
     private personService: PersonsService,
@@ -79,6 +83,7 @@ export class CreateComponent extends Unsub implements OnInit {
   ) {
     super();
     this.bookForm = new FormGroup({});
+    this.courseForm = new FormGroup({});
     this.depertmentForm = new FormGroup({});
     this.fileTagForm = new FormGroup({});
     this.locationForm = new FormGroup({});
@@ -97,15 +102,19 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
-      if (this.activeForm == 'userForm')
-      {
-        this.getForUser();
+      
+      if (this.activeForm == 'bookForm') {
+        this.getModules();
       }
-      else if (this.activeForm == 'moduleForm') {
-        this.getBooks();
+      else if (this.activeForm == 'courseForm') {
+        this.getModules();
       }
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
+      }
+      else if (this.activeForm == 'userForm')
+      {
+        this.getForUser();
       }
     }
   }
@@ -114,9 +123,11 @@ export class CreateComponent extends Unsub implements OnInit {
     return this.activeForm === formName;
   }
 
-  getBooks() {
-    this.bookService.getBook().subscribe(res => {
-      this.books = res;
+  getModules() {
+    this.moduleService.getModule().subscribe(res => {
+      this.modules = res;
+      console.log(this.modules);
+      
     })
   }
   
@@ -186,6 +197,14 @@ export class CreateComponent extends Unsub implements OnInit {
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTag = new FileTag;
+    })
+  }
+
+  createCourse() {
+    this.courseService.addCourses(this.course).subscribe(res => {
+      this.course = new Course;
+      console.log(res);
+      
     })
   }
 
