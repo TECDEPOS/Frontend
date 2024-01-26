@@ -36,7 +36,7 @@
                             (selectionChange)="onRoleChange($event.value)">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
                                 {{role}}
-                            </mat-option>
+                            </mat-option>   
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -95,8 +95,8 @@
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul</mat-label>
                         <mat-select [(ngModel)]="module.moduleId" name="moduleId" #bookForm="ngModel">
-                            <mat-option *ngFor="let module of modules; let i = index" [value]="i">
-                                {{module}}
+                            <mat-option *ngFor="let module of modules; let i = index" [value]="module.moduleId">
+                                {{module.name}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -139,6 +139,58 @@
                         <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
                             #pKVisability="ngModel">
                     </div>
+                </div>
+                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <br>
+            </form>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleForm('courseForm')">Kursus</div>
+            <form *ngIf="isFormActive('courseForm')" class="form" #userForm="ngForm" (ngSubmit)="createCourse()">
+                <div class="test">
+                    <label>Modul:</label>
+                    <p>&ensp;</p>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Modul</mat-label>
+                        <mat-select [(ngModel)]="course.moduleId" name="course" #courseForm="ngModel">
+                            <mat-option *ngFor="let module of modules; let i = index"
+                                [value]="module.moduleId">
+                                {{module.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="test">
+                    <label>Kursus Type:</label>
+                    <p>&ensp;</p>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Kursus Type</mat-label>
+                        <mat-select [(ngModel)]="course.courseType" name="userRole" #courseForm="ngModel">
+                            <mat-option *ngFor="let type of courseType; let i = index" [value]="i">
+                                {{type}}
+                            </mat-option>   
+                        </mat-select>
+                    </mat-form-field>
+                </div>                
+                <div class="test">
+                    <label>Start Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en start dato</mat-label>
+                        <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
+                            id="startDatePicker" name="startDate" #startDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>                
+                <div class="test">
+                    <label>Slut Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en slut dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
+                            id="endDatePicker" name="endDate" #hiringDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                    </mat-form-field>
                 </div>
                 <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
                 <br>
