@@ -5,29 +5,33 @@
     </div>
     <div class="content">
     <div class="labels">
-        <label>Modul: </label>
+        <label>Kursus: </label>
         <label>Type: </label>
         <label>Status: </label>
-        <label>Start Dato: </label>
-        <label>Slut Dato: </label>
+        <!-- <label>Start Dato: </label>
+        <label>Slut Dato: </label> -->
     </div>
     <form #myForm="ngForm" class="inputs">
-
-          <mat-form-field subscriptSizing="dynamic" class="dropdown">
-            <mat-label *ngIf="!tempModule.module">Vælg modul:</mat-label>
-            <mat-select [compareWith]="compareObjects" [(ngModel)]="tempModule.module"
+      <p>{{personCourse.course.module.name}}</p>
+          <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!tempPersonCourse.course.module">Vælg modul:</mat-label>
+            <p>{{personCourse.course.module.name}}</p>
+            <mat-select [value]="test" [disabled]="true" [compareWith]="compareObjects" [(ngModel)]="personCourse.course.module.name"
               name="module" #module="ngModel">
               <mat-option [value]="null">- Ingen -</mat-option>
               <mat-option *ngFor="let module of modules" [value]="module">
                 {{module.name}}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           
           <!-- ToDo: Omskriv -->
+          <p>{{moduleTypes[personCourse.course.courseType]}}</p>
+          
+          
           <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label>Vælg modul type:</mat-label>
-            <mat-select [(ngModel)]="tempModule.moduleType" name="moduleType" #module="ngModel">
+            <mat-select [(ngModel)]="tempPersonCourse.course.courseType" name="moduleType" #module="ngModel">
               <mat-option *ngFor="let moduleType of moduleTypes; let i = index" [value]="i">
                 {{moduleType}}
               </mat-option>
@@ -35,33 +39,33 @@
           </mat-form-field> -->
 
           <!-- ToDo: Omskriv -->
-          <!-- <mat-form-field subscriptSizing="dynamic" class="dropdown">
+          <mat-form-field subscriptSizing="dynamic" class="dropdown"> 
             <mat-label>Vælg personens status:</mat-label>
-            <mat-select [(ngModel)]="tempModule.status" name="status" #module="ngModel">
+            <mat-select [(ngModel)]="tempPersonCourse.status" name="status" #module="ngModel">
               <mat-option *ngFor="let status of statuses let i = index" [value]="i">
                 {{status}}
               </mat-option>
             </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label *ngIf="!tempModule.startDate">Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="tempModule.startDate" id="startDate" name="startDate" #startDate="ngModel">
+          <!-- <mat-form-field subscriptSizing="dynamic" class="datepicker">
+            <mat-label *ngIf="!tempPersonCourse.course.startDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="tempPersonCourse.course.startDate" id="startDate" name="startDate" #startDate="ngModel">
             <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field subscriptSizing="dynamic" class="datepicker">
-            <mat-label *ngIf="!tempModule.endDate">Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="tempModule.endDate" id="endDate" name="endDate" #endDate="ngModel">
+            <mat-label *ngIf="!tempPersonCourse.course.endDate">Vælg en dato</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="tempPersonCourse.course.endDate" id="endDate" name="endDate" #endDate="ngModel">
             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field> -->
 
     </form>
   </div>
     <div class="buttons">
         <button class="create-button" (click)="onSubmit()">Gem</button>
-        <button class="delete-button" (click)="deletePersonModule()">Slet</button>
+        <button class="delete-button" (click)="deletepersonCourse()">Slet</button>
     </div>
 </div>

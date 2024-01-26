@@ -92,7 +92,8 @@ export class EmployeeProfileComponent {
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentModules = this.person.personCourses.filter(x => x.status === 1).concat(this.person.personCourses.filter(x => x.status !== 1));
+      this.currentModules = this.person.personCourses.filter(x => x.status === 1)
+      .concat(this.person.personCourses.filter(x => x.status !== 1));
     }
   }
 
@@ -238,12 +239,11 @@ export class EmployeeProfileComponent {
     });
   }
 
-  openEditPersonModulePopup(personModule: Course) {
+  openEditPersonModulePopup(personCourse: PersonCourse) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
-        personModule: personModule,
-        currentModules: this.currentModules,
-        inactiveModules: this.inactiveModules
+        personCourse: personCourse,
+        currentModules: this.currentModules
       },
       disableClose: false,
       height: '50%',
