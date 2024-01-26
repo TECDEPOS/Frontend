@@ -11,5 +11,4 @@ export class Course{
     courseType: CourseType = 0;
 
     module: Module = new Module
-    personCourses: PersonCourse[] = [];
 }

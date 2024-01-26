@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Module } from 'src/app/Models/Module';
 import { CourseType } from 'src/app/Models/CourseType';
 import { Course } from 'src/app/Models/Course';
-import { Status } from 'src/app/Models/status';
+import { Status } from 'src/app/Models/Status';
 import { ModuleService } from 'src/app/Services/module.service';
 import { CourseService } from 'src/app/Services/course.service';
 
@@ -21,6 +21,7 @@ export class EditPersonmodulePopupComponent {
   modules: Module[] = [];
   moduleTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
+    
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 

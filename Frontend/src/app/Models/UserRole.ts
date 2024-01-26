@@ -1,6 +1,6 @@
 export enum UserRole
 {
-    Super_Admin,
+    Administrator,
     Controller,
     Uddannelseschef,
     Uddannelsesleder,
