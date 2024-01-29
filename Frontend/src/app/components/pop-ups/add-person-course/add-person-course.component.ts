@@ -20,6 +20,7 @@ import { ModuleService } from 'src/app/Services/module.service';
 export class AddPersonCourseComponent {
   showStatus: number = 0;
   moduleSelected: boolean = false;
+  module: Module = new Module;
   person: Person = new Person;
   newPersonCourse: PersonCourse = new PersonCourse;
   modules: Module[] = [];
@@ -55,7 +56,7 @@ export class AddPersonCourseComponent {
   }
 
   getCourses(id: number) {
-    this.courseService.getCoursesByModuleId(id).subscribe(res => {
+    this.courseService.getCoursesByModuleId(id,this.person.personId).subscribe(res => {
       this.courses = res;
     })
   }
@@ -93,23 +94,27 @@ export class AddPersonCourseComponent {
     this.cdr.detectChanges();
   }
 
-onCourseChange(course: Course) {
-  let endDateBeforeToday = this.compareEndDates();
-
-  if (endDateBeforeToday) {
-    let startDateAfterToday = this.compareStartDates();
-    if (startDateAfterToday) {
-      this.showStatus = 0;
-    } else {
-      this.showStatus = 1;
+  onCourseChange(course: Course) {
+    this.newPersonCourse.course = course;
+    console.log(this.newPersonCourse.course);
+    
+    let endDateBeforeToday = this.compareEndDates();
+  
+    if (endDateBeforeToday) {
+      let startDateAfterToday = this.compareStartDates();
+      if (startDateAfterToday) {
+        this.showStatus = 0;
+      } else {
+        this.showStatus = 1;
+      }
     }
-  }
-  else {
-    this.showStatus = 3;
+    else {
+      this.showStatus = 3;
+    }
+  
+    this.cdr.detectChanges();
   }
 
-  // this.cdr.detectChanges();
-}
 
 // Add this method in your component class
 compareFn(optionValue: any, selectionValue: any): boolean {

@@ -8,8 +8,8 @@
       <div class="test">
         <label>Modul: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
-          <mat-label>Vælg Kursus:</mat-label>
-          <mat-select [(ngModel)]="newPersonCourse.course" name="course"
+          <mat-label>Vælg Modul:</mat-label>
+          <mat-select [(ngModel)]="module.moduleId" name="modules"
             (selectionChange)="onModuleChange($event.value)">
             <mat-option *ngFor="let module of modules" [value]="module">
               {{module.name}}
@@ -19,7 +19,7 @@
       </div><br>
       <div class="test" *ngIf="moduleSelected">
         <label>Kursus</label>
-        <mat-form-field subscriptSizing="dynamic" class="dropdown">          
+        <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Kursus:</mat-label>
           <mat-select [(ngModel)]="newPersonCourse.course" name="course"
             (selectionChange)="onCourseChange($event.value)">
