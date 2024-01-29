@@ -23,7 +23,7 @@ export class Person{
     department?: Department = new Department;
     location?: Location = new Location;
     files: File[] = [];
-    personCourse: PersonCourse[] = [];
+    personCourses: PersonCourse[] = [];
 
     completedModules: number = 1;
 }
