@@ -108,7 +108,7 @@ onCourseChange(course: Course) {
     this.showStatus = 3;
   }
 
-  this.cdr.detectChanges();
+  // this.cdr.detectChanges();
 }
 
 // Add this method in your component class

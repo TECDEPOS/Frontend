@@ -16,13 +16,11 @@ export class NavBarComponent {
   isOpen: boolean = false;
   name: string = "";
   role: string = "";
-  te: string = "Tester lige om Tester Fungere? Gør den ikke? Gør den ikke?"
 
   ngOnInit(){
     // console.log(this.authService.getName());
     this.name = String(localStorage.getItem('name'))
     this.role = this.authService.getUserRole().replaceAll('_', ' ')
-    console.log(this.te.replaceAll('Gør den ikke?', 'Gør den måske!'));
   }
 
   ngOnChange(){
