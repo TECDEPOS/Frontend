@@ -75,43 +75,6 @@
             </div>
         </div>
         <div>
-            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
-            <div *ngIf="isListActive('courseList')" class="List">
-                <div class="table">
-                    <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true"
-                            (matSortChange)="sortData($event, 'module')">
-                            <tr>
-                                <th mat-sort-header="name">
-                                    Modul Navn
-                                </th>
-                                <th mat-sort-header="courseType">
-                                    Kursus Type
-                                </th>
-                                <th mat-sort-header="startDate">
-                                    Start Dato
-                                </th>
-                                <th mat-sort-header="endDate">
-                                    Slut Dato
-                                </th>
-                            </tr>
-                            <tr *ngFor="let course of courses, let i = index"
-                                (click)="courseSelecter(i)">
-                                <td>{{course.module.name}}</td>
-                                <td>{{courseType[course.courseType]}}</td>
-                                <td>
-                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                                <td>
-                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
             <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
@@ -145,6 +108,43 @@
                                 <td>
                                     <input *ngIf="fileTag.pkVisability === true" type="checkbox" disabled checked />
                                     <input *ngIf="fileTag.pkVisability === false" type="checkbox" disabled unchecked />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
+            <div *ngIf="isListActive('courseList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Modul Navn
+                                </th>
+                                <th mat-sort-header="courseType">
+                                    Kursus Type
+                                </th>
+                                <th mat-sort-header="startDate">
+                                    Start Dato
+                                </th>
+                                <th mat-sort-header="endDate">
+                                    Slut Dato
+                                </th>
+                            </tr>
+                            <tr *ngFor="let course of courses, let i = index"
+                                (click)="courseSelecter(i)">
+                                <td>{{course.module.name}}</td>
+                                <td>{{courseType[course.courseType]}}</td>
+                                <td>
+                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
                             </tr>
                         </table>
@@ -240,8 +240,8 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet Afdeling</button>
             </form>
         </div>
@@ -294,9 +294,9 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne fil katogori:</div>
+                <div><b>Filkategori synlighed for brugerroller:</b></div>
                 <div class="formItem">
-                    <label>Drift Koordinator:</label>
+                    <label>Driftskoordinator:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
                             #dKVisability="ngModel">

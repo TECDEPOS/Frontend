@@ -249,3 +249,38 @@ th {
   align-items: center;
   justify-content: space-between;
 }
+
+.save-button {
+  height: 25px;
+  width: 45px;
+  background-color: rgb(31, 155, 0);
+  border: 0.5px solid black;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8%;
+}
+
+.save-button:disabled {
+  background-color: rgb(146, 202, 132);
+  cursor: default;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: rgb(28, 138, 0);
+  border: 1px solid black;
+}
+
+.cancel-button {
+  height: 25px;
+  width: 60px;
+  border: 0.5px solid black;
+  /* font-weight: bold; */
+  border-radius: 8%;
+  margin-left: 5px;
+}
+
+.cancel-button:hover {
+  cursor: pointer;
+  background-color: #dadada;
+}
