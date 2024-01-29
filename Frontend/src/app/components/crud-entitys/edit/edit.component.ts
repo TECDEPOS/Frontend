@@ -340,7 +340,7 @@ export class EditComponent extends Unsub {
   }
 
   getModules() {
-    this.moduelService.getModule().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.moduelService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
     })
   }

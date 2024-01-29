@@ -62,7 +62,7 @@ export class AddPersonCourseComponent {
   }
 
   getModules() {
-    this.moduleService.getModule().subscribe(res => {
+    this.moduleService.getModules().subscribe(res => {
       this.modules = res;
     })
   }
