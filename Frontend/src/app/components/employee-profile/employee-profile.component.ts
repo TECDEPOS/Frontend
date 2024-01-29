@@ -58,6 +58,7 @@ export class EmployeeProfileComponent {
     });
   }
 
+
   getUsers() {
     this.userService.getUsers().subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
