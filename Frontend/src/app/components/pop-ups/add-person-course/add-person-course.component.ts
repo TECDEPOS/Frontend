@@ -115,6 +115,7 @@ export class AddPersonCourseComponent {
     this.cdr.detectChanges();
   }
 
+
 // Add this method in your component class
 compareFn(optionValue: any, selectionValue: any): boolean {
   return optionValue === selectionValue;

@@ -9,7 +9,7 @@
   height: 100%;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: 200px repeat(6, 1fr) 50px;
+  grid-template-rows: repeat(7, 1fr) 50px;
   grid-template-areas: 
   "h h h h h h h h"
   "t t t t t t t t"
@@ -96,13 +96,13 @@ mat-form-field{
 .TableBox td{
   border: 1px solid #ddd;
   text-align: center;
-  padding: 4px;
+  /* padding: 1px; */
   font-size: large;
 }
 
 .employeeName{
-  text-decoration: underline; 
-  color: rgb(0, 26, 255);
+  /* text-decoration: underline;  */
+  /* color: rgb(0, 26, 255); */
 }
 
 .employeeName:hover{
