@@ -124,7 +124,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   getModules() {
-    this.moduleService.getModule().subscribe(res => {
+    this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
       console.log(this.modules);
       
@@ -132,30 +132,30 @@ export class CreateComponent extends Unsub implements OnInit {
   }
   
   getForPerson() {
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       console.log(this.educationalConsultants);
       
       this.operationCoordinators = res.filter(x => x.userRole === 6);
       console.log(this.operationCoordinators);
       
-      this.departmentService.getDepartment().subscribe(res => {
+      this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.departments = res;
       });
-      this.locationService.getLocations().subscribe(res => {
+      this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.locations = res;
       });
     });
   }
   
   getForUser() {    
-    this.userService.getUsersByUserRole(2).subscribe(res => {
+    this.userService.getUsersByUserRole(2).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
     });
-    this.departmentService.getDepartment().subscribe(res => {
+    this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
     });
-    this.locationService.getLocations().subscribe(res => {
+    this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
     });
   }
@@ -201,7 +201,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   createCourse() {
-    this.courseService.addCourses(this.course).subscribe(res => {
+    this.courseService.addCourses(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.course = new Course;
       console.log(res);
       

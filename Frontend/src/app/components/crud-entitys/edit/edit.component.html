@@ -75,43 +75,6 @@
             </div>
         </div>
         <div>
-            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
-            <div *ngIf="isListActive('courseList')" class="List">
-                <div class="table">
-                    <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true"
-                            (matSortChange)="sortData($event, 'module')">
-                            <tr>
-                                <th mat-sort-header="name">
-                                    Modul Navn
-                                </th>
-                                <th mat-sort-header="courseType">
-                                    Kursus Type
-                                </th>
-                                <th mat-sort-header="startDate">
-                                    Start Dato
-                                </th>
-                                <th mat-sort-header="endDate">
-                                    Slut Dato
-                                </th>
-                            </tr>
-                            <tr *ngFor="let course of courses, let i = index"
-                                (click)="courseSelecter(i)">
-                                <td>{{course.module.name}}</td>
-                                <td>{{courseType[course.courseType]}}</td>
-                                <td>
-                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                                <td>
-                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
             <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
@@ -145,6 +108,42 @@
                                 <td>
                                     <input *ngIf="fileTag.pkVisability === true" type="checkbox" disabled checked />
                                     <input *ngIf="fileTag.pkVisability === false" type="checkbox" disabled unchecked />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleList('courseList')">Kursus</div>
+            <div *ngIf="isListActive('courseList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Modul Navn
+                                </th>
+                                <th mat-sort-header="courseType">
+                                    Kursus Type
+                                </th>
+                                <th mat-sort-header="startDate">
+                                    Start Dato
+                                </th>
+                                <th mat-sort-header="endDate">
+                                    Slut Dato
+                                </th>
+                            </tr>
+                            <tr *ngFor="let course of courses, let i = index" (click)="courseSelecter(i)">
+                                <td>{{course.module.name}}</td>
+                                <td>{{courseType[course.courseType]}}</td>
+                                <td>
+                                    <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
+                                </td>
+                                <td>
+                                    <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
                             </tr>
                         </table>
@@ -191,7 +190,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
         <div>
             <div class="picker" (click)="toggleList('personList')">Person</div>
             <div *ngIf="isListActive('personList')" class="List">
@@ -242,7 +241,8 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet Afdeling</button>
+                <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet
+                    Afdeling</button>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
@@ -270,7 +270,8 @@
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet Bruger</button>
-                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
+                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil
+                    Adgangskode</button>
             </form>
         </div>
         <div *ngIf="isFormActive('bookForm')">
@@ -294,7 +295,7 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne fil katogori:</div>
+                <div>Vælg hvem der kan se denne filkategori:</div>
                 <div class="formItem">
                     <label>Drift Koordinator:</label>
                     <div class="checkbox">
@@ -318,7 +319,8 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
                 <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet Filkategori</button>
+                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet
+                    Filkategori</button>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
@@ -329,7 +331,8 @@
                 </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet Location</button>
+                <button style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet
+                    Location</button>
             </form>
         </div>
         <div *ngIf="isFormActive('moduleForm')">
@@ -367,26 +370,26 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                    <div class="formItem">
-                        <label>Start Dato:</label>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                            <mat-label>Vælg en dato</mat-label>
-                            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
-                                id="startDatePicker" name="startDate" #startDate="ngModel">
-                            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="formItem">
-                        <label>Start Dato:</label>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                            <mat-label>Vælg en dato</mat-label>
-                            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
-                                id="endDatePicker" name="endDate" #endDate="ngModel">
-                            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
+                <div class="formItem">
+                    <label>Start Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
+                            id="startDatePicker" name="startDate" #startDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="formItem">
+                    <label>Start Dato:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-label>Vælg en dato</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate" id="endDatePicker"
+                            name="endDate" #endDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
                 <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
                 <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
@@ -407,49 +410,53 @@
                     <label>Afdeling:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.department">Vælg afdeling:</mat-label>
-                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.department" name="department" #department="ngModel">
-                          <mat-option [value]="null">- Ingen -</mat-option>
-                          <mat-option *ngFor="let department of departments" [value]="department">
-                            {{department.name}}
-                          </mat-option>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.department" name="department"
+                            #department="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department">
+                                {{department.name}}
+                            </mat-option>
                         </mat-select>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="formItem">
                     <label>Lokation:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.location">Vælg lokation:</mat-label>
-                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.location" name="location" #location="ngModel">
-                          <mat-option [value]="null">- Ingen -</mat-option>
-                          <mat-option *ngFor="let location of locations" [value]="location">
-                            {{location.name}}
-                          </mat-option>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.location" name="location"
+                            #location="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let location of locations" [value]="location">
+                                {{location.name}}
+                            </mat-option>
                         </mat-select>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
-                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
-                          <mat-option [value]="null">- Ingen -</mat-option>
-                          <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
-                            {{consultant.name}}
-                          </mat-option>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.educationalConsultant"
+                            name="educationalConsultant" #educationalConsultant="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
+                                {{consultant.name}}
+                            </mat-option>
                         </mat-select>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="formItem">
                     <label>Driftskoordinator:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
-                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
-                          <mat-option [value]="null">- Ingen -</mat-option>
-                          <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
-                            {{coordinator.name}}
-                          </mat-option>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.operationCoordinator"
+                            name="operationCoordinator" #operationCoordinator="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                                {{coordinator.name}}
+                            </mat-option>
                         </mat-select>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="formItem">
                     <label>Start Dato:</label>

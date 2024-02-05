@@ -13,7 +13,7 @@ export class ModuleService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getModule(): Observable<Module[]>{
+  getModules(): Observable<Module[]>{
     return this.http.get<Module[]>(this.baseApiUrl + 'Module/')
   }
 

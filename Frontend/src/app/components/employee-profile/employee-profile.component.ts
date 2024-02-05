@@ -21,13 +21,15 @@ import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 import { AuthService } from 'src/app/Services/auth.service';
 import { PersonCourse } from 'src/app/Models/PersonCourse';
+import { Unsub } from 'src/app/classes/unsub';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
-export class EmployeeProfileComponent {
+export class EmployeeProfileComponent extends Unsub{
 
   moduleTypes = CourseType;
   status = Status;
@@ -44,7 +46,7 @@ export class EmployeeProfileComponent {
   inactiveModules: Course[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService) { }
+    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService) {super(); }
 
   ngOnInit() {
     this.getPerson();
@@ -53,20 +55,20 @@ export class EmployeeProfileComponent {
     this.getLocations();
   }
   getLocations() {
-    this.locationService.getLocations().subscribe(res => {
+    this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
     });
   }
 
 
   getUsers() {
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 6);
     });
   }
   getDepartments() {
-    this.departmentService.getDepartment().subscribe(res => {
+    this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
     });
   }
@@ -74,9 +76,9 @@ export class EmployeeProfileComponent {
     let roleId = this.authService.getUserRoleId();
     console.log('Role id: ',roleId);
     
-    this.aRoute.paramMap.subscribe(params => {
+    this.aRoute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       let personId = Number(params.get('id'))
-      this.personService.getPersonById(personId, roleId).subscribe(res => {
+      this.personService.getPersonById(personId, roleId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.person = res;
         this.shownFiles = res.files;
         console.log(this.person);
@@ -99,7 +101,7 @@ export class EmployeeProfileComponent {
   }
 
   onSubmit() {
-    this.personService.updatePerson(this.person).subscribe(res => {
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
@@ -186,6 +188,7 @@ export class EmployeeProfileComponent {
 
   downloadFile(id: number, contentType: string, fileName: string) {
     this.fileService.downloadFile(id)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result: Blob) => {
         console.log(result);
         const blob = new Blob([result], { type: contentType });
@@ -210,7 +213,7 @@ export class EmployeeProfileComponent {
   }
 
   deleteFile(fileId: number, i: number) {
-    this.fileService.deleteFile(fileId).subscribe(() => {
+    this.fileService.deleteFile(fileId).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.shownFiles.splice(i, 1)
     })
   }
