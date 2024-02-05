@@ -7,14 +7,14 @@ import { FilePageComponent } from './components/file/file-page/file-page.compone
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
-import { ModuleComponent } from './components/module/module.component';
+import { CoursePageComponent } from './components/courses/course-page/course-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent,},
   { path: 'file', component: FilePageComponent, canActivate:[authGuard]},
   { path: 'home', component: HomePageComponent, canActivate:[authGuard],},
-  { path: 'module', component: ModuleComponent, canActivate:[authGuard],},
+  { path: 'courses', component: CoursePageComponent, canActivate:[authGuard],},
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]},
   { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
   { path: 'administration', component: CrudEntityPageComponent, canActivate:[authGuard],},

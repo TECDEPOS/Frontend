@@ -170,3 +170,58 @@
   p{
     font-size: 15px;
   }
+
+  .grid {
+    display: flex;
+    overflow: auto;
+  }
+  
+  .innerBox:first-child {
+    flex: 25%;
+    height: fit-content;
+  }
+  
+  .innerBox:last-child {
+    height: fit-content;
+    flex: 75%;
+  }
+  
+  .innerBox {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-height: 100%;
+    place-content: center start;
+    overflow: auto;
+  }
+
+  .picker {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table{
+    height: 50vh;
+  }
+
+  .TableForPeople{ 
+    border-radius: 5px;
+    box-shadow: 0 1px 3px 3px #888;
+    max-height: 100%;
+    height: 100%;
+    width: 95%;
+    overflow: auto;
+    position: relative;
+    outline: 1px solid black;
+    overflow-y: scroll;
+  }

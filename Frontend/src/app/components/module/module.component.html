@@ -1,55 +1,53 @@
 <div class="OuterWrapper">
     <div class="Searchfield">
-        <mat-form-field subscriptSizing="dynamic">
+        <!-- <mat-form-field subscriptSizing="dynamic">
             <mat-label>Søge efter Navn</mat-label>
             <input matInput placeholder="Skriv navnet her " (input)="onSearchQueryInput($event)">
+        </mat-form-field> -->
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Vælge modul</mat-label>
+            <mat-select [value]="alle" (selectionChange)="onModuleQueryInput($event)">
+                <mat-option [value]="alle">Alle</mat-option>
+                <mat-option *ngFor="let module of modules" [value]="module.name">{{module.name}}</mat-option>
+            </mat-select>
         </mat-form-field>
         <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Vælge afdeling</mat-label>
-            <mat-select [value]="alle" (selectionChange)="onDepartmentQueryInput($event)">
-                <mat-option [value]="alle" >Alle</mat-option>
-                <mat-option *ngFor="let x of department" [value]="x.name">{{x.name}}</mat-option>
+            <mat-label>Vælge type</mat-label>
+            <mat-select [value]="alle" (selectionChange)="onTypeQueryInput($event)">
+                <mat-option [value]="alle">Alle</mat-option>
+                <mat-option *ngFor="let type of courseType" [value]="type">
+                    {{type}}
+                </mat-option>
             </mat-select>
-        </mat-form-field>      
+        </mat-form-field>
     </div>
-    <div class="table"> 
+    <div class="table">
         <div class="TableForPeople">
             <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
                 <tr>
-                    <th mat-sort-header="HiredName" style="min-width: 39.5%;">
-                        Navn 
+                    <th mat-sort-header="Name" style="min-width: 39.5%;">
+                        Modul Navn
                     </th>
-                    <th mat-sort-header="Initials" style="min-width: 39.5%;">
-                        Initialer 
+                    <th mat-sort-header="Type" style="min-width: 21.5%;">
+                        Type
                     </th>
-                    <th mat-sort-header="HiredDepartment" style="min-width: 21.5%;">
-                        Afdeling 
-                    </th> 
-                    <th mat-sort-header="HiredEndDate" style="min-width: 12%;">
-                        Slut dato 
+                    <th mat-sort-header="StartDate" style="min-width: 12%;">
+                        Start dato
                     </th>
-                    <th mat-sort-header="HiredModules" style="min-width: 20.20%;">
-                        Færdige moduler 
-                    </th>
-                    <th mat-sort-header="HiredSVU" style="min-width: 6.80%;">
-                        SVU 
+                    <th mat-sort-header="EndDate" style="min-width: 12%;">
+                        Slut dato
                     </th>
                 </tr>
                 <tr *ngFor="let x of showedList">
-                    <td><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
-                    <td><p> {{x.initials}}</p></td>
-                    <td *ngIf="x.department"><p>{{x.department.name}}</p></td>
-                    <td *ngIf="!x.department">-</td>
+                    <td>
+                        <p routerLink="/employee/{{x.moduleId}}" class="employeeName">{{x.module.name}}</p>
+                    </td>
+                    <td><p>{{courseType[x.courseType]}}</p></td>
+                    <td class="Start--date">
+                        <p class="StartDateShow">{{x.startDate | date: 'dd/MM/yyyy'}}</p>
+                    </td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
-                        <div #progress class="Progress" id="{{x.personId}}"></div>
-                    </td>
-                    <td> <p>{{x.completedModules}}</p></td> 
-               
-                    <td>
-                        <!-- <button (click)="lalala(x.personId)">Press me!</button> -->
-                        <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
-                        <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
                     </td>
                 </tr>
             </table>

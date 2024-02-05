@@ -111,14 +111,14 @@
             </form>
         </div>
         <div>
-            <div class="picker" (click)="toggleForm('fileTagForm')">Fil kategori</div>
+            <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
                 <div class="test">
                     <label>Navn: </label>
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne fil katogori:</div>
+                <div>Vælg hvem der kan se denne filkategori:</div>
                 <div class="test">
                     <label>Driftskoordinator:</label>
                     <div class="checkbox">

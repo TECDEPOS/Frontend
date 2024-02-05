@@ -104,7 +104,6 @@ export class EditComponent extends Unsub {
     this.role = this.authService.getUserRole();
   }
 
-
   toggleForm(formName: string, i: number) {
     let body = document.getElementById("test")
     if (this.activeForm === formName && this.activeFormIndex === i) {
