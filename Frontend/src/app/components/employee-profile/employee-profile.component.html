@@ -76,7 +76,7 @@
 
           <mat-form-field subscriptSizing="dynamic" class="datepicker">
             <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
-            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
+            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate.setFullYear()" id="endDatePicker"
               name="endDate" #endDate="ngModel">
             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"
               [disabled]="editDisabled"></mat-datepicker-toggle>

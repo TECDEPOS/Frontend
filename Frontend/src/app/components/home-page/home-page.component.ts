@@ -8,6 +8,7 @@ import { Person } from 'src/app/Models/Person';
 import { DepartmentsService } from 'src/app/Services/departments.service';
 import { Department } from 'src/app/Models/Department';
 import { Sort } from '@angular/material/sort';
+import { elementAt } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -23,10 +24,9 @@ export class HomePageComponent {
   searchName: string = "";
   alle: string = "";
   searchDepartment: any = "";
-
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
 
-  constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private renderer: Renderer2) { }
+  constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
 
   ngOnInit(): void {
     this.getTableData()
@@ -105,6 +105,7 @@ export class HomePageComponent {
       this.getDepartmentData()
       this.Hired.sort((a, b) => a.name.localeCompare(b.name))
       this.showedList = this.Hired
+      console.log(this.showedList);
     })
   }
 
@@ -114,6 +115,7 @@ export class HomePageComponent {
 
   onDepartmentQueryInput(event: any) {
     let personList: Person[] = []
+
     //Returns all, even null
     if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
       this.showedList = this.Hired
@@ -139,10 +141,17 @@ export class HomePageComponent {
       this.searchName = searchQuery
       return
     }
+        
     this.Hired.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
-        personList.push(element);
-        console.log("Afdeling");
+      if(this.searchDepartment.toLocaleLowerCase() === ""){
+        if (element.name.toLocaleLowerCase().includes(searchQuery)) {
+          personList.push(element);          
+        }
+      }
+      else{
+        if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
+          personList.push(element);
+        }
       }
     });
     this.showedList = personList

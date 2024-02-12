@@ -94,7 +94,9 @@ export class EmployeeProfileComponent {
 
     if(this.person.personCourses.length !== 0){      
       this.currentModules = this.person.personCourses.filter(x => x.status === 1)
-      .concat(this.person.personCourses.filter(x => x.status !== 1));
+      .concat(this.person.personCourses.filter(x => x.status === 0))
+      .concat(this.person.personCourses.filter(x => x.status === 3))
+      .concat(this.person.personCourses.filter(x => x.status === 2));
     }
   }
 
@@ -249,6 +251,13 @@ export class EmployeeProfileComponent {
       disableClose: false,
       height: '50%',
       width: '25%'
-    });
+    }).afterClosed().subscribe(() => {
+      if(this.person.personCourses.length !== 0){      
+        this.currentModules = this.currentModules.filter(x => x.status === 1)
+        .concat(this.currentModules.filter(x => x.status === 0))
+        .concat(this.currentModules.filter(x => x.status === 3))
+        .concat(this.currentModules.filter(x => x.status === 2));
+      }
+    }) 
   }
 }

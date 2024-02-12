@@ -25,7 +25,6 @@ export class AddPersonCourseComponent {
   modules: Module[] = [];
   courses: Course[] = [];
   currentCourses: PersonCourse[] = [];
-  inactiveCourses: PersonCourse[] = [];
 
   courseTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
@@ -47,7 +46,6 @@ export class AddPersonCourseComponent {
     }) {
     if (data.person) this.person = data.person;
     if (data.currentCourses) this.currentCourses = data.currentCourses;
-    if (data.inactiveCourses) this.inactiveCourses = data.inactiveCourses;
   }
 
   ngOnInit() {
@@ -135,12 +133,7 @@ onSubmit() {
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
     // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh      
-    if (res.status === 1) {
-      this.currentCourses.push(this.newPersonCourse);
-    }
-    else {
-      this.inactiveCourses.push(this.newPersonCourse);
-    }
+    this.currentCourses.push(this.newPersonCourse);
     this.closeDialog();
   });
 }
