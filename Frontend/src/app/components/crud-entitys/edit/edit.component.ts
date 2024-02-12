@@ -104,7 +104,6 @@ export class EditComponent extends Unsub {
     this.role = this.authService.getUserRole();
   }
 
-
   toggleForm(formName: string, i: number) {
     let body = document.getElementById("test")
     if (this.activeForm === formName && this.activeFormIndex === i) {
@@ -340,7 +339,7 @@ export class EditComponent extends Unsub {
   }
 
   getModules() {
-    this.moduelService.getModule().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.moduelService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
     })
   }

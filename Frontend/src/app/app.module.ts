@@ -36,6 +36,8 @@ import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-person
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
+import { CoursePageComponent } from './components/courses/course-page/course-page.component';
+import { CoursesComponent } from './components/courses/courses/courses.component';
 
 
 
@@ -74,7 +76,9 @@ export const MY_DATE_FORMATS = {
     AddPersonCourseComponent,
     EditPersonmodulePopupComponent,
     ModuleComponent,
-    PasswordExpiredPopupComponent
+    PasswordExpiredPopupComponent,
+    CoursePageComponent,
+    CoursesComponent
   ],
   imports: [
     BrowserModule,
