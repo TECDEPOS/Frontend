@@ -242,7 +242,7 @@
                 </div>
                 <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet Afdeling</button>
+                <button class="delete-button" style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet</button>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
@@ -267,10 +267,16 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet Bruger</button>
-                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
+                <div style="display: flex;">
+                    <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                    <button class="cancel-button" (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
+                    <button class="delete-button" style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet</button>
+                    <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
+                </div>
+                <!-- <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet</button>
+                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button> -->
             </form>
         </div>
         <div *ngIf="isFormActive('bookForm')">
@@ -283,9 +289,9 @@
                     <label>Mængde: </label>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('book')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteBook(book.bookId)" type="button">Slet Bog</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('book')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteBook(book.bookId)" type="button">Slet</button>
             </form>
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
@@ -316,9 +322,9 @@
                             #pKVisability="ngModel">
                     </div>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
-                <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet Filkategori</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet</button>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
@@ -327,9 +333,9 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet Location</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet</button>
             </form>
         </div>
         <div *ngIf="isFormActive('moduleForm')">
@@ -343,9 +349,9 @@
                     <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required></textarea>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet Modul</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet</button>
             </form>
         </div>
         <!-- ToDo: Omskriv -->
@@ -387,9 +393,14 @@
                             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
+                    <div class="buttons">
+                        <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                        <button class="cancel-button" (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
+                        <button class="delete-button" style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet</button>        
+                    </div>
+                <!-- <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet</button> -->
             </form>
         </div>
         <div *ngIf="isFormActive('personForm')">
@@ -478,9 +489,9 @@
                             #svuEligible="ngModel">
                     </div>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('person')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deletePerson(person.personId)" type="button">Slet Person</button>
+                <button class="save-button" style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('person')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deletePerson(person.personId)" type="button">Slet</button>
             </form>
         </div>
     </div>

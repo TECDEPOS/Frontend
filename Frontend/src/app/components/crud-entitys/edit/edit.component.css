@@ -284,3 +284,23 @@ th {
   cursor: pointer;
   background-color: #dadada;
 }
+
+.delete-button{
+  height: 25px;
+  width: 45px;
+  border: 0.5px solid black;
+  background-color: #ff0000;
+  color: white;
+  font-weight: bold;
+  border-radius: 8%;
+}
+
+.delete-button:hover {
+  cursor: pointer;
+  background-color: #ac0000;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 10px;
+}
