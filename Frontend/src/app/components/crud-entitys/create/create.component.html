@@ -9,7 +9,7 @@
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -78,7 +78,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -106,12 +106,11 @@
                     <p>&ensp;</p>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
         <div>
-            <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
                 <div class="test">
@@ -141,7 +140,7 @@
                             #pKVisability="ngModel">
                     </div>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -193,7 +192,7 @@
                         <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -205,7 +204,7 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -221,7 +220,7 @@
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -297,14 +296,14 @@
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div>
-                    <label>SVU Berettiget:</label>
+                <div class="test" style="justify-content: flex-start;">
+                    <label style="margin-right: 10px;">SVU Berettiget:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
                             #svuEligible="ngModel">
                     </div>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
