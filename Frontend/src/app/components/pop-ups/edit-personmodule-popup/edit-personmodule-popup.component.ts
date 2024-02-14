@@ -46,7 +46,7 @@ export class EditPersonmodulePopupComponent {
   }
 
   getModules() {
-    this.moduleService.getModule().subscribe(res => {
+    this.moduleService.getModules().subscribe(res => {
       this.modules = res;
       console.log(this.modules);
     })
