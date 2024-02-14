@@ -9,7 +9,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(7, 1fr) 50px;
+    /* grid-template-rows: repeat(7, 1fr) 50px; */
     grid-template-areas: 
     "h h h h h h h h"
     "t t t t t t t t"
@@ -64,7 +64,7 @@
   
   mat-form-field{
     /* height: 35px; */
-    margin-left: 50px;
+    /* margin-left: 50px; */
     min-width: 200px;
     margin-bottom: 15px;
   }
@@ -177,13 +177,12 @@
   }
   
   .innerBox:first-child {
-    flex: 25%;
-    height: fit-content;
+    flex: 80%;
   }
   
   .innerBox:last-child {
-    height: fit-content;
-    flex: 75%;
+    flex: 20%;
+    align-content: start;
   }
   
   .innerBox {
@@ -191,13 +190,18 @@
     grid-template-columns: 1fr;
     grid-gap: 10px;
     border: 1px solid #ccc;
-    padding: 20px;
+    
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     max-height: 100%;
     place-content: center start;
     overflow: auto;
   }
+
+  /* .test {
+    width: 95%;
+    
+  } */
 
   .picker {
     cursor: pointer;
@@ -212,6 +216,7 @@
 
   .table{
     height: 50vh;
+    padding: 20px;
   }
 
   .TableForPeople{ 
