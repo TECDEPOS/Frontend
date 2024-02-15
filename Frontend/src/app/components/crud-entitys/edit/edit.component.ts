@@ -423,6 +423,9 @@ export class EditComponent extends Unsub {
   }
 
   editBook() {
+    // Set array of books to empty because otherwise required properties further down cause validation errors.
+    this.book.module.books = [];
+
     this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {       
       this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));

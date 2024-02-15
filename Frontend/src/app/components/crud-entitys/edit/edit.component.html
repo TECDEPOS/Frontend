@@ -56,18 +56,18 @@
                         (matSortChange)="sortData($event, 'book')">
                         <tr>
                             <th mat-sort-header="BookName">
-                                Navn
+                                Titel
                             </th>
                             <th mat-sort-header="Module">
-                                Navn
+                                Modul
                             </th>
                             <th mat-sort-header="Amaunt">
-                                Mængde
+                                Antal
                             </th>
                         </tr>
                         <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
                             <td>{{book.name}}</td>
-                            <td>{{book.module.name}}</td>
+                            <td>{{book.module!.name}}</td>
                             <td>{{book.amount}}</td>
                         </tr>
                     </table>
