@@ -94,7 +94,7 @@
                     <label>Modul:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul</mat-label>
-                        <mat-select [(ngModel)]="module.moduleId" name="moduleId" #bookForm="ngModel">
+                        <mat-select [(ngModel)]="book.moduleId" name="moduleId" #bookForm="ngModel">
                             <mat-option *ngFor="let module of modules; let i = index" [value]="module.moduleId">
                                 {{module.name}}
                             </mat-option>
