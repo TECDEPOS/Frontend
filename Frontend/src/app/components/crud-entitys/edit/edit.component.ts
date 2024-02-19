@@ -18,13 +18,15 @@ import { UserService } from 'src/app/Services/user.service';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
 import { CourseType } from 'src/app/Models/CourseType';
 import { Unsub } from 'src/app/classes/unsub';
-import { findIndex, takeUntil } from 'rxjs';
+import { Observable, findIndex, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
 import { Course } from 'src/app/Models/Course';
 import { Status } from 'src/app/Models/Status';
 import { CourseService } from 'src/app/Services/course.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationPopupComponent } from '../../pop-ups/confirmation-popup/confirmation-popup.component';
 
 
 @Component({
@@ -33,8 +35,8 @@ import { CourseService } from 'src/app/Services/course.service';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent extends Unsub {
-  book: Book = new Book;
-  department: Department = new Department;
+  book: Book = new Book();
+  department: Department = new Department();
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
@@ -87,7 +89,8 @@ export class EditComponent extends Unsub {
     private moduelService: ModuleService,
     private courseService: CourseService,
     private personService: PersonsService,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -426,117 +429,171 @@ export class EditComponent extends Unsub {
     // Set array of books to empty because otherwise required properties further down cause validation errors.
     this.book.module.books = [];
 
-    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {       
+    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editDepartment() {
-    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments[this.departments.findIndex(x => x.departmentId == res.departmentId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags[this.fileTags.findIndex(x => x.fileTagId == res.fileTagId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations[this.locations.findIndex(x => x.locationId == res.locationId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules[this.modules.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editCourse() {
-    this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.courses[this.courses.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editPerson() {
-    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
   editUser() {
-    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users[this.users.findIndex(x => x.userId == res.userId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
     })
   }
 
-  deleteBook(id: number) {
-    this.bookService.deleteBook(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.books = this.books.filter(x => x.bookId != id);
-      this.activeForm = null;
-    })
+  deleteBook(book: Book) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(book.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.bookService.deleteBook(book.bookId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.books = this.books.filter(x => x.bookId != book.bookId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteDepartment(id: number) {
-    this.departmentService.deleteDepartment(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.departments = this.departments.filter(x => x.departmentId != id);
-      this.activeForm = null;
-    })
+  deleteDepartment(department: Department) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(department.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.departmentService.deleteDepartment(department.departmentId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.departments = this.departments.filter(x => x.departmentId != department.departmentId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteFileTag(id: number) {
-    this.fileTagService.deleteFiletag(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.fileTags = this.fileTags.filter(x => x.fileTagId != id);
-      this.activeForm = null;
-    })
+  deleteFileTag(fileTag: FileTag) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(fileTag.tagName).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.fileTagService.deleteFiletag(fileTag.fileTagId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.fileTags = this.fileTags.filter(x => x.fileTagId != fileTag.fileTagId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteLocation(id: number) {
-    this.locationService.deleteLocation(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.locations = this.locations.filter(x => x.locationId != id);
-      this.activeForm = null;
-    })
+  deleteLocation(location: Location) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(location.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.locationService.deleteLocation(location.locationId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.locations = this.locations.filter(x => x.locationId != location.locationId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteModule(id: number) {
-    this.moduelService.deleteModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.modules = this.modules.filter(x => x.moduleId != id);
-      this.activeForm = null;
-    })
+  deleteModule(module: Module) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(module.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.moduelService.deleteModule(module.moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.modules = this.modules.filter(x => x.moduleId != module.moduleId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteCourse(id: number) {
-    this.courseService.deleteCourse(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.courses = this.courses.filter(x => x.moduleId != id);
-      this.activeForm = null;
-    })
+  deleteCourse(course: Course) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete('Kursus').pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {
+        this.courseService.deleteCourse(course.courseId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.courses = this.courses.filter(x => x.courseId != course.courseId);          
+          this.activeForm = null;
+        }); 
+      }
+    });
   }
 
-  deletePerson(id: number) {
-    this.personService.deletePerson(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.persons = this.persons.filter(x => x.personId != id);
-      this.activeForm = null;
-    })
+  deletePerson(person: Person) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(person.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.personService.deletePerson(person.personId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.persons = this.persons.filter(x => x.personId != person.personId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteUser(id: number) {
-    console.log(id);
-    
-    this.userService.deleteUser(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.users = this.users.filter(x => x.userId != id);
-      this.activeForm = null;
-    })
+  deleteUser(user: User) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(user.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.userService.deleteUser(user.userId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.users = this.users.filter(x => x.userId != user.userId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
   resetPassword(id: number) {
@@ -566,5 +623,16 @@ export class EditComponent extends Unsub {
       default:
         return 0;
     }
+  }
+
+  // Opens a confirmation dialog and returns true if 'Ja' is pressed.
+  confirmDelete(entity: string): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      data: {
+        message: `Slet ${entity}?`
+      }
+    });
+
+    return dialogRef.afterClosed();
   }
 }

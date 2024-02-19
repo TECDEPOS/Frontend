@@ -245,7 +245,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deleteDepartment(department)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -274,7 +274,7 @@
                 <div class="buttons">
                     <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                     <button class="cancel-button" (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
-                    <button class="delete-button" style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet</button>
+                    <button class="delete-button" style="float: right;" (click)="deleteUser(user)" type="button">Slet</button>
                     <br>
                 </div>
                 <button class="reset-button" style="margin-top: 5px;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
@@ -293,7 +293,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('book')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteBook(book.bookId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deleteBook(book)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -328,7 +328,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -341,7 +341,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deleteLocation(location)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -359,7 +359,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deleteModule(module)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -405,7 +405,7 @@
                     <div class="buttons">
                         <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                         <button class="cancel-button" (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
-                        <button class="delete-button" style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet</button>        
+                        <button class="delete-button" style="float: right;" (click)="deleteCourse(course)" type="button">Slet</button>
                     </div>
             </form>
         </div>
@@ -502,7 +502,7 @@
                 <div class="buttons">
                 <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
                 <button class="cancel-button" (click)="cancel('person')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deletePerson(person.personId)" type="button">Slet</button>
+                <button class="delete-button" style="float: right;" (click)="deletePerson(person)" type="button">Slet</button>
             </div>
             </form>
         </div>
