@@ -305,15 +305,12 @@ export class EditComponent extends Unsub {
     
 
     if (typeof (o2 == Location)) {
-      console.log('comparing Locations');
       return o1.name === o2.name && o1.locationId === o2.locationId;
     }
     else if (typeof (o2 == Department)) {
-      console.log('comparing Departments');
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
     else if (typeof (o2 == User)) {
-      console.log('comparing Users');
       return o1.name === o2.name && o1.userId === o2.userId;
     }
     else {
@@ -395,16 +392,12 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons = res;
-      console.log(res);
-
     })
   }
 
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.users = res;
-      console.log('Users Loaded in GetUsers: ',this.users);
-      
+      this.users = res;      
     })
   }
 
@@ -423,13 +416,7 @@ export class EditComponent extends Unsub {
 
   getForUser() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      console.log(res);
-      console.log('UdannelsesChefer: ',this.educationBosses);
-      
-      
-      this.educationBosses = res.filter(x => x.userRole === 3);
-      console.log('educationBosses in getForUser:',this.educationBosses);
-      
+      this.educationBosses = res.filter(x => x.userRole === 3);      
       this.getDepartments();
       this.getLocations();
     })
@@ -480,9 +467,7 @@ export class EditComponent extends Unsub {
 
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
-    this.backup = JSON.parse(JSON.stringify(this.users[i]));
-    console.log('SelectedUser: ',this.user);
-    
+    this.backup = JSON.parse(JSON.stringify(this.users[i]));    
     this.getForUser();
     this.toggleForm('userForm', i)
   }

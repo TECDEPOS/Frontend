@@ -173,6 +173,8 @@ export class CreateComponent extends Unsub implements OnInit {
     {
       this.showEducationBoss = false;
       this.user.educationBossId = null;
+      this.user.departmentId = null;
+      this.user.locationId = null;
     }
 
     this.cdr.detectChanges();
