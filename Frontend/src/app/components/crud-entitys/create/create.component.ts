@@ -149,7 +149,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
   
   getForUser() {    
-    this.userService.getUsersByUserRole(2).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.userService.getUsersByUserRole(3).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
     });
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
@@ -165,7 +165,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   onRoleChange(userRole: UserRole) {
-    if(userRole == 3)
+    if(userRole == 2)
     {
       this.showEducationBoss = true;      
     }
@@ -173,6 +173,8 @@ export class CreateComponent extends Unsub implements OnInit {
     {
       this.showEducationBoss = false;
       this.user.educationBossId = null;
+      this.user.departmentId = null;
+      this.user.locationId = null;
     }
 
     this.cdr.detectChanges();
@@ -230,7 +232,10 @@ export class CreateComponent extends Unsub implements OnInit {
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      console.log(this.user);
+      
       this.user = new userViewModel;
+
     })
   }
 }

@@ -260,11 +260,50 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Afdeling:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.department">Vælg afdeling:</mat-label>
+                        <mat-select (selectionChange)="selectSetDepartmentId()" [compareWith]="compareObjects" [(ngModel)]="user.department" name="department"
+                            #department="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department">
+                                {{department.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Lokation:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.location">Vælg lokation:</mat-label>
+                        <mat-select (selectionChange)="selectSetLocationId()" [compareWith]="compareObjects" [(ngModel)]="user.location" name="location"
+                            #location="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let location of locations" [value]="location">
+                                {{location.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Uddannelseschef:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.educationBoss">Vælg Uddannelseschef</mat-label>
+                        <mat-select (selectionChange)="selectSetEducationbossId()" [compareWith]="compareObjects" [(ngModel)]="user.educationBoss"
+                            name="educationBoss" #educationBoss="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let educationBoss of educationBosses" [value]="educationBoss">
+                                {{educationBoss.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="formItem">
-                    <label>Role:</label>
+                    <label>Brugerrolle:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
-                        <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
+                        <mat-select (selectionChange)="selectUserRoleChanged()" [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
                                 {{role}}
                             </mat-option>

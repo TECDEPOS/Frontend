@@ -53,6 +53,7 @@ export class EditComponent extends Unsub {
   persons: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  educationBosses: User[] = [];
   users: User[] = [];
   resentlyCreated: any[] = [];
   activeForm: string | null = null
@@ -121,6 +122,9 @@ export class EditComponent extends Unsub {
       }
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
+      }
+      else if (this.activeForm == 'userForm'){
+        this.getForUser();
       }
     }
   }
@@ -298,6 +302,7 @@ export class EditComponent extends Unsub {
     if (o2 == null) {
       return false;
     }
+    
 
     if (typeof (o2 == Location)) {
       return o1.name === o2.name && o1.locationId === o2.locationId;
@@ -310,6 +315,41 @@ export class EditComponent extends Unsub {
     }
     else {
       return false;
+    }
+  }
+
+  selectSetDepartmentId(){
+    if (this.user.department == null) {
+      this.user.departmentId = null;
+    }
+    else{
+      this.user.departmentId = this.user.department?.departmentId;
+    }
+  }
+
+  selectSetLocationId(){
+    if (this.user.location == null) {
+      this.user.locationId = null;
+    }
+    else{
+      this.user.locationId = this.user.location.locationId;
+    }
+  }
+
+  selectSetEducationbossId(){
+    if (this.user.educationBoss == null) {
+      this.user.educationBossId = null;
+    }
+    else{
+      this.user.educationBossId = this.user.educationBoss?.userId;
+    }
+  }
+
+  selectUserRoleChanged(){
+    if (this.user.userRole !== 2) {
+      this.user.departmentId = null;
+      this.user.locationId = null;
+      this.user.educationBossId = null;
     }
   }
 
@@ -352,14 +392,12 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons = res;
-      console.log(res);
-
     })
   }
 
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.users = res;
+      this.users = res;      
     })
   }
 
@@ -374,6 +412,14 @@ export class EditComponent extends Unsub {
         this.locations = res;
       });
     });
+  }
+
+  getForUser() {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.educationBosses = res.filter(x => x.userRole === 3);      
+      this.getDepartments();
+      this.getLocations();
+    })
   }
 
   bookSelecter(i: number) {
@@ -421,7 +467,8 @@ export class EditComponent extends Unsub {
 
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
-    this.backup = JSON.parse(JSON.stringify(this.users[i]));
+    this.backup = JSON.parse(JSON.stringify(this.users[i]));    
+    this.getForUser();
     this.toggleForm('userForm', i)
   }
 
