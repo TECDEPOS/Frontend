@@ -27,6 +27,8 @@ import { Status } from 'src/app/Models/Status';
 import { CourseService } from 'src/app/Services/course.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationPopupComponent } from '../../pop-ups/confirmation-popup/confirmation-popup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarIndicatorComponent } from '../../Misc/snackbar-indicator/snackbar-indicator.component';
 
 
 @Component({
@@ -91,7 +93,8 @@ export class EditComponent extends Unsub {
     private courseService: CourseService,
     private personService: PersonsService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -479,6 +482,7 @@ export class EditComponent extends Unsub {
     this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Bog')
     })
   }
 
@@ -486,6 +490,7 @@ export class EditComponent extends Unsub {
     this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments[this.departments.findIndex(x => x.departmentId == res.departmentId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Afdeling')
     })
   }
 
@@ -493,6 +498,7 @@ export class EditComponent extends Unsub {
     this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags[this.fileTags.findIndex(x => x.fileTagId == res.fileTagId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Filkategori')
     })
   }
 
@@ -500,13 +506,18 @@ export class EditComponent extends Unsub {
     this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations[this.locations.findIndex(x => x.locationId == res.locationId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Lokation')
     })
   }
 
   editModule() {
+    // Setting books to empty prevents an exception caused by Module being required on Books, the nested Module properties for each book is null.
+    this.module.books = [];
+    
     this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules[this.modules.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Modul')
     })
   }
 
@@ -514,6 +525,7 @@ export class EditComponent extends Unsub {
     this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.courses[this.courses.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Kursus')
     })
   }
 
@@ -521,14 +533,16 @@ export class EditComponent extends Unsub {
     this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
-    })
+      this.openSnackBar('Ansat')
+    });
   }
 
   editUser() {
     this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users[this.users.findIndex(x => x.userId == res.userId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
-    })
+      this.openSnackBar('Bruger')
+    });
   }
 
   deleteBook(book: Book) {
@@ -681,5 +695,14 @@ export class EditComponent extends Unsub {
     });
 
     return dialogRef.afterClosed();
+  }
+
+  // Opens a snackbar indicating that the entity was updated and saved.
+  openSnackBar(entity: string){
+    this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+      data: {
+        message: `${entity} opdateret`
+      }, panelClass: ['blue-snackbar'], duration: 3000
+    });
   }
 }

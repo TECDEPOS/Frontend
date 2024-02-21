@@ -40,6 +40,7 @@ import { AddPersonCourseComponent } from './components/pop-ups/add-person-course
 import { CoursePageComponent } from './components/courses/course-page/course-page.component';
 import { CoursesComponent } from './components/courses/courses/courses.component';
 import { ConfirmationPopupComponent } from './components/pop-ups/confirmation-popup/confirmation-popup.component';
+import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 
 
 
@@ -82,7 +83,8 @@ export const MY_DATE_FORMATS = {
     PasswordExpiredPopupComponent,
     CoursePageComponent,
     CoursesComponent,
-    ConfirmationPopupComponent
+    ConfirmationPopupComponent,
+    SnackbarIndicatorComponent
   ],
   imports: [
     BrowserModule,
