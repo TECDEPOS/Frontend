@@ -35,12 +35,7 @@ export class HomePageComponent {
   ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
-      this.modulesCompleted()
     })
-  }
-
-  modulesCompleted(): void {
-    this.Hired
   }
 
   progressBar(): void {
@@ -98,7 +93,7 @@ export class HomePageComponent {
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
       this.Hired.forEach(element => {
-        //element.completedModules = this.modulesCompletedMethod(element)
+        element.completedModules = this.modulesCompleted(element)
       });
 
       this.showedList = this.Hired
@@ -109,8 +104,8 @@ export class HomePageComponent {
     })
   }
 
-  modulesCompletedMethod(x: Person) {
-    //return x.personCourse.filter(x => x.status === 3).length
+  modulesCompleted(person: Person) {
+    return person.personCourses.filter(x => x.status === 3).length;
   }
 
   onDepartmentQueryInput(event: any) {
