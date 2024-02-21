@@ -285,7 +285,7 @@ export class EmployeeProfileComponent extends Unsub{
 @Component({
   selector: 'app-change-enddate-bar',
   templateUrl: './change-enddate-bar.component.html',
-  styles: [],
+  styleUrls: ['./snackBar.component.css'],
   standalone: true,
   imports: [MatSnackBarModule]
 })
