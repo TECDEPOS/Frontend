@@ -18,6 +18,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
@@ -77,6 +78,7 @@ export const MY_DATE_FORMATS = {
     AddPersonCourseComponent,
     EditPersonmodulePopupComponent,
     ModuleComponent,
+
     PasswordExpiredPopupComponent,
     CoursePageComponent,
     CoursesComponent,
@@ -88,6 +90,7 @@ export const MY_DATE_FORMATS = {
     AppRoutingModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSnackBarModule,
     MatIconModule,
     HttpClientModule,
     MatSelectModule,

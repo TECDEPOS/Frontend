@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBarModule, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
+import { MAT_SNACK_BAR_DATA, MatSnackBar} from '@angular/material/snack-bar';
 import { Department } from 'src/app/Models/Department';
 import { Location } from 'src/app/Models/Location';
 import { Person } from 'src/app/Models/Person';
@@ -17,12 +19,12 @@ import { AddPersonCourseComponent } from '../pop-ups/add-person-course/add-perso
 import { CourseType } from 'src/app/Models/CourseType';
 import { Status } from 'src/app/Models/Status';
 import { Course } from 'src/app/Models/Course';
-import * as moment from 'moment';
 import { EditPersonmodulePopupComponent } from '../pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
 import { AuthService } from 'src/app/Services/auth.service';
 import { PersonCourse } from 'src/app/Models/PersonCourse';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { getLocaleMonthNames } from '@angular/common';
 
 @Component({
   selector: 'app-employee-profile',
@@ -34,6 +36,7 @@ export class EmployeeProfileComponent extends Unsub{
   moduleTypes = CourseType;
   status = Status;
   editDisabled: boolean = true;
+  changeEndDate: boolean = false
   person: Person = new Person;
   backupValues: Person = new Person;
   educationalConsultants: User[] = [];
@@ -46,7 +49,7 @@ export class EmployeeProfileComponent extends Unsub{
   inactiveModules: Course[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService) {super(); }
+    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
 
   ngOnInit() {
     this.getPerson();
@@ -60,18 +63,19 @@ export class EmployeeProfileComponent extends Unsub{
     });
   }
 
-
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 6);
     });
   }
+
   getDepartments() {
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
     });
   }
+
   getPerson() {
     let roleId = this.authService.getUserRoleId();
     console.log('Role id: ',roleId);
@@ -96,16 +100,31 @@ export class EmployeeProfileComponent extends Unsub{
 
     if(this.person.personCourses.length !== 0){      
       this.currentModules = this.person.personCourses.filter(x => x.status === 1)
-      .concat(this.person.personCourses.filter(x => x.status !== 1));
+      .concat(this.person.personCourses.filter(x => x.status === 0))
+      .concat(this.person.personCourses.filter(x => x.status === 3))
+      .concat(this.person.personCourses.filter(x => x.status === 2));
     }
   }
 
   onSubmit() {
+    this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
+    data:{
+      changeEndDate: this.changeEndDate,
+      person: this.person,
+      snackbar: this.snackBar
+    }
+  }).afterDismissed().subscribe(() => {
+    console.log("You are here biatch: ", this.person);
+    
     this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      
+            
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
     });
+  })
+  
   }
 
   enableEditMode() {
@@ -252,6 +271,48 @@ export class EmployeeProfileComponent extends Unsub{
       disableClose: false,
       height: '50%',
       width: '25%'
-    });
+    }).afterClosed().subscribe(() => {
+      if(this.person.personCourses.length !== 0){      
+        this.currentModules = this.currentModules.filter(x => x.status === 1)
+        .concat(this.currentModules.filter(x => x.status === 0))
+        .concat(this.currentModules.filter(x => x.status === 3))
+        .concat(this.currentModules.filter(x => x.status === 2));
+      }
+    }) 
+  }
+}
+
+@Component({
+  selector: 'app-change-enddate-bar',
+  templateUrl: './change-enddate-bar.component.html',
+  styleUrls: ['./snackBar.component.css'],
+  standalone: true,
+  imports: [MatSnackBarModule]
+})
+
+export class ChangeEnddateBarComponent {
+
+  changeEndDate: boolean = false
+  snackbar: any = MatSnackBar
+  person: Person = new Person
+
+  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {changeEndDate: boolean, person:Person, snackbar: MatSnackBar}){
+    if(data.changeEndDate) this.changeEndDate = data.changeEndDate
+    if(data.snackbar) this.snackbar = data.snackbar
+    if(data.person) this.person = data.person
+  }
+
+  pressedYes(){
+
+     const temp = new Date(this.person.hiringDate)
+     temp.setHours(new Date(this.person.hiringDate).getHours() + 1)
+     temp.setFullYear(temp.getFullYear() + 4) 
+     this.person.endDate = temp
+
+    this.snackbar.dismiss()
+  }
+
+  pressedNo(){
+    this.snackbar.dismiss()
   }
 }

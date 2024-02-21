@@ -7,8 +7,8 @@
         <mat-form-field subscriptSizing="dynamic">
             <mat-label>Vælge afdeling</mat-label>
             <mat-select [value]="alle" (selectionChange)="onDepartmentQueryInput($event)">
-                <mat-option [value]="alle" >Alle</mat-option>
-                <mat-option *ngFor="let x of department" [value]="x.name">{{x.name}}</mat-option>
+                <mat-option [value]="alle" ><p>Alle</p></mat-option>
+                <mat-option *ngFor="let x of department" [value]="x.name"><p>{{x.name}}</p></mat-option>
             </mat-select>
         </mat-form-field>      
     </div>
