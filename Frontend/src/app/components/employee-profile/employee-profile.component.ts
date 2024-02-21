@@ -36,7 +36,7 @@ export class EmployeeProfileComponent extends Unsub{
   moduleTypes = CourseType;
   status = Status;
   editDisabled: boolean = true;
-  changeEndDate: boolean = false
+  saveDisabled: boolean = false;
   person: Person = new Person;
   backupValues: Person = new Person;
   educationalConsultants: User[] = [];
@@ -44,6 +44,8 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
+  CurrentHiringDate: Date = new Date()
+  
 
   currentModules: PersonCourse[] = [];
   inactiveModules: Course[] = [];
@@ -107,28 +109,36 @@ export class EmployeeProfileComponent extends Unsub{
   }
 
   onSubmit() {
+  
+  if(this.person.hiringDate !== this.CurrentHiringDate){
+    this.saveDisabled = true
     this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
-    data:{
-      changeEndDate: this.changeEndDate,
-      person: this.person,
-      snackbar: this.snackBar
-    }
-  }).afterDismissed().subscribe(() => {
-    console.log("You are here biatch: ", this.person);
-    
+      data:{
+        person: this.person,
+        snackbar: this.snackBar
+      }
+    }).afterDismissed().subscribe(() => {
+      this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+        this.person = res;
+        this.editDisabled = true;
+        this.setBackupValues(this.person);
+        this.saveDisabled = false
+        
+      });
+    })
+  }
+  else{
     this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      
-            
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
     });
-  })
-  
+  }
   }
 
   enableEditMode() {
     this.editDisabled = false;
+    this.CurrentHiringDate = this.person.hiringDate
   }
 
   cancelEditMode() {
@@ -285,19 +295,16 @@ export class EmployeeProfileComponent extends Unsub{
 @Component({
   selector: 'app-change-enddate-bar',
   templateUrl: './change-enddate-bar.component.html',
-  styleUrls: ['./snackBar.component.css'],
+  styleUrls: ['./change-enddate-bar.component.css'],
   standalone: true,
   imports: [MatSnackBarModule]
 })
 
 export class ChangeEnddateBarComponent {
-
-  changeEndDate: boolean = false
   snackbar: any = MatSnackBar
   person: Person = new Person
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {changeEndDate: boolean, person:Person, snackbar: MatSnackBar}){
-    if(data.changeEndDate) this.changeEndDate = data.changeEndDate
+  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {person:Person, snackbar: MatSnackBar}){
     if(data.snackbar) this.snackbar = data.snackbar
     if(data.person) this.person = data.person
   }

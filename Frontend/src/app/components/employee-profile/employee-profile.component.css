@@ -50,6 +50,11 @@ h1{
         "b b";
 }
 
+.checkboxDiv{
+    display: flex;
+    flex-direction: column;
+}
+
 .profile-info {
     display: grid;
     height: 95%;

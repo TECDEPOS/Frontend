@@ -1,5 +1,7 @@
-<div style="display: flex;">
+<div style="display: flex; justify-content: center;">
     <p>Skal slut dato ændres?</p> 
-    <button (click)="pressedYes()"> <p>Ja</p> </button> 
-    <button (click)="pressedNo()"> <p>Nej</p> </button>
+    <div class="Buttons">
+        <button class="Button Yes" (click)="pressedYes()"> <p>Ja</p> </button> 
+        <button class="Button No" (click)="pressedNo()"> <p>Nej</p> </button>
+    </div>
 </div>
