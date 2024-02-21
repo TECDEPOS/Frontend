@@ -53,6 +53,7 @@ export class EditComponent extends Unsub {
   persons: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  educationBosses: User[] = [];
   users: User[] = [];
   resentlyCreated: any[] = [];
   activeForm: string | null = null
@@ -121,6 +122,9 @@ export class EditComponent extends Unsub {
       }
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
+      }
+      else if (this.activeForm == 'userForm'){
+        this.getForUser();
       }
     }
   }
@@ -298,18 +302,57 @@ export class EditComponent extends Unsub {
     if (o2 == null) {
       return false;
     }
+    
 
     if (typeof (o2 == Location)) {
+      console.log('comparing Locations');
       return o1.name === o2.name && o1.locationId === o2.locationId;
     }
     else if (typeof (o2 == Department)) {
+      console.log('comparing Departments');
       return o1.name === o2.name && o1.departmentId === o2.departmentId;
     }
     else if (typeof (o2 == User)) {
+      console.log('comparing Users');
       return o1.name === o2.name && o1.userId === o2.userId;
     }
     else {
       return false;
+    }
+  }
+
+  selectSetDepartmentId(){
+    if (this.user.department == null) {
+      this.user.departmentId = null;
+    }
+    else{
+      this.user.departmentId = this.user.department?.departmentId;
+    }
+  }
+
+  selectSetLocationId(){
+    if (this.user.location == null) {
+      this.user.locationId = null;
+    }
+    else{
+      this.user.locationId = this.user.location.locationId;
+    }
+  }
+
+  selectSetEducationbossId(){
+    if (this.user.educationBoss == null) {
+      this.user.educationBossId = null;
+    }
+    else{
+      this.user.educationBossId = this.user.educationBoss?.userId;
+    }
+  }
+
+  selectUserRoleChanged(){
+    if (this.user.userRole !== 2) {
+      this.user.departmentId = null;
+      this.user.locationId = null;
+      this.user.educationBossId = null;
     }
   }
 
@@ -360,6 +403,8 @@ export class EditComponent extends Unsub {
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users = res;
+      console.log('Users Loaded in GetUsers: ',this.users);
+      
     })
   }
 
@@ -374,6 +419,20 @@ export class EditComponent extends Unsub {
         this.locations = res;
       });
     });
+  }
+
+  getForUser() {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      console.log(res);
+      console.log('UdannelsesChefer: ',this.educationBosses);
+      
+      
+      this.educationBosses = res.filter(x => x.userRole === 3);
+      console.log('educationBosses in getForUser:',this.educationBosses);
+      
+      this.getDepartments();
+      this.getLocations();
+    })
   }
 
   bookSelecter(i: number) {
@@ -422,6 +481,9 @@ export class EditComponent extends Unsub {
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
     this.backup = JSON.parse(JSON.stringify(this.users[i]));
+    console.log('SelectedUser: ',this.user);
+    
+    this.getForUser();
     this.toggleForm('userForm', i)
   }
 
