@@ -48,8 +48,7 @@ export class EmployeeProfileComponent extends Unsub{
   CurrentHiringDate: Date = new Date()
   
 
-  currentModules: PersonCourse[] = [];
-  inactiveModules: Course[] = [];
+  currentPersonCourse: PersonCourse[] = [];
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
@@ -102,7 +101,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentModules = this.person.personCourses.filter(x => x.status === 1)
+      this.currentPersonCourse = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2));
@@ -271,30 +270,36 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
-        currentModules: this.currentModules,
-        inactiveModules: this.inactiveModules
+        currentPersonCourse: this.currentPersonCourse,
       },
       disableClose: false,
       height: '40%',
       width: '30%'
-    });
+    }).afterClosed().subscribe(() => {
+      if(this.person.personCourses.length !== 0){      
+        this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
+        .concat(this.currentPersonCourse.filter(x => x.status === 0))
+        .concat(this.currentPersonCourse.filter(x => x.status === 3))
+        .concat(this.currentPersonCourse.filter(x => x.status === 2));
+      }
+    })
   }
 
   openEditPersonModulePopup(personCourse: PersonCourse) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personCourse: personCourse,
-        currentModules: this.currentModules
+        currentPersonCourse: this.currentPersonCourse
       },
       disableClose: false,
       height: '50%',
       width: '25%'
     }).afterClosed().subscribe(() => {
       if(this.person.personCourses.length !== 0){      
-        this.currentModules = this.currentModules.filter(x => x.status === 1)
-        .concat(this.currentModules.filter(x => x.status === 0))
-        .concat(this.currentModules.filter(x => x.status === 3))
-        .concat(this.currentModules.filter(x => x.status === 2));
+        this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
+        .concat(this.currentPersonCourse.filter(x => x.status === 0))
+        .concat(this.currentPersonCourse.filter(x => x.status === 3))
+        .concat(this.currentPersonCourse.filter(x => x.status === 2));
       }
     }) 
   }
