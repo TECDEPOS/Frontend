@@ -34,6 +34,7 @@ import { getLocaleMonthNames } from '@angular/common';
 export class EmployeeProfileComponent extends Unsub{
 
   moduleTypes = CourseType;
+  popupOpened: boolean = false
   status = Status;
   editDisabled: boolean = true;
   saveDisabled: boolean = false;
@@ -112,7 +113,9 @@ export class EmployeeProfileComponent extends Unsub{
   
   if(this.person.hiringDate !== this.CurrentHiringDate){
     this.saveDisabled = true
+    this.popupOpened = true
     this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
+      
       data:{
         person: this.person,
         snackbar: this.snackBar
@@ -132,6 +135,7 @@ export class EmployeeProfileComponent extends Unsub{
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
+      this.popupOpened = false
     });
   }
   }
@@ -144,6 +148,10 @@ export class EmployeeProfileComponent extends Unsub{
   cancelEditMode() {
     this.editDisabled = true;
     this.person = JSON.parse(JSON.stringify(this.backupValues));
+    if(this.popupOpened){
+      this.snackBar.dismiss()
+    }
+    
   }
 
   setBackupValues(values: Person) {
