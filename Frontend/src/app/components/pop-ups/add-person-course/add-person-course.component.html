@@ -35,8 +35,8 @@
         <label>Type: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Status</mat-label>
-          <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn" [value]="showStatus">
-            <mat-option *ngFor="let status of status; let i = index" [value]="i">
+          <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn">
+            <mat-option *ngFor="let status of statuses; let i = index" [value]="i">
               {{status}}
             </mat-option>
           </mat-select>
@@ -46,6 +46,5 @@
   </div>
   <div class="buttons">
     <button class="create-button" (click)="onSubmit()">Tilføj</button>
-    <!-- <button class="cancel-button" (click)="closeDialog()">Luk</button> -->
   </div>
 </div>
