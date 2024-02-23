@@ -42,11 +42,10 @@ export class AddPersonCourseComponent {
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
-      currentCourses: PersonCourse[];
-      inactiveCourses: PersonCourse[];
+      currentPersonCourse: PersonCourse[];
     }) {
     if (data.person) this.person = data.person;
-    if (data.currentCourses) this.currentCourses = data.currentCourses;
+    if (data.currentPersonCourse) this.currentCourses = data.currentPersonCourse;
   }
 
   ngOnInit() {
@@ -88,16 +87,16 @@ export class AddPersonCourseComponent {
   onModuleChange(module: Module) {
     this.getCourses(module.moduleId);
     this.moduleSelected = true;
-    
+
     this.cdr.detectChanges();
   }
 
   onCourseChange(course: Course) {
     this.newPersonCourse.course = course;
     console.log(this.newPersonCourse.course);
-    
+
     let endDateBeforeToday = this.compareEndDates();
-  
+
     if (endDateBeforeToday) {
       let startDateAfterToday = this.compareStartDates();
       if (startDateAfterToday) {
@@ -109,7 +108,7 @@ export class AddPersonCourseComponent {
     else {
       this.showStatus = 3;
     }
-  
+
     this.cdr.detectChanges();
   }
 
@@ -137,8 +136,7 @@ onSubmit() {
   }
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-    // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh      
-    this.currentCourses.push(this.newPersonCourse);
+    // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh
     this.closeDialog();
   });
 }

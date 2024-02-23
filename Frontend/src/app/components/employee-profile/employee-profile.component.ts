@@ -276,13 +276,11 @@ export class EmployeeProfileComponent extends Unsub{
       height: '40%',
       width: '30%'
     }).afterClosed().subscribe(() => {
-      if(this.person.personCourses.length !== 0){      
-        this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
-        .concat(this.currentPersonCourse.filter(x => x.status === 0))
-        .concat(this.currentPersonCourse.filter(x => x.status === 3))
-        .concat(this.currentPersonCourse.filter(x => x.status === 2));
-      }
+      this.getPerson();
+
+      this.organizedTable()
     })
+    
   }
 
   openEditPersonModulePopup(personCourse: PersonCourse) {
@@ -295,14 +293,19 @@ export class EmployeeProfileComponent extends Unsub{
       height: '50%',
       width: '25%'
     }).afterClosed().subscribe(() => {
-      if(this.person.personCourses.length !== 0){      
-        this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
-        .concat(this.currentPersonCourse.filter(x => x.status === 0))
-        .concat(this.currentPersonCourse.filter(x => x.status === 3))
-        .concat(this.currentPersonCourse.filter(x => x.status === 2));
-      }
+      this.organizedTable()
     }) 
   }
+
+  organizedTable(){
+    if(this.person.personCourses.length !== 0){      
+      this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
+      .concat(this.currentPersonCourse.filter(x => x.status === 0))
+      .concat(this.currentPersonCourse.filter(x => x.status === 3))
+      .concat(this.currentPersonCourse.filter(x => x.status === 2));
+    }
+  } 
+
 }
 
 @Component({
