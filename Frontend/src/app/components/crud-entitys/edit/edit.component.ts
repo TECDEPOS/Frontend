@@ -705,4 +705,13 @@ export class EditComponent extends Unsub {
       }, panelClass: ['blue-snackbar'], duration: 3000
     });
   }
+
+
+  selectedVisibility: any; // Store the selected visibility
+  visibilities = [
+    { label: 'Controller', roles: ['controllerVisibility'] },
+    { label: 'Uddannelsesleder', roles: ['educationLeaderVisibility'] },
+    // ... add more roles as needed
+  ];
+
 }
