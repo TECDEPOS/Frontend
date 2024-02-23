@@ -85,29 +85,38 @@
                                 <th mat-sort-header="name">
                                     Navn
                                 </th>
-                                <th mat-sort-header="dKVisability">
-                                    Drift Koordinator Synlighed
+                                <th mat-sort-header="controllerVisibility">
+                                    Controller Synlighed
                                 </th>
-                                <th mat-sort-header="hRVisability">
+                                <th mat-sort-header="educationLeaderVisibility">
+                                    Uddannelsesleder Synlighed
+                                </th>
+                                <th mat-sort-header="educationBossVisibility">
+                                    Uddannelseschef Synlighed
+                                </th>
+                                <th mat-sort-header="dkVisibility">
+                                    Driftskoordinator Synlighed
+                                </th>
+                                <th mat-sort-header="hrVisibility">
                                     Human Resources Synlighed
                                 </th>
-                                <th mat-sort-header="pKVisability">
+                                <th mat-sort-header="pkVisibility">
                                     Pædagogisk Konsulent Synlighed
                                 </th>
                             </tr>
                             <tr *ngFor="let fileTag of fileTags, let i = index" (click)="fileTagSelecter(i)">
                                 <td>{{fileTag.tagName}}</td>
                                 <td>
-                                    <input *ngIf="fileTag.dkVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.dkVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.dkVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.dkVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                                 <td>
-                                    <input *ngIf="fileTag.hrVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.hrVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.hrVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.hrVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                                 <td>
-                                    <input *ngIf="fileTag.pkVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.pkVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.pkVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.pkVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                             </tr>
                         </table>
@@ -344,24 +353,45 @@
                 </div>
                 <div><b>Filkategori synlighed for brugerroller:</b></div>
                 <div class="formItem">
+                    <label>Controller:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.controllerVisibility" id="controllerVisibility" name="controllerVisibility"
+                            #controllerVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
+                    <label>Uddannelsesleder:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.educationLeaderVisibility" id="educationLeaderVisibility" name="educationLeaderVisibility"
+                            #educationLeaderVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
+                    <label>Uddannelseschef:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.educationBossVisibility" id="educationBossVisibility" name="educationBossVisibility"
+                            #educationBossVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
                     <label>Driftskoordinator:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
-                            #dKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisibility" id="dkVisibility" name="dkVisibility"
+                            #dkVisibility="ngModel">
                     </div>
                 </div>
                 <div class="formItem">
                     <label>Human Resources:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
-                            #hRVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisibility" id="hrVisibility" name="hrVisibility"
+                            #hrVisibility="ngModel">
                     </div>
                 </div>
                 <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
-                            #pKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisibility" id="pkVisibility" name="pkVisibility"
+                            #pkVisibility="ngModel">
                     </div>
                 </div>
                 <div class="buttons">
