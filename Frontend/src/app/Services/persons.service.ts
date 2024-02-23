@@ -13,27 +13,35 @@ export class PersonsService {
 
   baseApiUrl: string = environment.baseApiUrl;
 
-  getPersons(): Observable<Person[]>{
+  getPersons(): Observable<Person[]> {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/')
   }
 
-  getPersonById(personId: number, roleId: number): Observable<Person>{
+  getPersonById(personId: number, roleId: number): Observable<Person> {
     return this.http.get<Person>(this.baseApiUrl + 'Person/' + personId + '/role/' + roleId)
   }
 
-  getPersonByName(name: string): Observable<Person[]>{
+  getPersonByCourseId(courseId: number): Observable<Person[]> {
+    return this.http.get<Person[]>(this.baseApiUrl + 'Person/courseId/' + courseId)
+  }
+
+  getPersonsByDepartmentAndLocation(departmentId: number, locationId: number): Observable<Person[]> {
+    return this.http.get<Person[]>(this.baseApiUrl + 'Person/departmentId/' + departmentId + '/locationId' + locationId)
+  }
+
+  getPersonByName(name: string): Observable<Person[]> {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/' + name)
   }
 
-  addPerson(person: Person): Observable<Person>{
+  addPerson(person: Person): Observable<Person> {
     return this.http.post<Person>(this.baseApiUrl + 'Person/', person)
   }
 
-  updatePerson(person: Person): Observable<Person>{
+  updatePerson(person: Person): Observable<Person> {
     return this.http.put<Person>(this.baseApiUrl + 'Person/', person)
   }
 
-  deletePerson(id: number): Observable<Person>{
+  deletePerson(id: number): Observable<Person> {
     return this.http.delete<Person>(this.baseApiUrl + 'Person/' + id)
   }
 

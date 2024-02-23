@@ -17,11 +17,11 @@ export class PersonCourseService {
     return this.http.get<PersonCourse[]>(this.baseApiUrl + 'PersonCourses');
   }
 
-  getAllPersonCoursesByPerson(personId: number): Observable<PersonCourse[]>{
+  getPersonCoursesByPerson(personId: number): Observable<PersonCourse[]>{
     return this.http.get<PersonCourse[]>(this.baseApiUrl + 'PersonCourses/person/' + personId);
   }
 
-  getAllPersonCoursesByCourse(courseId: number): Observable<PersonCourse[]>{
+  getPersonCoursesByCourse(courseId: number): Observable<PersonCourse[]>{
     return this.http.get<PersonCourse[]>(this.baseApiUrl + 'PersonCourses/course/' + courseId);
   }
 
