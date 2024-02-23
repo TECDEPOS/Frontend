@@ -208,9 +208,9 @@ export class EditComponent extends Unsub {
             case 'name':
               return this.compare(a.tagName.toLocaleLowerCase(), b.tagName.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
             case 'dKVisability':
-              return this.compare(a.dkVisability, b.dkVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.dkVisibility, b.dkVisibility) * (sort.direction == 'asc' ? 1 : -1);
             case 'hRVisability':
-              return this.compare(a.hrVisability, b.hrVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.hrVisibility, b.hrVisibility) * (sort.direction == 'asc' ? 1 : -1);
             case 'pKVisability':
             default:
               return 0;
