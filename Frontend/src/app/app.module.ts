@@ -1,43 +1,45 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from '@angular/material/icon'
-import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TokenInterceptor } from './interceptors/token.interceptor';
-import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon'
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NgModule } from '@angular/core';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
+import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/loginPage/login/login.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
-import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
+import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
+import { CoursePageComponent } from './components/courses/course-page/course-page.component';
+import { CoursesComponent } from './components/courses/courses/courses.component';
+import { CreateComponent } from './components/crud-entitys/create/create.component';
+import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
+import { EditComponent } from './components/crud-entitys/edit/edit.component';
+import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
+import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 import { FilePageComponent } from './components/file/file-page/file-page.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
-import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
-import { CreateComponent } from './components/crud-entitys/create/create.component';
-import { EditComponent } from './components/crud-entitys/edit/edit.component';
-import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
-import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
-import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-personmodule-popup/edit-personmodule-popup.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { LoginComponent } from './components/loginPage/login/login.component';
+import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
-import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
-import { CoursePageComponent } from './components/courses/course-page/course-page.component';
-import { CoursesComponent } from './components/courses/courses/courses.component';
 
 
 
@@ -60,38 +62,39 @@ export const MY_DATE_FORMATS = {
 
 @NgModule({
   declarations: [
+    AddPersonCourseComponent,
     AppComponent,
-    LoginComponent,
-    HomePageComponent,
-    NavBarComponent,
+    ChangePasswordPopupComponent,
+    CoursePageComponent,
+    CoursesComponent,
+    CreateComponent,
+    CrudEntityPageComponent,
+    EditComponent,
+    EditPersonmodulePopupComponent,
+    EmployeeProfileComponent,
     ErrorPopupComponent,
     FilePageComponent,
     FileUploadComponent,
-    CrudEntityPageComponent,
-    CreateComponent,
-    EditComponent,
-    EmployeeProfileComponent,
     FileuploadPopupComponent,
-    ChangePasswordPopupComponent,
-    AddPersonCourseComponent,
-    EditPersonmodulePopupComponent,
+    HomePageComponent,
+    LoginComponent,
+    NavBarComponent,
     ModuleComponent,
-    PasswordExpiredPopupComponent,
-    CoursePageComponent,
-    CoursesComponent
+    PasswordExpiredPopupComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    HttpClientModule,
-    MatSelectModule,
     FormsModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
     MatNativeDateModule,
     MatSelectModule,
     MatSortModule,

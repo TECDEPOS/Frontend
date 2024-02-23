@@ -26,7 +26,7 @@ export class UserService {
   }
 
   getUsersByEducationBossId(id: number): Observable<User[]>{
-    return this.http.get<User[]>(this.baseApiUrl + 'Users/edicationleader/' + id)  
+    return this.http.get<User[]>(this.baseApiUrl + 'Users/educationleader/' + id)  
   }
 
   getUsersByUserRole(userRole: UserRole): Observable<User[]>{

@@ -1,232 +1,270 @@
-*{
-    /* Dont remove, dont know why, but need it :) */
-    overflow: visible;
-  }
-  
-  .OuterWrapper{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    /* grid-template-rows: repeat(7, 1fr) 50px; */
-    grid-template-areas: 
-    "h h h h h h h h"
-    "t t t t t t t t"
-    "t t t t t t t t"
-    "t t t t t t t t"
-    "t t t t t t t t"
-    "t t t t t t t t"
-    "t t t t t t t t"
-    "b b b b b b b b";
-  }
-  
-  .SeachBar{
-    font-size: 1.3rem;
-    color: black;
-    width: 100%;
-    min-width: 200px;
-    height: 35px;
-    border-radius: 15px;
-    margin-bottom: 22px;
-    padding-left: 5px;
-  } 
-  
-  .Progress{
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    height: 100%;
-  }
-  .EndDateShow{
-    position: absolute;
-    z-index: 100;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: grid;
-    place-content: center;
-  }
-  
-  .End--date{
-    position: relative;
-  }
-  
-  .Searchfield{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: flex-end;
-    margin: 0 auto;
-    width: 90%;
-  }
-  
-  mat-form-field{
-    /* height: 35px; */
-    /* margin-left: 50px; */
-    min-width: 200px;
-    margin-bottom: 15px;
-  }
-  
-  .Searchfield{grid-area: h;}
-  .bunden{grid-area: b;}
-  .table {grid-area: t;}
-  
-  .TableForPeople{ 
-    border-radius: 5px;
-    box-shadow: 0 1px 3px 3px #888;
-    max-height: 100%;
-    height: 100%;
-    margin: 0px 2.5%;
-    overflow: auto;
-    position: relative;
-    outline: 1px solid black;
-    overflow-y: scroll;
-  }
-    
-  .TableBox{    
-    width: 100%;
-    position: absolute;
-    font-size: 1.5rem;
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-  }
-  
-  .TableBox td{
-    border: 1px solid #ddd;
-    text-align: center;
-    /* padding: 1px; */
-    font-size: large;
-  }
-  
-  .employeeName{
-    /* text-decoration: underline;  */
-    /* color: rgb(0, 26, 255); */
-  }
-  
-  .employeeName:hover{
-    cursor: pointer;
-  }
-  
-  
-  .TableBox th:hover{
-    background-color: #005f79;
-    cursor: pointer;
-  }
-  
-  .TableBox th{
-    position: sticky;
-    top: 0px;
-    font-size: 1rem;
-    /* border-left: 1px solid #ddd; */
-    z-index: 101;
-  }
-  
-  th{
-    text-align: center;
-  }
-  /* .TableBox th:first-child{
-    border-left: 1px solid #006E8C;
-  }
-  
-  .TableBox th:last-child{
-    border-right: 1px solid #006E8C;
-  } */
-  
-  th {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-  }
-    
-  .TableBox tr:nth-child(even){background-color: #f2f2f2;}
-  
-  .TableBox tr:hover {background-color: #ddd;}
-  
-  .TableBox th {
-    width: auto;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: #006E8C;
-    color: white;
-  }
-  
-  @media screen  and (max-width: 1000px){
-    .TableForPeople{
-        width: 100%;
-        left: 0;
-      }
-    }
-  
-    ::ng-deep .mat-sort-header-container {
-      justify-content: center;
-      color: white;
-    }
-  
-    ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
-      color: white;
-  }
-  p{
-    font-size: 15px;
-  }
+* {
+  /* Don't remove, don't know why, but need it :) */
+  overflow: visible;
+}
 
-  .grid {
-    display: flex;
-    overflow: auto;
-  }
-  
-  .innerBox:first-child {
-    flex: 80%;
-  }
-  
-  .innerBox:last-child {
-    flex: 20%;
-    align-content: start;
-  }
-  
-  .innerBox {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-    border: 1px solid #ccc;
-    
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-height: 100%;
-    place-content: center start;
-    overflow: auto;
-  }
+.OuterWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  /* grid-template-rows: repeat(7, 1fr) 50px; */
+  grid-template-areas: 
+  "h h h h h h h h"
+  "t t t t t t t t"
+  "t t t t t t t t"
+  "t t t t t t t t"
+  "t t t t t t t t"
+  "t t t t t t t t"
+  "t t t t t t t t"
+  "b b b b b b b b";
+}
 
-  /* .test {
-    width: 95%;
-    
-  } */
+.Progress{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
 
-  .picker {
-    cursor: pointer;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.EndDateShow {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-content: center;
+}
 
-  .table{
-    height: 50vh;
-    padding: 20px;
-  }
+.End--date {
+  position: relative;
+}
 
-  .TableForPeople{ 
-    border-radius: 5px;
-    box-shadow: 0 1px 3px 3px #888;
-    max-height: 100%;
-    height: 100%;
-    width: 95%;
-    overflow: auto;
-    position: relative;
-    outline: 1px solid black;
-    overflow-y: scroll;
+mat-form-field {
+  min-width: 200px;
+  margin-bottom: 15px;
+}
+
+.bunden {
+  grid-area: b;
+}
+
+.table {
+  grid-area: t;
+}
+
+.TableForPeople { 
+  max-height: 100%;
+  height: 100%;
+  position: relative; 
+  overflow-y: auto;
+}
+
+.TableForPeople::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.TableForPeopleInner { 
+  /* border-radius: 5px; */
+  box-shadow: 0 1px 3px 3px #888;
+  max-height: 100%;
+  /* margin: 0px 2.5%; */
+  /* overflow: auto; */
+  position: relative; /* Changed to relative positioning */
+  outline: 1px solid black;  
+  overflow-y: auto;
+}
+
+.TableBox {    
+  width: 100%;
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.TableBox td {
+  border: 1px solid #ddd;;
+  text-align: center;
+  font-size: large;
+}
+
+.TableBoxForCourse {   
+  width: 100%;
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.TableBoxForCourse td {
+  width: 33.33%;
+  /* border: 1px solid #ddd;; */
+  text-align: center;
+  font-size: large;
+}
+
+.TableBox td:first-child{    
+  border-left: 0px solid #ddd;
+  text-align: center;
+  font-size: large;
+}
+.TableBox td:last-child{    
+  border-right: 0px solid #ddd;
+  text-align: center;
+  font-size: large;
+}
+
+.TableBox th:hover, .TableBoxForCourse th:hover {
+  background-color: #005f79;
+  cursor: pointer;
+}
+
+.TableBox th, .TableBoxForCourse th {
+  position: sticky;
+  top: 0px;
+  font-size: 1rem;
+  z-index: 101;
+  background-color: #006E8C;
+  color: white;
+}
+
+.TableBox tr:hover, .TableBoxForCourse tr:hover {
+  background-color: #ddd;
+}
+
+.TableBoxForCourse td:first-child{    
+  width: 33.33%;
+  border-left: 0px solid #ddd;
+  text-align: center;
+  font-size: large;
+}
+.TableBoxForCourse td:last-child{    
+  width: 33.33%;
+  border-right: 0px solid #ddd;
+  text-align: center;
+  font-size: large;
+}
+
+@media screen and (max-width: 1000px) {
+  .TableForPeople {
+      width: 100%;
+      left: 0;
   }
+}
+
+::ng-deep .mat-sort-header-container {
+  justify-content: center;
+  color: white;
+}
+
+::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
+  color: white;
+}
+
+p {
+  font-size: 15px;
+}
+
+.grid {
+  display: flex;
+  overflow: auto;
+  height: 100%;
+}
+
+.innerBox:first-child {
+  flex: 25%;
+}
+
+.innerBox:last-child {
+  max-width: 20%;
+  flex: 20%;
+  align-content: start;
+}
+
+.innerBox {
+  flex: 40%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-height: 100%;
+  place-content: center start;
+  overflow: auto;
+  align-content: space-between;
+}
+
+.innerBoxAlt:first-child {
+  flex: 40%;
+}
+
+.innerBoxAlt:last-child {
+  max-width: 20%;
+  flex: 20%;
+  align-content: start;
+}
+
+.innerBoxAlt {
+  flex: 25%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-height: 100%;
+  place-content: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.picker {
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  display: flex;
+
+}
+
+.table {
+  height: 81vh;
+}
+
+.moduleCourse {
+  margin-top: 480px;
+}
+
+.teacherCourse {
+  margin-top: 444.5px;
+}
+
+button {
+  width: 90%;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #006E8C;
+  color: #ffffff;
+}
+
+.addButtons {
+  display: flex; 
+  justify-content: center;
+}
+
+.selected-course {
+  background-color: rgb(63, 63, 63); /* Change the background color as desired */
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+  height: 100%;
+}

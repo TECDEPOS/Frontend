@@ -56,7 +56,7 @@ export class AddPersonCourseComponent {
   }
 
   getCourses(id: number) {
-    this.courseService.getCoursesByModuleId(id,this.person.personId).subscribe(res => {
+    this.courseService.getCoursesByModuleIdAndUserId(id,this.person.personId).subscribe(res => {
       this.courses = res;
     })
   }
