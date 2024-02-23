@@ -18,7 +18,6 @@ import { ModuleService } from 'src/app/Services/module.service';
   styleUrls: ['./add-person-course.component.css']
 })
 export class AddPersonCourseComponent {
-  showStatus: number = 0;
   moduleSelected: boolean = false;
   module: Module = new Module;
   person: Person = new Person;
@@ -30,7 +29,7 @@ export class AddPersonCourseComponent {
   courseTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
 
-  status: string[] = (Object.values(Status) as Array<keyof typeof Status>)
+  statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
   constructor(
@@ -100,13 +99,13 @@ export class AddPersonCourseComponent {
     if (endDateBeforeToday) {
       let startDateAfterToday = this.compareStartDates();
       if (startDateAfterToday) {
-        this.showStatus = 0;
+        this.newPersonCourse.status = 0;
       } else {
-        this.showStatus = 1;
+        this.newPersonCourse.status = 1
       }
     }
     else {
-      this.showStatus = 3;
+      this.newPersonCourse.status = 3;
     }
 
     this.cdr.detectChanges();
@@ -123,17 +122,6 @@ onSubmit() {
   this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
   this.newPersonCourse.course = null!;
   this.newPersonCourse.person = null!;
-
-  if (this.newPersonCourse.status != 2 || 3) {
-    let startDateAfterToday = this.compareStartDates();
-    if (startDateAfterToday) {
-      // Sets 'NotStarted' if startDate is after today
-      this.newPersonCourse.status = 0;
-    } else {
-      // Sets 'Started' if startDate is before or same as today's date
-      this.newPersonCourse.status = 1
-    }
-  }
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
     // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh
