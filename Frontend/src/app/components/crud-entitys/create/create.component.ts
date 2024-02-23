@@ -24,6 +24,8 @@ import { CourseService } from 'src/app/Services/course.service';
 import { Course } from 'src/app/Models/Course';
 import { AuthService } from 'src/app/Services/auth.service';
 import { getLocaleDateTimeFormat, getLocaleTimeFormat } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarIndicatorComponent } from '../../Misc/snackbar-indicator/snackbar-indicator.component';
 
 @Component({
   selector: 'app-create',
@@ -79,7 +81,8 @@ export class CreateComponent extends Unsub implements OnInit {
     private personService: PersonsService,
     private userService: UserService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -149,7 +152,7 @@ export class CreateComponent extends Unsub implements OnInit {
   }
   
   getForUser() {    
-    this.userService.getUsersByUserRole(2).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.userService.getUsersByUserRole(3).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
     });
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
@@ -173,6 +176,8 @@ export class CreateComponent extends Unsub implements OnInit {
     {
       this.showEducationBoss = false;
       this.user.educationBossId = null;
+      this.user.departmentId = null;
+      this.user.locationId = null;
     }
 
     this.cdr.detectChanges();
@@ -185,38 +190,42 @@ export class CreateComponent extends Unsub implements OnInit {
   createBook() {
     this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.book = new Book;
+      this.openSnackBar('Bog');
     });
   }
 
   createDepartment() {
     this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.department = new Department;
+      this.openSnackBar('Afdeling');
     })
   }
 
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTag = new FileTag;
+      this.openSnackBar('Filkategori');
     })
   }
 
   createCourse() {
     this.courseService.addCourses(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.course = new Course;
-      console.log(res);
-      
+      this.openSnackBar('Kursus');      
     })
   }
 
   createLocation() {
     this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.location = new Location;
+      this.openSnackBar('Lokation');
     })
   }
 
   createModule() {
     this.moduleService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.module = new Module;
+      this.openSnackBar('Modul');
     })
   }
 
@@ -225,12 +234,23 @@ export class CreateComponent extends Unsub implements OnInit {
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
+      this.openSnackBar('Ansat');
     })
   }
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.user = new userViewModel;
+      this.openSnackBar('Bruger');
     })
+  }
+
+  // Opens a snackbar for 3 seconds indicating the entity was created.
+  openSnackBar(entity: string){
+    this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+      data: {
+        message: `${entity} oprettet`
+      }, panelClass: ['blue-snackbar'], duration: 3000
+    });
   }
 }

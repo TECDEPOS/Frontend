@@ -82,7 +82,6 @@
               [disabled]="editDisabled"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
           </mat-form-field>
-
           <div class="checkbox">
             <input type="checkbox" [(ngModel)]="person.svuApplied" id="svuApplied" name="svuApplied"
               #svuApplied="ngModel">
@@ -99,7 +98,7 @@
       <button class="edit-button" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
       <div class="editmode-buttons">
         <button class="save-button" (click)="onSubmit()" type="submit" *ngIf="!editDisabled"
-          [disabled]="myForm.invalid">Gem</button>
+          [disabled]="myForm.invalid || saveDisabled">Gem</button>
         <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Annuller</button>
       </div>
     </div>

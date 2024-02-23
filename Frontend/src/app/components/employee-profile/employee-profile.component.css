@@ -50,6 +50,11 @@ h1{
         "b b";
 }
 
+.checkboxDiv{
+    display: flex;
+    flex-direction: column;
+}
+
 .profile-info {
     display: grid;
     height: 95%;
@@ -372,9 +377,6 @@ h1{
     text-align: center;
     padding: 2px;
     font-size: medium;
-}
-
-*{
 }
 
 .TableBox th:hover {

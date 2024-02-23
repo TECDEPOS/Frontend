@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon'
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgModule } from '@angular/core';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
@@ -24,6 +25,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
 import { AppComponent } from './app.component';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
+import { ConfirmationPopupComponent } from './components/pop-ups/confirmation-popup/confirmation-popup.component';
 import { CoursePageComponent } from './components/courses/course-page/course-page.component';
 import { CoursesComponent } from './components/courses/courses/courses.component';
 import { CreateComponent } from './components/crud-entitys/create/create.component';
@@ -40,8 +42,7 @@ import { LoginComponent } from './components/loginPage/login/login.component';
 import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
-
-
+import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -65,6 +66,7 @@ export const MY_DATE_FORMATS = {
     AddPersonCourseComponent,
     AppComponent,
     ChangePasswordPopupComponent,
+    ConfirmationPopupComponent,
     CoursePageComponent,
     CoursesComponent,
     CreateComponent,
@@ -80,7 +82,8 @@ export const MY_DATE_FORMATS = {
     LoginComponent,
     NavBarComponent,
     ModuleComponent,
-    PasswordExpiredPopupComponent
+    PasswordExpiredPopupComponent,
+    SnackbarIndicatorComponent
   ],
   imports: [
     AppRoutingModule,
@@ -98,6 +101,7 @@ export const MY_DATE_FORMATS = {
     MatNativeDateModule,
     MatSelectModule,
     MatSortModule,
+    MatSnackBarModule,
     MatTabsModule,
     MomentDateModule,
     ReactiveFormsModule,

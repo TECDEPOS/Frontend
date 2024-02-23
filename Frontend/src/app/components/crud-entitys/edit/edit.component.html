@@ -56,18 +56,18 @@
                         (matSortChange)="sortData($event, 'book')">
                         <tr>
                             <th mat-sort-header="BookName">
-                                Navn
+                                Titel
                             </th>
                             <th mat-sort-header="Module">
-                                Navn
+                                Modul
                             </th>
                             <th mat-sort-header="Amaunt">
-                                Mængde
+                                Antal
                             </th>
                         </tr>
                         <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
                             <td>{{book.name}}</td>
-                            <td>{{book.module.name}}</td>
+                            <td>{{book.module!.name}}</td>
                             <td>{{book.amount}}</td>
                         </tr>
                     </table>
@@ -85,29 +85,38 @@
                                 <th mat-sort-header="name">
                                     Navn
                                 </th>
-                                <th mat-sort-header="dKVisability">
-                                    Drift Koordinator Synlighed
+                                <th mat-sort-header="controllerVisibility">
+                                    Controller Synlighed
                                 </th>
-                                <th mat-sort-header="hRVisability">
+                                <th mat-sort-header="educationLeaderVisibility">
+                                    Uddannelsesleder Synlighed
+                                </th>
+                                <th mat-sort-header="educationBossVisibility">
+                                    Uddannelseschef Synlighed
+                                </th>
+                                <th mat-sort-header="dkVisibility">
+                                    Driftskoordinator Synlighed
+                                </th>
+                                <th mat-sort-header="hrVisibility">
                                     Human Resources Synlighed
                                 </th>
-                                <th mat-sort-header="pKVisability">
+                                <th mat-sort-header="pkVisibility">
                                     Pædagogisk Konsulent Synlighed
                                 </th>
                             </tr>
                             <tr *ngFor="let fileTag of fileTags, let i = index" (click)="fileTagSelecter(i)">
                                 <td>{{fileTag.tagName}}</td>
                                 <td>
-                                    <input *ngIf="fileTag.dkVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.dkVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.dkVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.dkVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                                 <td>
-                                    <input *ngIf="fileTag.hrVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.hrVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.hrVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.hrVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                                 <td>
-                                    <input *ngIf="fileTag.pkVisability === true" type="checkbox" disabled checked />
-                                    <input *ngIf="fileTag.pkVisability === false" type="checkbox" disabled unchecked />
+                                    <input *ngIf="fileTag.pkVisibility === true" type="checkbox" disabled checked />
+                                    <input *ngIf="fileTag.pkVisibility === false" type="checkbox" disabled unchecked />
                                 </td>
                             </tr>
                         </table>
@@ -136,7 +145,8 @@
                                     Slut Dato
                                 </th>
                             </tr>
-                            <tr *ngFor="let course of courses, let i = index" (click)="courseSelecter(i)">
+                            <tr *ngFor="let course of courses, let i = index"
+                                (click)="courseSelecter(i)">
                                 <td>{{course.module.name}}</td>
                                 <td>{{courseType[course.courseType]}}</td>
                                 <td>
@@ -232,17 +242,20 @@
         </div>
     </div>
     <div class="innerBox" id="test" *ngIf="activeForm">
+        <div>
         Rediger:
+        </div>
         <div *ngIf="isFormActive('departmentForm')">
             <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
                 <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteDepartment(department.departmentId)" type="button">Slet
-                    Afdeling</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('department')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteDepartment(department)" type="button">Slet</button>
+            </div>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
@@ -256,22 +269,63 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Afdeling:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.department">Vælg afdeling:</mat-label>
+                        <mat-select (selectionChange)="selectSetDepartmentId()" [compareWith]="compareObjects" [(ngModel)]="user.department" name="department"
+                            #department="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department">
+                                {{department.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Lokation:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.location">Vælg lokation:</mat-label>
+                        <mat-select (selectionChange)="selectSetLocationId()" [compareWith]="compareObjects" [(ngModel)]="user.location" name="location"
+                            #location="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let location of locations" [value]="location">
+                                {{location.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Uddannelseschef:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!user.educationBoss">Vælg Uddannelseschef</mat-label>
+                        <mat-select (selectionChange)="selectSetEducationbossId()" [compareWith]="compareObjects" [(ngModel)]="user.educationBoss"
+                            name="educationBoss" #educationBoss="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let educationBoss of educationBosses" [value]="educationBoss">
+                                {{educationBoss.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="formItem">
-                    <label>Role:</label>
+                    <label>Brugerrolle:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
-                        <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
+                        <mat-select (selectionChange)="selectUserRoleChanged()" [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
                                 {{role}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteUser(user.userId)" type="button">Slet Bruger</button>
-                <button style="float: right;" (click)="resetPassword(user.userId)" type="button">Nulstil
-                    Adgangskode</button>
+                <div class="buttons">
+                    <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                    <button class="cancel-button" (click)="cancel('user')" mat-raised-button color="primary" type="button">Annuller</button>
+                    <button class="delete-button" style="float: right;" (click)="deleteUser(user)" type="button">Slet</button>
+                    <br>
+                </div>
+                <button class="reset-button" style="margin-top: 5px;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
             </form>
         </div>
         <div *ngIf="isFormActive('bookForm')">
@@ -284,9 +338,11 @@
                     <label>Mængde: </label>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('book')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteBook(book.bookId)" type="button">Slet Bog</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('book')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteBook(book)" type="button">Slet</button>
+            </div>
             </form>
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
@@ -295,32 +351,54 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne filkategori:</div>
+                <div><b>Filkategori synlighed for brugerroller:</b></div>
                 <div class="formItem">
-                    <label>Drift Koordinator:</label>
+                    <label>Controller:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
-                            #dKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.controllerVisibility" id="controllerVisibility" name="controllerVisibility"
+                            #controllerVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
+                    <label>Uddannelsesleder:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.educationLeaderVisibility" id="educationLeaderVisibility" name="educationLeaderVisibility"
+                            #educationLeaderVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
+                    <label>Uddannelseschef:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.educationBossVisibility" id="educationBossVisibility" name="educationBossVisibility"
+                            #educationBossVisibility="ngModel">
+                    </div>
+                </div>
+                <div class="formItem">
+                    <label>Driftskoordinator:</label>
+                    <div class="checkbox">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisibility" id="dkVisibility" name="dkVisibility"
+                            #dkVisibility="ngModel">
                     </div>
                 </div>
                 <div class="formItem">
                     <label>Human Resources:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
-                            #hRVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisibility" id="hrVisibility" name="hrVisibility"
+                            #hrVisibility="ngModel">
                     </div>
                 </div>
                 <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
-                            #pKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisibility" id="pkVisibility" name="pkVisibility"
+                            #pkVisibility="ngModel">
                     </div>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Create</button>
-                <button (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteFileTag(fileTag.fileTagId)" type="button">Slet
-                    Filkategori</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('fileTag')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag)" type="button">Slet</button>
+            </div>
             </form>
         </div>
         <div *ngIf="isFormActive('locationForm')">
@@ -329,10 +407,11 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteLocation(location.locationId)" type="button">Slet
-                    Location</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('location')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteLocation(location)" type="button">Slet</button>
+            </div>
             </form>
         </div>
         <div *ngIf="isFormActive('moduleForm')">
@@ -346,9 +425,11 @@
                     <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required></textarea>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteModule(module.moduleId)" type="button">Slet Modul</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('module')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deleteModule(module)" type="button">Slet</button>
+            </div>
             </form>
         </div>
         <!-- ToDo: Omskriv -->
@@ -370,29 +451,31 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="formItem">
-                    <label>Start Dato:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                        <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
-                            id="startDatePicker" name="startDate" #startDate="ngModel">
-                        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="formItem">
-                    <label>Start Dato:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
-                        <mat-label>Vælg en dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate" id="endDatePicker"
-                            name="endDate" #endDate="ngModel">
-                        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deleteCourse(course.courseId)" type="button">Slet Kursus</button>
+                    <div class="formItem">
+                        <label>Start Dato:</label>
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                            <mat-label>Vælg en dato</mat-label>
+                            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
+                                id="startDatePicker" name="startDate" #startDate="ngModel">
+                            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="formItem">
+                        <label>Start Dato:</label>
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                            <mat-label>Vælg en dato</mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
+                                id="endDatePicker" name="endDate" #endDate="ngModel">
+                            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="buttons">
+                        <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                        <button class="cancel-button" (click)="cancel('course')" mat-raised-button color="primary" type="button">Annuller</button>
+                        <button class="delete-button" style="float: right;" (click)="deleteCourse(course)" type="button">Slet</button>
+                    </div>
             </form>
         </div>
         <div *ngIf="isFormActive('personForm')">
@@ -485,9 +568,11 @@
                             #svuEligible="ngModel">
                     </div>
                 </div>
-                <button style="float: left;" type="submit" mat-raised-button color="primary">Gem</button>
-                <button (click)="cancel('person')" mat-raised-button color="primary" type="button">Annuller</button>
-                <button style="float: right;" (click)="deletePerson(person.personId)" type="button">Slet Person</button>
+                <div class="buttons">
+                <button class="save-button" type="submit" mat-raised-button color="primary">Gem</button>
+                <button class="cancel-button" (click)="cancel('person')" mat-raised-button color="primary" type="button">Annuller</button>
+                <button class="delete-button" style="float: right;" (click)="deletePerson(person)" type="button">Slet</button>
+            </div>
             </form>
         </div>
     </div>

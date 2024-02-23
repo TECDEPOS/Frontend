@@ -55,8 +55,6 @@ export class EditPersonmodulePopupComponent {
   // ToDo: Omskriv
   onSubmit(){
     this.personCourseService.updatePersonCourse(this.tempPersonCourse).subscribe(res => {
-      console.log('Injected: ', this.personCourse);
-      console.log('Updated: ',this.tempPersonCourse);
 
       // If old and edited personCourse is "Startet" then replace the old with edited in injected currentModules variable to update immediately
        if((this.personCourse.status === 1 && this.tempPersonCourse.status === 1))  {

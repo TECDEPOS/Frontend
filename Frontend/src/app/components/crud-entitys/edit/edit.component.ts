@@ -18,13 +18,17 @@ import { UserService } from 'src/app/Services/user.service';
 import { userViewModel } from 'src/app/Models/ViewModels/addUserViewModel';
 import { CourseType } from 'src/app/Models/CourseType';
 import { Unsub } from 'src/app/classes/unsub';
-import { findIndex, takeUntil } from 'rxjs';
+import { Observable, findIndex, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { changePasswordViewModel } from 'src/app/Models/ViewModels/ChangePasswordViewModel';
 import { Sort } from '@angular/material/sort';
 import { Course } from 'src/app/Models/Course';
 import { Status } from 'src/app/Models/Status';
 import { CourseService } from 'src/app/Services/course.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationPopupComponent } from '../../pop-ups/confirmation-popup/confirmation-popup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarIndicatorComponent } from '../../Misc/snackbar-indicator/snackbar-indicator.component';
 
 
 @Component({
@@ -33,8 +37,8 @@ import { CourseService } from 'src/app/Services/course.service';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent extends Unsub {
-  book: Book = new Book;
-  department: Department = new Department;
+  book: Book = new Book();
+  department: Department = new Department();
   fileTag: FileTag = new FileTag;
   location: Location = new Location;
   module: Module = new Module;
@@ -51,6 +55,7 @@ export class EditComponent extends Unsub {
   persons: Person[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  educationBosses: User[] = [];
   users: User[] = [];
   resentlyCreated: any[] = [];
   activeForm: string | null = null
@@ -87,7 +92,9 @@ export class EditComponent extends Unsub {
     private moduelService: ModuleService,
     private courseService: CourseService,
     private personService: PersonsService,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     super();
     this.bookForm = new FormGroup({});
@@ -109,8 +116,6 @@ export class EditComponent extends Unsub {
     if (this.activeForm === formName && this.activeFormIndex === i) {
       this.activeForm = null;
       this.activeFormIndex = null;
-      body?.classList.remove("innerBoxV2")
-      body?.classList.add("innerBox")
     }
     else {
       this.activeForm = formName;
@@ -121,8 +126,9 @@ export class EditComponent extends Unsub {
       else if (this.activeForm == 'personForm') {
         this.getForPerson();
       }
-      body?.classList.remove("innerBox")
-      body?.classList.add("innerBoxV2")
+      else if (this.activeForm == 'userForm'){
+        this.getForUser();
+      }
     }
   }
 
@@ -202,9 +208,9 @@ export class EditComponent extends Unsub {
             case 'name':
               return this.compare(a.tagName.toLocaleLowerCase(), b.tagName.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
             case 'dKVisability':
-              return this.compare(a.dkVisability, b.dkVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.dkVisibility, b.dkVisibility) * (sort.direction == 'asc' ? 1 : -1);
             case 'hRVisability':
-              return this.compare(a.hrVisability, b.hrVisability) * (sort.direction == 'asc' ? 1 : -1);
+              return this.compare(a.hrVisibility, b.hrVisibility) * (sort.direction == 'asc' ? 1 : -1);
             case 'pKVisability':
             default:
               return 0;
@@ -299,6 +305,7 @@ export class EditComponent extends Unsub {
     if (o2 == null) {
       return false;
     }
+    
 
     if (typeof (o2 == Location)) {
       return o1.name === o2.name && o1.locationId === o2.locationId;
@@ -311,6 +318,41 @@ export class EditComponent extends Unsub {
     }
     else {
       return false;
+    }
+  }
+
+  selectSetDepartmentId(){
+    if (this.user.department == null) {
+      this.user.departmentId = null;
+    }
+    else{
+      this.user.departmentId = this.user.department?.departmentId;
+    }
+  }
+
+  selectSetLocationId(){
+    if (this.user.location == null) {
+      this.user.locationId = null;
+    }
+    else{
+      this.user.locationId = this.user.location.locationId;
+    }
+  }
+
+  selectSetEducationbossId(){
+    if (this.user.educationBoss == null) {
+      this.user.educationBossId = null;
+    }
+    else{
+      this.user.educationBossId = this.user.educationBoss?.userId;
+    }
+  }
+
+  selectUserRoleChanged(){
+    if (this.user.userRole !== 2) {
+      this.user.departmentId = null;
+      this.user.locationId = null;
+      this.user.educationBossId = null;
     }
   }
 
@@ -353,14 +395,12 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons = res;
-      console.log(res);
-
     })
   }
 
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.users = res;
+      this.users = res;      
     })
   }
 
@@ -375,6 +415,14 @@ export class EditComponent extends Unsub {
         this.locations = res;
       });
     });
+  }
+
+  getForUser() {
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.educationBosses = res.filter(x => x.userRole === 3);      
+      this.getDepartments();
+      this.getLocations();
+    })
   }
 
   bookSelecter(i: number) {
@@ -422,122 +470,191 @@ export class EditComponent extends Unsub {
 
   userSelecter(i: number) {
     this.user = JSON.parse(JSON.stringify(this.users[i]));
-    this.backup = JSON.parse(JSON.stringify(this.users[i]));
+    this.backup = JSON.parse(JSON.stringify(this.users[i]));    
+    this.getForUser();
     this.toggleForm('userForm', i)
   }
 
   editBook() {
-    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {       
+    // Set array of books to empty because otherwise required properties further down cause validation errors.
+    this.book.module.books = [];
+
+    this.bookService.updateBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.books[this.books.findIndex(x => x.bookId == res.bookId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Bog')
     })
   }
 
   editDepartment() {
-    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.departmentService.updateDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments[this.departments.findIndex(x => x.departmentId == res.departmentId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Afdeling')
     })
   }
 
   editFileTag() {
-    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.fileTagService.updateFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTags[this.fileTags.findIndex(x => x.fileTagId == res.fileTagId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Filkategori')
     })
   }
 
   editLocation() {
-    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.locationService.updateLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations[this.locations.findIndex(x => x.locationId == res.locationId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Lokation')
     })
   }
 
   editModule() {
-    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    // Setting books to empty prevents an exception caused by Module being required on Books, the nested Module properties for each book is null.
+    this.module.books = [];
+    
+    this.moduelService.updateModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules[this.modules.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Modul')
     })
   }
 
   editCourse() {
-    this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.courseService.updateCourse(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.courses[this.courses.findIndex(x => x.moduleId == res.moduleId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
+      this.openSnackBar('Kursus')
     })
   }
 
   editPerson() {
-    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
-    })
+      this.openSnackBar('Ansat')
+    });
   }
 
   editUser() {
-    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => { 
+    this.userService.updateUser(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.users[this.users.findIndex(x => x.userId == res.userId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
-    })
+      this.openSnackBar('Bruger')
+    });
   }
 
-  deleteBook(id: number) {
-    this.bookService.deleteBook(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.books = this.books.filter(x => x.bookId != id);
-      this.activeForm = null;
-    })
+  deleteBook(book: Book) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(book.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.bookService.deleteBook(book.bookId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.books = this.books.filter(x => x.bookId != book.bookId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteDepartment(id: number) {
-    this.departmentService.deleteDepartment(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.departments = this.departments.filter(x => x.departmentId != id);
-      this.activeForm = null;
-    })
+  deleteDepartment(department: Department) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(department.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.departmentService.deleteDepartment(department.departmentId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.departments = this.departments.filter(x => x.departmentId != department.departmentId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteFileTag(id: number) {
-    this.fileTagService.deleteFiletag(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.fileTags = this.fileTags.filter(x => x.fileTagId != id);
-      this.activeForm = null;
-    })
+  deleteFileTag(fileTag: FileTag) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(fileTag.tagName).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.fileTagService.deleteFiletag(fileTag.fileTagId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.fileTags = this.fileTags.filter(x => x.fileTagId != fileTag.fileTagId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteLocation(id: number) {
-    this.locationService.deleteLocation(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.locations = this.locations.filter(x => x.locationId != id);
-      this.activeForm = null;
-    })
+  deleteLocation(location: Location) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(location.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.locationService.deleteLocation(location.locationId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.locations = this.locations.filter(x => x.locationId != location.locationId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteModule(id: number) {
-    this.moduelService.deleteModule(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.modules = this.modules.filter(x => x.moduleId != id);
-      this.activeForm = null;
-    })
+  deleteModule(module: Module) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(module.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.moduelService.deleteModule(module.moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.modules = this.modules.filter(x => x.moduleId != module.moduleId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteCourse(id: number) {
-    this.courseService.deleteCourse(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.courses = this.courses.filter(x => x.moduleId != id);
-      this.activeForm = null;
-    })
+  deleteCourse(course: Course) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete('Kursus').pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {
+        this.courseService.deleteCourse(course.courseId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.courses = this.courses.filter(x => x.courseId != course.courseId);          
+          this.activeForm = null;
+        }); 
+      }
+    });
   }
 
-  deletePerson(id: number) {
-    this.personService.deletePerson(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.persons = this.persons.filter(x => x.personId != id);
-      this.activeForm = null;
-    })
+  deletePerson(person: Person) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(person.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.personService.deletePerson(person.personId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.persons = this.persons.filter(x => x.personId != person.personId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
-  deleteUser(id: number) {
-    console.log(id);
-    
-    this.userService.deleteUser(id).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.users = this.users.filter(x => x.userId != id);
-      this.activeForm = null;
-    })
+  deleteUser(user: User) {
+    // Prompt user with confirmation dialog for deletion
+    this.confirmDelete(user.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.userService.deleteUser(user.userId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.users = this.users.filter(x => x.userId != user.userId);
+          this.activeForm = null;
+        });
+      }
+    });
   }
 
   resetPassword(id: number) {
@@ -567,5 +684,25 @@ export class EditComponent extends Unsub {
       default:
         return 0;
     }
+  }
+
+  // Opens a confirmation dialog and returns true if 'Ja' is pressed.
+  confirmDelete(entity: string): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      data: {
+        message: `Slet ${entity}?`
+      }
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  // Opens a snackbar indicating that the entity was updated and saved.
+  openSnackBar(entity: string){
+    this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+      data: {
+        message: `${entity} opdateret`
+      }, panelClass: ['blue-snackbar'], duration: 3000
+    });
   }
 }

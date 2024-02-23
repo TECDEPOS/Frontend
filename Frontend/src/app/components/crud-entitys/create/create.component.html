@@ -9,7 +9,7 @@
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -28,7 +28,7 @@
                     <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
                 </div>
                 <div class="test">
-                    <label>Role:</label>
+                    <label>Brugerrolle:</label>
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Brugerrole</mat-label>
@@ -45,7 +45,7 @@
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Uddannelseschef</mat-label>
-                        <mat-select [(ngModel)]="user.educationBossId" name="userRole" #userForm="ngModel">
+                        <mat-select [(ngModel)]="user.educationBossId" name="educationBoss" #userForm="ngModel">
                             <mat-option *ngFor="let educationBoss of educationBosses; let i = index"
                                 [value]="educationBoss.userId">
                                 {{educationBoss.name}}
@@ -58,7 +58,7 @@
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Afdeling</mat-label>
-                        <mat-select [(ngModel)]="user.departmentId" name="userRole" #userForm="ngModel">
+                        <mat-select [(ngModel)]="user.departmentId" name="department" #userForm="ngModel">
                             <mat-option *ngFor="let department of departments; let i = index"
                                 [value]="department.departmentId">
                                 {{department.name}}
@@ -71,14 +71,14 @@
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Location</mat-label>
-                        <mat-select [(ngModel)]="user.locationId" name="userRole" #userForm="ngModel">
+                        <mat-select [(ngModel)]="user.locationId" name="location" #userForm="ngModel">
                             <mat-option *ngFor="let location of locations; let i = index" [value]="location.locationId">
                                 {{location.name}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -94,7 +94,7 @@
                     <label>Modul:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Modul</mat-label>
-                        <mat-select [(ngModel)]="module.moduleId" name="moduleId" #bookForm="ngModel">
+                        <mat-select [(ngModel)]="book.moduleId" name="moduleId" #bookForm="ngModel">
                             <mat-option *ngFor="let module of modules; let i = index" [value]="module.moduleId">
                                 {{module.name}}
                             </mat-option>
@@ -106,7 +106,7 @@
                     <p>&ensp;</p>
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -118,29 +118,29 @@
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div>Vælg hvem der kan se denne filkategori:</div>
+                <div><b>Filkategori synlighed for brugerroller:</b></div>
                 <div class="test">
                     <label>Driftskoordinator:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.dkVisability" id="dKVisability" name="dKVisability"
-                            #dKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.dkVisibility" id="dkVisibility" name="dkVisibility"
+                            #dkVisibility="ngModel">
                     </div>
                 </div>
                 <div class="test">
                     <label>Human Resources:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.hrVisability" id="hRVisability" name="hRVisability"
-                            #hRVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.hrVisibility" id="hrVisibility" name="hrVisibility"
+                            #hrVisibility="ngModel">
                     </div>
                 </div>
                 <div class="test">
                     <label>Pædagogisk Konsulent:</label>
                     <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.pkVisability" id="pKVisability" name="pKVisability"
-                            #pKVisability="ngModel">
+                        <input type="checkbox" [(ngModel)]="fileTag.pkVisibility" id="pkVisibility" name="pkVisibility"
+                            #pkVisibility="ngModel">
                     </div>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -165,7 +165,7 @@
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Kursus Type</mat-label>
-                        <mat-select [(ngModel)]="course.courseType" name="userRole" #courseForm="ngModel">
+                        <mat-select [(ngModel)]="course.courseType" name="courseType" #courseForm="ngModel">
                             <mat-option *ngFor="let type of courseType; let i = index" [value]="i">
                                 {{type}}
                             </mat-option>   
@@ -192,7 +192,7 @@
                         <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -204,7 +204,7 @@
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -220,7 +220,7 @@
                     <input type="text" [(ngModel)]="module.description" id="description" name="description"
                         #description="ngModel" required>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>
@@ -296,14 +296,14 @@
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div>
-                    <label>SVU Berettiget:</label>
+                <div class="test" style="justify-content: flex-start;">
+                    <label style="margin-right: 10px;">SVU Berettiget:</label>
                     <div class="checkbox">
                         <input type="checkbox" [(ngModel)]="person.svuEligible" id="svuEligible" name="svuEligible"
                             #svuEligible="ngModel">
                     </div>
                 </div>
-                <button style="float: right;" type="submit" mat-raised-button color="primary">Create</button>
+                <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>
             </form>
         </div>

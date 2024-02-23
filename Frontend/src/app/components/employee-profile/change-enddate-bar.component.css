@@ -1,0 +1,42 @@
+button{
+    height: 25px;
+    width: 50px;
+    border: 0.5px solid black;
+    color: white;
+    font-weight: bold;
+}
+
+div{
+    display: flex; 
+    justify-content: center;
+}
+
+p{
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.Yes{
+    background-color: rgb(31, 155, 0);
+}
+
+.Yes:hover{
+    background-color: rgb(26, 129, 0);
+    cursor: pointer;
+
+}
+
+.No{
+    background-color: #ff0000;
+}
+
+.No:hover{
+    background-color: #ad0404;
+    cursor: pointer;
+}
+
+.Buttons{
+    width: 50%;
+    justify-content: space-evenly;
+}
