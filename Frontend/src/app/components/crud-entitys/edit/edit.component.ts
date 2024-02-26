@@ -63,6 +63,15 @@ export class EditComponent extends Unsub {
   activeList: string | null = null
   role: string = '';
   backup: any;
+  selectedVisibilityOptions: string[] = [];
+  visibilityOptions = [
+    { property: 'controllerVisibility', displayName: 'Controller' },
+    { property: 'educationLeaderVisibility', displayName: 'Uddannelsesleder' },
+    { property: 'educationBossVisibility', displayName: 'Uddannelseschef' },
+    { property: 'dkVisibility', displayName: 'Driftskoordinator' },
+    { property: 'hrVisibility', displayName: 'Human Resources' },
+    { property: 'pkVisibility', displayName: 'Pædagogisk Konsulent' },
+  ];
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -441,6 +450,7 @@ export class EditComponent extends Unsub {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.toggleForm('fileTagForm', i)
+    this.setFileTagVisibilityDropdown();
   }
 
   locationSelecter(i: number) {
@@ -705,4 +715,20 @@ export class EditComponent extends Unsub {
       }, panelClass: ['blue-snackbar'], duration: 3000
     });
   }
+
+  // Set true/false for visibility on fileTag object according to what has been selected in the dropdown.
+  onVisibilityChange(selectedOptions: string[]) {
+    this.selectedVisibilityOptions = selectedOptions;
+    this.visibilityOptions.forEach((option) => {
+      this.fileTag[option.property] = this.selectedVisibilityOptions.includes(option.property);
+    });
+  }
+
+  setFileTagVisibilityDropdown(){
+    // Set initially selected options in dropdown based on true values in the FileTag object
+    this.selectedVisibilityOptions = this.visibilityOptions
+      .filter((option) => this.fileTag[option.property])
+      .map((option) => option.property);      
+  }
+
 }

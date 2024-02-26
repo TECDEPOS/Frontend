@@ -51,6 +51,10 @@ select {
   align-items: center;
 }
 
+.test > label{
+  margin-right: 10px;
+}
+
 ::ng-deep .mat-datepicker-content {
   border: 1px solid black
 }

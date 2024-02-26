@@ -9,4 +9,7 @@ export class FileTag{
     educationLeaderVisibility: boolean = true;
     educationBossVisibility: boolean = true;
     controllerVisibility: boolean = true;
+
+
+    [key: string]: number | string | boolean;
 }
