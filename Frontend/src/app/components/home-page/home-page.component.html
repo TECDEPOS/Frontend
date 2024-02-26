@@ -1,11 +1,11 @@
 <div class="OuterWrapper">
     <div class="Searchfield">
         <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Søge efter Navn</mat-label>
+            <mat-label>Søg efter Navn</mat-label>
             <input matInput placeholder="Skriv navnet her " (input)="onSearchQueryInput($event)">
         </mat-form-field>
         <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Vælge afdeling</mat-label>
+            <mat-label>Vælg afdeling</mat-label>
             <mat-select [value]="alle" (selectionChange)="onDepartmentQueryInput($event)">
                 <mat-option [value]="alle" ><p>Alle</p></mat-option>
                 <mat-option *ngFor="let x of department" [value]="x.name"><p>{{x.name}}</p></mat-option>
@@ -24,7 +24,10 @@
                     </th>
                     <th mat-sort-header="HiredDepartment" style="min-width: 21.5%;">
                         Afdeling 
-                    </th>  
+                    </th>
+                    <th mat-sort-header="HiredLocation" style="min-width: 21.5%;">
+                        Lokation 
+                    </th> 
                     <th mat-sort-header="HiredEndDate" style="min-width: 12%;">
                         Slut dato 
                     </th>
@@ -40,6 +43,8 @@
                     <td><p> {{x.initials}}</p></td>
                     <td *ngIf="x.department"><p>{{x.department.name}}</p></td>
                     <td *ngIf="!x.department">-</td>
+                    <td *ngIf="x.location"><p>{{x.location.name}}</p></td>
+                    <td *ngIf="!x.location">-</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
                         <div #progress class="Progress" id="{{x.personId}}"></div>
@@ -47,9 +52,8 @@
                     <td> <p>{{x.completedModules}}</p></td> 
                
                     <td>
-                        <!-- <button (click)="lalala(x.personId)">Press me!</button> -->
-                        <input *ngIf="x.svuEligible === true" type="checkbox" disabled checked />
-                        <input *ngIf="x.svuEligible === false" type="checkbox" disabled unchecked/> 
+                        <input type="checkbox" [(ngModel)]="x.svuEligible" id="svuEligible" name="svuEligible"
+                                #svuEligible="ngModel" [disabled]="true">
                     </td>
                 </tr>
             </table>
