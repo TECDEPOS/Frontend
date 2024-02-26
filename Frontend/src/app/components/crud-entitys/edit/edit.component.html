@@ -353,21 +353,21 @@
         </div>
         <div *ngIf="isFormActive('fileTagForm')">
             <form class="form" #fileTagForm="ngForm" (ngSubmit)="editFileTag()">
-                <!-- <div class="formItem">
+                <div class="formItem">
                     <label>Navn: </label>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div><b>Filkategori synlighed for brugerroller:</b></div>
                 <div class="formItem">
+                    <div>Synlighed:</div>
                     <mat-form-field>
-                        <mat-label>Visibility Options</mat-label>
-                        <mat-select [(ngModel)]="fileTag" multiple>
-                          <mat-option *ngFor="let for of fileTag" [value]="property">
-                            {{ property }}
+                        <mat-label>Vælg brugerroller</mat-label>
+                        <mat-select [(ngModel)]="selectedVisibilityOptions" multiple (ngModelChange)="onVisibilityChange($event)" id="fileTagVisibility" name="fileTagVisibility" #fileTagVisibility="ngModel">
+                          <mat-option *ngFor="let option of visibilityOptions" [value]="option.property">
+                            {{ option.displayName }}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-                  </div> -->
+                  </div>
                 <!-- <div class="formItem">
                     <label>Controller:</label>
                     <div class="checkbox">
