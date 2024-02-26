@@ -99,9 +99,16 @@ export class FilePageComponent {
     }
 
     this.files.forEach(element => {
-      if (element.fileName.toLocaleLowerCase().includes(searchQuery) && element.fileTag?.tagName.toLocaleLowerCase().includes(this.searchFileTag.toLocaleLowerCase())){ 
-          fileList.push(element);   
+      if(this.searchFileTag.toLocaleLowerCase() === ""){
+        if(element.fileName.toLocaleLowerCase().includes(searchQuery)){
+          fileList.push(element)
+        }
       }
+      else{
+        if(element.fileName.toLocaleLowerCase().includes(searchQuery) && element.fileTag?.tagName.toLocaleLowerCase().includes(this.searchFileTag.toLocaleLowerCase())){ 
+          fileList.push(element);   
+        }
+      } 
     });    
     this.showedList = fileList
     this.searchName = searchQuery    
