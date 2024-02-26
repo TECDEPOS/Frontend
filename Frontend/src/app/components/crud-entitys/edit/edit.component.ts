@@ -449,6 +449,7 @@ export class EditComponent extends Unsub {
   fileTagSelecter(i: number) {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
+    this.setFileTagVisibilityDropdown();
     this.toggleForm('fileTagForm', i)
   }
 
