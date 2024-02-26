@@ -450,7 +450,6 @@ export class EditComponent extends Unsub {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.toggleForm('fileTagForm', i)
-    // this.setFileTagVisibilityDropdown();
   }
 
   locationSelecter(i: number) {
@@ -680,7 +679,7 @@ export class EditComponent extends Unsub {
         return this.department = JSON.parse(JSON.stringify(this.backup));
       case 'fileTag':
         this.fileTag = JSON.parse(JSON.stringify(this.backup));
-        this.setFileTagVisibilityDropdown()
+        this.setFileTagVisibilityDropdown();
         return
       case 'location':
         return this.location = JSON.parse(JSON.stringify(this.backup));
@@ -717,14 +716,6 @@ export class EditComponent extends Unsub {
       }, panelClass: ['blue-snackbar'], duration: 3000
     });
   }
-
-  // // Set true/false for visibility on fileTag object according to what has been selected in the dropdown.
-  // onVisibilityChange(selectedOptions: string[]) {
-  //   this.selectedVisibilityOptions = selectedOptions;
-  //   this.visibilityOptions.forEach((option) => {
-  //     this.fileTag[option.property] = this.selectedVisibilityOptions.includes(option.property);
-  //   });
-  // }
 
   setFileTagVisibilityDropdown(){
     // Set initially selected options in dropdown based on true values in the FileTag object

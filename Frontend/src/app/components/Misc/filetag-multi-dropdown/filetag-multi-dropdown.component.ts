@@ -14,8 +14,7 @@ export interface VisibilityOption {
 export class FiletagMultiDropdownComponent {
   @Input() fileTag!: FileTag;
   @Input() selectedVisibilityOptions: string[] = [];
-
-  //selectedVisibilityOptions: string[] = [];
+  
   visibilityOptions: VisibilityOption[] = [
     { property: 'controllerVisibility', displayName: 'Controller' },
     { property: 'educationLeaderVisibility', displayName: 'Uddannelsesleder' },
