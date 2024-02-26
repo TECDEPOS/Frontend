@@ -4,21 +4,22 @@
     height: 100%;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: 200px repeat(6, 1fr) 50px;
-    grid-template-areas:
-        "h h h h h h h h"
-        "t t t t t t t t"
-        "t t t t t t t t"
-        "t t t t t t t t"
-        "t t t t t t t t"
-        "t t t t t t t t"
-        "t t t t t t t t"
-        "b b b b b b b b";
-}
+    grid-template-rows: repeat(7, 1fr) 50px;
+    grid-template-areas: 
+    "h h h h h h h h"
+    "t t t t t t t t"
+    "t t t t t t t t"
+    "t t t t t t t t"
+    "t t t t t t t t"
+    "t t t t t t t t"
+    "t t t t t t t t"
+    "b b b b b b b b";
+  }
 
 mat-icon{
     cursor: pointer;
 }
+
 mat-icon:hover{
     background-color: #cfcfcf;
     border-radius: 50%;
@@ -107,7 +108,7 @@ mat-form-field {
 .TableBox td {
     border: 1px solid #ddd;
     text-align: center;
-    padding: 4px;
+    /* padding: 4px; */
     font-size: large;
 }
 
