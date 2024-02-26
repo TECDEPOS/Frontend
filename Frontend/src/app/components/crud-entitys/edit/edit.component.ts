@@ -679,7 +679,9 @@ export class EditComponent extends Unsub {
       case 'department':
         return this.department = JSON.parse(JSON.stringify(this.backup));
       case 'fileTag':
-        return this.fileTag = JSON.parse(JSON.stringify(this.backup));
+        this.fileTag = JSON.parse(JSON.stringify(this.backup));
+        this.setFileTagVisibilityDropdown()
+        return
       case 'location':
         return this.location = JSON.parse(JSON.stringify(this.backup));
       case 'module':

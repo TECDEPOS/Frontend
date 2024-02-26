@@ -241,7 +241,7 @@ th {
 .save-button {
   height: 25px;
   padding: .25rem .75rem .25rem .75rem;
-  background-color: rgb(31, 155, 0);
+  background-color: #006E8C;
   border: 0.5px solid black;
   color: white;
   font-weight: bold;
@@ -250,12 +250,12 @@ th {
 }
 
 .save-button:disabled {
-  background-color: rgb(146, 202, 132);
+  background-color: #608d99;
   cursor: default;
 }
 
 .save-button:hover:not(:disabled) {
-  background-color: rgb(28, 138, 0);
+  background-color: #005f79;
   border: 1px solid black;
 }
 
