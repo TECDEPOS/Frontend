@@ -167,6 +167,8 @@ export class HomePageComponent {
           return this.compare(a.initials.toLocaleLowerCase(), b.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredDepartment':
           return this.compare(a.department?.name.toLocaleLowerCase(), b.department?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+        case 'HiredLocation':
+          return this.compare(a.location?.name.toLocaleLowerCase(), b.location?.name.toLocaleLowerCase())  * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
           return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredSVU':
