@@ -8,7 +8,7 @@
     <form class="form" #myForm="ngForm" style="height: 100%;">
       <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">
         <div class="grid-label">
-          <label>ID: </label>
+          <!-- <label>ID: </label> -->
           <label>Navn: </label>
           <label>Initialer: </label>
           <label>Afdeling: </label>
@@ -21,7 +21,7 @@
           <label>SVU Berettiget: </label>
         </div>
         <div class="grid-input">
-          <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly>
+          <!-- <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly> -->
           <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
           <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
 
