@@ -112,7 +112,7 @@ export class HomePageComponent {
     let personList: Person[] = []
 
     //Returns all, even null
-    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
+    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() === "") {
       this.showedList = this.Hired
       this.searchDepartment = event.value;
       return
@@ -120,7 +120,7 @@ export class HomePageComponent {
 
     //Checks for what matches with the department and name
     this.Hired.forEach(element => {
-      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)) {
+      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName.toLocaleLowerCase())) {
         personList.push(element);
       }
     })
