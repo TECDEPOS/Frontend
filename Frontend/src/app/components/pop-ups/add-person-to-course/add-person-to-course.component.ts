@@ -41,7 +41,6 @@ export class AddPersonToCourseComponent {
     private data: {
       course: Course;
       persons: Person[];
-      inactiveCourses: PersonCourse[];
     }) {
     if (data.course) this.course = data.course;
     if (data.persons) this.currentPersons = data.persons;

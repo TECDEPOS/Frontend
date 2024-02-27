@@ -141,9 +141,10 @@ onSubmit() {
   
   console.log(this.currentCourses);
 
-  this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-    this.closeDialog();
-  });
+  // this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+  //   this.closeDialog();
+  // });
+  this.closeDialog();
 }
 
 getCourseTypeName(courseType: CourseType): string {

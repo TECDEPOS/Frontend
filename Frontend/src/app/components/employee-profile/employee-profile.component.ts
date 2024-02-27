@@ -275,8 +275,6 @@ export class EmployeeProfileComponent extends Unsub{
       height: '40%',
       width: '30%'
     }).afterClosed().subscribe(() => {
-      this.getPerson();
-
       this.organizedTable()
     })
     
