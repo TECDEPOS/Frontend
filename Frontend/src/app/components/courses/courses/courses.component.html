@@ -212,13 +212,13 @@
             </mat-select>
         </mat-form-field>
         <div class="addButtons" *ngIf="!leaderView && activeCourseList">
-            <button mat-raised-button class="moduleCourse">Tilføj kursus til modul</button>
+            <button mat-raised-button class="moduleCourse" (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
         </div>
         <div class="addButtons" *ngIf="!leaderView && courseSelected">
-            <button mat-raised-button>Tilføj lærer til kursus</button>
+            <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
         </div>
         <div class="addButtons" *ngIf="leaderView && personSelected">
-            <button mat-raised-button (click)="openAddPersonModulePopup()" class="teacherCourse">Tilføj kursus til
+            <button mat-raised-button (click)="openAddPersonCoursePopup()" class="teacherCourse">Tilføj kursus til
                 lærer</button>
         </div>
     </div>

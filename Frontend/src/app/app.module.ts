@@ -43,6 +43,7 @@ import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
+import { AddPersonToCourseComponent } from './components/pop-ups/add-person-to-course/add-person-to-course.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -83,7 +84,8 @@ export const MY_DATE_FORMATS = {
     NavBarComponent,
     ModuleComponent,
     PasswordExpiredPopupComponent,
-    SnackbarIndicatorComponent
+    SnackbarIndicatorComponent,
+    AddPersonToCourseComponent
   ],
   imports: [
     AppRoutingModule,

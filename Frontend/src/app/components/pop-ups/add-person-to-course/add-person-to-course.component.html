@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="header">
+      <h1 style="color: white;">Tilføj lærer</h1>
+      <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
+    </div>
+    <div class="content">
+      <form #myForm="ngForm" class="inputs">
+        <div class="test">
+          <label>Lærer: </label>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label>Vælg lærer:</mat-label>
+            <mat-select [(ngModel)]="newPersonCourse.person" name="persons">
+              <mat-option *ngFor="let person of persons" [value]="person">
+                {{person.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div><br>        
+        <div class="test" >
+          <label>Type: </label>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label>Vælg status</mat-label>
+            <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn">
+              <mat-option *ngFor="let status of statuses; let i = index" [value]="i">
+                {{status}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div class="buttons">
+      <button class="create-button" (click)="onSubmit()">Tilføj</button>
+    </div>
+  </div>

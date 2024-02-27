@@ -18,6 +18,7 @@ import { UserService } from 'src/app/Services/user.service';
 import { Unsub } from 'src/app/classes/unsub';
 import { AddPersonCourseComponent } from '../../pop-ups/add-person-course/add-person-course.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddPersonToCourseComponent } from '../../pop-ups/add-person-to-course/add-person-to-course.component';
 
 @Component({
   selector: 'app-courses',
@@ -123,6 +124,8 @@ export class CoursesComponent extends Unsub {
         this.activeLeaderList = item.userId
         this.personService.getPersonsByDepartmentAndLocation(item.departmentId, item.locationId).pipe(pipe(takeUntil(this.unsubscribe$))).subscribe(res => {
           this.leaderPersons = res;
+          console.log(res);
+          
         })
       }
     }
@@ -143,7 +146,7 @@ export class CoursesComponent extends Unsub {
       })
     }
     else {
-      this.userService.getUsersByUserRole(3).subscribe(res => {
+      this.userService.getUsersByUserRole(2).subscribe(res => {
         this.educationLeaders = res;
         this.showedLeaderList = this.educationLeaders;
       })
@@ -322,11 +325,38 @@ export class CoursesComponent extends Unsub {
     });
   }
 
-  openAddPersonModulePopup() {
+  openAddCourseToModulePopup() {
     this.dialog.open(AddPersonCourseComponent, {
       data: {
-        person: this.leaderPersons.filter(x => x.personId == this.selectedPersonId),
+        Module: this.modules.find(x => x.moduleId == this.selectedModuleId),
         currentCourses: this.courses,
+        inactiveModules: []
+      },
+      disableClose: false,
+      height: '40%',
+      width: '30%'
+    });
+  }
+
+  openAddPersonToCoursePopup() {
+    this.dialog.open(AddPersonToCourseComponent, {
+      data: {
+        course: this.courses.find(x => x.courseId == this.selectedCourseId),
+        persons: this.persons,
+        inactiveModules: []
+      },
+      disableClose: false,
+      height: '33%',
+      width: '30%'
+    });
+  }
+
+  openAddPersonCoursePopup() {
+    this.dialog.open(AddPersonCourseComponent, {
+      data: {
+        person: this.leaderPersons.find(x => x.personId == this.selectedPersonId),
+        currentCourses: this.courses,
+        inactiveModules: []
       },
       disableClose: false,
       height: '40%',

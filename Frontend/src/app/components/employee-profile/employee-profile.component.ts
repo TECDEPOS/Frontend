@@ -32,7 +32,6 @@ import { getLocaleMonthNames } from '@angular/common';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent extends Unsub{
-
   moduleTypes = CourseType;
   status = Status;
   editDisabled: boolean = true;
@@ -44,11 +43,10 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
-  CurrentHiringDate: Date = new Date()
-  
-
-  currentModules: PersonCourse[] = [];
+  currentCourses: PersonCourse[] = [];
   inactiveModules: Course[] = [];
+  CurrentHiringDate: Date = new Date();   
+
   constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
@@ -101,7 +99,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentModules = this.person.personCourses.filter(x => x.status === 1)
+      this.currentCourses = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2));
@@ -263,7 +261,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
-        currentModules: this.currentModules,
+        currentCourses: this.currentCourses,
         inactiveModules: this.inactiveModules
       },
       disableClose: false,
@@ -276,17 +274,17 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personCourse: personCourse,
-        currentModules: this.currentModules
+        currentCourses: this.currentCourses
       },
       disableClose: false,
       height: '50%',
       width: '25%'
     }).afterClosed().subscribe(() => {
       if(this.person.personCourses.length !== 0){      
-        this.currentModules = this.currentModules.filter(x => x.status === 1)
-        .concat(this.currentModules.filter(x => x.status === 0))
-        .concat(this.currentModules.filter(x => x.status === 3))
-        .concat(this.currentModules.filter(x => x.status === 2));
+        this.currentCourses = this.currentCourses.filter(x => x.status === 1)
+        .concat(this.currentCourses.filter(x => x.status === 0))
+        .concat(this.currentCourses.filter(x => x.status === 3))
+        .concat(this.currentCourses.filter(x => x.status === 2));
       }
     }) 
   }
