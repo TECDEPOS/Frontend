@@ -44,6 +44,7 @@ import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 import { FiletagMultiDropdownComponent } from './components/Misc/filetag-multi-dropdown/filetag-multi-dropdown.component';
+import { MultiDropdownComponent } from './components/Misc/multi-dropdown/multi-dropdown.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -85,7 +86,8 @@ export const MY_DATE_FORMATS = {
     ModuleComponent,
     PasswordExpiredPopupComponent,
     SnackbarIndicatorComponent,
-    FiletagMultiDropdownComponent
+    FiletagMultiDropdownComponent,
+    MultiDropdownComponent
   ],
   imports: [
     AppRoutingModule,

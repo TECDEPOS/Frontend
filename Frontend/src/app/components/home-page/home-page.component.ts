@@ -8,15 +8,21 @@ import { Person } from 'src/app/Models/Person';
 import { DepartmentsService } from 'src/app/Services/departments.service';
 import { Department } from 'src/app/Models/Department';
 import { Sort } from '@angular/material/sort';
-import { elementAt } from 'rxjs';
+import { elementAt, takeUntil } from 'rxjs';
+import { LocationsService } from 'src/app/Services/locations.service';
+import { Unsub } from 'src/app/classes/unsub';
+import { Location } from 'src/app/Models/Location';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent {
-  department: Department[] = [];
+export class HomePageComponent extends Unsub{
+  departments: Department[] = [];
+  locations: Location[] = [];
+  filteredDepartments: Department[] = [];
+  filteredLocations: Location[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
   completedModules: number = 0;
@@ -26,7 +32,7 @@ export class HomePageComponent {
   searchDepartment: any = "";
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
 
-  constructor(private peronService: PersonsService, private departmentService: DepartmentsService) { }
+  constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private locationService: LocationsService) { super(); }
 
   ngOnInit(): void {
     this.getTableData()
@@ -85,8 +91,14 @@ export class HomePageComponent {
 
   getDepartmentData() {
     this.departmentService.getDepartment().subscribe(res => {
-      this.department = res
+      this.departments = res
     })
+  }
+
+  getLocationData() {
+    this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.locations = res;
+    });
   }
 
   getTableData() {
@@ -97,7 +109,8 @@ export class HomePageComponent {
       });
 
       this.showedList = this.Hired
-      this.getDepartmentData()
+      this.getDepartmentData();
+      this.getLocationData();
       this.Hired.sort((a, b) => a.name.localeCompare(b.name))
       this.showedList = this.Hired
       console.log(this.showedList);
@@ -190,5 +203,47 @@ export class HomePageComponent {
     else if (itemA) retVal = 1;
     else if (itemB) retVal = -1;
     return retVal;
+  }
+
+  onDepartmentFilterChanged(selectedDepartments: Department[]) {
+    this.filteredDepartments = selectedDepartments;
+    this.filterPersons();
+  }
+
+  onLocationFilterChanged(selectedLocations: Location[]) {
+    this.filteredLocations = selectedLocations;
+    this.filterPersons();
+  }
+  
+  private filterPersons() {
+    // Filter the 'Hired' array of persons based on the selected departments and locations
+    this.showedList = this.Hired.filter(person => {
+      
+      // Check if the person's department matches any of the selected departments
+      const departmentFilter =
+        this.filteredDepartments.length === 0 || this.filteredDepartments.some(dep => dep.departmentId === person.departmentId);
+  
+      // Check if the person's location matches any of the selected locations
+      const locationFilter =
+        this.filteredLocations.length === 0 || this.filteredLocations.some(loc => loc.locationId === person.locationId);
+  
+      // If both department and location filters are empty, include all persons
+      if (this.filteredDepartments.length === 0 && this.filteredLocations.length === 0) {
+        return true;
+      }
+  
+      // If only the department filter is applied, include persons that match the selected departments
+      if (this.filteredDepartments.length !== 0 && this.filteredLocations.length === 0) {
+        return departmentFilter;
+      }
+  
+      // If only the location filter is applied, include persons that match the selected locations
+      if (this.filteredDepartments.length === 0 && this.filteredLocations.length !== 0) {
+        return locationFilter;
+      }
+  
+      // If both department and location filters are applied, include persons that match any of the selected departments or any of the selected locations
+      return departmentFilter && locationFilter;
+    });
   }
 }
