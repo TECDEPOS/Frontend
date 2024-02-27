@@ -33,6 +33,7 @@ import { getLocaleMonthNames } from '@angular/common';
 })
 export class EmployeeProfileComponent extends Unsub{
   moduleTypes = CourseType;
+  popupOpened: boolean = false
   status = Status;
   editDisabled: boolean = true;
   saveDisabled: boolean = false;
@@ -43,7 +44,7 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
-  currentCourses: PersonCourse[] = [];
+  currentPersonCourse: PersonCourse[] = [];
   inactiveModules: Course[] = [];
   CurrentHiringDate: Date = new Date();   
 
@@ -99,7 +100,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentCourses = this.person.personCourses.filter(x => x.status === 1)
+      this.currentPersonCourse = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2));
@@ -110,7 +111,9 @@ export class EmployeeProfileComponent extends Unsub{
   
   if(this.person.hiringDate !== this.CurrentHiringDate){
     this.saveDisabled = true
+    this.popupOpened = true
     this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
+      
       data:{
         person: this.person,
         snackbar: this.snackBar
@@ -130,6 +133,7 @@ export class EmployeeProfileComponent extends Unsub{
       this.person = res;
       this.editDisabled = true;
       this.setBackupValues(this.person);
+      this.popupOpened = false
     });
   }
   }
@@ -142,6 +146,10 @@ export class EmployeeProfileComponent extends Unsub{
   cancelEditMode() {
     this.editDisabled = true;
     this.person = JSON.parse(JSON.stringify(this.backupValues));
+    if(this.popupOpened){
+      this.snackBar.dismiss()
+    }
+    
   }
 
   setBackupValues(values: Person) {
@@ -261,33 +269,42 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
-        currentCourses: this.currentCourses,
-        inactiveModules: this.inactiveModules
+        currentPersonCourse: this.currentPersonCourse,
       },
       disableClose: false,
       height: '40%',
       width: '30%'
-    });
+    }).afterClosed().subscribe(() => {
+      this.getPerson();
+
+      this.organizedTable()
+    })
+    
   }
 
   openEditPersonModulePopup(personCourse: PersonCourse) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personCourse: personCourse,
-        currentCourses: this.currentCourses
+        currentPersonCourse: this.currentPersonCourse
       },
       disableClose: false,
       height: '50%',
       width: '25%'
     }).afterClosed().subscribe(() => {
-      if(this.person.personCourses.length !== 0){      
-        this.currentCourses = this.currentCourses.filter(x => x.status === 1)
-        .concat(this.currentCourses.filter(x => x.status === 0))
-        .concat(this.currentCourses.filter(x => x.status === 3))
-        .concat(this.currentCourses.filter(x => x.status === 2));
-      }
+      this.organizedTable()
     }) 
   }
+
+  organizedTable(){
+    if(this.person.personCourses.length !== 0){      
+      this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
+      .concat(this.currentPersonCourse.filter(x => x.status === 0))
+      .concat(this.currentPersonCourse.filter(x => x.status === 3))
+      .concat(this.currentPersonCourse.filter(x => x.status === 2));
+    }
+  } 
+
 }
 
 @Component({

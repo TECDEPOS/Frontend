@@ -112,7 +112,7 @@ export class HomePageComponent {
     let personList: Person[] = []
 
     //Returns all, even null
-    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
+    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() === "") {
       this.showedList = this.Hired
       this.searchDepartment = event.value;
       return
@@ -120,7 +120,7 @@ export class HomePageComponent {
 
     //Checks for what matches with the department and name
     this.Hired.forEach(element => {
-      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName)) {
+      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName.toLocaleLowerCase())) {
         personList.push(element);
       }
     })
@@ -167,6 +167,8 @@ export class HomePageComponent {
           return this.compare(a.initials.toLocaleLowerCase(), b.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredDepartment':
           return this.compare(a.department?.name.toLocaleLowerCase(), b.department?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+        case 'HiredLocation':
+          return this.compare(a.location?.name.toLocaleLowerCase(), b.location?.name.toLocaleLowerCase())  * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
           return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredSVU':

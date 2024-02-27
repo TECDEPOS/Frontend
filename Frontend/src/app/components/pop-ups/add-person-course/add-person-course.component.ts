@@ -41,11 +41,10 @@ export class AddPersonCourseComponent {
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
-      currentCourses: PersonCourse[];
-      inactiveCourses: PersonCourse[];
+      currentPersonCourse: PersonCourse[];
     }) {
     if (data.person) this.person = data.person;
-    if (data.currentCourses) this.currentCourses = data.currentCourses;
+    if (data.currentPersonCourse) this.currentCourses = data.currentPersonCourse;
   }
 
   ngOnInit() {
@@ -105,9 +104,9 @@ export class AddPersonCourseComponent {
   onCourseChange(course: Course) {
     this.newPersonCourse.course = course;
     console.log(this.newPersonCourse.course);
-    
+
     let endDateBeforeToday = this.compareEndDates();
-  
+
     if (endDateBeforeToday) {
       let startDateAfterToday = this.compareStartDates();
       if (startDateAfterToday) {
@@ -119,7 +118,7 @@ export class AddPersonCourseComponent {
     else {
       this.newPersonCourse.status = 3;
     }
-  
+
     this.cdr.detectChanges();
   }
 

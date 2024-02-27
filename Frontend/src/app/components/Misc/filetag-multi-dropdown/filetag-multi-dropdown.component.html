@@ -1,0 +1,8 @@
+<mat-form-field class="container">
+    <mat-label>Vælg brugerroller</mat-label>
+    <mat-select [(ngModel)]="selectedVisibilityOptions" multiple (ngModelChange)="onVisibilityChange($event)" id="fileTagVisibility" name="fileTagVisibility" #fileTagVisibility="ngModel">
+      <mat-option *ngFor="let option of visibilityOptions" [value]="option.property">
+        {{ option.displayName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>

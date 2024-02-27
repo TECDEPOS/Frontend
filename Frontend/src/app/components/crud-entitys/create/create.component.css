@@ -51,6 +51,10 @@ select {
   align-items: center;
 }
 
+.test > label{
+  margin-right: 10px;
+}
+
 ::ng-deep .mat-datepicker-content {
   border: 1px solid black
 }
@@ -90,24 +94,6 @@ mat-option {
   height: fit-content;
   flex: 30%;
 }
-
-/* .innerBox{ 
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 10px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  max-height: 100%;
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  position: relative;
-  outline: 1px solid black;
-  overflow-y: scroll;
-} */
 
 .innerBox {
   display: grid;
@@ -171,4 +157,9 @@ mat-option {
 .create-button:hover:not(:disabled) {
   background-color: #005f79;
   border: 1px solid black;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #006E8C;
+  color: #ffffff;
 }

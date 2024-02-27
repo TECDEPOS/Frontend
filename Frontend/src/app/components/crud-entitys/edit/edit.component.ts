@@ -63,6 +63,15 @@ export class EditComponent extends Unsub {
   activeList: string | null = null
   role: string = '';
   backup: any;
+  selectedVisibilityOptions: string[] = [];
+  visibilityOptions = [
+    { property: 'controllerVisibility', displayName: 'Controller' },
+    { property: 'educationLeaderVisibility', displayName: 'Uddannelsesleder' },
+    { property: 'educationBossVisibility', displayName: 'Uddannelseschef' },
+    { property: 'dkVisibility', displayName: 'Driftskoordinator' },
+    { property: 'hrVisibility', displayName: 'Human Resources' },
+    { property: 'pkVisibility', displayName: 'Pædagogisk Konsulent' },
+  ];
 
   bookForm: FormGroup;
   depertmentForm: FormGroup;
@@ -440,6 +449,7 @@ export class EditComponent extends Unsub {
   fileTagSelecter(i: number) {
     this.fileTag = JSON.parse(JSON.stringify(this.fileTags[i]));
     this.backup = JSON.parse(JSON.stringify(this.fileTags[i]));
+    this.setFileTagVisibilityDropdown();
     this.toggleForm('fileTagForm', i)
   }
 
@@ -669,7 +679,9 @@ export class EditComponent extends Unsub {
       case 'department':
         return this.department = JSON.parse(JSON.stringify(this.backup));
       case 'fileTag':
-        return this.fileTag = JSON.parse(JSON.stringify(this.backup));
+        this.fileTag = JSON.parse(JSON.stringify(this.backup));
+        this.setFileTagVisibilityDropdown();
+        return
       case 'location':
         return this.location = JSON.parse(JSON.stringify(this.backup));
       case 'module':
@@ -705,4 +717,12 @@ export class EditComponent extends Unsub {
       }, panelClass: ['blue-snackbar'], duration: 3000
     });
   }
+
+  setFileTagVisibilityDropdown(){
+    // Set initially selected options in dropdown based on true values in the FileTag object
+    this.selectedVisibilityOptions = this.visibilityOptions
+      .filter((option) => this.fileTag[option.property])
+      .map((option) => option.property);      
+  }
+
 }

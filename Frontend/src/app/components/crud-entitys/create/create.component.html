@@ -118,27 +118,10 @@
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div><b>Filkategori synlighed for brugerroller:</b></div>
+                
                 <div class="test">
-                    <label>Driftskoordinator:</label>
-                    <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.dkVisibility" id="dkVisibility" name="dkVisibility"
-                            #dkVisibility="ngModel">
-                    </div>
-                </div>
-                <div class="test">
-                    <label>Human Resources:</label>
-                    <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.hrVisibility" id="hrVisibility" name="hrVisibility"
-                            #hrVisibility="ngModel">
-                    </div>
-                </div>
-                <div class="test">
-                    <label>Pædagogisk Konsulent:</label>
-                    <div class="checkbox">
-                        <input type="checkbox" [(ngModel)]="fileTag.pkVisibility" id="pkVisibility" name="pkVisibility"
-                            #pkVisibility="ngModel">
-                    </div>
+                    <div>Synlighed:</div>
+                    <app-filetag-multi-dropdown style="width: 70%;" [fileTag]="fileTag"></app-filetag-multi-dropdown>
                 </div>
                 <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
                 <br>

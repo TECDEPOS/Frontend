@@ -96,8 +96,6 @@ mat-form-field{
 .TableBox td{
   border: 1px solid #ddd;
   text-align: center;
-  /* padding: 1px; */
-  font-size: large;
 }
 
 .employeeName{
