@@ -7,6 +7,9 @@ import { Department } from 'src/app/Models/Department';
   styleUrls: ['./multi-dropdown.component.css']
 })
 export class MultiDropdownComponent {
+clearSelection() {
+throw new Error('Method not implemented.');
+}
   @Input() values: any[] = [];
   @Input() label: string = '';
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
@@ -18,6 +21,9 @@ export class MultiDropdownComponent {
   }
 
   onSelectionChanged(){
+    if (this.selectionValues.includes(null)) {
+      this.selectionValues = [];
+    }
     this.selectionChanged.emit(this.selectionValues);
   }
 }

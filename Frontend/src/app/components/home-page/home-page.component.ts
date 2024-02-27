@@ -214,7 +214,7 @@ export class HomePageComponent extends Unsub{
     this.filteredLocations = selectedLocations;
     this.filterPersons();
   }
-  
+
   private filterPersons() {
     // Filter the 'Hired' array of persons based on the selected departments and locations
     this.showedList = this.Hired.filter(person => {
