@@ -1,7 +1,7 @@
 <mat-form-field class="container" subscriptSizing="dynamic">
     <mat-label>Filtrer {{label}}</mat-label>
     <mat-select [(ngModel)]="selectionValues" multiple  (ngModelChange)="onSelectionChanged()" id="filter" name="filter" #filter="ngModel">
-        <mat-option [value]="everything">Everything</mat-option>
+        <mat-option [value]="everything">Alle</mat-option>
         <mat-option *ngFor="let item of values" [value]="item">
             {{ item.name }}
         </mat-option>
