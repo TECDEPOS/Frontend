@@ -42,12 +42,3 @@ export class MultiDropdownComponent {
     this.previousSelection = this.selectionValues;
   }
 }
-
-
-
-
-// if (this.selectionValues.includes(this.any)) {
-    //   this.selectionValues = [];
-    //   this.selectionValues.push(this.any)
-    // }
-    // this.selectionChanged.emit(this.selectionValues);
