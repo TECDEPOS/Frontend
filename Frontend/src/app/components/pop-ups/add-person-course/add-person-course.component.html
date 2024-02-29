@@ -26,13 +26,13 @@
             <mat-option *ngFor="let course of courses" [value]="course">
               {{course.startDate | date: 'dd/MM/yyyy'}} - {{course.endDate | date: 'dd/MM/yyyy'}}
               <br>
-              Type: {{ getCourseTypeName(course.courseType) }}
+              {{ getCourseTypeName(course.courseType) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div><br>
       <div class="test" *ngIf="moduleSelected">
-        <label>Type: </label>
+        <label>Status: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Status</mat-label>
           <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn">

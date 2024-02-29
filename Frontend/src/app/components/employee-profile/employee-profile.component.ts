@@ -25,6 +25,9 @@ import { PersonCourse } from 'src/app/Models/PersonCourse';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { getLocaleMonthNames } from '@angular/common';
+import { PersonCourseService } from 'src/app/Services/person-course.service';
+import { ConfirmationPopupComponent } from '../pop-ups/confirmation-popup/confirmation-popup.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-employee-profile',
@@ -48,8 +51,11 @@ export class EmployeeProfileComponent extends Unsub{
   CurrentHiringDate: Date = new Date()
   
 
-  currentPersonCourse: PersonCourse[] = [];
-  constructor(private personService: PersonsService, private userService: UserService,
+  statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
+  .filter(key => !isNaN(Number(Status[key])));
+
+  currentPersonCourses: PersonCourse[] = [];
+  constructor(private personCourseService: PersonCourseService ,private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
 
@@ -101,7 +107,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentPersonCourse = this.person.personCourses.filter(x => x.status === 1)
+      this.currentPersonCourses = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2));
@@ -270,7 +276,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
-        currentPersonCourse: this.currentPersonCourse,
+        currentPersonCourses: this.currentPersonCourses,
       },
       disableClose: false,
       height: '40%',
@@ -287,7 +293,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personCourse: personCourse,
-        currentPersonCourse: this.currentPersonCourse
+        currentPersonCourses: this.currentPersonCourses
       },
       disableClose: false,
       height: '50%',
@@ -297,14 +303,46 @@ export class EmployeeProfileComponent extends Unsub{
     }) 
   }
 
+  deletepersonCourse(personCourse: PersonCourse){
+    this.confirmDelete(personCourse.course?.module.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId).subscribe(res => {
+          this.currentPersonCourses.splice(this.currentPersonCourses.indexOf(personCourse), 1)
+        })
+      }
+    });
+    
+  }
+
   organizedTable(){
     if(this.person.personCourses.length !== 0){      
-      this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
-      .concat(this.currentPersonCourse.filter(x => x.status === 0))
-      .concat(this.currentPersonCourse.filter(x => x.status === 3))
-      .concat(this.currentPersonCourse.filter(x => x.status === 2));
+      this.currentPersonCourses = this.currentPersonCourses.filter(x => x.status === 1)
+      .concat(this.currentPersonCourses.filter(x => x.status === 0))
+      .concat(this.currentPersonCourses.filter(x => x.status === 3))
+      .concat(this.currentPersonCourses.filter(x => x.status === 2));
     }
   } 
+
+
+
+  changeStatus(personCourse: PersonCourse){
+    personCourse.status = Number(personCourse.status)
+    this.personCourseService.updatePersonCourse(personCourse).subscribe(res => {
+    })
+    this.organizedTable()
+  }
+
+  confirmDelete(entity: string|undefined): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      data: {
+        message: `Sikker på at fjerne ${entity}?`
+      }
+    });
+
+    return dialogRef.afterClosed();
+  }
 
 }
 
@@ -338,4 +376,6 @@ export class ChangeEnddateBarComponent {
   pressedNo(){
     this.snackbar.dismiss()
   }
+
+
 }
