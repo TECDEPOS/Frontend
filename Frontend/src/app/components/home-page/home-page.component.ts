@@ -205,12 +205,12 @@ export class HomePageComponent extends Unsub{
     return retVal;
   }
 
-  onDepartmentFilterChanged(selectedDepartments: Department[]) {
+  onDepartmentFilterChanged(selectedDepartments: any[]) {
     this.filteredDepartments = selectedDepartments;
     this.filterPersons();
   }
 
-  onLocationFilterChanged(selectedLocations: Location[]) {
+  onLocationFilterChanged(selectedLocations: any[]) {
     this.filteredLocations = selectedLocations;
     this.filterPersons();
   }

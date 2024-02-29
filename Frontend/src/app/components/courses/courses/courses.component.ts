@@ -95,7 +95,6 @@ export class CoursesComponent extends Unsub {
       this.courses = res;
 
       this.showedCourseList = this.courses
-      this.getModuleData()
       this.courses.sort((a, b) => {
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
       });
