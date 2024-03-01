@@ -27,6 +27,7 @@
 }
 
 input[type=text],
+input[type=number],
 select {
   width: 70%;
   padding: 12px 20px;
@@ -46,7 +47,8 @@ select {
 .test{
   margin-top: 15px;
   margin-bottom: 15px;
-  display: flex; 
+  display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 }
@@ -72,7 +74,7 @@ mat-option {
 
 .dropdown {
   width: 70%;
-  height: 70%;
+  height: 80%;
   padding-top: 5px;
   min-width: 70%;
 }
@@ -119,6 +121,7 @@ mat-option {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-width: -webkit-fill-available;
 }
 
 .form {
@@ -127,7 +130,10 @@ mat-option {
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  max-width:  100%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .form.active {
@@ -140,6 +146,7 @@ mat-option {
 
 .create-button {
   height: 25px;
+  margin-top: 10px;
   padding: .25rem .75rem .25rem .75rem;
   background-color: #006E8C;
   border: 0.5px solid black;
@@ -162,4 +169,10 @@ mat-option {
 .mat-mdc-raised-button:not(:disabled) {
   background-color: #006E8C;
   color: #ffffff;
+}
+
+.content{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
