@@ -35,6 +35,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+          
 
           <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label *ngIf="!person.location || person.location.name === ''">Vælg lokation:</mat-label>
@@ -117,6 +118,14 @@
       </button>
     </div>
     <div class="allModules">
+      <!-- <div class="newModuleItem" *ngFor="let x of currentModules">
+        <div class="moduleItemInfo" *ngIf="x.status == 1">
+          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
+          <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
+          <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
+          <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
+        </div>
+      </div> -->
       <div class="newModuleItem" *ngFor="let x of currentPersonCourses">
         <div class="moduleItemInfo">
           <mat-icon class="deleteIcon" (click)="deletepersonCourse(x)">cancel</mat-icon>
