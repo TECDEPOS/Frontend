@@ -386,6 +386,8 @@ export class EditComponent extends Unsub {
   getLocations() {
     this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
+      console.log(res);
+      
     })
   }
 

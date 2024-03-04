@@ -119,7 +119,7 @@
           <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
         </div>
       </div> -->
-      <div class="newModuleItem" *ngFor="let x of currentPersonCourse">
+      <div class="newModuleItem" *ngFor="let x of currentPersonCourses">
         <div class="moduleItemInfo">
           <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
           <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>

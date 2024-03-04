@@ -33,11 +33,11 @@ export class EditPersonmodulePopupComponent {
   constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personCourseService: PersonCourseService,
     @Inject(MAT_DIALOG_DATA) private data: { 
       personCourse: PersonCourse; 
-      currentPersonCourse: PersonCourse[]; 
+      currentPersonCourses: PersonCourse[]; 
       inactiveModules: PersonCourse[]; })
     { 
       if (data.personCourse) this.personCourse = data.personCourse;
-      if (data.currentPersonCourse) this.currentPersoncourse = data.currentPersonCourse;
+      if (data.currentPersonCourses) this.currentPersoncourse = data.currentPersonCourses;
 
      }
 

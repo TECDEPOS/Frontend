@@ -178,7 +178,7 @@ p {
 }
 
 .innerBox:first-child {
-  flex: 25%;
+  flex: 20%;
 }
 
 .innerBox:last-child {

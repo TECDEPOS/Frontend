@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="header">
+      <h1 style="color: white;">Tilføj til Modul</h1>
+      <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
+    </div>
+    <div class="content">
+        <form class="inputs" #myForm="ngForm">            
+            <div class="test">
+                <label>Kursus Type:</label>
+                <p>&ensp;</p>
+                <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-label>Vælg Kursus Type</mat-label>
+                    <mat-select [(ngModel)]="newCourse.courseType" name="courseType" #courseForm="ngModel">
+                        <mat-option *ngFor="let type of courseTypes; let i = index" [value]="i">
+                            {{type}}
+                        </mat-option>   
+                    </mat-select>
+                </mat-form-field>
+            </div>                
+            <div class="test">
+                <label>Start Dato:</label>
+                <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-label>Vælg en start dato</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="newCourse.startDate"
+                        id="startDatePicker" name="startDate" #startDate="ngModel">
+                    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>                
+            <div class="test">
+                <label>Slut Dato:</label>
+                <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-label>Vælg en slut dato</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="newCourse.endDate"
+                        id="endDatePicker" name="endDate" #hiringDate="ngModel">
+                    <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div class="buttons">
+      <button class="create-button" (click)="onSubmit()">Tilføj</button>
+    </div>
+  </div>

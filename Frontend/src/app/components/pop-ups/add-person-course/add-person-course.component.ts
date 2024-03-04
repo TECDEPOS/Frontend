@@ -18,7 +18,8 @@ import { ModuleService } from 'src/app/Services/module.service';
   styleUrls: ['./add-person-course.component.css']
 })
 export class AddPersonCourseComponent {
-  moduleSelected: boolean = false;
+  closeAfter: boolean = false;
+  moduleSelected: boolean = false;  
   module: Module = new Module;
   person: Person = new Person;
   newPersonCourse: PersonCourse = new PersonCourse;
@@ -41,10 +42,12 @@ export class AddPersonCourseComponent {
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
-      currentPersonCourse: PersonCourse[];
+      currentPersonCourses: PersonCourse[];
+      closeAfter: boolean;
     }) {
     if (data.person) this.person = data.person;
-    if (data.currentPersonCourse) this.currentCourses = data.currentPersonCourse;
+    if (data.currentPersonCourses) this.currentCourses = data.currentPersonCourses;
+    if (data.closeAfter) this.closeAfter = data.closeAfter;
   }
 
   ngOnInit() {
@@ -141,10 +144,12 @@ onSubmit() {
   
   console.log(this.currentCourses);
 
-  // this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-  //   this.closeDialog();
-  // });
-  this.closeDialog();
+  this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+    if (this.closeAfter) {
+      this.closeDialog();
+    }
+    this.courses.splice(this.courses.findIndex(x => x.courseId == this.newPersonCourse.courseId), 1)
+  });
 }
 
 getCourseTypeName(courseType: CourseType): string {

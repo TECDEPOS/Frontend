@@ -44,7 +44,7 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
-  currentPersonCourse: PersonCourse[] = [];
+  currentPersonCourses: PersonCourse[] = [];
   inactiveModules: Course[] = [];
   CurrentHiringDate: Date = new Date();   
 
@@ -100,7 +100,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
     if(this.person.personCourses.length !== 0){      
-      this.currentPersonCourse = this.person.personCourses.filter(x => x.status === 1)
+      this.currentPersonCourses = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2));
@@ -269,7 +269,8 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(AddPersonCourseComponent, {
       data: {
         person: this.person,
-        currentPersonCourse: this.currentPersonCourse,
+        currentPersonCourses: this.currentPersonCourses,
+        closeAfter: true,
       },
       disableClose: false,
       height: '40%',
@@ -284,7 +285,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
         personCourse: personCourse,
-        currentPersonCourse: this.currentPersonCourse
+        currentPersonCourses: this.currentPersonCourses
       },
       disableClose: false,
       height: '50%',
@@ -296,10 +297,10 @@ export class EmployeeProfileComponent extends Unsub{
 
   organizedTable(){
     if(this.person.personCourses.length !== 0){      
-      this.currentPersonCourse = this.currentPersonCourse.filter(x => x.status === 1)
-      .concat(this.currentPersonCourse.filter(x => x.status === 0))
-      .concat(this.currentPersonCourse.filter(x => x.status === 3))
-      .concat(this.currentPersonCourse.filter(x => x.status === 2));
+      this.currentPersonCourses = this.currentPersonCourses.filter(x => x.status === 1)
+      .concat(this.currentPersonCourses.filter(x => x.status === 0))
+      .concat(this.currentPersonCourses.filter(x => x.status === 3))
+      .concat(this.currentPersonCourses.filter(x => x.status === 2));
     }
   } 
 

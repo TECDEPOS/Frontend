@@ -48,12 +48,10 @@ export class AddPersonToCourseComponent {
 
   ngOnInit() {
     this.getPersons();
-    
-    
   }
 
   getPersons() {
-    this.personService.getPersons().subscribe(res => {
+    this.personService.getPersonNotInCourse(this.course.courseId).subscribe(res => {
       this.persons = res;
       console.log(res);
       console.log(this.persons);
@@ -81,23 +79,28 @@ export class AddPersonToCourseComponent {
   }
 
 
-// Add this method in your component class
-compareFn(optionValue: any, selectionValue: any): boolean {
-  return optionValue === selectionValue;
-}
+  // Add this method in your component class
+  compareFn(optionValue: any, selectionValue: any): boolean {
+    return optionValue === selectionValue;
+  }
 
-onSubmit() {
-  this.currentPersons.push(this.newPersonCourse.person!);
-  this.newPersonCourse.personId = this.newPersonCourse.person!.personId;
-  this.newPersonCourse.courseId = this.course.courseId;
-  this.newPersonCourse.course = null!;
-  this.newPersonCourse.person = null!;
+  onSubmit() {
+    const i = this.persons.indexOf(this.newPersonCourse.person!)
 
-  this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-  });
-}
+    this.newPersonCourse.person!.personCourses.unshift(this.newPersonCourse)
+    this.currentPersons.push(this.newPersonCourse.person!);
+    this.newPersonCourse.personId = this.newPersonCourse.person!.personId;
+    this.newPersonCourse.courseId = this.course.courseId;
+    this.newPersonCourse.course = null!;
+    this.newPersonCourse.person = null!;
 
-getCourseTypeName(courseType: CourseType): string {
-  return CourseType[courseType];
-}
+    this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+      this.persons.splice(i, 1)
+      this.newPersonCourse = new PersonCourse();
+    });
+  }
+
+  getCourseTypeName(courseType: CourseType): string {
+    return CourseType[courseType];
+  }
 }
