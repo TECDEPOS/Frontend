@@ -25,45 +25,51 @@
           <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
           <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.department || person.department.name === ''">Vælg afdeling:</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department" name="department" #department="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let department of departments" [value]="department">
-                    {{department.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.department || person.department.name === ''">Vælg afdeling:</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.department"
+              name="department" #department="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let department of departments" [value]="department">
+                {{department.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.location || person.location.name === ''">Vælg lokation:</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location" name="location" #location="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let location of locations" [value]="location">
-                    {{location.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.location || person.location.name === ''">Vælg lokation:</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location"
+              name="location" #location="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let location of locations" [value]="location">
+                {{location.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.educationalConsultant || person.educationalConsultant.name === ''">Vælg konsulent</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
-                    {{consultant.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.educationalConsultant || person.educationalConsultant.name === ''">Vælg
+              konsulent</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled"
+              [(ngModel)]="person.educationalConsultant" name="educationalConsultant" #educationalConsultant="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let consultant of educationalConsultants" [value]="consultant">
+                {{consultant.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                <mat-label *ngIf="!person.operationCoordinator || person.operationCoordinator.name === ''">Vælg Driftskoordinator</mat-label>
-                <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
-                  <mat-option [value]="null">- Ingen -</mat-option>
-                  <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
-                    {{coordinator.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.operationCoordinator || person.operationCoordinator.name === ''">Vælg
+              Driftskoordinator</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled"
+              [(ngModel)]="person.operationCoordinator" name="operationCoordinator" #operationCoordinator="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                {{coordinator.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
           <mat-form-field subscriptSizing="dynamic" class="datepicker">
             <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
@@ -111,20 +117,24 @@
       </button>
     </div>
     <div class="allModules">
-      <!-- <div class="newModuleItem" *ngFor="let x of currentModules">
-        <div class="moduleItemInfo" *ngIf="x.status == 1">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
-          <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
-          <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
-          <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
-        </div>
-      </div> -->
       <div class="newModuleItem" *ngFor="let x of currentPersonCourses">
         <div class="moduleItemInfo">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
+          <mat-icon class="deleteIcon" (click)="deletepersonCourse(x)">cancel</mat-icon>
+          <p><span style="font-weight: bold;">{{x.course!.module.name}}</span> |
+            {{moduleTypes[x.course!.courseType]}}</p>
           <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
-          <p *ngIf="x.status != 0">Status: {{status[x.status]}}</p>
-          <p *ngIf="x.status == 0">Status: Ikke Startet</p> 
+
+          <div style="display: flex; align-items: center; margin-left: 5px;">
+            Status: &ensp;
+            <form class="status dropdown" style=" overflow: hidden;">
+              <select [(ngModel)]="x.status" name="status" #module="ngModel" (change)="changeStatus(x)" class="selectStatus">
+                <option *ngFor="let status of statuses let i = index" [value]="i" > 
+                  {{status}}
+                </option>
+              </select>
+            </form>
+          </div>
+
         </div>
         <div class="moduleItemColor">
           <div *ngIf="x.status === 0" class="moduleItemColorIndicator" style="background-color: #ddd;"></div>

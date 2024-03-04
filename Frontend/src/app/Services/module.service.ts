@@ -17,14 +17,6 @@ export class ModuleService {
     return this.http.get<Module[]>(this.baseApiUrl + 'Module/')
   }
 
-  getModuleById(id: number): Observable<Module>{
-    return this.http.get<Module>(this.baseApiUrl + 'Module/' + id)
-  }
-
-  // getModuleByType(type: number): Observable<Module[]>{
-  //   return this.http.get<Module[]>(this.baseApiUrl + 'Module/Type/' + type)
-  // }
-
   addModule(module: Module): Observable<Module>{
     return this.http.post<Module>(this.baseApiUrl + "Module/", module)
   }

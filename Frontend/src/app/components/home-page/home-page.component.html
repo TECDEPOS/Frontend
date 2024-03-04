@@ -4,13 +4,6 @@
             <mat-label>Søg efter Navn</mat-label>
             <input matInput placeholder="Skriv navnet her " (input)="onSearchQueryInput($event)">
         </mat-form-field>
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Vælg afdeling</mat-label>
-            <mat-select [value]="alle" (selectionChange)="onDepartmentQueryInput($event)">
-                <mat-option [value]="alle" ><p>Alle</p></mat-option>
-                <mat-option *ngFor="let x of department" [value]="x.name"><p>{{x.name}}</p></mat-option>
-            </mat-select>
-        </mat-form-field>      
     </div>
     <div class="table"> 
         <div class="TableForPeople">
@@ -57,6 +50,14 @@
                     </td>
                 </tr>
             </table>
+        </div>
+    </div>
+    <div class="filter">
+        <div class="filterItem">
+            <app-multi-dropdown class="dropdown" (selectionChanged)="onDepartmentFilterChanged($event)" [values]="departments" [label]="'Afdeling'"></app-multi-dropdown>
+        </div>
+        <div class="filterItem">
+            <app-multi-dropdown class="dropdown" (selectionChanged)="onLocationFilterChanged($event)" [values]="locations" [label]="'Lokation'"></app-multi-dropdown>
         </div>
     </div>
     <div class="bunden"></div>

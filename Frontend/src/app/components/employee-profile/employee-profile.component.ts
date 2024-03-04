@@ -25,6 +25,9 @@ import { PersonCourse } from 'src/app/Models/PersonCourse';
 import { Unsub } from 'src/app/classes/unsub';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { getLocaleMonthNames } from '@angular/common';
+import { PersonCourseService } from 'src/app/Services/person-course.service';
+import { ConfirmationPopupComponent } from '../pop-ups/confirmation-popup/confirmation-popup.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-employee-profile',
@@ -295,6 +298,19 @@ export class EmployeeProfileComponent extends Unsub{
     }) 
   }
 
+  deletepersonCourse(personCourse: PersonCourse){
+    this.confirmDelete(personCourse.course?.module.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
+      
+      // Delete entity if user pressed yes in confirmation dialog.
+      if (confirmed) {        
+        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId).subscribe(res => {
+          this.currentPersonCourses.splice(this.currentPersonCourses.indexOf(personCourse), 1)
+        })
+      }
+    });
+    
+  }
+
   organizedTable(){
     if(this.person.personCourses.length !== 0){      
       this.currentPersonCourses = this.currentPersonCourses.filter(x => x.status === 1)
@@ -303,6 +319,25 @@ export class EmployeeProfileComponent extends Unsub{
       .concat(this.currentPersonCourses.filter(x => x.status === 2));
     }
   } 
+
+
+
+  changeStatus(personCourse: PersonCourse){
+    personCourse.status = Number(personCourse.status)
+    this.personCourseService.updatePersonCourse(personCourse).subscribe(res => {
+    })
+    this.organizedTable()
+  }
+
+  confirmDelete(entity: string|undefined): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      data: {
+        message: `Sikker på at fjerne ${entity}?`
+      }
+    });
+
+    return dialogRef.afterClosed();
+  }
 
 }
 
@@ -336,4 +371,6 @@ export class ChangeEnddateBarComponent {
   pressedNo(){
     this.snackbar.dismiss()
   }
+
+
 }

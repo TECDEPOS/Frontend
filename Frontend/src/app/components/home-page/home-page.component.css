@@ -8,17 +8,17 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr) 124px;
   grid-template-rows: repeat(7, 1fr) 50px;
   grid-template-areas: 
-  "h h h h h h h h"
-  "t t t t t t t t"
-  "t t t t t t t t"
-  "t t t t t t t t"
-  "t t t t t t t t"
-  "t t t t t t t t"
-  "t t t t t t t t"
-  "b b b b b b b b";
+  "h h h h h h h h h"
+  "t t t t t t t f f"
+  "t t t t t t t f f"
+  "t t t t t t t f f"
+  "t t t t t t t f f"
+  "t t t t t t t f f"
+  "t t t t t t t f f"
+  "b b b b b b b b b";
 }
 
 .SeachBar{
@@ -73,12 +73,30 @@ mat-form-field{
 .bunden{grid-area: b;}
 .table {grid-area: t;}
 
+.filter{
+  grid-area: f;
+  /* background-color: #005f79; */
+}
+
+.filterItem{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.dropdown{
+  width: 80%;
+  margin-left: 0px;
+  outline: 1px solid #888;
+  border-radius: 5px;
+}
 .TableForPeople{ 
   border-radius: 5px;
   box-shadow: 0 1px 3px 3px #888;
   max-height: 100%;
   height: 100%;
-  margin: 0px 2.5%;
+  margin: 0px 0px 0px 2.5%;
   overflow: auto;
   position: relative;
   outline: 1px solid black;
