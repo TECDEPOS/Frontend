@@ -51,9 +51,22 @@ export class EmployeeProfileComponent extends Unsub{
   inactiveModules: Course[] = [];
   CurrentHiringDate: Date = new Date();   
 
-  constructor(private personService: PersonsService, private userService: UserService,
-    private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
+  statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
+  .filter(key => !isNaN(Number(Status[key])));
+
+  constructor(
+    private personService: PersonsService, 
+    private userService: UserService,
+    private departmentService: DepartmentsService, 
+    private locationService: LocationsService,
+    private aRoute: ActivatedRoute, 
+    private dialog: MatDialog, 
+    private fileService: FileService, 
+    private authService: AuthService, 
+    private snackBar: MatSnackBar,
+    private personCourseService: PersonCourseService
+    ) 
+    {super(); }
 
   ngOnInit() {
     this.getPerson();
@@ -223,6 +236,7 @@ export class EmployeeProfileComponent extends Unsub{
       disableClose: false,
     });
   }
+  
 
   downloadFile(id: number, contentType: string, fileName: string) {
     this.fileService.downloadFile(id)
