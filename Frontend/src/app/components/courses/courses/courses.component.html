@@ -9,15 +9,15 @@
                         </div>
                         <div class="List" *ngIf="isCourseListActive(module.moduleId)">
                             <div class="TableForPeopleInner">
-                                <table class="TableBox" matSort [matSortDisableClear]="true">
+                                <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'mc')">
                                     <tr>
-                                        <th mat-sort-header="courseType">
+                                        <th mat-sort-header="moduleCourseType">
                                             Kursus Type
                                         </th>
-                                        <th mat-sort-header="startDate">
+                                        <th mat-sort-header="moduleCourseStartDate">
                                             Start Dato
                                         </th>
-                                        <th mat-sort-header="endDate">
+                                        <th mat-sort-header="moduleCourseEndDate">
                                             Slut Dato
                                         </th>
                                     </tr>
@@ -41,26 +41,29 @@
             <div class="bunden"></div>
         </div>
     </div>
-    <div class="innerBox" *ngIf="courseSelected && !leaderView">
+    <div class="innerBox" *ngIf="!leaderView">
         <div class="OuterWrapper">
             <div class="table">
                 <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'mt')">
                         <tr>
-                            <th mat-sort-header="Name" style="width: 30%;">
+                            <th mat-sort-header="moduleTeacherName" style="width: 30%;">
                                 Navn
                             </th>
-                            <th mat-sort-header="Type" style="width: 10%;">
+                            <th mat-sort-header="moduleTeacherInitials" style="width: 7%;">
                                 Initialer
                             </th>
-                            <th mat-sort-header="Afdeling" style="width: 22.5%;">
+                            <th mat-sort-header="moduleTeacherAfdeling" style="width: 23%;">
                                 Afdeling
                             </th>
-                            <th mat-sort-header="Location" style="width: 22.5%;">
+                            <th mat-sort-header="moduleTeacherLocation" style="width: 20%;">
                                 Location
                             </th>
-                            <th mat-sort-header="EndDate" style="width: 15%;">
+                            <th mat-sort-header="moduleTeacherEndDate" style="width: 10%;">
                                 Slut dato
+                            </th>                            
+                            <th mat-sort-header="moduleCourseStatus" style="width: 10%;">
+                                Status
                             </th>
                         </tr>
                         <tr *ngFor="let person of persons">
@@ -80,6 +83,9 @@
                                 <p class="EndDateShow">{{person.endDate | date: 'dd/MM/yyyy'}}</p>
                                 <div #progress class="Progress" id="{{person.personId}}"></div>
                             </td>
+                            <td *ngFor="let personCourse of person.personCourses">
+                                <p>{{status[personCourse.status]}}</p>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -97,21 +103,21 @@
                         <div class="List" *ngIf="isLeaderListActive(leader.userId)">
                             <div class="TableForPeopleInner">
                                 <table class="TableBox" matSort [matSortDisableClear]="true"
-                                    (matSortChange)="sortData($event)">
+                                    (matSortChange)="sortData($event, 'lt')">
                                     <tr>
-                                        <th mat-sort-header="Name" style="width: 30%;">
+                                        <th mat-sort-header="leaderTeacherName" style="width: 30%;">
                                             Navn
                                         </th>
-                                        <th mat-sort-header="Type" style="width: 10%;">
+                                        <th mat-sort-header="leaderTeacherInitials" style="width: 11%;">
                                             Initialer
                                         </th>
-                                        <th mat-sort-header="Afdeling" style="width: 22.5%;">
+                                        <th mat-sort-header="leaderTeacherAfdeling" style="width: 25%;">
                                             Afdeling
                                         </th>
-                                        <th mat-sort-header="Location" style="width: 22.5%;">
+                                        <th mat-sort-header="leaderTeacherLocation" style="width: 20%;">
                                             Location
                                         </th>
-                                        <th mat-sort-header="EndDate" style="width: 15%;">
+                                        <th mat-sort-header="leaderTeacherEndDate" style="width: 14%;">
                                             Slut dato
                                         </th>
                                     </tr>
@@ -143,29 +149,29 @@
             <div class="bunden"></div>
         </div>
     </div>
-    <div class="innerBoxAlt" *ngIf="personSelected && leaderView">
+    <div class="innerBoxAlt" *ngIf="leaderView">
         <div class="OuterWrapper">
             <div class="table">
                 <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
+                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'lc')">
                         <tr>
-                            <th mat-sort-header="Name" style="width: 30%;">
+                            <th mat-sort-header="leaderCourseName" style="width: 43%;">
                                 Navn
                             </th>
-                            <th mat-sort-header="Type" style="width: 10%;">
-                                Initialer
+                            <th mat-sort-header="leaderCourseType" style="width: 12%;">
+                                Type
                             </th>
-                            <th mat-sort-header="Afdeling" style="width: 22.5%;">
-                                Afdeling
+                            <th mat-sort-header="leaderCourseStartDate" style="width: 15%;">
+                                Start Dato
                             </th>
-                            <th mat-sort-header="Location" style="width: 22.5%;">
-                                Location
+                            <th mat-sort-header="leaderCourseEndDate" style="width: 15%;">
+                                Slut Dato
                             </th>
-                            <th mat-sort-header="EndDate" style="width: 15%;">
-                                Slut dato
+                            <th mat-sort-header="leaderCourseStatus" style="width: 15%;">
+                                Status
                             </th>
                         </tr>
-                        <tr *ngFor="let personCourse of personsCoureses">
+                        <tr *ngFor="let personCourse of showedTeacherCourseList">
                             <td>
                                 <p class="Name">{{personCourse.course?.module?.name}}</p>
                             </td>
@@ -212,13 +218,13 @@
             </mat-select>
         </mat-form-field>
         <div class="addButtons" *ngIf="!leaderView && activeCourseList">
-            <button mat-raised-button class="moduleCourse">Tilføj kursus til modul</button>
+            <button mat-raised-button class="moduleCourse" (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
         </div>
         <div class="addButtons" *ngIf="!leaderView && courseSelected">
-            <button mat-raised-button>Tilføj lærer til kursus</button>
+            <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
         </div>
         <div class="addButtons" *ngIf="leaderView && personSelected">
-            <button mat-raised-button (click)="openAddPersonModulePopup()" class="teacherCourse">Tilføj kursus til
+            <button mat-raised-button (click)="openAddPersonCoursePopup()" class="teacherCourse">Tilføj kursus til
                 lærer</button>
         </div>
     </div>

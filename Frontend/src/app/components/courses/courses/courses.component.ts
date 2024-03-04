@@ -18,6 +18,8 @@ import { UserService } from 'src/app/Services/user.service';
 import { Unsub } from 'src/app/classes/unsub';
 import { AddPersonCourseComponent } from '../../pop-ups/add-person-course/add-person-course.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddPersonToCourseComponent } from '../../pop-ups/add-person-to-course/add-person-to-course.component';
+import { AddCourseToModuleComponent } from '../../pop-ups/add-course-to-module/add-course-to-module.component';
 
 @Component({
   selector: 'app-courses',
@@ -35,7 +37,6 @@ export class CoursesComponent extends Unsub {
   activeCourseList: number | null = null
   activeLeaderList: number | null = null
   selectedCourseId: number = 0;
-  selectedModuleId: number = 0;
   selectedPersonId: number = 0;
   role: string = '';
   selectedEducationBoss: number = this.any;
@@ -47,6 +48,7 @@ export class CoursesComponent extends Unsub {
   leaderPersons: Person[] = [];
   persons: Person[] = [];
   personsCoureses: PersonCourse[] = [];
+  showedTeacherCourseList: PersonCourse[] = [];
   educationBosses: User[] = [];
   educationLeaders: User[] = [];
   showedLeaderList: User[] = [];
@@ -81,12 +83,11 @@ export class CoursesComponent extends Unsub {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
     })
-  }  
+  }
 
   getModuleData() {
     this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
-      console.log(this.modules);
     })
   }
 
@@ -102,7 +103,7 @@ export class CoursesComponent extends Unsub {
     })
   }
 
-  toggleTable(item: any) {    
+  toggleTable(item: any) {
     if ('moduleId' in item) {
       if (this.activeCourseList === item.moduleId) {
         this.activeCourseList = null;
@@ -142,7 +143,7 @@ export class CoursesComponent extends Unsub {
       })
     }
     else {
-      this.userService.getUsersByUserRole(3).subscribe(res => {
+      this.userService.getUsersByUserRole(2).subscribe(res => {
         this.educationLeaders = res;
         this.showedLeaderList = this.educationLeaders;
       })
@@ -150,13 +151,13 @@ export class CoursesComponent extends Unsub {
   }
 
   getEducationBosses() {
-    this.userService.getUsersByUserRole(2).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.userService.getUsersByUserRole(3).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
     })
   }
 
   showEducationBossesDrop() {
-    this.role = this.authService.getUserRole();    
+    this.role = this.authService.getUserRole();
     if (this.role == 'Uddannelseschef' || this.role == 'Uddannelsesleder') {
       this.showEducationBossesDropdown = false;
     }
@@ -174,52 +175,127 @@ export class CoursesComponent extends Unsub {
   }
 
   setSelectedCourseId(courseId: number) {
-    this.personService.getPersonByCourseId(courseId).subscribe(res => {
-      this.persons = res;
-      if (this.selectedCourseId == courseId) {
-        this.courseSelected = false;
-        this.selectedCourseId = 0;
-      }
-      else {
-        this.courseSelected = true;
-        this.selectedCourseId = courseId;
-      }
-    })
+    if (this.selectedCourseId == courseId) {
+      this.persons = [];
+      this.courseSelected = false;
+      this.selectedCourseId = 0;
+    }
+    else {
+      this.courseSelected = true;
+      this.selectedCourseId = courseId;
+      this.personService.getPersonByCourseId(courseId).subscribe(res => {
+        res.forEach(person => {
+          person.personCourses.forEach(personCourse => {
+            if (personCourse.courseId != courseId) {
+              person.personCourses.splice(person.personCourses.findIndex(x => x.courseId == courseId), 1)
+            }
+          });
+        });
+        this.persons = res;
+      })
+    }
   }
 
   setSelectedPersonId(personId: number) {
-    this.personCourseService.getPersonCoursesByPerson(personId).subscribe(res => {
-      this.personsCoureses = res;
-      if (this.selectedPersonId == personId) {
-        this.personSelected = false;
-        this.selectedPersonId = 0;
-      }
-      else {
-        this.personSelected = true;
-        this.selectedPersonId = personId;
-      }
-    })
+    if (this.selectedPersonId == personId) {
+      this.personSelected = false;
+      this.selectedPersonId = 0;
+      this.personsCoureses = [];
+    }
+    else {
+      this.personSelected = true;
+      this.selectedPersonId = personId;
+      this.personCourseService.getPersonCoursesByPerson(personId).subscribe(res => {
+        this.personsCoureses = res;
+
+        this.sortCourseList();
+      })
+    }
+
   }
 
-  sortData(sort: Sort) {
+  sortData(sort: Sort, type: string) {
     if (!sort.active || sort.direction === '') {
       return;
     }
+    console.log(type);
+    console.log(sort);
 
-    this.showedCourseList = this.showedCourseList.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'Name':
-          return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-        case 'StartDate':
-          let test = this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
-          return test
-        case 'EndDate':
-          return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
-        default:
-          return 0;
-      }
-    });
+
+    if (type == 'mc') {
+      this.showedCourseList = this.showedCourseList.sort((a, b) => {
+        const isAsc = sort.direction === 'asc';
+        switch (sort.active) {
+          case 'moduleCourseType':
+            return this.compare(a.courseType, b.courseType) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleCourseStartDate':
+            return this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleCourseEndDate':
+            return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
+          default:
+            return 0;
+        }
+      });
+    }
+    else if (type == 'mt') {
+      this.persons = this.persons.sort((a, b) => {
+        const isAsc = sort.direction === 'asc';
+        switch (sort.active) {
+          case 'moduleTeacherName':
+            return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleTeacherInitials':
+            return this.compare(a.initials.toLocaleLowerCase(), b.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleTeacherAfdeling':
+            return this.compare(a.department!.name.toLocaleLowerCase(), b.department!.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleTeacherLocation':
+            return this.compare(a.location!.name.toLocaleLowerCase(), b.location!.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleTeacherEndDate':
+            return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleCourseStatus':
+            return this.compare(a.personCourses[0].status, b.personCourses[0].status) * (sort.direction == 'asc' ? 1 : -1);
+          default:
+            return 0;
+        }
+      });
+    }
+    else if (type == 'lt') {
+      this.leaderPersons = this.leaderPersons.sort((a, b) => {
+        const isAsc = sort.direction === 'asc';
+        switch (sort.active) {
+          case 'leaderTeacherName':
+            return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderTeacherInitials':
+            return this.compare(a.initials.toLocaleLowerCase(), b.initials.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'moduleTeacherAfdeling':
+            return this.compare(a.department!.name.toLocaleLowerCase(), b.department!.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderTeacherLocation':
+            return this.compare(a.location!.name.toLocaleLowerCase(), b.location!.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderTeacherEndDate':
+            return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
+          default:
+            return 0;
+        }
+      });
+    }
+    else if (type == 'lc') {
+      this.showedTeacherCourseList = this.showedTeacherCourseList.sort((a, b) => {
+        const isAsc = sort.direction === 'asc';
+        switch (sort.active) {
+          case 'leaderCourseName':
+            return this.compare(a.course!.module.name.toLocaleLowerCase(), b.course!.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderCourseType':
+            return this.compare(a.course!.courseType, b.course!.courseType) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderCourseStartDate':
+            return this.compare(a.course!.startDate, b.course!.startDate) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderCourseEndDate':
+            return this.compare(a.course!.endDate, b.course!.endDate) * (sort.direction == 'asc' ? 1 : -1);
+          case 'leaderCourseStatus':
+            return this.compare(a.status, b.status) * (sort.direction == 'asc' ? 1 : -1);
+          default:
+            return 0;
+        }
+      });
+    }
   }
 
   compare(itemA: any, itemB: any): number {
@@ -235,11 +311,8 @@ export class CoursesComponent extends Unsub {
 
   onEducationBossQueryInput(event: MatSelectChange) {
     const selectedValue = event.value;
-    console.log(selectedValue);
-    console.log(selectedValue == this.any);
 
     if (selectedValue == this.any) {
-      console.log(this.educationLeaders);
       this.showedLeaderList = this.educationLeaders;
     }
     else {
@@ -270,10 +343,16 @@ export class CoursesComponent extends Unsub {
   sortCourseList() {
     if (this.selectedTypes.includes(this.any)) {
       this.showedCourseList = this.courses;
+      this.showedTeacherCourseList = this.personsCoureses;
     }
     else {
       this.showedCourseList = this.courses.filter(course =>
         this.selectedTypes.includes(CourseType[course.courseType as unknown as keyof typeof CourseType])
+      );
+      this.showedTeacherCourseList = this.personsCoureses.filter(personCourse =>
+        this.selectedTypes.some(selectedType =>
+          personCourse.course!.courseType === CourseType[selectedType as unknown as keyof typeof CourseType]
+        )
       );
     }
   }
@@ -321,15 +400,80 @@ export class CoursesComponent extends Unsub {
     });
   }
 
-  openAddPersonModulePopup() {
-    this.dialog.open(AddPersonCourseComponent, {
+  openAddCourseToModulePopup() {
+    this.dialog.open(AddCourseToModuleComponent, {
       data: {
-        person: this.leaderPersons.filter(x => x.personId == this.selectedPersonId),
-        currentCourses: this.courses,
+        module: this.modules.find(x => x.moduleId == this.activeCourseList),
+        currentCourses: this.courses
       },
       disableClose: false,
       height: '40%',
       width: '30%'
+    }).afterClosed().subscribe(() => {
+      this.organizedCourseList()
     });
+  }
+
+  openAddPersonToCoursePopup() {
+    this.dialog.open(AddPersonToCourseComponent, {
+      data: {
+        course: this.courses.find(x => x.courseId == this.selectedCourseId),
+        persons: this.persons
+      },
+      disableClose: false,
+      height: '33%',
+      width: '30%'
+    }).afterClosed().subscribe(() => {
+      this.organizedPersonTable()
+    });
+  }
+
+  openAddPersonCoursePopup() {
+    this.dialog.open(AddPersonCourseComponent, {
+      data: {
+        person: this.leaderPersons.find(x => x.personId == this.selectedPersonId),
+        currentPersonCourses: this.personsCoureses,
+        closeAfter: false,
+      },
+      disableClose: false,
+      height: '45%',
+      width: '30%'
+    }).afterClosed().subscribe(() => {
+      this.organizedPersonCourseTable()
+    });
+  }
+
+  organizedCourseList() {
+    if (this.courses.length !== 0) {
+      this.courses = this.courses.sort((a, b) => {
+        // Compare start dates
+        const startDateComparison = this.compare(a.startDate, b.startDate) * ('asc' ? -1 : 1);
+  
+        // If start dates are equal, compare end dates
+        if (startDateComparison === 0) {
+          return this.compare(a.endDate, b.endDate);
+        }
+  
+        // Otherwise, return the comparison result based on start dates
+        return startDateComparison;
+      });
+    }
+  }
+
+  organizedPersonTable() {
+    if (this.persons.length !== 0) {
+      this.persons = this.persons.sort((a, b) => {
+        return this.compare(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()) * ('asc' ? 1 : -1);
+      })
+    }
+  }
+
+  organizedPersonCourseTable() {
+    if (this.personsCoureses.length !== 0) {
+      this.personsCoureses = this.personsCoureses.filter(x => x.status === 1)
+        .concat(this.personsCoureses.filter(x => x.status === 0))
+        .concat(this.personsCoureses.filter(x => x.status === 3))
+        .concat(this.personsCoureses.filter(x => x.status === 2));
+    }
   }
 }

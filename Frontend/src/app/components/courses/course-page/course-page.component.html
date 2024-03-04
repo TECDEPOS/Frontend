@@ -1,6 +1,6 @@
 <div class="outerBox">
     <mat-tab-group class="mattabgroup" [(selectedIndex)]="activeTabIndex" animationDuration="0ms" >
-        <mat-tab label="Kursuser" (click)="setActiveTab(0)">
+        <mat-tab label="Kurser" (click)="setActiveTab(0)">
             <div class="crud" *ngIf="activeTabIndex === 0">                
                 <app-courses></app-courses>
             </div>

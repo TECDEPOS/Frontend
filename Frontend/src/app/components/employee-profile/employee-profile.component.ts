@@ -35,7 +35,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent extends Unsub{
-
   moduleTypes = CourseType;
   popupOpened: boolean = false
   status = Status;
@@ -48,14 +47,11 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
-  CurrentHiringDate: Date = new Date()
-  
-
-  statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
-  .filter(key => !isNaN(Number(Status[key])));
-
   currentPersonCourses: PersonCourse[] = [];
-  constructor(private personCourseService: PersonCourseService ,private personService: PersonsService, private userService: UserService,
+  inactiveModules: Course[] = [];
+  CurrentHiringDate: Date = new Date();   
+
+  constructor(private personService: PersonsService, private userService: UserService,
     private departmentService: DepartmentsService, private locationService: LocationsService,
     private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
 
@@ -277,13 +273,12 @@ export class EmployeeProfileComponent extends Unsub{
       data: {
         person: this.person,
         currentPersonCourses: this.currentPersonCourses,
+        closeAfter: true,
       },
       disableClose: false,
       height: '40%',
       width: '30%'
     }).afterClosed().subscribe(() => {
-      this.getPerson();
-
       this.organizedTable()
     })
     
