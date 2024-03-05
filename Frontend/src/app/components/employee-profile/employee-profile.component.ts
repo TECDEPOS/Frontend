@@ -290,7 +290,7 @@ export class EmployeeProfileComponent extends Unsub{
         closeAfter: true,
       },
       disableClose: false,
-      height: '40%',
+      height: '45%',
       width: '30%'
     }).afterClosed().subscribe(() => {
       this.organizedTable()

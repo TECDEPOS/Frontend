@@ -102,6 +102,11 @@ mat-form-field{
   outline: 1px solid black;
   overflow-y: scroll;
 }
+
+.TableForPeople::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
   
 .TableBox{    
   width: 100%;
