@@ -27,6 +27,7 @@
 }
 
 input[type=text],
+input[type=number],
 select {
   width: 70%;
   padding: 12px 20px;

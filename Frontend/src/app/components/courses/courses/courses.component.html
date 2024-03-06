@@ -84,7 +84,7 @@
                                 <div #progress class="Progress" id="{{person.personId}}"></div>
                             </td>
                             <td *ngFor="let personCourse of person.personCourses">
-                                <p>{{status[personCourse.status]}}</p>
+                                <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status]}}</p>
                             </td>
                         </tr>
                     </table>
@@ -197,7 +197,7 @@
     <div [ngClass]="{'innerBox': !leaderView, 'innerBoxAlt': leaderView}">
         <section class="example-section" style="flex: 1;">
             <mat-checkbox class="example-margin" (change)="toggleView($event.checked)">Se fra
-                Uddanelsesleder</mat-checkbox>
+                Uddannelsesleder</mat-checkbox>
         </section>
         <mat-form-field subscriptSizing="dynamic" style="flex: 1;">
             <mat-label>Vælge type</mat-label>
