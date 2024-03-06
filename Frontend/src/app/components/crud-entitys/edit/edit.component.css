@@ -40,6 +40,19 @@ select {
   box-sizing: border-box;
 }
 
+
+textarea {
+  width: 70%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 100px;
+  max-width: 100%;
+}
+
+
 .datepicker {
   width: 70%;
   height: 90%;

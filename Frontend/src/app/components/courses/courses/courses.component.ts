@@ -116,14 +116,19 @@ export class CoursesComponent extends Unsub {
       }
     }
     else if ('userId' in item) {
-      if (this.activeLeaderList === item.userId) {
-        this.activeLeaderList = null
-      }
-      else {
-        this.activeLeaderList = item.userId
-        this.personService.getPersonsByDepartmentAndLocation(item.departmentId, item.locationId).pipe(pipe(takeUntil(this.unsubscribe$))).subscribe(res => {
-          this.leaderPersons = res;
-        })
+      console.log(item);
+      
+      if (item.departmentId != null || item.locationId != null)
+      {
+        if (this.activeLeaderList === item.userId) {
+          this.activeLeaderList = null
+        }
+        else {
+          this.activeLeaderList = item.userId
+          this.personService.getPersonsByDepartmentAndLocation(item.departmentId, item.locationId).pipe(pipe(takeUntil(this.unsubscribe$))).subscribe(res => {
+            this.leaderPersons = res;
+          })
+        }
       }
     }
   }

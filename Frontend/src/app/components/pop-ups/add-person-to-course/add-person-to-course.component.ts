@@ -86,6 +86,8 @@ export class AddPersonToCourseComponent {
 
   onSubmit() {
     const i = this.persons.indexOf(this.newPersonCourse.person!)
+    console.log(this.newPersonCourse.person);
+    
 
     this.newPersonCourse.person!.personCourses.unshift(this.newPersonCourse)
     this.currentPersons.push(this.newPersonCourse.person!);
