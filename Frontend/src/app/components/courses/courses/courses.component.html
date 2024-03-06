@@ -121,7 +121,7 @@
                                             Slut dato
                                         </th>
                                     </tr>
-                                    <tr *ngFor="let person of leaderPersons"
+                                    <tr [ngClass]="{'selected-course': selectedPersonId == person.personId}" *ngFor="let person of leaderPersons"
                                         (click)="setSelectedPersonId(person.personId)">
                                         <td>
                                             <p class="Name">{{person.name}}</p>

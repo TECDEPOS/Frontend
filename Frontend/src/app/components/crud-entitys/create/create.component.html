@@ -35,7 +35,7 @@
                         <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel"
                             (selectionChange)="onRoleChange($event.value)">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
-                                {{role}}
+                                {{role.replaceAll('_', ' ')}}
                             </mat-option>   
                         </mat-select>
                     </mat-form-field>

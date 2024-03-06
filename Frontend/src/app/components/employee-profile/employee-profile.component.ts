@@ -28,6 +28,7 @@ import { getLocaleMonthNames } from '@angular/common';
 import { PersonCourseService } from 'src/app/Services/person-course.service';
 import { ConfirmationPopupComponent } from '../pop-ups/confirmation-popup/confirmation-popup.component';
 import { Observable } from 'rxjs';
+import { SnackbarIndicatorComponent } from '../Misc/snackbar-indicator/snackbar-indicator.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -140,7 +141,11 @@ export class EmployeeProfileComponent extends Unsub{
         this.editDisabled = true;
         this.setBackupValues(this.person);
         this.saveDisabled = false
-        
+        this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+          data: {
+            message: `Ændringer Gemt`
+          }, panelClass: ['blue-snackbar'], duration: 3000
+        });
       });
     })
   }
@@ -150,6 +155,11 @@ export class EmployeeProfileComponent extends Unsub{
       this.editDisabled = true;
       this.setBackupValues(this.person);
       this.popupOpened = false
+      this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+        data: {
+          message: `Ændringer Gemt`
+        }, panelClass: ['blue-snackbar'], duration: 3000
+      });
     });
   }
   }
