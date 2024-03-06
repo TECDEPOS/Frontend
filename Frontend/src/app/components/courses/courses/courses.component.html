@@ -84,7 +84,7 @@
                                 <div #progress class="Progress" id="{{person.personId}}"></div>
                             </td>
                             <td *ngFor="let personCourse of person.personCourses">
-                                <p>{{status[personCourse.status]}}</p>
+                                <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status]}}</p>
                             </td>
                         </tr>
                     </table>
