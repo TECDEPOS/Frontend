@@ -136,7 +136,7 @@ onSubmit() {
   const newPersonCourseCopy = { ...this.newPersonCourse}
   newPersonCourseCopy.course!.module = this.module;
   
-  this.currentCourses.push(newPersonCourseCopy)
+  
   this.newPersonCourse.personId = this.person.personId;
   this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
   this.newPersonCourse.course = null!;
@@ -145,6 +145,8 @@ onSubmit() {
   console.log(this.currentCourses);
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+    res.course = newPersonCourseCopy.course
+    this.currentCourses.push(res)
     if (this.closeAfter) {
       this.closeDialog();
     }

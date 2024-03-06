@@ -338,7 +338,10 @@ export class EmployeeProfileComponent extends Unsub{
 
   changeStatus(personCourse: PersonCourse){
     personCourse.status = Number(personCourse.status)
-    this.personCourseService.updatePersonCourse(personCourse).subscribe(res => {
+
+    const personCourseCopy = JSON.parse(JSON.stringify(personCourse))
+    personCourseCopy.course!.module = null!;
+    this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(res => {
     })
     this.organizedTable()
   }
