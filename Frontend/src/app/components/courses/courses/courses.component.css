@@ -262,7 +262,7 @@ button {
 }
 
 .selected-course {
-  background-color: rgb(63, 63, 63); /* Change the background color as desired */
+  background-color: rgb(151, 151, 151); /* Change the background color as desired */
 }
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
