@@ -1,6 +1,6 @@
 <div class="grid" style="overflow: auto;">
     <span class="innerBox">
-        <div class="content">
+        <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
                 (ngSubmit)="createDepartment()">
@@ -17,7 +17,7 @@
                 <br>
             </form>
         </div>
-        <div class="content" *ngIf="this.role === 'Administrator'">
+        <div *ngIf="this.role === 'Administrator'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
             <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
                 <div class="test">
@@ -100,7 +100,7 @@
                 <br>
             </form>
         </div>
-        <div class="content">
+        <div>
             <div class="picker" (click)="toggleForm('bookForm')">Bøger</div>
             <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm" (ngSubmit)="createBook()">
                 <div class="test">
@@ -136,7 +136,7 @@
                 <br>
             </form>
         </div>
-        <div class="content">
+        <div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
             <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
                 <div class="test">
@@ -159,7 +159,7 @@
                 <br>
             </form>
         </div>
-        <div class="content">
+        <div>
             <div class="picker" (click)="toggleForm('courseForm')">Kursus</div>
             <form *ngIf="isFormActive('courseForm')" class="form" #userForm="ngForm" (ngSubmit)="createCourse()">
                 <div class="test">
@@ -221,7 +221,7 @@
                 <br>
             </form>
         </div>
-        <div class="content">
+        <div>
             <div class="picker" (click)="toggleForm('locationForm')">Lokation</div>
             <form *ngIf="isFormActive('locationForm')" class="form" #locationForm="ngForm"
                 (ngSubmit)="createLocation()">
