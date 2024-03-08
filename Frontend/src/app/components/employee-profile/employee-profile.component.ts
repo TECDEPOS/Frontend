@@ -120,7 +120,8 @@ export class EmployeeProfileComponent extends Unsub{
       this.currentPersonCourses = this.person.personCourses.filter(x => x.status === 1)
       .concat(this.person.personCourses.filter(x => x.status === 0))
       .concat(this.person.personCourses.filter(x => x.status === 3))
-      .concat(this.person.personCourses.filter(x => x.status === 2));
+      .concat(this.person.personCourses.filter(x => x.status === 2))
+      .concat(this.person.personCourses.filter(x => x.status === 4))
     }
   }
 
@@ -340,7 +341,8 @@ export class EmployeeProfileComponent extends Unsub{
       this.currentPersonCourses = this.currentPersonCourses.filter(x => x.status === 1)
       .concat(this.currentPersonCourses.filter(x => x.status === 0))
       .concat(this.currentPersonCourses.filter(x => x.status === 3))
-      .concat(this.currentPersonCourses.filter(x => x.status === 2));
+      .concat(this.currentPersonCourses.filter(x => x.status === 2))
+      .concat(this.currentPersonCourses.filter(x => x.status === 4))
     }
   } 
 

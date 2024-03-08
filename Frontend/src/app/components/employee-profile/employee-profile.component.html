@@ -138,7 +138,7 @@
             <form class="status dropdown" style=" overflow: hidden;">
               <select [(ngModel)]="x.status" name="status" #module="ngModel" (change)="changeStatus(x)" class="selectStatus">
                 <option *ngFor="let status of statuses let i = index" [value]="i" > 
-                  {{status}}
+                  {{status.replaceAll('_', ' ')}}
                 </option>
               </select>
             </form>
@@ -148,7 +148,7 @@
         <div class="moduleItemColor">
           <div *ngIf="x.status === 0" class="moduleItemColorIndicator" style="background-color: #ddd;"></div>
           <div *ngIf="x.status === 3" class="moduleItemColorIndicator" style="background-color: green;"></div>
-          <div *ngIf="x.status === 2" class="moduleItemColorIndicator" style="background-color: red;"></div>
+          <div *ngIf="x.status === 2 || x.status === 4" class="moduleItemColorIndicator" style="background-color: red;"></div>
         </div>
       </div>
     </div>

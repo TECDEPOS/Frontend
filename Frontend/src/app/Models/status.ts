@@ -1,6 +1,7 @@
 export enum Status{
-    Ubegyndt,
+    Ikke_begyndt,
     Begyndt,
-    Ubestået,
-    Bestået
+    Ej_bestået,
+    Bestået,
+    Ikke_gennemført
 }

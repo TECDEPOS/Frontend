@@ -56,13 +56,13 @@
                             <th mat-sort-header="moduleTeacherAfdeling" style="width: 23%;">
                                 Afdeling
                             </th>
-                            <th mat-sort-header="moduleTeacherLocation" style="width: 20%;">
+                            <th mat-sort-header="moduleTeacherLocation" style="width: 16%;">
                                 Location
                             </th>
                             <th mat-sort-header="moduleTeacherEndDate" style="width: 10%;">
                                 Slut dato
                             </th>                            
-                            <th mat-sort-header="moduleCourseStatus" style="width: 10%;">
+                            <th mat-sort-header="moduleCourseStatus" style="width: 14%;">
                                 Status
                             </th>
                         </tr>
@@ -84,7 +84,7 @@
                                 <div #progress class="Progress" id="{{person.personId}}"></div>
                             </td>
                             <td *ngFor="let personCourse of person.personCourses">
-                                <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status]}}</p>
+                                <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status].replaceAll('_', ' ')}}</p>
                             </td>
                         </tr>
                     </table>
@@ -185,7 +185,7 @@
                                 <p>{{personCourse.course?.endDate | date: 'dd/MM/yyyy'}}</p>
                             </td>
                             <td>
-                                <p>{{status[personCourse.status]}}</p>
+                                <p>{{status[personCourse.status].replaceAll('_', ' ')}}</p>
                             </td>
                         </tr>
                     </table>
