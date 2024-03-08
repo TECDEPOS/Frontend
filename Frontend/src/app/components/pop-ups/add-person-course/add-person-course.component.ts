@@ -18,7 +18,8 @@ import { ModuleService } from 'src/app/Services/module.service';
   styleUrls: ['./add-person-course.component.css']
 })
 export class AddPersonCourseComponent {
-  moduleSelected: boolean = false;
+  closeAfter: boolean = false;
+  moduleSelected: boolean = false;  
   module: Module = new Module;
   person: Person = new Person;
   newPersonCourse: PersonCourse = new PersonCourse;
@@ -41,25 +42,35 @@ export class AddPersonCourseComponent {
     @Inject(MAT_DIALOG_DATA)
     private data: {
       person: Person;
-      currentPersonCourse: PersonCourse[];
+      currentPersonCourses: PersonCourse[];
+      closeAfter: boolean;
     }) {
     if (data.person) this.person = data.person;
-    if (data.currentPersonCourse) this.currentCourses = data.currentPersonCourse;
+    if (data.currentPersonCourses) this.currentCourses = data.currentPersonCourses;
+    if (data.closeAfter) this.closeAfter = data.closeAfter;
   }
 
   ngOnInit() {
     this.getModules();
-  }
-
-  getCourses(id: number) {
-    this.courseService.getCoursesByModuleIdAndUserId(id,this.person.personId).subscribe(res => {
-      this.courses = res;
-    })
+    
   }
 
   getModules() {
     this.moduleService.getModules().subscribe(res => {
       this.modules = res;
+      console.log(res);
+      console.log(this.person);
+      
+    })
+  }
+
+  getCourses(id: number) {
+    console.log(this.person);
+    console.log(this.person.personId);
+    this.courseService.getCoursesByModuleIdAndUserId(id, this.person.personId).subscribe(res => {
+      this.courses = res;
+      console.log(res);
+      
     })
   }
 
@@ -84,9 +95,12 @@ export class AddPersonCourseComponent {
   }
 
   onModuleChange(module: Module) {
+    console.log(module);
+    
     this.getCourses(module.moduleId);
     this.moduleSelected = true;
-
+    this.module = module;
+    
     this.cdr.detectChanges();
   }
 
@@ -118,14 +132,25 @@ compareFn(optionValue: any, selectionValue: any): boolean {
 }
 
 onSubmit() {
+  // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh      
+  const newPersonCourseCopy = { ...this.newPersonCourse}
+  newPersonCourseCopy.course!.module = this.module;
+  
+  
   this.newPersonCourse.personId = this.person.personId;
   this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
   this.newPersonCourse.course = null!;
   this.newPersonCourse.person = null!;
+  
+  console.log(this.currentCourses);
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-    // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh
-    this.closeDialog();
+    res.course = newPersonCourseCopy.course
+    this.currentCourses.push(res)
+    if (this.closeAfter) {
+      this.closeDialog();
+    }
+    this.courses.splice(this.courses.findIndex(x => x.courseId == this.newPersonCourse.courseId), 1)
   });
 }
 

@@ -22,7 +22,9 @@ import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mate
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
+import { AddCourseToModuleComponent } from './components/pop-ups/add-course-to-module/add-course-to-module.component';
 import { AddPersonCourseComponent } from './components/pop-ups/add-person-course/add-person-course.component';
+import { AddPersonToCourseComponent } from './components/pop-ups/add-person-to-course/add-person-to-course.component';
 import { AppComponent } from './app.component';
 import { ChangePasswordPopupComponent } from './components/pop-ups/change-password-popup/change-password-popup.component';
 import { ConfirmationPopupComponent } from './components/pop-ups/confirmation-popup/confirmation-popup.component';
@@ -35,16 +37,16 @@ import { EditPersonmodulePopupComponent } from './components/pop-ups/edit-person
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { ErrorPopupComponent } from './components/pop-ups/error-popup/error-popup.component';
 import { FilePageComponent } from './components/file/file-page/file-page.component';
+import { FiletagMultiDropdownComponent } from './components/Misc/filetag-multi-dropdown/filetag-multi-dropdown.component';
 import { FileUploadComponent } from './components/file/file-upload/file-upload.component';
 import { FileuploadPopupComponent } from './components/pop-ups/fileupload-popup/fileupload-popup.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
+import { MultiDropdownComponent } from './components/Misc/multi-dropdown/multi-dropdown.component';
 import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
-import { FiletagMultiDropdownComponent } from './components/Misc/filetag-multi-dropdown/filetag-multi-dropdown.component';
-import { MultiDropdownComponent } from './components/Misc/multi-dropdown/multi-dropdown.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -65,7 +67,9 @@ export const MY_DATE_FORMATS = {
 
 @NgModule({
   declarations: [
+    AddCourseToModuleComponent,
     AddPersonCourseComponent,
+    AddPersonToCourseComponent,
     AppComponent,
     ChangePasswordPopupComponent,
     ConfirmationPopupComponent,
@@ -78,16 +82,16 @@ export const MY_DATE_FORMATS = {
     EmployeeProfileComponent,
     ErrorPopupComponent,
     FilePageComponent,
+    FiletagMultiDropdownComponent,
     FileUploadComponent,
     FileuploadPopupComponent,
     HomePageComponent,
     LoginComponent,
-    NavBarComponent,
     ModuleComponent,
+    MultiDropdownComponent,
+    NavBarComponent,
     PasswordExpiredPopupComponent,
     SnackbarIndicatorComponent,
-    FiletagMultiDropdownComponent,
-    MultiDropdownComponent
   ],
   imports: [
     AppRoutingModule,

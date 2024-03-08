@@ -25,6 +25,10 @@ export class PersonsService {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/courseId/' + courseId)
   }
 
+  getPersonNotInCourse(courseId: number): Observable<Person[]> {
+    return this.http.get<Person[]>(this.baseApiUrl + 'Person/notincourse/' + courseId)
+  }
+
   getPersonsByDepartmentAndLocation(departmentId: number, locationId: number): Observable<Person[]> {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/departmentId/' + departmentId + '/locationId' + locationId)
   }

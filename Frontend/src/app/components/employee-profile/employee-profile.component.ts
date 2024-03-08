@@ -28,6 +28,7 @@ import { getLocaleMonthNames } from '@angular/common';
 import { PersonCourseService } from 'src/app/Services/person-course.service';
 import { ConfirmationPopupComponent } from '../pop-ups/confirmation-popup/confirmation-popup.component';
 import { Observable } from 'rxjs';
+import { SnackbarIndicatorComponent } from '../Misc/snackbar-indicator/snackbar-indicator.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -35,7 +36,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent extends Unsub{
-
   moduleTypes = CourseType;
   popupOpened: boolean = false
   status = Status;
@@ -48,16 +48,26 @@ export class EmployeeProfileComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
-  CurrentHiringDate: Date = new Date()
-  
+  currentPersonCourses: PersonCourse[] = [];
+  inactiveModules: Course[] = [];
+  CurrentHiringDate: Date = new Date();   
 
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
   .filter(key => !isNaN(Number(Status[key])));
 
-  currentPersonCourses: PersonCourse[] = [];
-  constructor(private personCourseService: PersonCourseService ,private personService: PersonsService, private userService: UserService,
-    private departmentService: DepartmentsService, private locationService: LocationsService,
-    private aRoute: ActivatedRoute, private dialog: MatDialog, private fileService: FileService, private authService: AuthService, private snackBar: MatSnackBar) {super(); }
+  constructor(
+    private personService: PersonsService, 
+    private userService: UserService,
+    private departmentService: DepartmentsService, 
+    private locationService: LocationsService,
+    private aRoute: ActivatedRoute, 
+    private dialog: MatDialog, 
+    private fileService: FileService, 
+    private authService: AuthService, 
+    private snackBar: MatSnackBar,
+    private personCourseService: PersonCourseService
+    ) 
+    {super(); }
 
   ngOnInit() {
     this.getPerson();
@@ -131,7 +141,11 @@ export class EmployeeProfileComponent extends Unsub{
         this.editDisabled = true;
         this.setBackupValues(this.person);
         this.saveDisabled = false
-        
+        this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+          data: {
+            message: `Ændringer Gemt`
+          }, panelClass: ['blue-snackbar'], duration: 3000
+        });
       });
     })
   }
@@ -141,6 +155,11 @@ export class EmployeeProfileComponent extends Unsub{
       this.editDisabled = true;
       this.setBackupValues(this.person);
       this.popupOpened = false
+      this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+        data: {
+          message: `Ændringer Gemt`
+        }, panelClass: ['blue-snackbar'], duration: 3000
+      });
     });
   }
   }
@@ -227,6 +246,7 @@ export class EmployeeProfileComponent extends Unsub{
       disableClose: false,
     });
   }
+  
 
   downloadFile(id: number, contentType: string, fileName: string) {
     this.fileService.downloadFile(id)
@@ -277,13 +297,12 @@ export class EmployeeProfileComponent extends Unsub{
       data: {
         person: this.person,
         currentPersonCourses: this.currentPersonCourses,
+        closeAfter: true,
       },
       disableClose: false,
-      height: '40%',
+      height: '45%',
       width: '30%'
     }).afterClosed().subscribe(() => {
-      this.getPerson();
-
       this.organizedTable()
     })
     
@@ -329,7 +348,10 @@ export class EmployeeProfileComponent extends Unsub{
 
   changeStatus(personCourse: PersonCourse){
     personCourse.status = Number(personCourse.status)
-    this.personCourseService.updatePersonCourse(personCourse).subscribe(res => {
+
+    const personCourseCopy = JSON.parse(JSON.stringify(personCourse))
+    personCourseCopy.course!.module = null!;
+    this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(res => {
     })
     this.organizedTable()
   }

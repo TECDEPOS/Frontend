@@ -209,6 +209,8 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   createCourse() {
+    console.log(this.course);
+    
     this.courseService.addCourses(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.course = new Course;
       this.openSnackBar('Kursus');      

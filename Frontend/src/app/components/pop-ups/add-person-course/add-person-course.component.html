@@ -9,7 +9,7 @@
         <label>Modul: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
           <mat-label>Vælg Modul:</mat-label>
-          <mat-select [(ngModel)]="module.moduleId" name="modules"
+          <mat-select [(ngModel)]="module" name="modules"
             (selectionChange)="onModuleChange($event.value)">
             <mat-option *ngFor="let module of modules" [value]="module">
               {{module.name}}

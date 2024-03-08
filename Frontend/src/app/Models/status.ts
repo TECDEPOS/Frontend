@@ -1,6 +1,6 @@
 export enum Status{
     Ubegyndt,
-    Startet,
-    Dumpet,
+    Begyndt,
+    Ubestået,
     Bestået
 }

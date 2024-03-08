@@ -1,0 +1,131 @@
+.container{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas: 
+    "h h"
+    "c c"
+    "b b";
+    /* grid-template-columns: 50% 50%; */
+    grid-auto-rows: 10% 75% 15%;
+}
+
+.header{
+    background-color: #006E8C;
+    grid-area: h;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.content{
+    /* height: 100%; */
+    /* width: 100%; */
+    /* margin: 5% 0 5% 0; */
+    /* margin: auto 0; */
+    grid-area: c;
+    /* display: grid; */
+    /* grid-template-areas: "l i"; */
+    /* grid-template-columns: 25% 75%; */
+
+}
+
+label{
+    width: 50px;
+    padding: 10px;
+}
+
+.inputs{
+    /* height: 100%; */
+    /* grid-area: i; */
+    /* display: grid; */
+    /* grid-template-columns: 2fr 3fr; */
+    /* grid-auto-rows: 20%; */
+    /* row-gap: 10px; */
+    align-items: center;
+    /* justify-items: start; */
+}
+
+.buttons{
+    grid-area: b;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.closeButton{
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 2px;
+    margin-top: 2px;
+}
+
+.closeButton:hover{
+    color: #ddd;
+    cursor: pointer;
+}
+
+.dropdown {
+    width: 100%;
+    height: 95%;
+    max-height: 56px;
+    /* padding-top: 5px; */
+    min-width: 70%;
+}
+
+.create-button {
+    height: 40px;
+    width: 80px;
+    background-color: #006E8C;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.create-button:hover {
+    cursor: pointer;
+    background-color: #005f79;
+}
+
+.cancel-button {
+    height: 40px;
+    width: 80px;
+    background-color: #ddd;
+    color: black;
+    border: none;
+    font-weight: bold;
+}
+
+.cancel-button:hover {
+    cursor: pointer;
+    background-color: #c9c9c9;
+}
+
+.datepicker {
+    width: 100%;
+    height: 90%;
+    min-width: 70%;
+    margin: 5px 0;
+  }
+
+::ng-deep .mat-datepicker-content {
+    border: 1px solid black
+}
+
+mat-option {
+    border: 1px solid #cfcfcf;
+    border-top-style: none;
+}
+
+.test{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-right: 10px;
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+  }

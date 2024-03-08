@@ -31,10 +31,13 @@ export class EditPersonmodulePopupComponent {
     .filter(key => !isNaN(Number(Status[key])));
 
   constructor(private dialogRef: MatDialogRef<EditPersonmodulePopupComponent>, private moduleService: ModuleService, private personCourseService: PersonCourseService,
-    @Inject(MAT_DIALOG_DATA) private data: { personCourse: PersonCourse; currentPersonCourse: PersonCourse[]; inactiveModules: PersonCourse[]; })
+    @Inject(MAT_DIALOG_DATA) private data: { 
+      personCourse: PersonCourse; 
+      currentPersonCourses: PersonCourse[]; 
+      inactiveModules: PersonCourse[]; })
     { 
       if (data.personCourse) this.personCourse = data.personCourse;
-      if (data.currentPersonCourse) this.currentPersoncourse = data.currentPersonCourse;
+      if (data.currentPersonCourses) this.currentPersoncourse = data.currentPersonCourses;
 
      }
 

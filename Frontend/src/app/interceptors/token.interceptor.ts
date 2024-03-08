@@ -126,12 +126,14 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
 
-  openErrorPopup(err: any) {    
+  openErrorPopup(err: any) {
+    console.log(err);
+    
     if (this.dialog.openDialogs.filter(x => x.componentInstance.data?.message == err.error).length == 0){
       this.dialog.open(ErrorPopupComponent, {
         data: {
           icon: 'Error',
-          message: err.error
+          message: err.error.title
         }
       }) 
     }
