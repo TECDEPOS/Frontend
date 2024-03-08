@@ -22,7 +22,7 @@
           <mat-label>Vælg status</mat-label>
           <mat-select [(ngModel)]="newPersonCourse.status" name="status" [compareWith]="compareFn">
             <mat-option *ngFor="let status of statuses; let i = index" [value]="i">
-              {{status}}
+              {{status.replaceAll('_', ' ')}}
             </mat-option>
           </mat-select>
         </mat-form-field>
