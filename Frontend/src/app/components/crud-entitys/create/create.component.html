@@ -191,8 +191,8 @@
                 <br>
             </form>
         </div>
-        <div>
-            <div class="picker" (click)="toggleForm('personForm')">Lære</div>
+        <div class="content">
+            <div class="picker" (click)="toggleForm('personForm')">Underviser</div>
             <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="createPerson()">
                 <div class="test">
                     <label>Navn: </label>
