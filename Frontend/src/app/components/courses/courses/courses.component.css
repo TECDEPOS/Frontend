@@ -202,7 +202,7 @@ p {
 }
 
 .innerBoxAlt:first-child {
-  flex: 40%;
+  flex: 30%;
 }
 
 .innerBoxAlt:last-child {
