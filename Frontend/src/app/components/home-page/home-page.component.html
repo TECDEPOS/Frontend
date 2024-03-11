@@ -59,6 +59,15 @@
         <div class="filterItem">
             <app-multi-dropdown class="dropdown" (selectionChanged)="onLocationFilterChanged($event)" [values]="locations" [label]="'Lokation'"></app-multi-dropdown>
         </div>
+        <div class="filterItem">
+            <app-multi-dropdown class="dropdown" (selectionChanged)="onCoordinatorFilterChanged($event)" [values]="operationCoordinators" [label]="'Driftskoordinator'"></app-multi-dropdown>
+        </div>
+        <div class="filterItem">
+            <app-multi-dropdown class="dropdown" (selectionChanged)="onConsultantFilterChanged($event)" [values]="educationalConsultants" [label]="'Pædagogisk Konsulent'"></app-multi-dropdown>
+        </div>
+        <div class="filterItem">
+            <button class="filter-button" (click)="resetFilters()">Nulstil Filtre</button>
+        </div>
     </div>
     <div class="bunden"></div>
 </div>
