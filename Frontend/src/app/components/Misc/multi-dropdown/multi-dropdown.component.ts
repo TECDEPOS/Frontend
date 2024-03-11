@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Department } from 'src/app/Models/Department';
 
 @Component({
   selector: 'app-multi-dropdown',
@@ -17,6 +16,11 @@ export class MultiDropdownComponent {
   ngOnInit(){
     this.selectionValues = JSON.parse(JSON.stringify(this.values));
     this.previousSelection = JSON.parse(JSON.stringify(this.values));
+  }
+
+  resetSelectionValues(){
+    this.selectionValues = [];
+    this.previousSelection = [];
   }
 
   onSelectionChanged(): void {

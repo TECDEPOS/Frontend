@@ -12,6 +12,8 @@ import { elementAt, takeUntil } from 'rxjs';
 import { LocationsService } from 'src/app/Services/locations.service';
 import { Unsub } from 'src/app/classes/unsub';
 import { Location } from 'src/app/Models/Location';
+import { User } from 'src/app/Models/User';
+import { MultiDropdownComponent } from '../Misc/multi-dropdown/multi-dropdown.component';
 
 @Component({
   selector: 'app-home-page',
@@ -21,8 +23,12 @@ import { Location } from 'src/app/Models/Location';
 export class HomePageComponent extends Unsub{
   departments: Department[] = [];
   locations: Location[] = [];
+  operationCoordinators: User[] = [];
+  educationalConsultants: User[] = [];
   filteredDepartments: Department[] = [];
   filteredLocations: Location[] = [];
+  filteredCoordinators: User[] = [];
+  filteredConsultants: User[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
   completedModules: number = 0;
@@ -31,8 +37,14 @@ export class HomePageComponent extends Unsub{
   alle: string = "";
   searchDepartment: any = "";
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
+  @ViewChildren(MultiDropdownComponent) dropdowns: QueryList<MultiDropdownComponent> = new QueryList();
 
-  constructor(private peronService: PersonsService, private departmentService: DepartmentsService, private locationService: LocationsService) { super(); }
+  constructor(
+    private peronService: PersonsService, 
+    private departmentService: DepartmentsService, 
+    private locationService: LocationsService,
+    private userService: UserService
+    ) { super(); }
 
   ngOnInit(): void {
     this.getTableData()
@@ -101,6 +113,14 @@ export class HomePageComponent extends Unsub{
     });
   }
 
+  // If the order of userroles are changed then this needs to be updated.
+  getUserFilters(){
+    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.operationCoordinators = res.filter(x => x.userRole === 6);
+      this.educationalConsultants = res.filter(x => x.userRole === 4);
+    });
+  }
+
   getTableData() {
     this.peronService.getPersons().subscribe(res => {
       this.Hired = res
@@ -111,6 +131,7 @@ export class HomePageComponent extends Unsub{
       this.showedList = this.Hired
       this.getDepartmentData();
       this.getLocationData();
+      this.getUserFilters();
       this.Hired.sort((a, b) => a.name.localeCompare(b.name))
       this.showedList = this.Hired
       console.log(this.showedList);
@@ -215,10 +236,28 @@ export class HomePageComponent extends Unsub{
     this.filterPersons();
   }
 
+  onCoordinatorFilterChanged(selectedCoordinators: any[]){
+    this.filteredCoordinators = selectedCoordinators;
+    this.filterPersons();
+  }
+
+  onConsultantFilterChanged(selectedConsultants: any[]){
+    this.filteredConsultants = selectedConsultants;
+    this.filterPersons();
+  }
+
+  resetFilters(){
+    this.filteredDepartments = []
+    this.filteredLocations = []
+    this.filteredCoordinators = []
+    this.filteredConsultants = []
+    // Removes the selection from each dropdown.
+    this.dropdowns.forEach(dropdown => dropdown.resetSelectionValues());
+    this.filterPersons();
+  }
+
   private filterPersons() {
-    // Filter the 'Hired' array of persons based on the selected departments and locations
     this.showedList = this.Hired.filter(person => {
-      
       // Check if the person's department matches any of the selected departments
       const departmentFilter =
         this.filteredDepartments.length === 0 || this.filteredDepartments.some(dep => dep.departmentId === person.departmentId);
@@ -227,23 +266,66 @@ export class HomePageComponent extends Unsub{
       const locationFilter =
         this.filteredLocations.length === 0 || this.filteredLocations.some(loc => loc.locationId === person.locationId);
   
-      // If both department and location filters are empty, include all persons
-      if (this.filteredDepartments.length === 0 && this.filteredLocations.length === 0) {
+      // Check if the person's coordinator matches any of the selected coordinators
+      const coordinatorFilter =
+        this.filteredCoordinators.length === 0 || this.filteredCoordinators.some(coord => coord.userId === person.operationCoordinatorId);
+  
+      // Check if the person's consultant matches any of the selected consultants
+      const consultantFilter =
+        this.filteredConsultants.length === 0 || this.filteredConsultants.some(ec => ec.userId === person.educationalConsultantId);
+  
+      // If all filters are empty, include all persons
+      if (
+        this.filteredDepartments.length === 0 &&
+        this.filteredLocations.length === 0 &&
+        this.filteredCoordinators.length === 0 &&
+        this.filteredConsultants.length === 0
+      ) {
         return true;
       }
   
-      // If only the department filter is applied, include persons that match the selected departments
-      if (this.filteredDepartments.length !== 0 && this.filteredLocations.length === 0) {
+      // Include persons that match the selected departments
+      if (
+        this.filteredDepartments.length !== 0 &&
+        this.filteredLocations.length === 0 &&
+        this.filteredCoordinators.length === 0 &&
+        this.filteredConsultants.length === 0
+      ) {
         return departmentFilter;
       }
   
-      // If only the location filter is applied, include persons that match the selected locations
-      if (this.filteredDepartments.length === 0 && this.filteredLocations.length !== 0) {
+      // Include persons that match the selected locations
+      if (
+        this.filteredDepartments.length === 0 &&
+        this.filteredLocations.length !== 0 &&
+        this.filteredCoordinators.length === 0 &&
+        this.filteredConsultants.length === 0
+      ) {
         return locationFilter;
       }
   
-      // If both department and location filters are applied, include persons that match any of the selected departments or any of the selected locations
-      return departmentFilter && locationFilter;
+      // Include persons that match the selected coordinators
+      if (
+        this.filteredDepartments.length === 0 &&
+        this.filteredLocations.length === 0 &&
+        this.filteredCoordinators.length !== 0 &&
+        this.filteredConsultants.length === 0
+      ) {
+        return coordinatorFilter;
+      }
+  
+      // Include persons that match the selected consultants
+      if (
+        this.filteredDepartments.length === 0 &&
+        this.filteredLocations.length === 0 &&
+        this.filteredCoordinators.length === 0 &&
+        this.filteredConsultants.length !== 0
+      ) {
+        return consultantFilter;
+      }
+  
+      // Include persons that match any of the selected departments, locations, coordinators, or consultants
+      return departmentFilter && locationFilter && coordinatorFilter && consultantFilter;
     });
   }
 }
