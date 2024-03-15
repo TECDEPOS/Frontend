@@ -15,7 +15,6 @@ export class MultiDropdownComponent {
   previousSelection: any[] = [];
   searchTerm: string = '';
   filteredValues: any[] = [];
-  searchChangeTriggered: boolean = false;
 
   ngOnChanges(){
     this.previousSelection = JSON.parse(JSON.stringify(this.values));
