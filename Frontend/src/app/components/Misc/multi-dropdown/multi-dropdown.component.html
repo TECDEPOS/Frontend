@@ -1,11 +1,19 @@
-<!-- <mat-form-field class="container" subscriptSizing="dynamic">
+<mat-form-field class="container" subscriptSizing="dynamic">
     <mat-label>Filtrer {{label}}</mat-label>
-    <input matInput placeholder="Søg" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChanged()">
-    <mat-select [(ngModel)]="selectionValues" multiple (ngModelChange)="onSelectionChanged()" id="filter" name="filter"
+    <mat-select [(ngModel)]="selectionValues" multiple (selectionChange)="onSelectionChanged()" id="filter" name="filter"
         #filter="ngModel">
+        <mat-select-trigger>
+            {{ selectionValues.includes(everything) ? 'Alle' : (selectionValues[0]?.name || '') }}
+            <span *ngIf="selectionValues.length > 1" class="additional-selection">
+                (+{{selectionValues.length - 1}} {{selectionValues.length === 2 ? 'anden' : 'andre'}})
+              </span>
+        </mat-select-trigger>
+        <mat-option>
+            <ngx-mat-select-search placeholderLabel="Søg.." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChanged()"></ngx-mat-select-search>
+        </mat-option>
         <mat-option [value]="everything">Alle</mat-option>
         <mat-option *ngFor="let item of filteredValues" [value]="item">
             {{ item.name }}
         </mat-option>
     </mat-select>
-</mat-form-field> -->
+</mat-form-field>
