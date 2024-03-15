@@ -13,9 +13,12 @@ export class MultiDropdownComponent {
   everything: any = 'Alle'
   selectionValues: any[] = [];
   previousSelection: any[] = [];
-  ngOnInit(){
-    this.selectionValues = JSON.parse(JSON.stringify(this.values));
+  searchTerm: string = '';
+  filteredValues: any[] = [];
+
+  ngOnChanges(){
     this.previousSelection = JSON.parse(JSON.stringify(this.values));
+    this.filteredValues = this.values;
   }
 
   resetSelectionValues(){
@@ -39,10 +42,19 @@ export class MultiDropdownComponent {
       this.selectionChanged.emit(this.selectionValues);
     }
     else{
-      this.selectionChanged.emit(this.selectionValues);
+      this.selectionChanged.emit(this.selectionValues); 
     }
 
     // Update the previous selection state
     this.previousSelection = this.selectionValues;
+  }
+
+  onSearchChanged(){    
+    if (this.searchTerm === '') {
+      this.filteredValues = this.values;
+    }
+    else{
+      this.filteredValues = this.values.filter(item => item.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    }
   }
 }

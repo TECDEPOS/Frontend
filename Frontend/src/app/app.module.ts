@@ -18,6 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgModule } from '@angular/core';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptor } from './interceptors/token.interceptor';
@@ -112,6 +113,7 @@ export const MY_DATE_FORMATS = {
     MatSnackBarModule,
     MatTabsModule,
     MomentDateModule,
+    NgxMatSelectSearchModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
