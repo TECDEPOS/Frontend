@@ -3,7 +3,7 @@ import { FileTag } from 'src/app/Models/FileTag';
 
 export interface VisibilityOption {
   property: string;
-  displayName: string;
+  name: string;
 }
 
 @Component({
@@ -16,12 +16,12 @@ export class FiletagMultiDropdownComponent {
   @Input() selectedVisibilityOptions: string[] = [];
   
   visibilityOptions: VisibilityOption[] = [
-    { property: 'controllerVisibility', displayName: 'Controller' },
-    { property: 'educationLeaderVisibility', displayName: 'Uddannelsesleder' },
-    { property: 'educationBossVisibility', displayName: 'Uddannelseschef' },
-    { property: 'dkVisibility', displayName: 'Driftskoordinator' },
-    { property: 'hrVisibility', displayName: 'Human Resources' },
-    { property: 'pkVisibility', displayName: 'Pædagogisk Konsulent' },
+    { property: 'controllerVisibility', name: 'Controller' },
+    { property: 'educationLeaderVisibility', name: 'Uddannelsesleder' },
+    { property: 'educationBossVisibility', name: 'Uddannelseschef' },
+    { property: 'dkVisibility', name: 'Driftskoordinator' },
+    { property: 'hrVisibility', name: 'Human Resources' },
+    { property: 'pkVisibility', name: 'Pædagogisk Konsulent' },
   ];
 
   ngOnInit() {
