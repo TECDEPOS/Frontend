@@ -3,7 +3,8 @@
     <mat-select [(ngModel)]="selectionValues" multiple (selectionChange)="onSelectionChanged()" id="filter" name="filter"
         #filter="ngModel">
         <mat-select-trigger>
-            {{ selectionValues.includes(everything) ? 'Alle' : (selectionValues[0]?.name || '') }}
+            {{ selectionValues.includes(everything) && !isFileTag ? 'Alle' : (selectionValues[0]?.name || '') }}
+            {{ selectionValues.includes(everything) && isFileTag ? 'Alle' : (selectionValues[0]?.tagName || '') }}
             <span *ngIf="selectionValues.length > 1" class="additional-selection">
                 (+{{selectionValues.length - 1}} {{selectionValues.length === 2 ? 'anden' : 'andre'}})
               </span>
@@ -12,8 +13,15 @@
             <ngx-mat-select-search placeholderLabel="Søg.." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChanged()"></ngx-mat-select-search>
         </mat-option>
         <mat-option [value]="everything">Alle</mat-option>
-        <mat-option *ngFor="let item of filteredValues" [value]="item">
-            {{ item.name }}
-        </mat-option>
+        <ng-container *ngIf="!isFileTag">
+            <mat-option *ngFor="let item of filteredValues" [value]="item">
+                {{ item.name }}
+            </mat-option>
+        </ng-container>
+        <ng-container *ngIf="isFileTag">
+            <mat-option *ngFor="let item of filteredValues" [value]="item">
+                {{ item.tagName }}
+            </mat-option>
+        </ng-container>
     </mat-select>
 </mat-form-field>

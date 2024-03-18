@@ -6,6 +6,7 @@ import { FileTag } from 'src/app/Models/FileTag';
 import { AuthService } from 'src/app/Services/auth.service';
 import { FileTagService } from 'src/app/Services/file-tag.service';
 import { FileService } from 'src/app/Services/file.service';
+import { VisibilityOption } from '../../Misc/filetag-multi-dropdown/filetag-multi-dropdown.component';
 
 @Component({
   selector: 'app-file-page',
@@ -15,11 +16,12 @@ import { FileService } from 'src/app/Services/file.service';
 export class FilePageComponent {
   public pageTitle = 'Welcome to View Files component';
   showedList: File[] = [];
+  filteredList: File[] = [];
   files: File[] = [];
   fileTags: FileTag[] = [];
+  filteredFileTags: FileTag[] = [];
   alle: string = "";
   searchName: string = "";
-  searchFileTag: string = "";
 
   constructor(private fileService: FileService, private fileTagService: FileTagService, private authService: AuthService) {
     this.getAllFiles();
@@ -69,49 +71,17 @@ export class FilePageComponent {
         console.log("Success");
       });
   }
-  
-  onFileTagQueryInput(event: any){
-    console.log(this.files);
-    
-    let fileList: File[] = []
-    if(event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() === ""){
-      this.showedList = this.files
-      this.searchFileTag = event.value;
-      return
+
+  onSearchQueryInput(){
+    if (this.searchName == '') {
+      this.showedList = this.filteredList;
+      console.log('if', this.showedList);
     }
-
-    this.files.forEach(element => {
-      if(element.fileTag?.tagName.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.fileName.toLocaleLowerCase().includes(this.searchName.toLocaleLowerCase())){
-        fileList.push(element)
-      }
-    })
-    this.showedList = fileList;
-    this.searchFileTag = event.value;
-  }
-
-  onSearchQueryInput(event: Event){
-    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();    
-    let fileList: File[] = []
-    if(searchQuery.toLocaleLowerCase() === "" && this.searchFileTag.toLocaleLowerCase() == ""){
-      this.showedList = this.files
-      this.searchName = searchQuery
-      return
+    else{
+      this.showedList = this.filteredList.filter(file => file.fileName.toLowerCase().includes(this.searchName.toLowerCase()));
+      console.log('else', this.showedList);
+      
     }
-
-    this.files.forEach(element => {
-      if(this.searchFileTag.toLocaleLowerCase() === ""){
-        if(element.fileName.toLocaleLowerCase().includes(searchQuery)){
-          fileList.push(element)
-        }
-      }
-      else{
-        if(element.fileName.toLocaleLowerCase().includes(searchQuery) && element.fileTag?.tagName.toLocaleLowerCase().includes(this.searchFileTag.toLocaleLowerCase())){ 
-          fileList.push(element);   
-        }
-      } 
-    });    
-    this.showedList = fileList
-    this.searchName = searchQuery    
   }
 
   sortData(sort: Sort) {
@@ -145,5 +115,24 @@ export class FilePageComponent {
       else if (itemA) retVal = 1;
       else if (itemB) retVal = -1;
       return retVal;
+  }
+
+  onFileTagFilterChanged(selectedFileTags: any[]){
+    this.filteredFileTags = selectedFileTags;
+    this.filterTable();
+  }
+
+  filterTable(){
+    this.filteredList = this.files.filter(file => {
+      const fileTagFilter = this.filteredFileTags.length === 0 || this.filteredFileTags.some(tag => tag.fileTagId === file.fileTag.fileTagId);
+
+      if (this.filteredFileTags.length === 0) {
+        return true;
+      }
+      else{        
+        return fileTagFilter;
+      }
+    });
+    this.onSearchQueryInput();
   }
 }

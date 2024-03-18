@@ -66,6 +66,7 @@ mat-icon:hover{
     align-items: flex-end;
     margin: 0 auto;
     width: 90%;
+    margin-bottom: 15px;
 }
 
 mat-form-field {
@@ -179,6 +180,13 @@ th {
     justify-content: center;
     color: white;
   }
+
+.filter{
+    width: 50%;
+    margin-left: 0px;
+    outline: 1px solid #888;
+    border-radius: 5px;
+}
 
 
 

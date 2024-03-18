@@ -98,7 +98,6 @@ export class HomePageComponent extends Unsub {
       slut = 1755158400,
       mid = slut - ((slut - start) / 2)
     console.log(mid);
-
   }
 
   getDepartmentData() {
@@ -215,7 +214,7 @@ export class HomePageComponent extends Unsub {
       this.showedList = this.filteredPersons;
     }
     else {
-      this.showedList = this.filteredPersons.filter(person => person.name.toLowerCase().includes(this.searchName));
+      this.showedList = this.filteredPersons.filter(person => person.name.toLowerCase().includes(this.searchName.toLowerCase()));
     }
   }
 

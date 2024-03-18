@@ -8,6 +8,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class MultiDropdownComponent {
   @Input() values: any[] = [];
   @Input() label: string = '';
+  @Input() isFileTag: boolean = false;
+
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 
   everything: any = 'Alle'
