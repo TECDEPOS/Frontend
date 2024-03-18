@@ -45,6 +45,8 @@ import { PasswordExpiredPopupComponent } from './components/pop-ups/password-exp
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 import { FiletagMultiDropdownComponent } from './components/Misc/filetag-multi-dropdown/filetag-multi-dropdown.component';
 import { MultiDropdownComponent } from './components/Misc/multi-dropdown/multi-dropdown.component';
+import { FileuploadPopupDirective } from './components/pop-ups/fileupload-popup/fileupload-popup.directive';
+import { ProgressComponent } from './components/pop-ups/fileupload-popup/Progressbar/progress.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -72,6 +74,7 @@ export const MY_DATE_FORMATS = {
     CoursePageComponent,
     CoursesComponent,
     CreateComponent,
+    ProgressComponent,
     CrudEntityPageComponent,
     EditComponent,
     EditPersonmodulePopupComponent,
@@ -87,7 +90,8 @@ export const MY_DATE_FORMATS = {
     PasswordExpiredPopupComponent,
     SnackbarIndicatorComponent,
     FiletagMultiDropdownComponent,
-    MultiDropdownComponent
+    MultiDropdownComponent,
+    FileuploadPopupDirective
   ],
   imports: [
     AppRoutingModule,
