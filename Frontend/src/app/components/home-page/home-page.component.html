@@ -2,7 +2,7 @@
     <div class="Searchfield">
         <mat-form-field subscriptSizing="dynamic">
             <mat-label>Søg efter Navn</mat-label>
-            <input matInput placeholder="Skriv navnet her " (input)="onSearchQueryInput($event)">
+            <input [(ngModel)]="searchName" matInput (input)="onSearchQueryInput()">
         </mat-form-field>
     </div>
     <div class="table"> 

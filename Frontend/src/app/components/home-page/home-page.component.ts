@@ -20,7 +20,7 @@ import { MultiDropdownComponent } from '../Misc/multi-dropdown/multi-dropdown.co
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent extends Unsub{
+export class HomePageComponent extends Unsub {
   departments: Department[] = [];
   locations: Location[] = [];
   operationCoordinators: User[] = [];
@@ -29,22 +29,22 @@ export class HomePageComponent extends Unsub{
   filteredLocations: Location[] = [];
   filteredCoordinators: User[] = [];
   filteredConsultants: User[] = [];
+  filteredPersons: Person[] = [];
   Hired: Person[] = [];
   showedList: Person[] = [];
   completedModules: number = 0;
   pickedDepartment: string = "";
   searchName: string = "";
   alle: string = "";
-  searchDepartment: any = "";
   @ViewChildren('progress') progress: QueryList<ElementRef> = new QueryList
   @ViewChildren(MultiDropdownComponent) dropdowns: QueryList<MultiDropdownComponent> = new QueryList();
 
   constructor(
-    private peronService: PersonsService, 
-    private departmentService: DepartmentsService, 
+    private peronService: PersonsService,
+    private departmentService: DepartmentsService,
     private locationService: LocationsService,
     private userService: UserService
-    ) { super(); }
+  ) { super(); }
 
   ngOnInit(): void {
     this.getTableData()
@@ -114,7 +114,7 @@ export class HomePageComponent extends Unsub{
   }
 
   // If the order of userroles are changed then this needs to be updated.
-  getUserFilters(){
+  getUserFilters() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.operationCoordinators = res.filter(x => x.userRole === 6);
       this.educationalConsultants = res.filter(x => x.userRole === 4);
@@ -128,13 +128,12 @@ export class HomePageComponent extends Unsub{
         element.completedModules = this.modulesCompleted(element)
       });
 
-      this.showedList = this.Hired
       this.getDepartmentData();
       this.getLocationData();
       this.getUserFilters();
       this.Hired.sort((a, b) => a.name.localeCompare(b.name))
       this.showedList = this.Hired
-      console.log(this.showedList);
+      this.filteredPersons = this.Hired;
     })
   }
 
@@ -142,55 +141,10 @@ export class HomePageComponent extends Unsub{
     return person.personCourses.filter(x => x.status === 3).length;
   }
 
-  onDepartmentQueryInput(event: any) {
-    let personList: Person[] = []
-
-    //Returns all, even null
-    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() === "") {
-      this.showedList = this.Hired
-      this.searchDepartment = event.value;
-      return
-    }
-
-    //Checks for what matches with the department and name
-    this.Hired.forEach(element => {
-      if (element.department?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase()) && element.name.toLocaleLowerCase().includes(this.searchName.toLocaleLowerCase())) {
-        personList.push(element);
-      }
-    })
-    this.showedList = personList
-    this.searchDepartment = event.value;
-  }
-
-  onSearchQueryInput(event: Event) {
-    const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
-    let personList: Person[] = []
-    if (searchQuery.toLocaleLowerCase() === "" && this.searchDepartment === "") {
-      this.showedList = this.Hired
-      this.searchName = searchQuery
-      return
-    }
-        
-    this.Hired.forEach(element => {
-      if(this.searchDepartment.toLocaleLowerCase() === ""){
-        if (element.name.toLocaleLowerCase().includes(searchQuery)) {
-          personList.push(element);          
-        }
-      }
-      else{
-        if (element.name.toLocaleLowerCase().includes(searchQuery) && element.department?.name.toLocaleLowerCase().includes(this.searchDepartment.toLocaleLowerCase())) {
-          personList.push(element);
-        }
-      }
-    });
-    this.showedList = personList
-    this.searchName = searchQuery;
-  }
-
   sortData(sort: Sort) {
     if (!sort.active || sort.direction === '') {
       return;
-    }   
+    }
 
     this.showedList = this.showedList.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
@@ -202,7 +156,7 @@ export class HomePageComponent extends Unsub{
         case 'HiredDepartment':
           return this.compare(a.department?.name.toLocaleLowerCase(), b.department?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredLocation':
-          return this.compare(a.location?.name.toLocaleLowerCase(), b.location?.name.toLocaleLowerCase())  * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.location?.name.toLocaleLowerCase(), b.location?.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredEndDate':
           return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
         case 'HiredSVU':
@@ -228,52 +182,61 @@ export class HomePageComponent extends Unsub{
 
   onDepartmentFilterChanged(selectedDepartments: any[]) {
     this.filteredDepartments = selectedDepartments;
-    this.filterPersons();
+    this.filterTable();
   }
 
   onLocationFilterChanged(selectedLocations: any[]) {
     this.filteredLocations = selectedLocations;
-    this.filterPersons();
+    this.filterTable();
   }
 
-  onCoordinatorFilterChanged(selectedCoordinators: any[]){
+  onCoordinatorFilterChanged(selectedCoordinators: any[]) {
     this.filteredCoordinators = selectedCoordinators;
-    this.filterPersons();
+    this.filterTable();
   }
 
-  onConsultantFilterChanged(selectedConsultants: any[]){
+  onConsultantFilterChanged(selectedConsultants: any[]) {
     this.filteredConsultants = selectedConsultants;
-    this.filterPersons();
+    this.filterTable();
   }
 
-  resetFilters(){
+  resetFilters() {
     this.filteredDepartments = []
     this.filteredLocations = []
     this.filteredCoordinators = []
     this.filteredConsultants = []
     // Removes the selection from each dropdown.
     this.dropdowns.forEach(dropdown => dropdown.resetSelectionValues());
-    this.filterPersons();
+    this.filterTable();
   }
 
-  private filterPersons() {
-    this.showedList = this.Hired.filter(person => {
+  onSearchQueryInput() {
+    if (this.searchName == '') {
+      this.showedList = this.filteredPersons;
+    }
+    else {
+      this.showedList = this.filteredPersons.filter(person => person.name.toLowerCase().includes(this.searchName));
+    }
+  }
+
+  private filterTable() {
+    this.filteredPersons = this.Hired.filter(person => {
       // Check if the person's department matches any of the selected departments
       const departmentFilter =
         this.filteredDepartments.length === 0 || this.filteredDepartments.some(dep => dep.departmentId === person.departmentId);
-  
+
       // Check if the person's location matches any of the selected locations
       const locationFilter =
         this.filteredLocations.length === 0 || this.filteredLocations.some(loc => loc.locationId === person.locationId);
-  
+
       // Check if the person's coordinator matches any of the selected coordinators
       const coordinatorFilter =
         this.filteredCoordinators.length === 0 || this.filteredCoordinators.some(coord => coord.userId === person.operationCoordinatorId);
-  
+
       // Check if the person's consultant matches any of the selected consultants
       const consultantFilter =
         this.filteredConsultants.length === 0 || this.filteredConsultants.some(ec => ec.userId === person.educationalConsultantId);
-  
+
       // If all filters are empty, include all persons
       if (
         this.filteredDepartments.length === 0 &&
@@ -283,7 +246,7 @@ export class HomePageComponent extends Unsub{
       ) {
         return true;
       }
-  
+
       // Include persons that match the selected departments
       if (
         this.filteredDepartments.length !== 0 &&
@@ -293,7 +256,7 @@ export class HomePageComponent extends Unsub{
       ) {
         return departmentFilter;
       }
-  
+
       // Include persons that match the selected locations
       if (
         this.filteredDepartments.length === 0 &&
@@ -303,7 +266,7 @@ export class HomePageComponent extends Unsub{
       ) {
         return locationFilter;
       }
-  
+
       // Include persons that match the selected coordinators
       if (
         this.filteredDepartments.length === 0 &&
@@ -313,7 +276,7 @@ export class HomePageComponent extends Unsub{
       ) {
         return coordinatorFilter;
       }
-  
+
       // Include persons that match the selected consultants
       if (
         this.filteredDepartments.length === 0 &&
@@ -323,9 +286,9 @@ export class HomePageComponent extends Unsub{
       ) {
         return consultantFilter;
       }
-  
       // Include persons that match any of the selected departments, locations, coordinators, or consultants
       return departmentFilter && locationFilter && coordinatorFilter && consultantFilter;
     });
+    this.onSearchQueryInput();
   }
 }
