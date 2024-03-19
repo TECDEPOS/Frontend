@@ -79,22 +79,22 @@ export class FileuploadPopupComponent {
     this.fileTag = newTag;
   }
 
-  confirmFile(){
-    this.file.fileTag = this.fileTag;
-    this.displayFiles.push(this.file);
-    this.fileTags.push(this.fileTag);
-    this.file = null;
-    this.fileTag = null!;
-  }
+  // confirmFile(){
+  //   this.file.fileTag = this.fileTag;
+  //   this.displayFiles.push(this.file);
+  //   this.fileTags.push(this.fileTag);
+  //   this.file = null;
+  //   this.fileTag = null!;
+  // }
 
-  removeCurrentFile(){
-    this.file = null;
-  }
+  // removeCurrentFile(){
+  //   this.file = null;
+  // }
 
-  removeDisplayFile(i :number){
-    this.displayFiles.splice(i, 1);
-    this.fileTags.splice(i, 1);    
-  }
+  // removeDisplayFile(i :number){
+  //   this.displayFiles.splice(i, 1);
+  //   this.fileTags.splice(i, 1);    
+  // }
 
 
 
@@ -103,6 +103,11 @@ export class FileuploadPopupComponent {
    */
  onFileDropped($event: any) {
   this.prepareFilesList($event);
+}
+
+test(){
+  console.log(this.rawFiles);
+  
 }
 
 /**
@@ -148,8 +153,12 @@ prepareFilesList(files: Array<any>) {
   for (const item of files) {
     item.progress = 0;
     this.rawFiles.push(item);
+    console.log(item.name);
+    
   }
   this.uploadFilesSimulator(0);
+  console.log(this.rawFiles);
+  
 }
 
 /**

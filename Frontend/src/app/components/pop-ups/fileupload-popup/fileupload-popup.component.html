@@ -49,17 +49,27 @@
  -->
 
 
+
+ <!-- 
+  skal have lavet upload færdig, så den uploader når du trykker på den blå knap
+  og visuelt er der nogle manlger
+  
+  Har brugt dette til at lave file upload:  
+  https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854 -->
 <div class="popup" appFileuploadPopup (fileDropped)="onFileDropped($event)">
   <div class="dropzone">
-    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileChange($any($event).target.files)">
+    <input class="browser" type="file" #fileDropRef id="fileDropRef" multiple (change)="fileChange($any($event).target.files)">
     <!-- <mat-icon>cloud_upload</mat-icon> -->
     <img src="../../../../assets/—Pngtree—file upload icon_4646955.png">
-    <h3>Drag and drop file here</h3>
-    <h3 class="space">or</h3>
-    <label for="fileDropRef">Browse for file</label>
+    <h3>Hiv og slip filer</h3>
+    <h3 class="space">eller</h3>
+    
+  </div>
+  <div class="submitbutton">
+    <button (click)="test()" >Søg efter filer</button>
   </div>
 </div>
-<div class="files-list">
+<div class="files-list" >
   <div class="single-file" *ngFor="let file of this.rawFiles; let i = index">
     <div class="file-icon" style="width: 50px">
       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -72,9 +82,21 @@
       </svg>
     </div>
     <div class="info">
-      <h4 class="name">
-        {{ file?.name }}
-      </h4>
+      <div style="display: flex;">
+        <h4 class="name">
+          {{ file?.name }}
+        </h4>
+
+        <!-- Skal tilføjes filetag til dette punkt -->
+
+        <form class="status dropdown" style=" overflow: hidden;">
+          <select name="fileTag"  class="selectFileTag">
+            <option *ngFor="let filetag of this.selectorFileTags let i = index" [value]="i" > 
+              {{filetag.tagName}}
+            </option>
+          </select>
+        </form>
+      </div>
       <p class="size">
         {{ formatBytes(file?.size) }}
       </p>
