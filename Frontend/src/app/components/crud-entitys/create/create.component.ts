@@ -236,7 +236,7 @@ export class CreateComponent extends Unsub implements OnInit {
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
-      this.openSnackBar('Ansat');
+      this.openSnackBar('Underviser');
     })
   }
 
