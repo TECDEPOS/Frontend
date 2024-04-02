@@ -29,3 +29,9 @@ body {
     --mat-mdc-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: #fff;
 }
+
+.red-snackbar {
+    --mdc-snackbar-container-color: #be1818;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+}

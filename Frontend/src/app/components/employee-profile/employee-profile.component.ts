@@ -144,7 +144,8 @@ export class EmployeeProfileComponent extends Unsub{
         this.saveDisabled = false
         this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
           data: {
-            message: `Ændringer Gemt`
+            message: `Ændringer Gemt`,
+            icon: 'done'
           }, panelClass: ['blue-snackbar'], duration: 3000
         });
       });

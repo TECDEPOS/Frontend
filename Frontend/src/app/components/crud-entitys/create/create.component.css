@@ -193,3 +193,7 @@ mat-option {
   background-color: #006E8C;
   color: #ffffff;
 }
+
+.invalid-input {
+  border: 1px solid red !important;
+}
