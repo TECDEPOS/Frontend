@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
 import { pipe, takeUntil } from 'rxjs';
@@ -20,6 +20,8 @@ import { AddPersonCourseComponent } from '../../pop-ups/add-person-course/add-pe
 import { MatDialog } from '@angular/material/dialog';
 import { AddPersonToCourseComponent } from '../../pop-ups/add-person-to-course/add-person-to-course.component';
 import { AddCourseToModuleComponent } from '../../pop-ups/add-course-to-module/add-course-to-module.component';
+import { ExportToExcelComponent } from '../../excel/export-to-excel/export-to-excel.component';
+import { BossViewModel, LeaderViewModel } from 'src/app/Models/ViewModels/BossViewModel';
 
 @Component({
   selector: 'app-courses',
@@ -49,9 +51,9 @@ export class CoursesComponent extends Unsub {
   persons: Person[] = [];
   personsCoureses: PersonCourse[] = [];
   showedTeacherCourseList: PersonCourse[] = [];
-  educationBosses: User[] = [];
-  educationLeaders: User[] = [];
-  showedLeaderList: User[] = [];
+  educationBosses: BossViewModel[] = [];
+  educationLeaders: LeaderViewModel[] = [];
+  showedLeaderList: LeaderViewModel[] = [];
 
 
   courseType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
@@ -69,7 +71,8 @@ export class CoursesComponent extends Unsub {
     private personService: PersonsService,
     private personCourseService: PersonCourseService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private exportToExcelComponent: ExportToExcelComponent
   ) {
     super();
   }
@@ -77,6 +80,11 @@ export class CoursesComponent extends Unsub {
   ngOnInit() {
     this.getModuleData();
     this.showEducationBossesDrop();
+  }
+
+  exportModulesToExcel() {
+
+    // this.exportToExcelComponent.exportModulesToExcel(this.modules);
   }
 
   ngAfterViewInit(): void {
@@ -88,6 +96,8 @@ export class CoursesComponent extends Unsub {
   getModuleData() {
     this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
+
+      this.exportModulesToExcel();
     })
   }
 
@@ -117,47 +127,30 @@ export class CoursesComponent extends Unsub {
     }
     else if ('userId' in item) {
       console.log(item);
-      
-      if (item.departmentId != null || item.locationId != null)
-      {
-        if (this.activeLeaderList === item.userId) {
-          this.activeLeaderList = null
-        }
-        else {
-          this.activeLeaderList = item.userId
-          this.personService.getPersonsByDepartmentAndLocation(item.departmentId, item.locationId).pipe(pipe(takeUntil(this.unsubscribe$))).subscribe(res => {
-            this.leaderPersons = res;
-          })
-        }
+      if (this.activeLeaderList === item.userId) {
+        this.activeLeaderList = null
+      }
+      else {
+        this.activeLeaderList = item.userId
+        const i = this.showedLeaderList.findIndex(x => x.userId == item.userId);
+        console.log(i);
+          this.leaderPersons = this.showedLeaderList[i].educators;
       }
     }
   }
 
   getEducationLeaders() {
-    if (this.role == "Uddannelsesleder") {
-      this.userService.getUsersById(this.authService.getUserId()).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-        this.educationLeaders = [];
-        this.educationLeaders.push(res)
-        this.showedLeaderList = this.educationLeaders;
-      })
-    }
-    else if (this.role == 'Uddannelseschef') {
-      this.userService.getUsersByEducationBossId(this.authService.getUserId()).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-        this.educationLeaders = res;
-        this.showedLeaderList = this.educationLeaders;
-      })
-    }
-    else {
-      this.userService.getUsersByUserRole(2).subscribe(res => {
-        this.educationLeaders = res;
-        this.showedLeaderList = this.educationLeaders;
-      })
-    }
+    this.userService.getEducationLeadersExcel().subscribe(res => {
+      this.educationLeaders = res;
+      this.showedLeaderList = this.educationLeaders;
+    })
   }
 
   getEducationBosses() {
-    this.userService.getUsersByUserRole(3).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.userService.getEducationBossesExcel().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
+      console.log(res);
+
     })
   }
 
@@ -453,12 +446,12 @@ export class CoursesComponent extends Unsub {
       this.courses = this.courses.sort((a, b) => {
         // Compare start dates
         const startDateComparison = this.compare(a.startDate, b.startDate) * ('asc' ? -1 : 1);
-  
+
         // If start dates are equal, compare end dates
         if (startDateComparison === 0) {
           return this.compare(a.endDate, b.endDate);
         }
-  
+
         // Otherwise, return the comparison result based on start dates
         return startDateComparison;
       });

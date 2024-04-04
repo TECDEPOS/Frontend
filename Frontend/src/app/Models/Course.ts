@@ -10,5 +10,6 @@ export class Course{
 
     courseType: CourseType = 0;
 
-    module: Module = new Module
+    module: Module = new Module;
+    personCourses: PersonCourse[] = [];
 }

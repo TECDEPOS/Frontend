@@ -218,6 +218,9 @@
                     [value]="educationBoss.userId">{{educationBoss.name}}</mat-option>
             </mat-select>
         </mat-form-field>
+        <div class="addButtons" >
+            <button mat-raised-button class="moduleCourse" (click)="exportModulesToExcel()">Tilføj kursus til modul</button>
+        </div>
         <div class="addButtons" *ngIf="!leaderView && activeCourseList">
             <button mat-raised-button class="moduleCourse" (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
         </div>
