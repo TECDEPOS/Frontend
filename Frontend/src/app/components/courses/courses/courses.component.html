@@ -195,22 +195,21 @@
             <div class="bunden"></div>
         </div>
     </div>
-    <div [ngClass]="{'innerBox': !leaderView, 'innerBoxAlt': leaderView}">
-        <section class="example-section" style="flex: 1;">
-            <mat-checkbox class="example-margin" (change)="toggleView($event.checked)">Se fra
-                Uddannelsesleder</mat-checkbox>
-        </section>
-        <mat-form-field subscriptSizing="dynamic" style="flex: 1;">
-            <mat-label>Vælge type</mat-label>
-            <mat-select [value]="selectedTypes" (selectionChange)="onTypeQueryInput($event)" multiple>
-                <mat-option [value]="any">Alle</mat-option>
-                <mat-option *ngFor="let type of courseType" [value]="type">
-                    {{type}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field subscriptSizing="dynamic" class="test" *ngIf="showEducationBossesDropdown && leaderView"
-            style="flex: 1;">
+    <div class="filterBox">
+            <section class="example-section">
+                <mat-checkbox class="example-margin" (change)="toggleView($event.checked)">Se fra
+                    Uddannelsesleder</mat-checkbox>
+            </section>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Vælge type</mat-label>
+                <mat-select [value]="selectedTypes" (selectionChange)="onTypeQueryInput($event)" multiple>
+                    <mat-option [value]="any">Alle</mat-option>
+                    <mat-option *ngFor="let type of courseType" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        <mat-form-field subscriptSizing="dynamic" class="test" *ngIf="showEducationBossesDropdown && leaderView">
             <mat-label>Vælge Uddanelseschef</mat-label>
             <mat-select [value]="selectedEducationBoss" (selectionChange)="onEducationBossQueryInput($event)">
                 <mat-option [value]="any">Alle</mat-option>
@@ -218,18 +217,20 @@
                     [value]="educationBoss.userId">{{educationBoss.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="addButtons" >
-            <button mat-raised-button class="moduleCourse" (click)="exportModulesToExcel()">Tilføj kursus til modul</button>
-        </div>
-        <div class="addButtons" *ngIf="!leaderView && activeCourseList">
-            <button mat-raised-button class="moduleCourse" (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
-        </div>
-        <div class="addButtons" *ngIf="!leaderView && courseSelected">
-            <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
-        </div>
-        <div class="addButtons" *ngIf="leaderView && personSelected">
-            <button mat-raised-button (click)="openAddPersonCoursePopup()" class="teacherCourse">Tilføj kursus til
-                lærer</button>
-        </div>
+        <div class="filterButtons">
+            <div class="filterItem" >
+                <button mat-raised-button (click)="exportModulesToExcel()">Tilføj kursus til modul</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView && activeCourseList">
+                <button mat-raised-button (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView && courseSelected">
+                <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
+            </div>
+            <div class="filterItem" *ngIf="leaderView && personSelected">
+                <button mat-raised-button (click)="openAddPersonCoursePopup()">Tilføj kursus til
+                    lærer</button>
+                </div>
+            </div>
     </div>
 </div>
