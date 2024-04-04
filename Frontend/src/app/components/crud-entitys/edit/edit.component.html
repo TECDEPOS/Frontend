@@ -252,35 +252,65 @@
         Rediger:
         </div>
         <div *ngIf="isFormActive('departmentForm')">
-            <form class="form" #departmentForm="ngForm" (ngSubmit)="editDepartment()">
+            <form class="form" #departmentForm="ngForm" (ngSubmit)="departmentForm.valid && editDepartment()">
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
-                <button class="cancel-button" (click)="cancel('department')">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteDepartment(department)" type="button">Slet</button>
-            </div>
+                    <button class="save-button" type="submit" [disabled]="!departmentForm.valid">Gem</button>
+                    <button class="cancel-button" (click)="cancel('department')">Annuller</button>
+                    <button class="delete-button" style="float: right;" (click)="deleteDepartment(department)"
+                        type="button">Slet</button>
+                </div>
             </form>
         </div>
         <div *ngIf="isFormActive('userForm')">
             <form class="form" #userForm="ngForm" (ngSubmit)="editUser()">
                 <div class="formItem">
                     <label>Brugernavn: </label>
-                    <input type="text" [(ngModel)]="user.userName" id="userName" name="userName" #userName="ngModel"
-                        required>
+                    <input type="text" [(ngModel)]="user.userName" id="userName" name="userName" #userName="ngModel" required
+                        [ngClass]="{ 'invalid-input': userName.invalid }">
                 </div>
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid }">
+                </div>
+                <div class="formItem">
+                    <label>Brugerrolle:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Brugerrole</mat-label>
+                        <mat-select (selectionChange)="selectUserRoleChanged()" [(ngModel)]="user.userRole" name="userRole"
+                            #userForm="ngModel">
+                            <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
+                                {{role}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem" *ngIf="user.userRole === 2">
+                    <label>Uddannelseschef:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': educationBoss.invalid }">
+                        <mat-label *ngIf="!user.educationBoss">Vælg Uddannelseschef</mat-label>
+                        <mat-select (selectionChange)="selectSetEducationbossId()" [compareWith]="compareObjects"
+                            [(ngModel)]="user.educationBoss" name="educationBoss" #educationBoss="ngModel"
+                            [required]="user.userRole === 2">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let educationBoss of educationBosses" [value]="educationBoss">
+                                {{educationBoss.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="formItem" *ngIf="user.userRole === 2">
                     <label>Afdeling:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!user.department">Vælg afdeling:</mat-label>
-                        <mat-select (selectionChange)="selectSetDepartmentId()" [compareWith]="compareObjects" [(ngModel)]="user.department" name="department"
-                            #department="ngModel">
+                        <mat-select (selectionChange)="selectSetDepartmentId()" [compareWith]="compareObjects"
+                            [(ngModel)]="user.department" name="department" #department="ngModel">
                             <mat-option [value]="null">- Ingen -</mat-option>
                             <mat-option *ngFor="let department of departments" [value]="department">
                                 {{department.name}}
@@ -292,8 +322,8 @@
                     <label>Lokation:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!user.location">Vælg lokation:</mat-label>
-                        <mat-select (selectionChange)="selectSetLocationId()" [compareWith]="compareObjects" [(ngModel)]="user.location" name="location"
-                            #location="ngModel">
+                        <mat-select (selectionChange)="selectSetLocationId()" [compareWith]="compareObjects"
+                            [(ngModel)]="user.location" name="location" #location="ngModel">
                             <mat-option [value]="null">- Ingen -</mat-option>
                             <mat-option *ngFor="let location of locations" [value]="location">
                                 {{location.name}}
@@ -301,51 +331,32 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="formItem" *ngIf="user.userRole === 2">
-                    <label>Uddannelseschef:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!user.educationBoss">Vælg Uddannelseschef</mat-label>
-                        <mat-select (selectionChange)="selectSetEducationbossId()" [compareWith]="compareObjects" [(ngModel)]="user.educationBoss"
-                            name="educationBoss" #educationBoss="ngModel">
-                            <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let educationBoss of educationBosses" [value]="educationBoss">
-                                {{educationBoss.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="formItem">
-                    <label>Brugerrolle:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Brugerrole</mat-label>
-                        <mat-select (selectionChange)="selectUserRoleChanged()" [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel">
-                            <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
-                                {{role}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
                 <div class="buttons">
-                    <button class="save-button" type="submit">Gem</button>
+                    <button class="save-button" type="submit" [disabled]="userForm.invalid">Gem</button>
                     <button class="cancel-button" (click)="cancel('user')" type="button">Annuller</button>
                     <button class="delete-button" style="float: right;" (click)="deleteUser(user)" type="button">Slet</button>
                     <br>
                 </div>
-                <button class="reset-button" style="margin-top: 5px;" (click)="resetPassword(user.userId)" type="button">Nulstil Adgangskode</button>
+                <button class="reset-button" style="margin-top: 5px;" (click)="resetPassword(user.userId)" type="button">Nulstil
+                    Adgangskode</button>
             </form>
         </div>
         <div *ngIf="isFormActive('bookForm')">
             <form class="form" #bookForm="ngForm" (ngSubmit)="editBook()">
                 <div class="formItem">
+                    <label>Modul: </label>
+                    <input type="text" [(ngModel)]="book.module.name" id="moduleName" name="moduleName" #moduleName="ngModel" disabled>
+                </div>
+                <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="formItem">
                     <label>Mængde: </label>
-                    <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
+                    <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" [min]="0" required [ngClass]="{ 'invalid-input': amount.invalid }">
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
+                <button class="save-button" type="submit" [disabled]="bookForm.invalid">Gem</button>
                 <button class="cancel-button" (click)="cancel('book')" type="button">Annuller</button>
                 <button class="delete-button" style="float: right;" (click)="deleteBook(book)" type="button">Slet</button>
             </div>
@@ -355,14 +366,14 @@
             <form class="form" #fileTagForm="ngForm" (ngSubmit)="editFileTag()">
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="formItem">
                     <div>Synlighed:</div>
                         <app-filetag-multi-dropdown style="width: 70%;" [fileTag]="fileTag" [selectedVisibilityOptions]="selectedVisibilityOptions"></app-filetag-multi-dropdown>
                   </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
+                <button class="save-button" type="submit" [disabled]="!fileTagForm.valid">Gem</button>
                 <button class="cancel-button" (click)="cancel('fileTag')" type="button">Annuller</button>
                 <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag)" type="button">Slet</button>
             </div>
@@ -372,10 +383,10 @@
             <form class="form" #locationForm="ngForm" (ngSubmit)="editLocation()">
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
+                <button class="save-button" type="submit" [disabled]="!locationForm.valid">Gem</button>
                 <button class="cancel-button" (click)="cancel('location')" type="button">Annuller</button>
                 <button class="delete-button" style="float: right;" (click)="deleteLocation(location)" type="button">Slet</button>
             </div>
@@ -385,15 +396,15 @@
             <form class="form" #moduleForm="ngForm" (ngSubmit)="editModule()">
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="formItem">
                     <label>Beskrivelse: </label>
                     <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
-                        #description="ngModel" required></textarea>
+                        #description="ngModel"></textarea>
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
+                <button class="save-button" type="submit" [disabled]="!moduleForm.valid">Gem</button>
                 <button class="cancel-button" (click)="cancel('module')" type="button">Annuller</button>
                 <button class="delete-button" style="float: right;" (click)="deleteModule(module)" type="button">Slet</button>
             </div>
@@ -405,7 +416,7 @@
                 <div class="formItem">
                     <label>Modul: </label>
                     <input type="text" [(ngModel)]="course.module.name" id="moduleName" name="moduleName"
-                        #moduleName="ngModel" required disabled="true">
+                        #moduleName="ngModel" required [disabled]="true">
                 </div>
                 <div class="formItem">
                     <label>Kursus Type:</label>
@@ -420,26 +431,26 @@
                 </div>
                     <div class="formItem">
                         <label>Start Dato:</label>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': startDate.invalid }">
                             <mat-label>Vælg en dato</mat-label>
                             <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
-                                id="startDatePicker" name="startDate" #startDate="ngModel">
+                                id="startDatePicker" name="startDate" #startDate="ngModel" required>
                             <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div class="formItem">
                         <label>Start Dato:</label>
-                        <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                        <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': endDate.invalid }">
                             <mat-label>Vælg en dato</mat-label>
                             <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
-                                id="endDatePicker" name="endDate" #endDate="ngModel">
+                                id="endDatePicker" name="endDate" #endDate="ngModel" required>
                             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div class="buttons">
-                        <button class="save-button" type="submit">Gem</button>
+                        <button class="save-button" type="submit" [disabled]="!courseForm.valid">Gem</button>
                         <button class="cancel-button" (click)="cancel('course')" type="button">Annuller</button>
                         <button class="delete-button" style="float: right;" (click)="deleteCourse(course)" type="button">Slet</button>
                     </div>
@@ -449,12 +460,12 @@
             <form class="form" #personForm="ngForm" (ngSubmit)="editPerson()">
                 <div class="formItem">
                     <label>Navn: </label>
-                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="formItem">
                     <label>Initialer: </label>
                     <input type="text" [(ngModel)]="person.initials" id="initials" name="initials" #initials="ngModel"
-                        required>
+                        required [ngClass]="{ 'invalid-input': initials.invalid }">
                 </div>
                 <div class="formItem">
                     <label>Afdeling:</label>
@@ -510,20 +521,20 @@
                 </div>
                 <div class="formItem">
                     <label>Start Dato:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': hiringDate.invalid }">
                         <mat-label>Vælg en dato</mat-label>
                         <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate"
-                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel" required>
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
                 <div class="formItem">
                     <label>Slut Dato:</label>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': endDate.invalid }">
                         <mat-label>Vælg en dato</mat-label>
                         <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
-                            name="endDate" #endDate="ngModel">
+                            name="endDate" #endDate="ngModel" required>
                         <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
@@ -536,7 +547,7 @@
                     </div>
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit">Gem</button>
+                <button class="save-button" type="submit" [disabled]="!personForm.valid">Gem</button>
                 <button class="cancel-button" (click)="cancel('person')" type="button">Annuller</button>
                 <button class="delete-button" style="float: right;" (click)="deletePerson(person)" type="button">Slet</button>
             </div>

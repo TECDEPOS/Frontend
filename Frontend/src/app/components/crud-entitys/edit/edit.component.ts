@@ -1,4 +1,4 @@
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/Models/Book';
 import { Department } from 'src/app/Models/Department';
@@ -73,15 +73,6 @@ export class EditComponent extends Unsub {
     { property: 'pkVisibility', displayName: 'Pædagogisk Konsulent' },
   ];
 
-  bookForm: FormGroup;
-  depertmentForm: FormGroup;
-  fileTagForm: FormGroup;
-  locationForm: FormGroup;
-  moduleForm: FormGroup;
-  courseForm: FormGroup;
-  personForm: FormGroup;
-  userForm: FormGroup;
-
   // Takes the Enums and only get the strings and not the numbers
   courseType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
     .filter(key => !isNaN(Number(CourseType[key])));
@@ -103,17 +94,10 @@ export class EditComponent extends Unsub {
     private personService: PersonsService,
     private userService: UserService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) {
     super();
-    this.bookForm = new FormGroup({});
-    this.depertmentForm = new FormGroup({});
-    this.fileTagForm = new FormGroup({});
-    this.locationForm = new FormGroup({});
-    this.moduleForm = new FormGroup({});
-    this.courseForm = new FormGroup({});
-    this.personForm = new FormGroup({});
-    this.userForm = new FormGroup({});
   }
 
   ngOnInit() {

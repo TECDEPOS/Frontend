@@ -321,3 +321,7 @@ th {
   cursor: pointer;
   background-color: #be2c00;
 }
+
+.invalid-input {
+  border: 1px solid red !important;
+}
