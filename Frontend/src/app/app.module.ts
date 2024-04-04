@@ -48,6 +48,7 @@ import { NavBarComponent } from './components/Misc/nav-bar/nav-bar.component';
 import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
+import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
 import { registerLocaleData } from '@angular/common';
 import localeDa from '@angular/common/locales/da'
 
@@ -97,6 +98,7 @@ export const MY_DATE_FORMATS = {
     NavBarComponent,
     PasswordExpiredPopupComponent,
     SnackbarIndicatorComponent,
+    ExportToExcelComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -134,7 +136,8 @@ export const MY_DATE_FORMATS = {
   { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } },
   { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-  { provide: MAT_DATE_LOCALE, useValue: 'da-DK'}
+  { provide: MAT_DATE_LOCALE, useValue: 'da-DK'},
+  ExportToExcelComponent,
   ],
   bootstrap: [AppComponent]
 })

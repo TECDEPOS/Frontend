@@ -9,8 +9,9 @@ export class Person{
     name: string = "";
     initials: string = "";
     departmentId: number|null = null;
-    educationalConsultantId: number|null = null;
     locationId: number|null = null;
+    educationalConsultantId: number|null = null;
+    educationalLeaderId: number|null = null;
     operationCoordinatorId: number|null = null;
     hiringDate: Date = new Date;
     endDate: Date = new Date;
@@ -19,6 +20,7 @@ export class Person{
 
   
     educationalConsultant: User = new User;
+    educationalLeader: User = new User;
     operationCoordinator: User = new User;
     department?: Department = new Department;
     location?: Location = new Location;

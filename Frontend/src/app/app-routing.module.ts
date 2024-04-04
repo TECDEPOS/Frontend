@@ -8,6 +8,7 @@ import { FileUploadComponent } from './components/file/file-upload/file-upload.c
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 import { CoursePageComponent } from './components/courses/course-page/course-page.component';
+import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'fileUpload', component: FileUploadComponent, canActivate:[authGuard]},
   { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
   { path: 'administration', component: CrudEntityPageComponent, canActivate:[authGuard],},
+  { path: 'excel', component: ExportToExcelComponent, canActivate:[authGuard],},
 ];
 
 @NgModule({

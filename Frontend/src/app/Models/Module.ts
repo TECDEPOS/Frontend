@@ -1,5 +1,4 @@
 import { Book } from "./Book";
-import { CourseType } from "./CourseType";
 
 export class Module{
     moduleId: number = 0;

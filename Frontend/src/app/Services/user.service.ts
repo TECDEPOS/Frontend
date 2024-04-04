@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { User } from '../Models/User';
 import { userViewModel } from '../Models/ViewModels/addUserViewModel';
 import { UserRole } from '../Models/UserRole';
+import { BossViewModel, LeaderViewModel } from '../Models/ViewModels/BossViewModel';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,6 +24,14 @@ export class UserService {
 
   getUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.baseApiUrl + 'Users/')  
+  }
+
+  getEducationBossesExcel(): Observable<BossViewModel[]>{
+    return this.http.get<BossViewModel[]>(this.baseApiUrl + 'Users/educationBossesExcel')  
+  }
+
+  getEducationLeadersExcel(): Observable<LeaderViewModel[]>{
+    return this.http.get<LeaderViewModel[]>(this.baseApiUrl + 'Users/educationLeadersExcel')  
   }
 
   getUsersByEducationBossId(id: number): Observable<User[]>{
