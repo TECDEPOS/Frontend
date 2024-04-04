@@ -162,8 +162,6 @@ th {
 
 .TableBox th {
     width: auto;
-    padding-top: 12px;
-    padding-bottom: 12px;
     background-color: #006E8C;
     color: white;
 }

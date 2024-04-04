@@ -167,33 +167,6 @@ mat-option {
   display: block;
 }
 
-.create-button {
-  height: 25px;
-  margin-top: 10px;
-  padding: .25rem .75rem .25rem .75rem;
-  background-color: #006E8C;
-  border: 0.5px solid black;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.create-button:disabled {
-  background-color: #66a1b1;
-  cursor: default;
-}
-
-.create-button:hover:not(:disabled) {
-  background-color: #005f79;
-  border: 1px solid black;
-}
-
-.mat-mdc-raised-button:not(:disabled) {
-  background-color: #006E8C;
-  color: #ffffff;
-}
-
-.invalid-input {
-  border: 1px solid red !important;
+.submit{
+  float: right;
 }

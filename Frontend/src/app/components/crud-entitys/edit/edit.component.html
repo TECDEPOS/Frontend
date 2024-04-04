@@ -259,9 +259,9 @@
                         [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="buttons">
-                    <button class="save-button" type="submit" [disabled]="!departmentForm.valid">Gem</button>
-                    <button class="cancel-button" (click)="cancel('department')">Annuller</button>
-                    <button class="delete-button" style="float: right;" (click)="deleteDepartment(department)"
+                    <button class="button submit" type="submit" [disabled]="!departmentForm.valid">Gem</button>
+                    <button class="button cancel" (click)="cancel('department')">Annuller</button>
+                    <button class="button delete" (click)="deleteDepartment(department)"
                         type="button">Slet</button>
                 </div>
             </form>
@@ -332,12 +332,12 @@
                     </mat-form-field>
                 </div>
                 <div class="buttons">
-                    <button class="save-button" type="submit" [disabled]="userForm.invalid">Gem</button>
-                    <button class="cancel-button" (click)="cancel('user')" type="button">Annuller</button>
-                    <button class="delete-button" style="float: right;" (click)="deleteUser(user)" type="button">Slet</button>
+                    <button class="button submit" type="submit" [disabled]="userForm.invalid">Gem</button>
+                    <button class="button cancel" (click)="cancel('user')" type="button">Annuller</button>
+                    <button class="button delete" (click)="deleteUser(user)" type="button">Slet</button>
                     <br>
                 </div>
-                <button class="reset-button" style="margin-top: 5px;" (click)="resetPassword(user.userId)" type="button">Nulstil
+                <button class="button reset" (click)="resetPassword(user.userId)" type="button">Nulstil
                     Adgangskode</button>
             </form>
         </div>
@@ -356,9 +356,9 @@
                     <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" [min]="0" required [ngClass]="{ 'invalid-input': amount.invalid }">
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit" [disabled]="bookForm.invalid">Gem</button>
-                <button class="cancel-button" (click)="cancel('book')" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteBook(book)" type="button">Slet</button>
+                <button class="button submit" type="submit" [disabled]="bookForm.invalid">Gem</button>
+                <button class="button cancel" (click)="cancel('book')" type="button">Annuller</button>
+                <button class="button delete" (click)="deleteBook(book)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -373,9 +373,9 @@
                         <app-filetag-multi-dropdown style="width: 70%;" [fileTag]="fileTag" [selectedVisibilityOptions]="selectedVisibilityOptions"></app-filetag-multi-dropdown>
                   </div>
                 <div class="buttons">
-                <button class="save-button" type="submit" [disabled]="!fileTagForm.valid">Gem</button>
-                <button class="cancel-button" (click)="cancel('fileTag')" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteFileTag(fileTag)" type="button">Slet</button>
+                <button class="button submit" type="submit" [disabled]="!fileTagForm.valid">Gem</button>
+                <button class="button cancel" (click)="cancel('fileTag')" type="button">Annuller</button>
+                <button class="button delete" (click)="deleteFileTag(fileTag)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -386,9 +386,9 @@
                     <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required [ngClass]="{ 'invalid-input': name.invalid }">
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit" [disabled]="!locationForm.valid">Gem</button>
-                <button class="cancel-button" (click)="cancel('location')" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteLocation(location)" type="button">Slet</button>
+                <button class="button submit" type="submit" [disabled]="!locationForm.valid">Gem</button>
+                <button class="button cancel" (click)="cancel('location')" type="button">Annuller</button>
+                <button class="button delete" (click)="deleteLocation(location)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -404,9 +404,9 @@
                         #description="ngModel"></textarea>
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit" [disabled]="!moduleForm.valid">Gem</button>
-                <button class="cancel-button" (click)="cancel('module')" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deleteModule(module)" type="button">Slet</button>
+                <button class="button submit" type="submit" [disabled]="!moduleForm.valid">Gem</button>
+                <button class="button cancel" (click)="cancel('module')" type="button">Annuller</button>
+                <button class="button delete" (click)="deleteModule(module)" type="button">Slet</button>
             </div>
             </form>
         </div>
@@ -450,9 +450,9 @@
                         </mat-form-field>
                     </div>
                     <div class="buttons">
-                        <button class="save-button" type="submit" [disabled]="!courseForm.valid">Gem</button>
-                        <button class="cancel-button" (click)="cancel('course')" type="button">Annuller</button>
-                        <button class="delete-button" style="float: right;" (click)="deleteCourse(course)" type="button">Slet</button>
+                        <button class="button submit" type="submit" [disabled]="!courseForm.valid">Gem</button>
+                        <button class="button cancel" (click)="cancel('course')" type="button">Annuller</button>
+                        <button class="button delete" (click)="deleteCourse(course)" type="button">Slet</button>
                     </div>
             </form>
         </div>
@@ -547,9 +547,9 @@
                     </div>
                 </div>
                 <div class="buttons">
-                <button class="save-button" type="submit" [disabled]="!personForm.valid">Gem</button>
-                <button class="cancel-button" (click)="cancel('person')" type="button">Annuller</button>
-                <button class="delete-button" style="float: right;" (click)="deletePerson(person)" type="button">Slet</button>
+                <button class="button submit" type="submit" [disabled]="!personForm.valid">Gem</button>
+                <button class="button cancel" (click)="cancel('person')" type="button">Annuller</button>
+                <button class="button delete" (click)="deletePerson(person)" type="button">Slet</button>
             </div>
             </form>
         </div>
