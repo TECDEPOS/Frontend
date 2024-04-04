@@ -53,6 +53,7 @@ export class EditComponent extends Unsub {
   modules: Module[] = [];
   courses: Course[] = [];
   persons: Person[] = [];
+  educationalLeaders: User[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
   educationBosses: User[] = [];
@@ -406,6 +407,8 @@ export class EditComponent extends Unsub {
   getPersons() {
     this.personService.getPersons().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons = res;
+      console.log(res);
+      
     })
   }
 
@@ -417,6 +420,7 @@ export class EditComponent extends Unsub {
 
   getForPerson() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.educationalLeaders = res.filter(x => x.userRole === 2)
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 6);
       this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {

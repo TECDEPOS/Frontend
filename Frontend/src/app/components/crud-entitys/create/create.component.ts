@@ -48,6 +48,7 @@ export class CreateComponent extends Unsub implements OnInit {
   persons: Person[] = [];
   resentlyCreated: Person[] = [];
   educationBosses: User[] = [];
+  educationalLeaders: User[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
   showEducationBoss: boolean = false;
@@ -136,6 +137,7 @@ export class CreateComponent extends Unsub implements OnInit {
   
   getForPerson() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.educationalLeaders = res.filter(x => x.userRole === 2);
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       console.log(this.educationalConsultants);
       

@@ -283,6 +283,21 @@
                 </div>
                 <div class="test">
                     <div class="form-label">
+                        <label>Uddannelsesleder:</label>
+                    </div>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.educationalLeaderId">Vælg konsulent</mat-label>
+                        <mat-select [(ngModel)]="person.educationalLeaderId" name="educationalLeaderUserId"
+                            #educationalLeaderUserId="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let leader of educationalLeaders" [value]="leader.userId">
+                                {{leader.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="test">
+                    <div class="form-label">
                         <label>Pædagogisk konsulent:</label>
                     </div>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
