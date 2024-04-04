@@ -10,8 +10,10 @@ import { Person } from 'src/app/Models/Person';
 export class SnackbarIndicatorComponent {
 
   message: string = '';
+  icon: string = '';
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {message:string}){
+  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {message:string, icon:string}){
     if(data.message) this.message = data.message;
+    if(data.icon) this.icon = data.icon;
   }
 }

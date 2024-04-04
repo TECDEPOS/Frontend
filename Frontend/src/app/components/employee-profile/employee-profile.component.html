@@ -15,6 +15,7 @@
           <label>Lokation: </label>
           <label>Pædagogisk konsulent: </label>
           <label>Driftskoordinator: </label>
+          <label>Uddannelsesleder: </label>
           <label>Ansættelses Dato: </label>
           <label>Slut Dato: </label>
           <label>SVU Søgt: </label>
@@ -22,8 +23,10 @@
         </div>
         <div class="grid-input">
           <!-- <input type="text" [(ngModel)]="person.personId" id="personId" name="personId" #personId readonly> -->
-          <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
-          <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required>
+          <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required
+            [ngClass]="{ 'invalid-input': name.invalid && name.touched }">
+          <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel" required
+            [ngClass]="{ 'invalid-input': initials.invalid && initials.touched }">
 
           <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label *ngIf="!person.department || person.department.name === ''">Vælg afdeling:</mat-label>
@@ -36,7 +39,6 @@
             </mat-select>
           </mat-form-field>
           
-
           <mat-form-field subscriptSizing="dynamic" class="dropdown">
             <mat-label *ngIf="!person.location || person.location.name === ''">Vælg lokation:</mat-label>
             <mat-select [compareWith]="compareObjects" [disabled]="editDisabled" [(ngModel)]="person.location"
@@ -72,19 +74,31 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="datepicker">
+          <mat-form-field subscriptSizing="dynamic" class="dropdown">
+            <mat-label *ngIf="!person.educationalLeader || person.educationalLeader.name === ''">Vælg
+              Uddannelsesleder</mat-label>
+            <mat-select [compareWith]="compareObjects" [disabled]="editDisabled"
+              [(ngModel)]="person.educationalLeader" name="educationLeader" #educationLeader="ngModel">
+              <mat-option [value]="null">- Ingen -</mat-option>
+              <mat-option *ngFor="let leader of educationLeaders" [value]="leader">
+                {{leader.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': hiringDate.invalid }">
             <mat-label *ngIf="!person.hiringDate">Vælg en dato</mat-label>
             <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate" id="hiringDate"
-              name="hiringDate" #hiringDate="ngModel">
+              name="hiringDate" #hiringDate="ngModel" required>
             <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"
               [disabled]="editDisabled"></mat-datepicker-toggle>
             <mat-datepicker #hiringDatePicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="datepicker">
+          <mat-form-field subscriptSizing="dynamic" class="datepicker" [ngClass]="{ 'invalid-input': endDate.invalid }">
             <mat-label *ngIf="!person.endDate">Vælg en dato</mat-label>
             <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="person.endDate" id="endDatePicker"
-              name="endDate" #endDate="ngModel">
+              name="endDate" #endDate="ngModel" required>
             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"
               [disabled]="editDisabled"></mat-datepicker-toggle>
             <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
@@ -102,30 +116,22 @@
       </fieldset>
     </form>
     <div class="profile-buttons">
-      <button class="edit-button" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
+      <button class="button submit" *ngIf="editDisabled" (click)="enableEditMode()">Rediger</button>
       <div class="editmode-buttons">
-        <button class="save-button" (click)="onSubmit()" type="submit" *ngIf="!editDisabled"
+        <button class="button submit" (click)="myForm.valid && onSubmit()" type="submit" *ngIf="!editDisabled"
           [disabled]="myForm.invalid || saveDisabled">Gem</button>
-        <button class="cancel-button" *ngIf="!editDisabled" (click)="cancelEditMode()">Annuller</button>
+        <button class="button cancel" *ngIf="!editDisabled" (click)="cancelEditMode()">Annuller</button>
       </div>
     </div>
 
   </div>
   <div class="newModules">
     <div class="moduleToolbar">
-      <button class="add-module-button" (click)="openAddPersonModulePopup()">
+      <button class="submit icon" (click)="openAddPersonModulePopup()">
         <mat-icon class="upload-icon">add</mat-icon>
       </button>
     </div>
     <div class="allModules">
-      <!-- <div class="newModuleItem" *ngFor="let x of currentModules">
-        <div class="moduleItemInfo" *ngIf="x.status == 1">
-          <p><b (click)="openEditPersonModulePopup(x)">{{x.course!.module.name}}</b> | {{moduleTypes[x.course!.courseType]}}</p>
-          <p> Periode: {{x.course!.startDate | date: 'dd/MM/YY'}} - {{x.course!.endDate | date: 'dd/MM/YY'}}</p>
-          <p *ngIf="x.status != 1">Status: {{status[x.status]}}</p>
-          <p *ngIf="x.status == 1">Status: Ikke Startet</p> 
-        </div>
-      </div> -->
       <div class="newModuleItem" *ngFor="let x of currentPersonCourses">
         <div class="moduleItemInfo">
           <mat-icon class="deleteIcon" (click)="deletepersonCourse(x)">cancel</mat-icon>
@@ -156,7 +162,7 @@
   </div>
   <div class="files">
     <div class="upload-file">
-      <button class="upload-file-button" (click)="openFileUploadPopUp()">
+      <button class="submit icon" (click)="openFileUploadPopUp()">
         <mat-icon class="upload-icon">attach_file</mat-icon>
       </button>
       <mat-form-field class="search-bar" subscriptSizing="dynamic">
