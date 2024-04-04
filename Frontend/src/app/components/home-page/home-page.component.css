@@ -116,16 +116,6 @@ mat-form-field{
   border-collapse: collapse;
 }
 
-.TableBox td{
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-.employeeName{
-  /* text-decoration: underline;  */
-  /* color: rgb(0, 26, 255); */
-}
-
 .employeeName:hover{
   cursor: pointer;
 }
@@ -143,32 +133,14 @@ mat-form-field{
   /* border-left: 1px solid #ddd; */
   z-index: 101;
 }
-
-th{
-  text-align: center;
-}
-/* .TableBox th:first-child{
-  border-left: 1px solid #006E8C;
-}
-
-.TableBox th:last-child{
-  border-right: 1px solid #006E8C;
-} */
-
 th {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
   
-.TableBox tr:nth-child(even){background-color: #f2f2f2;}
-
-.TableBox tr:hover {background-color: #ddd;}
-
 .TableBox th {
   width: auto;
-  padding-top: 12px;
-  padding-bottom: 12px;
   background-color: #006E8C;
   color: white;
 }
@@ -187,21 +159,4 @@ th {
 
   ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
     color: white;
-}
-
-.filter-button {
-  height: 25px;
-  margin-top: 10px;
-  padding: .25rem .75rem .25rem .75rem;
-  background-color: #006E8C;
-  border: 0.5px solid black;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.filter-button:hover:not(:disabled) {
-  background-color: #005f79;
-  border: 1px solid black;
 }

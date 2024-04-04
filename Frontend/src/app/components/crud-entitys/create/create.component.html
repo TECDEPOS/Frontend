@@ -3,50 +3,56 @@
         <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
-                (ngSubmit)="createDepartment()">
+                (ngSubmit)="departmentForm.valid && createDepartment()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
                     <p>&ensp;</p>
-                    <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="department.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" style="float: right;" type="submit"
+                        (click)="checkForm(departmentForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
         <div *ngIf="this.role === 'Administrator'">
             <div class="picker" (click)="toggleForm('userForm')">Bruger</div>
-            <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm" (ngSubmit)="createUser()">
+            <form *ngIf="isFormActive('userForm')" class="form" #userForm="ngForm"
+                (ngSubmit)="userForm.valid && createUser()">
                 <div class="test">
                     <div class="form-label">
                         <label>Brugernavn: </label>
                     </div>
                     <p>&ensp;</p>
                     <input type="text" [(ngModel)]="user.username" id="userName" name="userName" #userName="ngModel"
-                        required>
+                        required
+                        [ngClass]="{ 'invalid-input': userName.invalid && (userName.touched || userName.dirty || (submitClicked && !userName.dirty && !userName.touched)) }">
                 </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
                     <p>&ensp;</p>
-                    <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="user.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Brugerrolle:</label>
                     </div>
                     <p>&ensp;</p>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': role.invalid && (role.touched || role.dirty || (submitClicked && !role.dirty && !role.touched)) }">
                         <mat-label>Vælg Brugerrole</mat-label>
-                        <mat-select [(ngModel)]="user.userRole" name="userRole" #userForm="ngModel"
+                        <mat-select [(ngModel)]="user.userRole" name="userRole" #role="ngModel"
                             (selectionChange)="onRoleChange($event.value)">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
                                 {{role.replaceAll('_', ' ')}}
-                            </mat-option>   
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -55,9 +61,11 @@
                         <label>Uddannelseschef:</label>
                     </div>
                     <p>&ensp;</p>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': educationBoss.invalid && (educationBoss.touched || educationBoss.dirty || (submitClicked && !educationBoss.dirty && !educationBoss.touched)) }">
                         <mat-label>Vælg Uddannelseschef</mat-label>
-                        <mat-select [(ngModel)]="user.educationBossId" name="educationBoss" #userForm="ngModel">
+                        <mat-select [(ngModel)]="user.educationBossId" name="educationBoss" #educationBoss="ngModel"
+                            [required]="showEducationBoss">
                             <mat-option *ngFor="let educationBoss of educationBosses; let i = index"
                                 [value]="educationBoss.userId">
                                 {{educationBoss.name}}
@@ -87,7 +95,7 @@
                     <p>&ensp;</p>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label>Vælg Location</mat-label>
-                        <mat-select [(ngModel)]="user.locationId" name="location" #userForm="ngModel">
+                        <mat-select [(ngModel)]="user.locationId" name="location" #location="ngModel">
                             <mat-option *ngFor="let location of locations; let i = index" [value]="location.locationId">
                                 {{location.name}}
                             </mat-option>
@@ -95,28 +103,31 @@
                     </mat-form-field>
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(userForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('bookForm')">Bøger</div>
-            <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm" (ngSubmit)="createBook()">
+            <form *ngIf="isFormActive('bookForm')" class="form" #bookForm="ngForm"
+                (ngSubmit)="bookForm.valid && createBook()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
                     <p>&ensp;</p>
-                    <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="book.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Modul:</label>
                     </div>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': module.invalid && (module.touched || module.dirty || (submitClicked && !module.dirty && !module.touched)) }">
                         <mat-label>Vælg Modul</mat-label>
-                        <mat-select [(ngModel)]="book.moduleId" name="moduleId" #bookForm="ngModel">
+                        <mat-select [(ngModel)]="book.moduleId" name="module" #module="ngModel" required>
                             <mat-option *ngFor="let module of modules; let i = index" [value]="module.moduleId">
                                 {{module.name}}
                             </mat-option>
@@ -128,50 +139,55 @@
                         <label>Mængde: </label>
                     </div>
                     <p>&ensp;</p>
-                    <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required>
+                    <input type="number" [(ngModel)]="book.amount" id="amount" name="amount" #amount="ngModel" required
+                        [ngClass]="{ 'invalid-input': amount.invalid && (amount.touched || amount.dirty || (submitClicked && !amount.dirty && !amount.touched)) }">
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(bookForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('fileTagForm')">Filkategori</div>
-            <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm" (ngSubmit)="createFileTag()">
+            <form *ngIf="isFormActive('fileTagForm')" class="form" #fileTagForm="ngForm"
+                (ngSubmit)="fileTagForm.valid && createFileTag()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
                     <p>&ensp;</p>
-                    <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="fileTag.tagName" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
-                
+
                 <div class="test">
                     <div class="form-label">
                         <label>Synlighed:</label>
                     </div>
-                    <app-filetag-multi-dropdown class="dropdown" style="width: 70%;" [fileTag]="fileTag"></app-filetag-multi-dropdown>
+                    <app-filetag-multi-dropdown class="dropdown" style="width: 70%;"
+                        [fileTag]="fileTag"></app-filetag-multi-dropdown>
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(fileTagForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('courseForm')">Kursus</div>
-            <form *ngIf="isFormActive('courseForm')" class="form" #userForm="ngForm" (ngSubmit)="createCourse()">
+            <form *ngIf="isFormActive('courseForm')" class="form" #courseForm="ngForm"
+                (ngSubmit)="courseForm.valid && createCourse()">
                 <div class="test">
                     <div class="form-label">
                         <label>Modul:</label>
                     </div>
                     <p>&ensp;</p>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': module.invalid && (module.touched || module.dirty || (submitClicked && !module.dirty && !module.touched)) }">
                         <mat-label>Vælg Modul</mat-label>
-                        <mat-select [(ngModel)]="course.moduleId" name="course" #courseForm="ngModel">
-                            <mat-option *ngFor="let module of modules; let i = index"
-                                [value]="module.moduleId">
+                        <mat-select [(ngModel)]="course.moduleId" name="module" #module="ngModel" required>
+                            <mat-option *ngFor="let module of modules; let i = index" [value]="module.moduleId">
                                 {{module.name}}
                             </mat-option>
                         </mat-select>
@@ -182,41 +198,44 @@
                         <label>Kursus Type:</label>
                     </div>
                     <p>&ensp;</p>
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                        [ngClass]="{ 'invalid-input': courseTypes.invalid && (courseTypes.touched || courseTypes.dirty || (submitClicked && !courseTypes.dirty && !courseTypes.touched)) }">
                         <mat-label>Vælg Kursus Type</mat-label>
-                        <mat-select [(ngModel)]="course.courseType" name="courseType" #courseForm="ngModel">
+                        <mat-select [(ngModel)]="course.courseType" name="courseType" #courseTypes="ngModel" required>
                             <mat-option *ngFor="let type of courseType; let i = index" [value]="i">
                                 {{type}}
-                            </mat-option>   
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
-                </div>                
+                </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Start Dato:</label>
                     </div>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker"
+                        [ngClass]="{ 'invalid-input': startDate.invalid && (startDate.touched || startDate.dirty || (submitClicked && !startDate.dirty && !startDate.touched)) }">
                         <mat-label>Vælg en start dato</mat-label>
                         <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="course.startDate"
-                            id="startDatePicker" name="startDate" #startDate="ngModel">
+                            id="startDatePicker" name="startDate" #startDate="ngModel" required>
                         <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #startDatePicker></mat-datepicker>
                     </mat-form-field>
-                </div>                
+                </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Slut Dato:</label>
                     </div>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker"
+                        [ngClass]="{ 'invalid-input': endDate.invalid && (endDate.touched || endDate.dirty || (submitClicked && !endDate.dirty && !endDate.touched)) }">
                         <mat-label>Vælg en slut dato</mat-label>
-                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate"
-                            id="endDatePicker" name="endDate" #hiringDate="ngModel">
+                        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="course.endDate" id="endDatePicker"
+                            name="endDate" #endDate="ngModel" required>
                         <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #endDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(courseForm)">Opret</button>
                 </div>
                 <br>
             </form>
@@ -224,34 +243,62 @@
         <div>
             <div class="picker" (click)="toggleForm('locationForm')">Lokation</div>
             <form *ngIf="isFormActive('locationForm')" class="form" #locationForm="ngForm"
-                (ngSubmit)="createLocation()">
+                (ngSubmit)="locationForm.valid && createLocation()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
-                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="location.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(locationForm)">Opret</button>
+                </div>
+                <br>
+            </form>
+        </div>
+        <div>
+            <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
+            <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm"
+                (ngSubmit)="moduleForm.valid && createModule();">
+                <div class="test" style="justify-content: flex-start;">
+                    <div class="form-label">
+                        <label>Navn: </label>
+                    </div>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
+                </div>
+                <div class="test" style="justify-content: flex-start;">
+                    <div class="form-label">
+                        <label>Beskrivelse: </label>
+                    </div>
+                    <textarea [(ngModel)]="module.description" id="description" name="description"
+                        #description="ngModel"></textarea>
+                </div>
+                <div class="form-button">
+                    <button class="button submit" type="submit" (click)="checkForm(moduleForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
         <div>
             <div class="picker" (click)="toggleForm('personForm')">Underviser</div>
-            <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="createPerson()">
+            <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm"
+                (ngSubmit)="personForm.valid && createPerson()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
-                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required>
+                    <input type="text" [(ngModel)]="person.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
                 </div>
                 <div class="test">
                     <div class="form-label">
                         <label>Initialer: </label>
                     </div>
                     <input type="text" [(ngModel)]="person.initials" id="name" name="initials" #initials="ngModel"
-                        required>
+                        required
+                        [ngClass]="{ 'invalid-input': initials.invalid && (initials.touched || initials.dirty || (submitClicked && !initials.dirty && !initials.touched)) }">
                 </div>
                 <div class="test">
                     <div class="form-label">
@@ -315,10 +362,11 @@
                     <div class="form-label">
                         <label>Start Dato:</label>
                     </div>
-                    <mat-form-field subscriptSizing="dynamic" class="datepicker">
+                    <mat-form-field subscriptSizing="dynamic" class="datepicker"
+                        [ngClass]="{ 'invalid-input': hiringDate.invalid && (hiringDate.touched || hiringDate.dirty || (submitClicked && !hiringDate.dirty && !hiringDate.touched)) }">
                         <mat-label>Vælg en dato</mat-label>
                         <input matInput [matDatepicker]="hiringDatePicker" [(ngModel)]="person.hiringDate"
-                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel">
+                            id="hiringDatePicker" name="hiringDate" #hiringDate="ngModel" required>
                         <mat-datepicker-toggle matIconSuffix [for]="hiringDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker class="calendar" #hiringDatePicker></mat-datepicker>
                     </mat-form-field>
@@ -333,33 +381,11 @@
                     </div>
                 </div>
                 <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
+                    <button class="button submit" type="submit" (click)="checkForm(personForm)">Opret</button>
                 </div>
                 <br>
             </form>
         </div>
-        <div>
-            <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
-            <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="createModule()">
-                <div class="test" style="justify-content: flex-start;">
-                    <div class="form-label">
-                        <label>Navn: </label>
-                    </div>
-                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
-                </div>
-                <div class="test" style="justify-content: flex-start;">
-                    <div class="form-label">
-                        <label>Beskrivelse: </label>
-                    </div>
-                    <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
-                        #description="ngModel" required></textarea>
-                </div>
-                <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>
-                </div>
-                <br>
-            </form>
-        </div>        
     </span>
     <div class="innerBox" *ngIf="resentlyCreated.length > 0">
         Nyoprettede personer:

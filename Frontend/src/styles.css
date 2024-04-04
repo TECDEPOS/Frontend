@@ -29,3 +29,83 @@ body {
     --mat-mdc-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: #fff;
 }
+
+.red-snackbar {
+    --mdc-snackbar-container-color: #be1818;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.invalid-input {
+    border: 1px solid red !important;
+}
+
+.button{
+    border: 1px solid black;
+    height: 25px;
+    padding: .25rem .75rem .25rem .75rem;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.submit {
+    background-color: #006E8C;
+}
+
+.submit:disabled {
+    background-color: #608d99;
+    cursor: default;
+}
+
+.submit:hover:not(:disabled) {
+    background-color: #005f79;
+    border: 1px solid black;
+}
+
+.cancel{
+    color: black !important;
+    font-weight: unset;
+}
+
+.cancel:hover{
+    cursor: pointer;
+    background-color: #dadada;
+}
+
+.delete {
+    background-color: #ff0000;
+}
+
+.delete:hover {
+    cursor: pointer;
+    background-color: #ac0000;
+}
+
+.reset{
+    background-color: #ff3c00;
+  }
+  
+  .reset:hover {
+    cursor: pointer;
+    background-color: #be2c00;
+  }
+
+th{
+    width: auto;
+    background-color: #006E8C;
+    color: white;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+td{
+    border: 1px solid #ddd;
+    text-align: center;
+    align-items: center;
+  }
