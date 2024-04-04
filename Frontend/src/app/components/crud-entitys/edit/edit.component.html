@@ -188,6 +188,26 @@
             </div>
         </div>
         <div>
+            <div class="picker" (click)="toggleList('moduleList')">Modul</div>
+            <div *ngIf="isListActive('moduleList')" class="List">
+                <div class="table">
+                    <div class="TableForPeople">
+                        <table class="TableBox" matSort [matSortDisableClear]="true"
+                            (matSortChange)="sortData($event, 'module')">
+                            <tr>
+                                <th mat-sort-header="name">
+                                    Navn
+                                </th>
+                            </tr>
+                            <tr *ngFor="let module of modules, let i = index" (click)="moduleSelecter(i)">
+                                <td>{{module.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
             <div class="picker" (click)="toggleList('personList')">Underviser</div>
             <div *ngIf="isListActive('personList')" class="List">
                 <div class="table">
@@ -225,27 +245,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="picker" (click)="toggleList('moduleList')">Modul</div>
-            <div *ngIf="isListActive('moduleList')" class="List">
-                <div class="table">
-                    <div class="TableForPeople">
-                        <table class="TableBox" matSort [matSortDisableClear]="true"
-                            (matSortChange)="sortData($event, 'module')">
-                            <tr>
-                                <th mat-sort-header="name">
-                                    Navn
-                                </th>
-                            </tr>
-                            <tr *ngFor="let module of modules, let i = index" (click)="moduleSelecter(i)">
-                                <td>{{module.name}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>        
+        </div>    
     </div>
     <div class="innerBox" id="test" *ngIf="activeForm">
         <div>

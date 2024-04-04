@@ -257,8 +257,31 @@
             </form>
             </div>
         <div>
+            <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
+            <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="moduleForm.valid && createModule();">
+                <div class="test" style="justify-content: flex-start;">
+                    <div class="form-label">
+                        <label>Navn: </label>
+                    </div>
+                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required
+                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
+                </div>
+                <div class="test" style="justify-content: flex-start;">
+                    <div class="form-label">
+                        <label>Beskrivelse: </label>
+                    </div>
+                    <textarea [(ngModel)]="module.description" id="description" name="description" #description="ngModel"></textarea>
+                </div>
+                <div class="form-button">
+                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary" (click)="checkForm(moduleForm)">Opret</button>
+                </div>
+                <br>
+            </form>
+        </div>
+        <div>
             <div class="picker" (click)="toggleForm('personForm')">Underviser</div>
-            <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm" (ngSubmit)="personForm.valid && createPerson()">
+            <form *ngIf="isFormActive('personForm')" class="form" #personForm="ngForm"
+                (ngSubmit)="personForm.valid && createPerson()">
                 <div class="test">
                     <div class="form-label">
                         <label>Navn: </label>
@@ -360,28 +383,6 @@
                 <br>
             </form>
         </div>
-        <div>
-            <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
-            <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="moduleForm.valid && createModule();">
-                <div class="test" style="justify-content: flex-start;">
-                    <div class="form-label">
-                        <label>Navn: </label>
-                    </div>
-                    <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required
-                        [ngClass]="{ 'invalid-input': name.invalid && (name.touched || name.dirty || (submitClicked && !name.dirty && !name.touched)) }">
-                </div>
-                <div class="test" style="justify-content: flex-start;">
-                    <div class="form-label">
-                        <label>Beskrivelse: </label>
-                    </div>
-                    <textarea [(ngModel)]="module.description" id="description" name="description" #description="ngModel"></textarea>
-                </div>
-                <div class="form-button">
-                    <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary" (click)="checkForm(moduleForm)">Opret</button>
-                </div>
-                <br>
-            </form>
-        </div>        
     </span>
     <div class="innerBox" *ngIf="resentlyCreated.length > 0">
         Nyoprettede personer:
