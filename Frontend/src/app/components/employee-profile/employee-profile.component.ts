@@ -45,6 +45,7 @@ export class EmployeeProfileComponent extends Unsub{
   backupValues: Person = new Person;
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  educationLeaders: User[] = [];
   departments: Department[] = [];
   locations: Location[] = [];
   shownFiles: File[] = [];
@@ -85,6 +86,7 @@ export class EmployeeProfileComponent extends Unsub{
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 6);
+      this.educationLeaders = res.filter(x => x.userRole === 2);
     });
   }
 
@@ -144,7 +146,8 @@ export class EmployeeProfileComponent extends Unsub{
         this.saveDisabled = false
         this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
           data: {
-            message: `Ændringer Gemt`
+            message: `Ændringer Gemt`,
+            icon: 'done'
           }, panelClass: ['blue-snackbar'], duration: 3000
         });
       });

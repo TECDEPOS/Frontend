@@ -1,5 +1,5 @@
-import { FormGroup, FormControl } from '@angular/forms';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, NgForm, AbstractControl, ValidatorFn, Validators, ValidationErrors } from '@angular/forms';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Book } from 'src/app/Models/Book';
 import { Department } from 'src/app/Models/Department';
 import { FileTag } from 'src/app/Models/FileTag';
@@ -54,15 +54,17 @@ export class CreateComponent extends Unsub implements OnInit {
   showEducationBoss: boolean = false;
   activeForm: string | null = null
   role: string = '';
+  submitClicked: boolean = false;
+  
 
-  bookForm: FormGroup;
-  courseForm: FormGroup;
-  depertmentForm: FormGroup;
-  fileTagForm: FormGroup;
-  locationForm: FormGroup;
-  moduleForm: FormGroup;
-  personForm: FormGroup;
-  userForm: FormGroup;
+  @ViewChild('bookForm') bookForm!: NgForm;
+  @ViewChild('courseForm') courseForm!: NgForm;
+  @ViewChild('departmentForm') departmentForm!: NgForm;
+  @ViewChild('fileTagForm') fileTagForm!: NgForm;
+  @ViewChild('locationForm') locationForm!: NgForm;
+  @ViewChild('personForm') personForm!: NgForm;
+  @ViewChild('userForm') userForm!: NgForm;
+  @ViewChild('moduleForm') moduleForm!: NgForm;
 
   // Takes the Enums and only get the strings and not the numbers
   courseType: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
@@ -86,14 +88,6 @@ export class CreateComponent extends Unsub implements OnInit {
     private snackBar: MatSnackBar
   ) {
     super();
-    this.bookForm = new FormGroup({});
-    this.courseForm = new FormGroup({});
-    this.depertmentForm = new FormGroup({});
-    this.fileTagForm = new FormGroup({});
-    this.locationForm = new FormGroup({});
-    this.moduleForm = new FormGroup({});
-    this.personForm = new FormGroup({});
-    this.userForm = new FormGroup({});
   }
 
   ngOnInit() {
@@ -106,6 +100,7 @@ export class CreateComponent extends Unsub implements OnInit {
     }
     else {
       this.activeForm = formName
+      this.submitClicked = false; // set to false so required fields aren't immediately shown when switching forms
       
       if (this.activeForm == 'bookForm') {
         this.getModules();
@@ -192,21 +187,27 @@ export class CreateComponent extends Unsub implements OnInit {
   createBook() {
     this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.book = new Book;
-      this.openSnackBar('Bog');
+      this.bookForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Bog');
     });
   }
 
   createDepartment() {
     this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.department = new Department;
-      this.openSnackBar('Afdeling');
+      this.departmentForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Afdeling');
     })
   }
 
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTag = new FileTag;
-      this.openSnackBar('Filkategori');
+      this.fileTagForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Filkategori');
     })
   }
 
@@ -215,21 +216,37 @@ export class CreateComponent extends Unsub implements OnInit {
     
     this.courseService.addCourses(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.course = new Course;
-      this.openSnackBar('Kursus');      
+      this.courseForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Kursus');      
     })
   }
 
   createLocation() {
     this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.location = new Location;
-      this.openSnackBar('Lokation');
+      this.locationForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Lokation');
     })
+  }
+
+  checkForm(form: NgForm){
+    this.submitClicked = true;
+    console.log(this.course);
+    
+    if (!form.valid) {
+      this.openSnackBarFailed();
+    }
+    console.log('TEST SUBMIT', this.submitClicked);
   }
 
   createModule() {
     this.moduleService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.module = new Module;
-      this.openSnackBar('Modul');
+      this.moduleForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Modul');
     })
   }
 
@@ -238,23 +255,46 @@ export class CreateComponent extends Unsub implements OnInit {
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
-      this.openSnackBar('Underviser');
+      this.personForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Underviser');
     })
   }
 
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.user = new userViewModel;
-      this.openSnackBar('Bruger');
+      this.userForm.resetForm();
+      this.submitClicked = false;
+      this.openSnackBarSuccess('Bruger');
     })
   }
 
   // Opens a snackbar for 3 seconds indicating the entity was created.
-  openSnackBar(entity: string){
+  openSnackBarSuccess(entity: string){
     this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
       data: {
-        message: `${entity} oprettet`
+        message: `${entity} oprettet`,
+        icon: 'done'
       }, panelClass: ['blue-snackbar'], duration: 3000
     });
   }
+
+  openSnackBarFailed(){
+    this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+      data: {
+        message: `Udfyld alle påkrævede felter`,
+        icon: 'error'
+      }, panelClass: ['red-snackbar'], duration: 3000
+    });
+  }
+
+
+}
+
+export function moduleIdValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const moduleId = control.value;
+    return moduleId > 0 ? null : { 'invalidModuleId': true };
+  };
 }

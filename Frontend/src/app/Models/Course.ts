@@ -4,7 +4,7 @@ import { PersonCourse } from "./PersonCourse";
 
 export class Course{
     courseId: number = 0;
-    moduleId: number = 0;
+    moduleId: number | null = null;
     startDate: Date = new Date;
     endDate: Date = new Date;
 
