@@ -341,18 +341,18 @@
         <div>
             <div class="picker" (click)="toggleForm('moduleForm')">Modul</div>
             <form *ngIf="isFormActive('moduleForm')" class="form" #moduleForm="ngForm" (ngSubmit)="createModule()">
-                <div class="test">
+                <div class="test" style="justify-content: flex-start;">
                     <div class="form-label">
                         <label>Navn: </label>
                     </div>
                     <input type="text" [(ngModel)]="module.name" id="name" name="name" #name="ngModel" required>
                 </div>
-                <div class="test">
+                <div class="test" style="justify-content: flex-start;">
                     <div class="form-label">
                         <label>Beskrivelse: </label>
                     </div>
-                    <input type="text" [(ngModel)]="module.description" id="description" name="description"
-                        #description="ngModel" required>
+                    <textarea type="text" [(ngModel)]="module.description" id="description" name="description"
+                        #description="ngModel" required></textarea>
                 </div>
                 <div class="form-button">
                     <button class="create-button" style="float: right;" type="submit" mat-raised-button color="primary">Opret</button>

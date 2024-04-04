@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MatSelectModule } from '@angular/material/select';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -49,6 +49,10 @@ import { ModuleComponent } from './components/module/module.component';
 import { PasswordExpiredPopupComponent } from './components/pop-ups/password-expired-popup/password-expired-popup.component';
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
+import { registerLocaleData } from '@angular/common';
+import localeDa from '@angular/common/locales/da'
+
+registerLocaleData(localeDa);
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -132,7 +136,8 @@ export const MY_DATE_FORMATS = {
   { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } },
   { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-  ExportToExcelComponent
+  { provide: MAT_DATE_LOCALE, useValue: 'da-DK'},
+  ExportToExcelComponent,
   ],
   bootstrap: [AppComponent]
 })

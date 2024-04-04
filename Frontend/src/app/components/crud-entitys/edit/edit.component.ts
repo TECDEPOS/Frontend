@@ -545,7 +545,7 @@ export class EditComponent extends Unsub {
     this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.persons[this.persons.findIndex(x => x.personId == res.personId)] = res;
       this.backup = JSON.parse(JSON.stringify(res));
-      this.openSnackBar('Ansat')
+      this.openSnackBar('Underviser')
     });
   }
 

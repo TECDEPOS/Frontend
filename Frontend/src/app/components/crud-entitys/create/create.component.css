@@ -37,6 +37,18 @@ select {
   box-sizing: border-box;
 }
 
+textarea {
+  width: 70%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 41px;
+  height: 41px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
 .datepicker {
   width: 70%;
   height: 90%;
