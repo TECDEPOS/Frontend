@@ -52,15 +52,11 @@ export class AddPersonCourseComponent {
 
   ngOnInit() {
     this.getModules();
-    
   }
 
   getModules() {
     this.moduleService.getModules().subscribe(res => {
       this.modules = res;
-      console.log(res);
-      console.log(this.person);
-      
     })
   }
 
@@ -100,13 +96,16 @@ export class AddPersonCourseComponent {
     this.getCourses(module.moduleId);
     this.moduleSelected = true;
     this.module = module;
+
+    // Remove selected course on module change
+    this.newPersonCourse.course = null;
     
     this.cdr.detectChanges();
   }
 
   onCourseChange(course: Course) {
     this.newPersonCourse.course = course;
-    console.log(this.newPersonCourse.course);
+    console.log(this.newPersonCourse);
 
     let endDateBeforeToday = this.compareEndDates();
 
@@ -132,17 +131,14 @@ compareFn(optionValue: any, selectionValue: any): boolean {
 }
 
 onSubmit() {
-  // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh      
-  const newPersonCourseCopy = { ...this.newPersonCourse}
-  newPersonCourseCopy.course!.module = this.module;
-  
+  // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh  
+  const newPersonCourseCopy: PersonCourse = { ...this.newPersonCourse}
+   newPersonCourseCopy.course!.module = this.module;
   
   this.newPersonCourse.personId = this.person.personId;
   this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
   this.newPersonCourse.course = null!;
   this.newPersonCourse.person = null!;
-  
-  console.log(this.currentCourses);
 
   this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
     res.course = newPersonCourseCopy.course
