@@ -84,7 +84,7 @@ export class EditPersonmodulePopupComponent {
 
   // ToDo: Omskriv
   deletepersonCourse(){
-    this.personCourseService.deletePersonCourse(this.personCourse.personId, this.personCourse.courseId).subscribe(res => {
+    this.personCourseService.deletePersonCourse(this.personCourse.personId, this.personCourse.courseId!).subscribe(res => {
         this.currentPersoncourse.splice(this.currentPersoncourse.indexOf(this.personCourse), 1)
       this.closeDialog();
     });

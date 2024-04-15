@@ -73,6 +73,8 @@ export class TokenInterceptor implements HttpInterceptor {
       return this.authService.renewToken(authResponse).pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
+          console.log('RENEWTOKEN SWITCHMAP');
+          
 
           // Store new AccessToken and RefreshToken
           this.authService.storeAccessToken(token['accessToken']);
@@ -83,9 +85,11 @@ export class TokenInterceptor implements HttpInterceptor {
         }),
         catchError((err) => {
           if (err.error == this.sessionExpiredError) {
+            console.log('RENEWTOKEN SWITCHMAP FIRST ERROR', err);
             this.sessionExpiredPopup(err);
           }
           else {
+            console.log('RENEWTOKEN SWITCHMAP SECOND ERROR');
             this.openErrorPopup(err)
           }
           return throwError(() => {
