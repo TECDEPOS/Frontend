@@ -50,7 +50,8 @@ import { PasswordExpiredPopupComponent } from './components/pop-ups/password-exp
 import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator/snackbar-indicator.component';
 import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
 import { registerLocaleData } from '@angular/common';
-import localeDa from '@angular/common/locales/da'
+import localeDa from '@angular/common/locales/da';
+import { DndDirective } from './components/pop-ups/fileupload-popup/dnd.directive'
 
 registerLocaleData(localeDa);
 
@@ -99,6 +100,7 @@ export const MY_DATE_FORMATS = {
     PasswordExpiredPopupComponent,
     SnackbarIndicatorComponent,
     ExportToExcelComponent,
+    DndDirective,
   ],
   imports: [
     AppRoutingModule,
