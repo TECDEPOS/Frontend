@@ -11,7 +11,7 @@ import { FileService } from 'src/app/Services/file.service';
   styleUrls: ['./fileupload-popup.component.css']
 })
 export class FileuploadPopupComponent {
-
+  selectedTag: any = "";
   personId: number = 0;
   personFiles: File[] = [];
   displayFiles: any[] = [];
@@ -39,11 +39,6 @@ export class FileuploadPopupComponent {
     })
   }
 
-  // closeDialog(){
-  //   this.displayFiles = [];
-  //   this.dialogRef.close();
-  // }
-
   onSubmit(): void {
     // Build formData before sending request to server
     this.formData.append('personId', this.personId.toString());
@@ -59,38 +54,16 @@ export class FileuploadPopupComponent {
     });
   }
 
-
-  // fileChange(files: any) {    
-  //   console.log(files);
-    
-  //   if (files && files.length > 0) {
-  //     this.file = files[0];      
-  //   }
-  // }
-
-  onFileTagChange(newTag:FileTag, index: number){
-    this.fileTags.splice(index, 1, newTag);
-    console.log(this.fileTags);
-    
+  onFileTagChange(e: Event, index: number){
+    // Native HTML select can't parse objects properly, get selectedIndex and use that to get the correct FileTag
+    const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+    if (selectedIndex === 0) {
+      this.fileTags.splice(index, 1, null);
+    }
+    else{
+      this.fileTags.splice(index, 1, this.selectorFileTags[selectedIndex - 1]); // - 1 Because of the extra placeholder option in the HTML
+    }
   }
-
-  // confirmFile(){
-  //   this.file.fileTag = this.fileTag;
-  //   this.displayFiles.push(this.file);
-  //   this.fileTags.push(this.fileTag);
-  //   this.file = null;
-  //   this.fileTag = null!;
-  // }
-
-  // removeCurrentFile(){
-  //   this.file = null;
-  // }
-
-  // removeDisplayFile(i :number){
-  //   this.displayFiles.splice(i, 1);
-  //   this.fileTags.splice(i, 1);    
-  // }
-
 
   fileBrowseHandler(files: any){
     this.pushFiles(files);

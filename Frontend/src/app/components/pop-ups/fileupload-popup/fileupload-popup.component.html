@@ -20,13 +20,12 @@
       </div>
 
       <div class="file-tag">
-        <mat-form-field subscriptSizing="dynamic" class="dropdown">
-          <mat-label>Vælg Filkategori</mat-label>
-          <mat-select name="fileTag" (selectionChange)="onFileTagChange($event.value, i)">
-            <mat-option [value]="null">- Ingen -</mat-option>
-            <mat-option *ngFor="let tag of selectorFileTags" [value]="tag">{{ tag.tagName }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <select class="dropdown" (change)="onFileTagChange($event, i)">
+          <option selected [value]="null">Ingen Filkategori</option>
+          <option *ngFor="let tag of selectorFileTags; let n = index" [value]="tag" > 
+            {{ tag.tagName }}
+          </option>
+        </select>
       </div>
 
       <div class="delete-icon" (click)="deleteFile(i)">
