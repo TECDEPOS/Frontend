@@ -484,3 +484,10 @@ td>mat-icon:hover {
     width: 50%; 
     height: 25px;
 }
+
+.column{
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

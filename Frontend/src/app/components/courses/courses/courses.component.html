@@ -25,11 +25,11 @@
                                     <tr [ngClass]="{'selected-course': selectedCourseId == course.courseId}"
                                         *ngFor="let course of showedCourseList, let i = index"
                                         (click)="setSelectedCourseId(course.courseId)">
-                                        <td>{{courseType[course.courseType]}}</td>
-                                        <td>
+                                        <td class="column">{{courseType[course.courseType]}}</td>
+                                        <td class="column">
                                             <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
                                         </td>
-                                        <td>
+                                        <td class="column">
                                             <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
                                         </td>
                                     </tr>
@@ -68,23 +68,22 @@
                             </th>
                         </tr>
                         <tr *ngFor="let person of persons">
-                            <td>
-                                <p class="Name">{{person.name}}</p>
+                            <td class="column" style="width: 30%;" [title]="person.name">
+                                <p>{{person.name}}</p>
                             </td>
-                            <td>
+                            <td class="column" style="width: 7%;" [title]="person.initials">
                                 <p>{{person.initials}}</p>
                             </td>
-                            <td class="department">
-                                <p class="department">{{person.department?.name}}</p>
+                            <td class="column" style="width: 23%;" [title]="person.department?.name">
+                                <p>{{person.department?.name}}</p>
                             </td>
-                            <td class="department">
+                            <td class="column" style="width: 16%;" [title]="person.location?.name">
                                 <p class="StartDateShow">{{person.location?.name}}</p>
                             </td>
-                            <td class="End--date">
-                                <p class="EndDateShow">{{person.endDate | date: 'dd/MM/yyyy'}}</p>
-                                <div #progress class="Progress" id="{{person.personId}}"></div>
+                            <td class="column" style="width: 10%;">
+                                <p>{{person.endDate | date: 'dd/MM/yyyy'}}</p>
                             </td>
-                            <td *ngFor="let personCourse of person.personCourses">
+                            <td class="column" style="width: 14%;" *ngFor="let personCourse of person.personCourses">
                                 <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status].replaceAll('_', ' ')}}</p>
                             </td>
                         </tr>
@@ -116,7 +115,7 @@
                                             Afdeling
                                         </th>
                                         <th mat-sort-header="leaderTeacherLocation" style="width: 20%;">
-                                            Location
+                                            Lokation
                                         </th>
                                         <th mat-sort-header="leaderTeacherEndDate" style="width: 14%;">
                                             Slut dato
@@ -124,21 +123,20 @@
                                     </tr>
                                     <tr [ngClass]="{'selected-course': selectedPersonId == person.personId}" *ngFor="let person of leaderPersons"
                                         (click)="setSelectedPersonId(person.personId)">
-                                        <td>
-                                            <p class="Name">{{person.name}}</p>
+                                        <td class="column" [title]="person.name">
+                                            <p>{{person.name}}</p>
                                         </td>
-                                        <td>
+                                        <td class="column" [title]="person.initials">
                                             <p>{{person.initials}}</p>
                                         </td>
-                                        <td class="department">
-                                            <p class="department">{{person.department?.name}}</p>
+                                        <td class="column" [title]="person.department?.name">
+                                            <p>{{person.department?.name}}</p>
                                         </td>
-                                        <td class="department">
-                                            <p class="StartDateShow">{{person.location?.name}}</p>
+                                        <td class="column" [title]="person.location?.name">
+                                            <p>{{person.location?.name}}</p>
                                         </td>
-                                        <td class="End--date">
-                                            <p class="EndDateShow">{{person.endDate | date: 'dd/MM/yyyy'}}</p>
-                                            <div #progress class="Progress" id="{{person.personId}}"></div>
+                                        <td class="column">
+                                            <p>{{person.endDate | date: 'dd/MM/yyyy'}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -157,7 +155,7 @@
                     <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'lc')">
                         <tr>
                             <th mat-sort-header="leaderCourseName" style="width: 45%;">
-                                Navn
+                                Modul
                             </th>
                             <th mat-sort-header="leaderCourseType" style="width: 8%;">
                                 Type
@@ -174,7 +172,7 @@
                         </tr>
                         <tr *ngFor="let personCourse of showedTeacherCourseList">
                             <td>
-                                <p class="Name">{{personCourse.course?.module?.name}}</p>
+                                <p>{{personCourse.course?.module?.name}}</p>
                             </td>
                             <td>
                                 <p>{{courseType[personCourse.course!.courseType]}}</p>

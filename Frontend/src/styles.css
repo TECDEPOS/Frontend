@@ -109,3 +109,10 @@ td{
     text-align: center;
     align-items: center;
   }
+
+  .column {
+      max-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }

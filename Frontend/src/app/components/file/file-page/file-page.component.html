@@ -13,30 +13,30 @@
     <div class="TableForFiles">
       <table class="TableBox"  matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
         <tr>
-          <th mat-sort-header="fileName" style="min-width: 39.5%;">
+          <th mat-sort-header="fileName" style="width: 39.5%;">
             Filnavn
           </th>
           <th mat-sort-header="personName" style="min-width: auto;">
             Underviser
           </th>
-          <th mat-sort-header="uploadDate" style="max-width: 15%;">
+          <th mat-sort-header="uploadDate" style="width: 10%;">
             Upload dato
           </th>
-          <th  mat-sort-header="tag" style="max-width: 20%;">
+          <th  mat-sort-header="tag" style="width: 20%;">
             Filkategori
           </th>
-          <th style="width: 5%;">
+          <th style="width: 3%;">
             Download
           </th>
-          <th style="width: 5%;">
+          <th style="width: 3%;">
             Slet
           </th>
         </tr>
         <tr *ngFor="let file of showedList; let i = index">
-          <td><p> {{file.fileName}}</p></td>
-          <td><p routerLink="/employee/{{file.person.personId}}" class="employeeName"> {{file.person.name}}</p></td>
-          <td class="End--date">
-            <p class="EndDateShow">{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
+          <td class="column"><p> {{file.fileName}}</p></td>
+          <td class="column"><p routerLink="/employee/{{file.person.personId}}" class="employeeName"> {{file.person.name}}</p></td>
+          <td  class="column">
+            <p>{{file.uploadDate | date: 'dd/MM/yyyy'}}</p>
           </td>
           <td *ngIf="file.fileTag"><p>{{file.fileTag.tagName}}</p></td>
           <td *ngIf="!file.fileTag"><p>-</p></td>
