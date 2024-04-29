@@ -160,3 +160,9 @@ th {
   ::ng-deep .mat-sort-header-container > .mat-sort-header-arrow {
     color: white;
 }
+
+.column p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

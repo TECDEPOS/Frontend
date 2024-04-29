@@ -13,7 +13,7 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let department of departments, let i = index" (click)="departmentSelecter(i)">
-                                <td>{{department.name}}</td>
+                                <td class="column">{{department.name}}</td>
                             </tr>
                         </table>
                     </div>
@@ -39,9 +39,9 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let user of users, let i = index" (click)="userSelecter(i)">
-                                <td>{{user.userName}}</td>
-                                <td>{{user.name}}</td>
-                                <td>{{userRole[user.userRole]}}</td>
+                                <td class="column" style="width: 25%;">{{user.userName}}</td>
+                                <td class="column">{{user.name}}</td>
+                                <td class="column" style="width: 20%;">{{userRole[user.userRole]}}</td>
                             </tr>
                         </table>
                     </div>
@@ -66,9 +66,9 @@
                             </th>
                         </tr>
                         <tr *ngFor="let book of books, let i = index" (click)="bookSelecter(i)">
-                            <td>{{book.name}}</td>
-                            <td>{{book.module!.name}}</td>
-                            <td>{{book.amount}}</td>
+                            <td class="column">{{book.name}}</td>
+                            <td class="column">{{book.module!.name}}</td>
+                            <td class="column" style="width: 10%;">{{book.amount}}</td>
                         </tr>
                     </table>
                 </div>
@@ -105,23 +105,23 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let fileTag of fileTags, let i = index" (click)="fileTagSelecter(i)">
-                                <td>{{fileTag.tagName}}</td>
-                                <td>
+                                <td [title]="fileTag.tagName" class="column" style="width: 20%;">{{fileTag.tagName}}</td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.controllerVisibility"/>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.educationLeaderVisibility"/>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.educationBossVisibility"/>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.dkVisibility"/>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.hrVisibility"/>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <input type="checkbox" disabled [checked]="fileTag.pkVisibility"/>
                                 </td>
                             </tr>
@@ -153,12 +153,12 @@
                             </tr>
                             <tr *ngFor="let course of courses, let i = index"
                                 (click)="courseSelecter(i)">
-                                <td>{{course.module.name}}</td>
-                                <td>{{courseType[course.courseType]}}</td>
-                                <td>
+                                <td class="column">{{course.module.name}}</td>
+                                <td class="column">{{courseType[course.courseType]}}</td>
+                                <td class="column">
                                     <p>{{course.startDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
-                                <td>
+                                <td class="column">
                                     <p>{{course.endDate | date: 'dd/MM/yyyy'}}</p>
                                 </td>
                             </tr>
@@ -180,7 +180,7 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let location of locations, let i = index" (click)="locationSelecter(i)">
-                                <td>{{location.name}}</td>
+                                <td class="column">{{location.name}}</td>
                             </tr>
                         </table>
                     </div>
@@ -200,7 +200,7 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let module of modules, let i = index" (click)="moduleSelecter(i)">
-                                <td>{{module.name}}</td>
+                                <td class="column">{{module.name}}</td>
                             </tr>
                         </table>
                     </div>
@@ -232,11 +232,11 @@
                                 </th>
                             </tr>
                             <tr *ngFor="let person of persons, let i = index" (click)="personSelecter(i)">
-                                <td>{{person.name}}</td>
-                                <td>{{person.initials}}</td>
-                                <td>{{person.department?.name}}</td>
-                                <td>{{person.location?.name}}</td>
-                                <td>
+                                <td [title]="person.name" class="column" style="width: 30%;">{{person.name}}</td>
+                                <td [title]="person.initials" class="column" style="width: 10%;">{{person.initials}}</td>
+                                <td [title]="person.department?.name" class="column" style="width: 20%;">{{person.department?.name}}</td>
+                                <td [title]="person.location?.name" class="column" style="width: 20%;">{{person.location?.name}}</td>
+                                <td class="column" style="width: 5%;">
                                     <input *ngIf="person.svuEligible === true" type="checkbox" disabled checked />
                                     <input *ngIf="person.svuEligible === false" type="checkbox" disabled unchecked />
                                 </td>

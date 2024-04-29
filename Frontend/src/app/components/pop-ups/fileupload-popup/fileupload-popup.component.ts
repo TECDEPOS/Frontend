@@ -58,7 +58,7 @@ export class FileuploadPopupComponent {
     // Native HTML select can't parse objects properly, get selectedIndex and use that to get the correct FileTag
     const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
     if (selectedIndex === 0) {
-      this.fileTags.splice(index, 1, null);
+      this.fileTags.splice(index, 1, null); // First option in template is 'Ingen Filkategori'
     }
     else{
       this.fileTags.splice(index, 1, this.selectorFileTags[selectedIndex - 1]); // - 1 Because of the extra placeholder option in the HTML

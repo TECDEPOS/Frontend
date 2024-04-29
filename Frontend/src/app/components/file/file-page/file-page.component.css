@@ -36,30 +36,6 @@ mat-icon:hover{
     padding-left: 5px;
 }
 
-.Progress {
-    position: absolute;
-    background: linear-gradient(to right, white, 10%, rgb(255, 79, 79));
-    width: 100%;
-    left: 0;
-    top: 0;
-    height: 100%;
-}
-
-.EndDateShow {
-    position: absolute;
-    z-index: 11;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: grid;
-    place-content: center;
-}
-
-.End--date {
-    position: relative;
-}
-
 .Searchfield {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -127,9 +103,8 @@ mat-form-field {
     /* outline: 1px solid white; */
 }
 
-.employeeName{
+.employeeName:hover{
     text-decoration: underline; 
-    color: rgb(0, 26, 255);
   }
   
   .employeeName:hover{
@@ -152,20 +127,6 @@ th {
     /* Standard syntax */
 }
 
-.TableBox tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.TableBox tr:hover {
-    background-color: #ddd;
-}
-
-.TableBox th {
-    width: auto;
-    background-color: #006E8C;
-    color: white;
-}
-
 
 @media screen and (max-width: 1000px) {
     .TableForPeople {
@@ -185,6 +146,12 @@ th {
     outline: 1px solid #888;
     border-radius: 5px;
 }
+
+.column p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 
 
