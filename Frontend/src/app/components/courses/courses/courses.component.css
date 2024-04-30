@@ -251,6 +251,7 @@ button {
   flex-direction: column;
   flex: 1;
   justify-content: flex-end;
+}
 
 .column p {
   white-space: nowrap;
