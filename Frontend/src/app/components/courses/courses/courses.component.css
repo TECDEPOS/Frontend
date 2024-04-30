@@ -36,7 +36,6 @@ mat-form-field {
 
 .TableForPeople { 
   max-height: 100%;
-  height: 100%;
   position: relative; 
   overflow-y: auto;
 }
@@ -199,6 +198,7 @@ p {
   max-height: 100%;
   place-content: center;
   justify-content: center;
+  align-content: space-between;
   overflow: auto;
 }
 
@@ -216,14 +216,6 @@ p {
   height: 81vh;
 }
 
-.moduleCourse {
-  margin-top: 480px;
-}
-
-.teacherCourse {
-  margin-top: 444.5px;
-}
-
 button {
   width: 90%;
 }
@@ -233,17 +225,32 @@ button {
   color: #ffffff;
 }
 
-.addButtons {
-  display: flex; 
-  justify-content: center;
-}
-
 .selected-course {
   background-color: rgb(151, 151, 151); /* Change the background color as desired */
 }
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
   height: 100%;
+}
+
+.filterBox{
+  display:flex;
+  flex-direction: column;
+  height: 100%;
+  width: 244.17px;
+}
+.filterItem{
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.filterButtons {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .column p {

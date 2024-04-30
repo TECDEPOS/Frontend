@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Module } from '../Models/Module';
+import { ModuleWithCourseViewModel } from '../Models/ViewModels/ModuleWithCourseViewModel';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class ModuleService {
 
   getModules(): Observable<Module[]>{
     return this.http.get<Module[]>(this.baseApiUrl + 'Module/')
+  }
+
+  getModulesWithCourse(): Observable<ModuleWithCourseViewModel[]>{
+    return this.http.get<ModuleWithCourseViewModel[]>(this.baseApiUrl + 'Module/moduleswithcourse')
   }
 
   addModule(module: Module): Observable<Module>{
