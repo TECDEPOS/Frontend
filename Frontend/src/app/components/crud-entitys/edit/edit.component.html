@@ -493,6 +493,20 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+                
+                <div class="formItem">
+                    <label>Driftskoordinator:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.operationCoordinator"
+                            name="operationCoordinator" #operationCoordinator="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
+                                {{coordinator.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
@@ -507,14 +521,14 @@
                     </mat-form-field>
                 </div>
                 <div class="formItem">
-                    <label>Driftskoordinator:</label>
+                    <label>Uddannelsesleder:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label *ngIf="!person.operationCoordinator">Vælg Driftskoordinator</mat-label>
-                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.operationCoordinator"
-                            name="operationCoordinator" #operationCoordinator="ngModel">
+                        <mat-label *ngIf="!person.educationalLeader">Vælg Uddannelsesleder</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.educationalLeader"
+                            name="educationalLeader" #educationalLeader="ngModel">
                             <mat-option [value]="null">- Ingen -</mat-option>
-                            <mat-option *ngFor="let coordinator of operationCoordinators" [value]="coordinator">
-                                {{coordinator.name}}
+                            <mat-option *ngFor="let leader of educationLeaders" [value]="leader">
+                                {{leader.name}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

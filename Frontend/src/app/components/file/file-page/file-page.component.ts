@@ -119,12 +119,16 @@ export class FilePageComponent {
 
   onFileTagFilterChanged(selectedFileTags: any[]){
     this.filteredFileTags = selectedFileTags;
+    console.log(this.filteredFileTags);
+    
     this.filterTable();
   }
 
   filterTable(){
     this.filteredList = this.files.filter(file => {
-      const fileTagFilter = this.filteredFileTags.length === 0 || this.filteredFileTags.some(tag => tag.fileTagId === file.fileTag.fileTagId);
+      console.log('file', file);
+      
+      const fileTagFilter = this.filteredFileTags.length === 0 || this.filteredFileTags.some(tag => tag.fileTagId === file.fileTag?.fileTagId);
 
       if (this.filteredFileTags.length === 0) {
         return true;
