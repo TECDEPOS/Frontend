@@ -331,7 +331,7 @@ export class EmployeeProfileComponent extends Unsub{
       
       // Delete entity if user pressed yes in confirmation dialog.
       if (confirmed) {        
-        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId).subscribe(res => {
+        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId!).subscribe(res => {
           this.currentPersonCourses.splice(this.currentPersonCourses.indexOf(personCourse), 1)
         })
       }

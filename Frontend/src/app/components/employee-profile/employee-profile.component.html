@@ -180,16 +180,16 @@
           <th mat-sort-header="uploadDate">Oploadet</th>
           <th mat-sort-header="fileFormat">Filtype</th>
           <th><mat-icon>download</mat-icon></th>
-          <th>Slet fil</th>
+          <th>Slet</th>
         </tr>
         <tr *ngFor="let file of shownFiles; let i = index">
-          <td>{{file.fileName}}</td>
-          <td *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
-          <td *ngIf="file.fileTag === null">-</td>
-          <td>{{file.uploadDate | date: 'dd/MM/YY'}}</td>
-          <td>{{file.fileFormat}}</td>
-          <td><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
-          <td><mat-icon (click)="deleteFile(file.fileId, i)">delete</mat-icon></td>
+          <td class="column" style="width: 50%;" [title]="file?.fileName">{{file.fileName}}</td>
+          <td class="column" style="width: auto;" *ngIf="file.fileTag !== null">{{file.fileTag.tagName}}</td>
+          <td class="column" style="width: auto;" *ngIf="file.fileTag === null">-</td>
+          <td class="column" style="width: 10%;">{{file.uploadDate | date: 'dd/MM/YY'}}</td>
+          <td class="column" style="width: 11%;">{{file.fileFormat}}</td>
+          <td class="column" style="width: 4%;"><mat-icon (click)="downloadFile(file.fileId, file.contentType, file.fileName)">download</mat-icon></td>
+          <td class="column" style="width: 4%;"><mat-icon (click)="deleteFile(file.fileId, i)">delete</mat-icon></td>
         </tr>
         <tr>
       </table>

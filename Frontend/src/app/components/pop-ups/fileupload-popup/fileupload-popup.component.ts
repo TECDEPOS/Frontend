@@ -11,16 +11,14 @@ import { FileService } from 'src/app/Services/file.service';
   styleUrls: ['./fileupload-popup.component.css']
 })
 export class FileuploadPopupComponent {
-
+  selectedTag: any = "";
   personId: number = 0;
   personFiles: File[] = [];
-  file: any;
   displayFiles: any[] = [];
-  fileTagId: number = 0;
-  fileTag: FileTag = null!;
   formData: FormData = new FormData;
   selectorFileTags: FileTag[] = [];
-  fileTags: FileTag[] = [];
+  fileTags: (FileTag | null)[] = [];
+  files: any[] = [];
   constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService, 
     @Inject(MAT_DIALOG_DATA)
     private data: {
@@ -41,56 +39,67 @@ export class FileuploadPopupComponent {
     })
   }
 
-  closeDialog(){
-    this.displayFiles = [];
-    this.dialogRef.close();
-  }
-
   onSubmit(): void {
     // Build formData before sending request to server
-    // let filetags: string = JSON.stringify(this.fileTags);
     this.formData.append('personId', this.personId.toString());
     this.formData.append('fileTags', JSON.stringify(this.fileTags));
     
-    for (const file of this.displayFiles) {
+    for (const file of this.files) {
       this.formData.append('file', file);
     }    
 
     this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {      
       this.personFiles.push(...res);
-      this.closeDialog();
+      this.dialogRef.close();
     });
   }
 
-
-  fileChange(files: any) {    
-    console.log(files);
-    
-    if (files && files.length > 0) {
-      this.file = files[0];      
+  onFileTagChange(e: Event, index: number){
+    // Native HTML select can't parse objects properly, get selectedIndex and use that to get the correct FileTag
+    const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+    if (selectedIndex === 0) {
+      this.fileTags.splice(index, 1, null); // First option in template is 'Ingen Filkategori'
+    }
+    else{
+      this.fileTags.splice(index, 1, this.selectorFileTags[selectedIndex - 1]); // - 1 Because of the extra placeholder option in the HTML
     }
   }
 
-  onFileTagChange(newTag:FileTag){
-    console.log(newTag);
+  fileBrowseHandler(files: any){
+    this.pushFiles(files);
+  }
+
+  onFileDropped($event: any){
+    this.pushFiles($event);
+  }
+
+  pushFiles(files: any[]){
+    for (const item of files) {
+      this.files.push(item);
+      const matchingFiletag: FileTag | null = null;
+      this.fileTags.push(matchingFiletag);
+    }
+    console.log(this.files);
+    console.log(this.fileTags);
     
-    this.fileTag = newTag;
   }
 
-  confirmFile(){
-    this.file.fileTag = this.fileTag;
-    this.displayFiles.push(this.file);
-    this.fileTags.push(this.fileTag);
-    this.file = null;
-    this.fileTag = null!;
+  deleteFile(index: number){
+    this.files.splice(index, 1);
+    this.fileTags.splice(index, 1);
+    console.log(this.files);
+    console.log(this.fileTags);
+    
   }
 
-  removeCurrentFile(){
-    this.file = null;
-  }
-
-  removeDisplayFile(i :number){
-    this.displayFiles.splice(i, 1);
-    this.fileTags.splice(i, 1);    
+  formatBytes(bytes: any, decimals: any) {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = decimals <= 0 ? 0 : decimals || 2;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 }

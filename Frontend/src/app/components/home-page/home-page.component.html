@@ -9,35 +9,35 @@
         <div class="TableForPeople">
             <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
                 <tr>
-                    <th mat-sort-header="HiredName" style="min-width: 39.5%;">
+                    <th mat-sort-header="HiredName" style="width: 30%;">
                         Navn 
                     </th>
-                    <th mat-sort-header="Initials" style="min-width: 39.5%;">
+                    <th mat-sort-header="Initials" style="width: 8%;">
                         Initialer 
                     </th>
-                    <th mat-sort-header="HiredDepartment" style="min-width: 21.5%;">
+                    <th mat-sort-header="HiredDepartment" style="width: 15%;">
                         Afdeling 
                     </th>
-                    <th mat-sort-header="HiredLocation" style="min-width: 21.5%;">
+                    <th mat-sort-header="HiredLocation" style="width: 15%;">
                         Lokation 
                     </th> 
                     <th mat-sort-header="HiredEndDate" style="min-width: 12%;">
                         Slut dato 
                     </th>
-                    <th mat-sort-header="HiredModules" style="min-width: 20.20%;">
+                    <th mat-sort-header="HiredModules" style="width: 10%;">
                         Færdige moduler 
                     </th>
-                    <th mat-sort-header="HiredSVU" style="min-width: 6.80%;">
+                    <th mat-sort-header="HiredSVU" style="width: 5%;">
                         SVU 
                     </th>
                 </tr>
                 <tr *ngFor="let x of showedList">
-                    <td><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
-                    <td><p> {{x.initials}}</p></td>
-                    <td *ngIf="x.department"><p>{{x.department.name}}</p></td>
-                    <td *ngIf="!x.department">-</td>
-                    <td *ngIf="x.location"><p>{{x.location.name}}</p></td>
-                    <td *ngIf="!x.location">-</td>
+                    <td class="column" [title]="x.name"><p routerLink="/employee/{{x.personId}}" class="employeeName">{{x.name}}</p></td> <!--<a href="/employee/{{x.personId}}"></a>-->
+                    <td class="column"><p> {{x.initials}}</p></td>
+                    <td class="column" [title]="x.department.name" *ngIf="x.department"><p>{{x.department.name}}</p></td>
+                    <td class="column" *ngIf="!x.department">-</td>
+                    <td class="column" [title]="x.location.name" *ngIf="x.location"><p>{{x.location.name}}</p></td>
+                    <td class="column" *ngIf="!x.location">-</td>
                     <td class="End--date">
                         <p class="EndDateShow">{{x.endDate | date: 'dd/MM/yyyy'}}</p>
                         <div #progress class="Progress" id="{{x.personId}}"></div>

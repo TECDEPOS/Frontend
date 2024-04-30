@@ -5,10 +5,10 @@ import { Status } from "./Status";
 
 export class PersonCourse{
     personId: number = 0;
-    courseId: number = 0;
+    courseId: number | null = null;
     
     status: Status = 0;
 
-    course?: Course;
+    course: Course | null = null;
     person?: Person;
 }

@@ -340,6 +340,10 @@ h1{
     margin: 5px 0px 5px 8px;
 }
 
+.icon:hover{
+    cursor: pointer;
+}
+
 .upload-icon {
     color: white;
     vertical-align: middle;
@@ -479,4 +483,11 @@ td>mat-icon:hover {
     border: none;
     width: 50%; 
     height: 25px;
+}
+
+.column{
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

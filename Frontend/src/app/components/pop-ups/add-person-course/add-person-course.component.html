@@ -4,12 +4,12 @@
     <mat-icon class="closeButton" (click)="closeDialog()">cancel</mat-icon>
   </div>
   <div class="content">
-    <form #myForm="ngForm" class="inputs">
+    <form #personCourseForm="ngForm" class="inputs">
       <div class="test">
         <label>Modul: </label>
-        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+        <mat-form-field subscriptSizing="dynamic" class="dropdown" required>
           <mat-label>Vælg Modul:</mat-label>
-          <mat-select [(ngModel)]="module" name="modules"
+          <mat-select [(ngModel)]="module" name="modules" required #selectedModule="ngModel"
             (selectionChange)="onModuleChange($event.value)">
             <mat-option *ngFor="let module of modules" [value]="module">
               {{module.name}}
@@ -17,11 +17,13 @@
           </mat-select>
         </mat-form-field>
       </div><br>
+    
       <div class="test" *ngIf="moduleSelected">
         <label>Kursus</label>
-        <mat-form-field subscriptSizing="dynamic" class="dropdown">
+        <mat-form-field subscriptSizing="dynamic" class="dropdown"
+          [ngClass]="{ 'invalid-input': selectedCourse.invalid }">
           <mat-label>Vælg Kursus:</mat-label>
-          <mat-select [(ngModel)]="newPersonCourse.course" name="course"
+          <mat-select [(ngModel)]="newPersonCourse.course" name="course" required #selectedCourse="ngModel"
             (selectionChange)="onCourseChange($event.value)">
             <mat-option *ngFor="let course of courses" [value]="course">
               {{course.startDate | date: 'dd/MM/yyyy'}} - {{course.endDate | date: 'dd/MM/yyyy'}}
@@ -31,6 +33,9 @@
           </mat-select>
         </mat-form-field>
       </div><br>
+      <div *ngIf="courses.length === 0 && moduleSelected" style="display: flex;justify-content: center;">
+        <p>Der er ikke oprettet kurser til dette modul.</p>
+      </div>
       <div class="test" *ngIf="moduleSelected">
         <label>Status: </label>
         <mat-form-field subscriptSizing="dynamic" class="dropdown">
@@ -45,6 +50,6 @@
     </form>
   </div>
   <div class="buttons">
-    <button class="create-button" (click)="onSubmit()">Tilføj</button>
+    <button class="button submit" [disabled]="personCourseForm.invalid || module.moduleId === 0" (click)="onSubmit()">Tilføj</button>
   </div>
 </div>
