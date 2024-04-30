@@ -8,7 +8,7 @@ import { Status } from 'src/app/Models/Status';
 import { User } from 'src/app/Models/User';
 import { UserRole } from 'src/app/Models/UserRole';
 import { BossViewModel, LeaderViewModel } from 'src/app/Models/ViewModels/BossViewModel';
-import { ModuleExcelViewModel } from 'src/app/Models/ViewModels/ModuleExcelViewModel';
+import { ModuleWithCourseViewModel } from 'src/app/Models/ViewModels/ModuleWithCourseViewModel';
 import * as XLSX from 'xlsx-js-style';
 
 @Component({
@@ -27,7 +27,7 @@ export class ExportToExcelComponent {
   courseHeaderRows: number[] = [];
   workSheetData: any[] = [];
   workSheet: any;
-  excelModules: ModuleExcelViewModel[] = [];
+  excelModules: ModuleWithCourseViewModel[] = [];
   bossHeaders: string[] = ['Uddannelseschef', 'Navn', 'Role'];
   leaderHeaders: string[] = ['Uddannelsesleder', 'Navn', 'Role']
   educatorHeaders: string[] = ['Underviser', 'Navn', 'Initialer', 'Afdeling', 'Lokation', 'Slut dato', 'Færdige moduler']
@@ -39,53 +39,12 @@ export class ExportToExcelComponent {
   constructor() {
   }
 
-  bossViewModelConverter(educators: Person[], personCourses: PersonCourse[], bosses: User[], leaders: User[]) {
-    const newBosses: BossViewModel[] = [];
-    const newBoss: BossViewModel = new BossViewModel;
-    const newLeaders: LeaderViewModel[] = [];
-    const newLeader: LeaderViewModel = new LeaderViewModel;
-
-    educators.forEach(educator => {
-      
-    });
-
-    leaders.forEach(leader => {
-      newLeader.userId = leader.userId;
-      newLeader.name = leader.name;
-      newLeader.userRole = leader.userRole;
-      newLeader.educationBossId = leader.educationBossId
-      newLeader.educators = educators.filter(x => x.educationalLeaderId == leader.userId)
-      newLeaders.push(newLeader)
-    });
-    
+  bossViewModelConverter(bosses: BossViewModel[], leaders: LeaderViewModel[]): BossViewModel[] {
     bosses.forEach(boss => {
-      newBoss.userId = boss.userId;
-      newBoss.name = boss.name;
-      newBoss.userRole = boss.userRole;
-      newBoss.educationLeaders = newLeaders.filter(x => x.educationBossId == boss.userId);
-      newBosses.push(newBoss)
+      boss.educationLeaders = leaders.filter(x => x.educationBossId == boss.userId);
     });
-  }
 
-  moduleDataChange(modules: Module[], courses: Course[]) {
-    modules.forEach(module => {
-      const excelModule: ModuleExcelViewModel = new ModuleExcelViewModel();
-      excelModule.moduleId = module.moduleId;
-      excelModule.name = module.name;
-      excelModule.description = module.description;
-
-      // Filter courses based on moduleId
-      const moduleCourses = courses.filter(course => course.moduleId === module.moduleId);
-
-      // Push filtered courses to excelModule
-      excelModule.courses.push(...moduleCourses);
-
-      // Update courses array by removing filtered courses
-      this.removeCoursesFromList(courses, moduleCourses);
-
-      // Push excelModule to the array
-      this.excelModules.push(excelModule);
-    });
+    return bosses;
   }
 
   // Helper function to remove courses from the original list
@@ -98,8 +57,13 @@ export class ExportToExcelComponent {
     });
   }
 
-  exportModulesToExcel(modules: ModuleExcelViewModel[]) {
+  exportModulesToExcel(modules: ModuleWithCourseViewModel[]) {
     this.moduleWorkSheetData(modules);
+    this.exportWorkSheetToExcel();
+  }
+
+  exportCoursesToExcel(course: Course[]) {
+    this.courseWorkSheetData(course);
     this.exportWorkSheetToExcel();
   }
 
@@ -220,7 +184,7 @@ export class ExportToExcelComponent {
     return finishedCourses;
   }
 
-  moduleWorkSheetData(modules: ModuleExcelViewModel[]) {
+  moduleWorkSheetData(modules: ModuleWithCourseViewModel[]) {
     modules.forEach(module => {
       if (this.newModuleHeader) {
         this.workSheetData.push(this.moduleHeaders)
@@ -238,38 +202,42 @@ export class ExportToExcelComponent {
       console.log(module);
 
 
-      if (module.courses.length > 0)
-        module.courses.forEach(course => {
-          if (this.newCourseHeader) {
-            this.workSheetData.push(this.courseHeaders)
-            this.headerRows.push(this.rowCounter)
-            this.newCourseHeader = false;
-            this.newRow();
-          }
-          this.newModuleHeader = true;
-          this.newEducatorHeader = true;
+      if (module.courses.length > 0) {
+        this.courseWorkSheetData(module.courses);
+      }
+    })
+  }
 
-          const courseData = ['', course.courseType, course.startDate, course.endDate];
-          this.workSheetData.push(courseData)
-          this.newRow();
+  courseWorkSheetData(courses: Course[]) {
+    courses.forEach(course => {
+      if (this.newCourseHeader) {
+        this.workSheetData.push(this.courseHeaders)
+        this.headerRows.push(this.rowCounter)
+        this.newCourseHeader = false;
+        this.newRow();
+      }
+      this.newModuleHeader = true;
+      this.newEducatorHeader = true;
 
-          if (course.personCourses.length > 0) {
-            this.workSheetData.push(this.courseEducatorHeader)
-            this.headerRows.push(this.rowCounter);
-            this.newModuleHeader = true;
-            this.newCourseHeader = true;
-            this.newRow();
-            course.personCourses.forEach(personCourse => {
-              const educatorData = [
-                '',
-                personCourse.person!.name, personCourse.person!.initials,
-                personCourse.person!.department!.name, personCourse.person!.location!.name,
-                personCourse.status
-              ]
-            })
-          }
+      const courseData = ['', course.courseType, course.startDate, course.endDate];
+      this.workSheetData.push(courseData)
+      this.newRow();
 
+      if (course.personCourses.length > 0) {
+        this.workSheetData.push(this.courseEducatorHeader)
+        this.headerRows.push(this.rowCounter);
+        this.newModuleHeader = true;
+        this.newCourseHeader = true;
+        this.newRow();
+        course.personCourses.forEach(personCourse => {
+          const educatorData = [
+            '',
+            personCourse.person!.name, personCourse.person!.initials,
+            personCourse.person!.department!.name, personCourse.person!.location!.name,
+            personCourse.status
+          ]
         })
+      }
     })
   }
 

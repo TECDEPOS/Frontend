@@ -221,6 +221,7 @@ p {
   max-height: 100%;
   place-content: center;
   justify-content: center;
+  align-content: space-between;
   overflow: auto;
 }
 
@@ -259,6 +260,7 @@ button {
   display:flex;
   flex-direction: column;
   height: 100%;
+  width: 244.17px;
 }
 .filterItem{
   width: 100%;
