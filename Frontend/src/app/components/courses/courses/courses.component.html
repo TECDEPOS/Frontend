@@ -1,4 +1,3 @@
-
 <div class="grid">
     <div class="innerBox" *ngIf="!leaderView">
         <div class="OuterWrapper">
@@ -10,7 +9,8 @@
                         </div>
                         <div class="List" *ngIf="isCourseListActive(module.moduleId)">
                             <div class="TableForPeopleInner">
-                                <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'mc')">
+                                <table class="TableBox" matSort [matSortDisableClear]="true"
+                                    (matSortChange)="sortData($event, 'mc')">
                                     <tr>
                                         <th mat-sort-header="moduleCourseType">
                                             Kursus Type
@@ -46,7 +46,8 @@
         <div class="OuterWrapper">
             <div class="table">
                 <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'mt')">
+                    <table class="TableBox" matSort [matSortDisableClear]="true"
+                        (matSortChange)="sortData($event, 'mt')">
                         <tr>
                             <th mat-sort-header="moduleTeacherName" style="width: 30%;">
                                 Navn
@@ -62,29 +63,29 @@
                             </th>
                             <th mat-sort-header="moduleTeacherEndDate" style="width: 10%;">
                                 Slut dato
-                            </th>                            
+                            </th>
                             <th mat-sort-header="moduleCourseStatus" style="width: 14%;">
                                 Status
                             </th>
                         </tr>
-                        <tr *ngFor="let person of persons">
-                            <td class="column" style="width: 30%;" [title]="person.name">
-                                <p>{{person.name}}</p>
+                        <tr *ngFor="let personCourse of showedPersonCourses">
+                            <td class="column" style="width: 30%;" [title]="personCourse.person!.name">
+                                <p>{{personCourse.person!.name}}</p>
                             </td>
-                            <td class="column" style="width: 7%;" [title]="person.initials">
-                                <p>{{person.initials}}</p>
+                            <td class="column" style="width: 7%;" [title]="personCourse.person!.initials">
+                                <p>{{personCourse.person!.initials}}</p>
                             </td>
-                            <td class="column" style="width: 23%;" [title]="person.department?.name">
-                                <p>{{person.department?.name}}</p>
+                            <td class="column" style="width: 23%;" [title]="personCourse.person!.department?.name">
+                                <p>{{personCourse.person!.department?.name}}</p>
                             </td>
-                            <td class="column" style="width: 16%;" [title]="person.location?.name">
-                                <p class="StartDateShow">{{person.location?.name}}</p>
+                            <td class="column" style="width: 16%;" [title]="personCourse.person!.location?.name">
+                                <p class="StartDateShow">{{personCourse.person!.location?.name}}</p>
                             </td>
                             <td class="column" style="width: 10%;">
-                                <p>{{person.endDate | date: 'dd/MM/yyyy'}}</p>
+                                <p>{{personCourse.person!.endDate | date: 'dd/MM/yyyy'}}</p>
                             </td>
-                            <td class="column" style="width: 14%;" *ngFor="let personCourse of person.personCourses">
-                                <p *ngIf="personCourse.courseId == selectedCourseId">{{status[personCourse.status].replaceAll('_', ' ')}}</p>
+                            <td class="column" style="width: 14%;">
+                                <p>{{status[personCourse.status].replaceAll('_', ' ')}}</p>
                             </td>
                         </tr>
                     </table>
@@ -121,7 +122,8 @@
                                             Slut dato
                                         </th>
                                     </tr>
-                                    <tr [ngClass]="{'selected-course': selectedPersonId == person.personId}" *ngFor="let person of leaderPersons"
+                                    <tr [ngClass]="{'selected-course': selectedEducatorId == person.personId}"
+                                        *ngFor="let person of leaderPersons"
                                         (click)="setSelectedPersonId(person.personId)">
                                         <td class="column" [title]="person.name">
                                             <p>{{person.name}}</p>
@@ -152,7 +154,8 @@
         <div class="OuterWrapper">
             <div class="table">
                 <div class="TableForPeople">
-                    <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event, 'lc')">
+                    <table class="TableBox" matSort [matSortDisableClear]="true"
+                        (matSortChange)="sortData($event, 'lc')">
                         <tr>
                             <th mat-sort-header="leaderCourseName" style="width: 45%;">
                                 Modul
@@ -193,12 +196,12 @@
             <div class="bunden"></div>
         </div>
     </div>
-    <div [ngClass]="{'innerBox': !leaderView, 'innerBoxAlt': leaderView}">
-        <section class="example-section" style="flex: 1;">
+    <div class="filterBox">
+        <section class="example-section">
             <mat-checkbox class="example-margin" (change)="toggleView($event.checked)">Se fra
                 Uddannelsesleder</mat-checkbox>
         </section>
-        <mat-form-field subscriptSizing="dynamic" style="flex: 1;">
+        <mat-form-field subscriptSizing="dynamic">
             <mat-label>Vælge type</mat-label>
             <mat-select [value]="selectedTypes" (selectionChange)="onTypeQueryInput($event)" multiple>
                 <mat-option [value]="any">Alle</mat-option>
@@ -207,27 +210,49 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field subscriptSizing="dynamic" class="test" *ngIf="showEducationBossesDropdown && leaderView"
-            style="flex: 1;">
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Vælge status</mat-label>
+            <mat-select [value]="selectedStatus" (selectionChange)="onStatusQueryInput($event)" multiple>
+                <mat-option [value]="any">Alle</mat-option>
+                <mat-option *ngFor="let status of courseStatus" [value]="status">
+                    {{status}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field subscriptSizing="dynamic" class="test" *ngIf="showEducationBossesDropdown && leaderView">
             <mat-label>Vælge Uddanelseschef</mat-label>
-            <mat-select [value]="selectedEducationBoss" (selectionChange)="onEducationBossQueryInput($event)">
+            <mat-select [value]="selectedBossesIds" (selectionChange)="onEducationBossQueryInput($event)" multiple>
                 <mat-option [value]="any">Alle</mat-option>
                 <mat-option *ngFor="let educationBoss of educationBosses"
                     [value]="educationBoss.userId">{{educationBoss.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="addButtons" >
-            <button mat-raised-button class="moduleCourse" (click)="exportModulesToExcel()">Tilføj kursus til modul</button>
-        </div>
-        <div class="addButtons" *ngIf="!leaderView && activeCourseList">
-            <button mat-raised-button class="moduleCourse" (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
-        </div>
-        <div class="addButtons" *ngIf="!leaderView && courseSelected">
-            <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
-        </div>
-        <div class="addButtons" *ngIf="leaderView && personSelected">
-            <button mat-raised-button (click)="openAddPersonCoursePopup()" class="teacherCourse">Tilføj kursus til
-                lærer</button>
+        <div class="filterButtons">
+            <div class="filterItem" *ngIf="!leaderView">
+                <button mat-raised-button (click)="exportModulesToExcel()">Export moduler til excel</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView">
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte moduler til excel</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView">
+                <button mat-raised-button (click)="exportModulesToExcelTypes()">Export kurser efter valdte typer til
+                    excel</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView">
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte kurser til excel</button>
+            </div>
+            <div class="filterItem" *ngIf="leaderView">
+                <button mat-raised-button (click)="exportBossesToExcel()">Export valdte kurser til excel</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView && activeCourseList">
+                <button mat-raised-button (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView && courseSelected">
+                <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
+            </div>
+            <div class="filterItem" *ngIf="leaderView && personSelected">
+                <button mat-raised-button (click)="openAddPersonCoursePopup()">Tilføj kursus til lærer</button>
+            </div>
         </div>
     </div>
 </div>

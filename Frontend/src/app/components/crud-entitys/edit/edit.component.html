@@ -494,6 +494,19 @@
                     </mat-form-field>
                 </div>
                 <div class="formItem">
+                    <label>Uddannelsesleder:</label>
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label *ngIf="!person.educationalLeader">Vælg uddannelsesleder</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="person.educationalLeader"
+                            name="educationalLeader" #educationalLeader="ngModel">
+                            <mat-option [value]="null">- Ingen -</mat-option>
+                            <mat-option *ngFor="let leader of educationalLeaders" [value]="leader">
+                                {{leader.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formItem">
                     <label>Pædagogisk konsulent:</label>
                     <mat-form-field subscriptSizing="dynamic" class="dropdown">
                         <mat-label *ngIf="!person.educationalConsultant">Vælg konsulent</mat-label>
