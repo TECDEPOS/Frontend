@@ -32,7 +32,7 @@
             Slet
           </th>
         </tr>
-        <tr *ngFor="let file of showedList; let i = index">
+        <tr style="margin-left: 5px;" *ngFor="let file of showedList; let i = index">
           <td class="column"><p> {{file.fileName}}</p></td>
           <td class="column"><p routerLink="/employee/{{file.person.personId}}" class="employeeName"> {{file.person.name}}</p></td>
           <td  class="column">

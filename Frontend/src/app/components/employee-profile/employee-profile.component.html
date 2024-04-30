@@ -3,7 +3,7 @@
   </div>
   <div class="profile">
     <div class="profile-header">
-      <h1 *ngIf="backupValues">{{backupValues.name}}</h1>
+      <h1 class="header-name" *ngIf="backupValues">{{backupValues.name}}</h1>
     </div>
     <form class="form" #myForm="ngForm" style="height: 100%;">
       <fieldset *ngIf="person" class="profile-info" [disabled]="editDisabled">

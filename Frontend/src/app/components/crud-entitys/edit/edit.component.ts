@@ -56,6 +56,7 @@ export class EditComponent extends Unsub {
   educationalLeaders: User[] = [];
   educationalConsultants: User[] = [];
   operationCoordinators: User[] = [];
+  educationLeaders: User[] = [];
   educationBosses: User[] = [];
   users: User[] = [];
   resentlyCreated: any[] = [];
@@ -404,7 +405,7 @@ export class EditComponent extends Unsub {
 
   getForPerson() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.educationalLeaders = res.filter(x => x.userRole === 2)
+      this.educationLeaders = res.filter(x => x.userRole === 2);
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       this.operationCoordinators = res.filter(x => x.userRole === 6);
       this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
@@ -463,13 +464,14 @@ export class EditComponent extends Unsub {
 
   personSelecter(i: number) {
     this.person = JSON.parse(JSON.stringify(this.persons[i]));
+    console.log(this.person);
     this.backup = JSON.parse(JSON.stringify(this.persons[i]));
     this.getForPerson();
     this.toggleForm('personForm', i)
   }
 
   userSelecter(i: number) {
-    this.user = JSON.parse(JSON.stringify(this.users[i]));
+    this.user = JSON.parse(JSON.stringify(this.users[i]));    
     this.backup = JSON.parse(JSON.stringify(this.users[i]));    
     this.getForUser();
     this.toggleForm('userForm', i)
