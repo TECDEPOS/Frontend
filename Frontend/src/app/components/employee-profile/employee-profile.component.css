@@ -497,4 +497,5 @@ td>mat-icon:hover {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: xx-large;
 }
