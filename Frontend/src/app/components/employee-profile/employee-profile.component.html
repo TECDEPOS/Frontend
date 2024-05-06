@@ -132,7 +132,7 @@
       </button>
     </div>
     <div class="allModules">
-      <div class="newModuleItem" *ngFor="let x of currentPersonCourses">
+      <div class="newModuleItem" *ngFor="let x of currentPersonCourses; let n = index;">
         <div class="moduleItemInfo">
           <mat-icon class="deleteIcon" (click)="deletepersonCourse(x)">cancel</mat-icon>
           <p><span style="font-weight: bold;">{{x.course!.module.name}}</span> |
@@ -142,13 +142,28 @@
           <div style="display: flex; align-items: center; margin-left: 5px;">
             Status: &ensp;
             <form class="status dropdown" style=" overflow: hidden;">
-              <select [(ngModel)]="x.status" name="status" #module="ngModel" (change)="changeStatus(x)" class="selectStatus">
-                <option *ngFor="let status of statuses let i = index" [value]="i" > 
+              <select
+                [(ngModel)]="x.status"
+                name="status"
+                #module="ngModel"
+                (change)="changeStatus(x, n)" optio
+                class="selectStatus">
+                <option *ngFor="let status of statuses; let i = index; trackBy: trackById" [value]="i">
                   {{status.replaceAll('_', ' ')}}
                 </option>
               </select>
             </form>
           </div>
+          <!-- <div style="display: flex; align-items: center; margin-left: 5px;">
+            Status: &ensp;
+            <form class="status dropdown" style=" overflow: hidden;">
+              <select [(ngModel)]="x.status" name="status" #module="ngModel" (change)="changeStatus(x, n)" class="selectStatus">
+                <option *ngFor="let status of statuses let i = index" [value]="i"> 
+                  {{status.replaceAll('_', ' ')}}
+                </option>
+              </select>
+            </form>
+          </div> -->
 
         </div>
         <div class="moduleItemColor">

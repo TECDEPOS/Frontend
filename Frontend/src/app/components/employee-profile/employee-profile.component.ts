@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
@@ -29,6 +29,7 @@ import { PersonCourseService } from 'src/app/Services/person-course.service';
 import { ConfirmationPopupComponent } from '../pop-ups/confirmation-popup/confirmation-popup.component';
 import { Observable } from 'rxjs';
 import { SnackbarIndicatorComponent } from '../Misc/snackbar-indicator/snackbar-indicator.component';
+import { ErrorPopupComponent } from '../pop-ups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -50,8 +51,10 @@ export class EmployeeProfileComponent extends Unsub{
   locations: Location[] = [];
   shownFiles: File[] = [];
   currentPersonCourses: PersonCourse[] = [];
+  currentPersonCoursesCopy: PersonCourse[] = [];
   inactiveModules: Course[] = [];
-  CurrentHiringDate: Date = new Date();   
+  CurrentHiringDate: Date = new Date();
+  previousStatuses: Record<number, number> = {};
 
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
   .filter(key => !isNaN(Number(Status[key])));
@@ -66,7 +69,8 @@ export class EmployeeProfileComponent extends Unsub{
     private fileService: FileService, 
     private authService: AuthService, 
     private snackBar: MatSnackBar,
-    private personCourseService: PersonCourseService
+    private personCourseService: PersonCourseService,
+    private cdr: ChangeDetectorRef
     ) 
     {super(); }
 
@@ -124,6 +128,9 @@ export class EmployeeProfileComponent extends Unsub{
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2))
       .concat(this.person.personCourses.filter(x => x.status === 4))
+      this.storeStatus();
+      console.log('IT HAPPENING');
+      
     }
   }
 
@@ -346,19 +353,55 @@ export class EmployeeProfileComponent extends Unsub{
       .concat(this.currentPersonCourses.filter(x => x.status === 3))
       .concat(this.currentPersonCourses.filter(x => x.status === 2))
       .concat(this.currentPersonCourses.filter(x => x.status === 4))
+      this.storeStatus();
+      
     }
   } 
 
-
-
-  changeStatus(personCourse: PersonCourse){
-    personCourse.status = Number(personCourse.status)
-
+  updatePersonCourse(personCourse: PersonCourse){
     const personCourseCopy = JSON.parse(JSON.stringify(personCourse))
-    personCourseCopy.course!.module = null!;
-    this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(res => {
-    })
-    this.organizedTable()
+      personCourseCopy.course!.module = null!;
+      this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(() => {
+        this.organizedTable();
+      })
+  }
+
+  storeStatus(){
+    // Clear previous statuses to get a clean up to date version.
+    this.previousStatuses = {};
+    for (let index = 0; index < this.currentPersonCourses.length; index++) {
+      this.previousStatuses[index] = this.currentPersonCourses[index].status;
+    }    
+  }
+
+  trackById(item: any): number {
+    return item.courseId; // Assuming each item has a unique ID
+  }
+  changeStatus(personCourse: PersonCourse, index: number){    
+    personCourse.status = Number(personCourse.status)
+    const alreadyPassed = this.checkPassedModules(personCourse);     
+
+    if (personCourse.status === 3 && alreadyPassed) {
+      // TIMEOUT SOMEHOW MAKES THE UI UPDATE WOWOWOWOWOWWOWOWOWOWOWWOWOWOWOW <|,'-[})
+      setTimeout(() => {
+        personCourse.status = this.previousStatuses[index];
+      });
+            
+      this.dialog.open(ErrorPopupComponent, {
+        data: {
+          message: `${this.person.name} har allerede bestået modulet: ${personCourse.course?.module.name}`
+        }
+      });
+    }
+    else{
+      this.previousStatuses[index] = personCourse.status;
+      this.updatePersonCourse(personCourse);
+    }
+  }
+
+  checkPassedModules(personCourse: PersonCourse): boolean{
+    let alreadyPassed = this.currentPersonCourses.some(pc => pc.status === 3 && pc.course?.moduleId === personCourse.course?.moduleId);
+    return alreadyPassed;
   }
 
   confirmDelete(entity: string|undefined): Observable<boolean> {
