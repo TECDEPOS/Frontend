@@ -33,8 +33,9 @@
           </mat-select>
         </mat-form-field>
       </div><br>
-      <div *ngIf="courses.length === 0 && moduleSelected" style="display: flex;justify-content: center;">
-        <p>Der er ikke oprettet kurser til dette modul.</p>
+      <div *ngIf="courses.length === 0 && moduleSelected" style="display: flex;justify-content: center;text-align: center;">
+        <p *ngIf="!modulePassed">Der er ikke ledige kurser for denne underviser til det valgte modul.</p>
+        <p *ngIf="modulePassed">Underviseren har allerede bestået modulet: <b>{{module.name}}</b></p>
       </div>
       <div class="test" *ngIf="moduleSelected">
         <label>Status: </label>

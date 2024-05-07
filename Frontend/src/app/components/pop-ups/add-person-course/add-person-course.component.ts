@@ -20,15 +20,13 @@ import { ModuleService } from 'src/app/Services/module.service';
 export class AddPersonCourseComponent {
   closeAfter: boolean = false;
   moduleSelected: boolean = false;  
+  modulePassed: boolean = false;
   module: Module = new Module;
   person: Person = new Person;
   newPersonCourse: PersonCourse = new PersonCourse;
   modules: Module[] = [];
   courses: Course[] = [];
   currentCourses: PersonCourse[] = [];
-
-  courseTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
-    .filter(key => !isNaN(Number(CourseType[key])));
 
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
@@ -66,8 +64,36 @@ export class AddPersonCourseComponent {
     this.courseService.getCoursesByModuleIdAndUserId(id, this.person.personId).subscribe(res => {
       this.courses = res;
       console.log(res);
-      
+      this.filterCoursesPassedModules();
     })
+  }
+
+  filterCoursesPassedModules(){
+    
+    console.log('courses before : ',this.courses);
+    console.log('currentCourses :',this.currentCourses);
+    this.modulePassed = this.currentCourses.some(pc => pc.course?.moduleId === this.module.moduleId && pc.status === 3);
+
+    if (this.modulePassed) {
+      this.courses = [];
+    }
+    
+    //   this.courses = this.courses.filter(course => {
+    //   // Determine if any currentCourses has a matching moduleId with status 3
+    //   const shouldRemove = this.currentCourses.some(
+    //     pc => pc.status === 3 && pc.course && pc.course.moduleId === course.moduleId
+    //   );
+    //   if (shouldRemove) {
+    //     this.modulePassed = true;
+    //   }
+    
+    //   // Keep the course if it doesn't need to be removed
+    //   return !shouldRemove;
+    // });
+    console.log('courses',this.courses);
+    console.log(this.modulePassed);
+    
+    
   }
 
   closeDialog() {

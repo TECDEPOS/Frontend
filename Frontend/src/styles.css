@@ -92,7 +92,7 @@ body {
     background-color: #be2c00;
   }
 
-th{
+.table-header{
     width: auto;
     background-color: #006E8C;
     color: white;
