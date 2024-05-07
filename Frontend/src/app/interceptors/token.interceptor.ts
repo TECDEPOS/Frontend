@@ -73,7 +73,6 @@ export class TokenInterceptor implements HttpInterceptor {
       return this.authService.renewToken(authResponse).pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
-          
           // Store new AccessToken and RefreshToken
           this.authService.storeAccessToken(token['accessToken']);
           this.authService.storeRefreshToken(token['refreshToken']);
@@ -128,12 +127,19 @@ export class TokenInterceptor implements HttpInterceptor {
 
   openErrorPopup(err: any) {
     console.log(err);
+    let errorMessage;
+    if (err.error?.title !== null && err.error?.title !== undefined) {
+      errorMessage = err.error.title;
+    }
+    else{
+      errorMessage = err.error;
+    }
     
     if (this.dialog.openDialogs.filter(x => x.componentInstance.data?.message == err.error).length == 0){
       this.dialog.open(ErrorPopupComponent, {
         data: {
           icon: 'Error',
-          message: err.error.title
+          message: errorMessage
         }
       }) 
     }

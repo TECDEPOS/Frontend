@@ -190,12 +190,12 @@
     <div class="file-table" *ngIf="person">
       <table class="TableBox" matSort [matSortDisableClear]="true" (matSortChange)="sortData($event)">
         <tr>
-          <th mat-sort-header="fileName">Filnavn</th>
-          <th mat-sort-header="fileCategory">Filkategori</th>
-          <th mat-sort-header="uploadDate">Oploadet</th>
-          <th mat-sort-header="fileFormat">Filtype</th>
-          <th><mat-icon>download</mat-icon></th>
-          <th>Slet</th>
+          <th class="table-header" mat-sort-header="fileName">Filnavn</th>
+          <th class="table-header" mat-sort-header="fileCategory">Filkategori</th>
+          <th class="table-header" mat-sort-header="uploadDate">Oploadet</th>
+          <th class="table-header" mat-sort-header="fileFormat">Filtype</th>
+          <th class="table-header"><mat-icon>download</mat-icon></th>
+          <th class="table-header">Slet</th>
         </tr>
         <tr *ngFor="let file of shownFiles; let i = index">
           <td class="column" style="width: 50%;" [title]="file?.fileName">{{file.fileName}}</td>

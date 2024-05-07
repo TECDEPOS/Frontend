@@ -377,6 +377,7 @@ export class EmployeeProfileComponent extends Unsub{
   trackById(item: any): number {
     return item.courseId; // Assuming each item has a unique ID
   }
+
   changeStatus(personCourse: PersonCourse, index: number){    
     personCourse.status = Number(personCourse.status)
     const alreadyPassed = this.checkPassedModules(personCourse);     
@@ -400,7 +401,10 @@ export class EmployeeProfileComponent extends Unsub{
   }
 
   checkPassedModules(personCourse: PersonCourse): boolean{
-    let alreadyPassed = this.currentPersonCourses.some(pc => pc.status === 3 && pc.course?.moduleId === personCourse.course?.moduleId);
+    // Check if person is on a course already where the status is 'Bestået'
+    let alreadyPassed = this.currentPersonCourses
+    .some(pc => pc.status === 3 && pc.course?.moduleId === personCourse.course?.moduleId && pc.courseId !== personCourse.courseId);
+    
     return alreadyPassed;
   }
 

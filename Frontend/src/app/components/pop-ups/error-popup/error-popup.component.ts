@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrls: ['./error-popup.component.css']
 })
 export class ErrorPopupComponent {
-  message: string = 'An unspecified error has occurred';
+  message: string = 'Der opstod en fejl.';
   icon: string = '';
   buttonText = 'Ok';
   sessionExpired: boolean = false;

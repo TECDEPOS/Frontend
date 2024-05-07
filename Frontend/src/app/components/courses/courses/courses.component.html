@@ -12,13 +12,13 @@
                                 <table class="TableBox" matSort [matSortDisableClear]="true"
                                     (matSortChange)="sortData($event, 'mc')">
                                     <tr>
-                                        <th mat-sort-header="moduleCourseType">
+                                        <th class="table-header" mat-sort-header="moduleCourseType">
                                             Kursus Type
                                         </th>
-                                        <th mat-sort-header="moduleCourseStartDate">
+                                        <th class="table-header" mat-sort-header="moduleCourseStartDate">
                                             Start Dato
                                         </th>
-                                        <th mat-sort-header="moduleCourseEndDate">
+                                        <th class="table-header" mat-sort-header="moduleCourseEndDate">
                                             Slut Dato
                                         </th>
                                     </tr>
@@ -49,22 +49,22 @@
                     <table class="TableBox" matSort [matSortDisableClear]="true"
                         (matSortChange)="sortData($event, 'mt')">
                         <tr>
-                            <th mat-sort-header="moduleTeacherName" style="width: 30%;">
+                            <th class="table-header" mat-sort-header="moduleTeacherName" style="width: 30%;">
                                 Navn
                             </th>
-                            <th mat-sort-header="moduleTeacherInitials" style="width: 7%;">
+                            <th class="table-header" mat-sort-header="moduleTeacherInitials" style="width: 7%;">
                                 Initialer
                             </th>
-                            <th mat-sort-header="moduleTeacherAfdeling" style="width: 23%;">
+                            <th class="table-header" mat-sort-header="moduleTeacherAfdeling" style="width: 23%;">
                                 Afdeling
                             </th>
-                            <th mat-sort-header="moduleTeacherLocation" style="width: 16%;">
+                            <th class="table-header" mat-sort-header="moduleTeacherLocation" style="width: 16%;">
                                 Location
                             </th>
-                            <th mat-sort-header="moduleTeacherEndDate" style="width: 10%;">
+                            <th class="table-header" mat-sort-header="moduleTeacherEndDate" style="width: 10%;">
                                 Slut dato
                             </th>
-                            <th mat-sort-header="moduleCourseStatus" style="width: 14%;">
+                            <th class="table-header" mat-sort-header="moduleCourseStatus" style="width: 14%;">
                                 Status
                             </th>
                         </tr>
@@ -106,19 +106,19 @@
                                 <table class="TableBox" matSort [matSortDisableClear]="true"
                                     (matSortChange)="sortData($event, 'lt')">
                                     <tr>
-                                        <th mat-sort-header="leaderTeacherName" style="width: 33%;">
+                                        <th class="table-header" mat-sort-header="leaderTeacherName" style="width: 33%;">
                                             Navn
                                         </th>
-                                        <th mat-sort-header="leaderTeacherInitials" style="width: 8%;">
+                                        <th class="table-header" mat-sort-header="leaderTeacherInitials" style="width: 8%;">
                                             Initialer
                                         </th>
-                                        <th mat-sort-header="leaderTeacherAfdeling" style="width: 25%;">
+                                        <th class="table-header" mat-sort-header="leaderTeacherAfdeling" style="width: 25%;">
                                             Afdeling
                                         </th>
-                                        <th mat-sort-header="leaderTeacherLocation" style="width: 20%;">
+                                        <th class="table-header" mat-sort-header="leaderTeacherLocation" style="width: 20%;">
                                             Lokation
                                         </th>
-                                        <th mat-sort-header="leaderTeacherEndDate" style="width: 14%;">
+                                        <th class="table-header" mat-sort-header="leaderTeacherEndDate" style="width: 14%;">
                                             Slut dato
                                         </th>
                                     </tr>
@@ -157,19 +157,19 @@
                     <table class="TableBox" matSort [matSortDisableClear]="true"
                         (matSortChange)="sortData($event, 'lc')">
                         <tr>
-                            <th mat-sort-header="leaderCourseName" style="width: 45%;">
+                            <th class="table-header" mat-sort-header="leaderCourseName" style="width: 45%;">
                                 Modul
                             </th>
-                            <th mat-sort-header="leaderCourseType" style="width: 8%;">
+                            <th class="table-header" mat-sort-header="leaderCourseType" style="width: 8%;">
                                 Type
                             </th>
-                            <th mat-sort-header="leaderCourseStartDate" style="width: 14%;">
+                            <th class="table-header" mat-sort-header="leaderCourseStartDate" style="width: 14%;">
                                 Start Dato
                             </th>
-                            <th mat-sort-header="leaderCourseEndDate" style="width: 14%;">
+                            <th class="table-header" mat-sort-header="leaderCourseEndDate" style="width: 14%;">
                                 Slut Dato
                             </th>
-                            <th mat-sort-header="leaderCourseStatus" style="width: 20%;">
+                            <th class="table-header" mat-sort-header="leaderCourseStatus" style="width: 20%;">
                                 Status
                             </th>
                         </tr>
