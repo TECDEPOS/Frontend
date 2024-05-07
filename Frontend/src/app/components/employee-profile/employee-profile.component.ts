@@ -69,8 +69,7 @@ export class EmployeeProfileComponent extends Unsub{
     private fileService: FileService, 
     private authService: AuthService, 
     private snackBar: MatSnackBar,
-    private personCourseService: PersonCourseService,
-    private cdr: ChangeDetectorRef
+    private personCourseService: PersonCourseService
     ) 
     {super(); }
 

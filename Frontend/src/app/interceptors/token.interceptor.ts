@@ -140,7 +140,8 @@ export class TokenInterceptor implements HttpInterceptor {
         data: {
           icon: 'Error',
           message: errorMessage
-        }
+        },
+        maxWidth: '50%'
       }) 
     }
   }
