@@ -232,26 +232,26 @@
                 <button mat-raised-button (click)="exportModulesToExcel()">Export moduler til excel</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte moduler til excel</button>
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valgte moduler til excel</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcelTypes()">Export kurser efter valdte typer til
+                <button mat-raised-button (click)="exportModulesToExcelTypes()">Export kurser efter valgte typer til
                     excel</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte kurser til excel</button>
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valgte kurser til excel</button>
             </div>
             <div class="filterItem" *ngIf="leaderView">
-                <button mat-raised-button (click)="exportBossesToExcel()">Export valdte kurser til excel</button>
+                <button mat-raised-button (click)="exportBossesToExcel()">Export valgte kurser til excel</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView && activeCourseList">
                 <button mat-raised-button (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView && courseSelected">
-                <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
+                <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj underviser til kursus</button>
             </div>
             <div class="filterItem" *ngIf="leaderView && personSelected">
-                <button mat-raised-button (click)="openAddPersonCoursePopup()">Tilføj kursus til lærer</button>
+                <button mat-raised-button (click)="openAddPersonCoursePopup()">Tilføj kursus til underviser</button>
             </div>
         </div>
     </div>

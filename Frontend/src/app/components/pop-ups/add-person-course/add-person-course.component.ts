@@ -69,31 +69,11 @@ export class AddPersonCourseComponent {
   }
 
   filterCoursesPassedModules(){
-    
-    console.log('courses before : ',this.courses);
-    console.log('currentCourses :',this.currentCourses);
     this.modulePassed = this.currentCourses.some(pc => pc.course?.moduleId === this.module.moduleId && pc.status === 3);
 
     if (this.modulePassed) {
       this.courses = [];
     }
-    
-    //   this.courses = this.courses.filter(course => {
-    //   // Determine if any currentCourses has a matching moduleId with status 3
-    //   const shouldRemove = this.currentCourses.some(
-    //     pc => pc.status === 3 && pc.course && pc.course.moduleId === course.moduleId
-    //   );
-    //   if (shouldRemove) {
-    //     this.modulePassed = true;
-    //   }
-    
-    //   // Keep the course if it doesn't need to be removed
-    //   return !shouldRemove;
-    // });
-    console.log('courses',this.courses);
-    console.log(this.modulePassed);
-    
-    
   }
 
   closeDialog() {

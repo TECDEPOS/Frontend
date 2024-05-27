@@ -449,7 +449,7 @@ mat-option {
     border:none; 
     padding: 0;  
     height: 90%; 
-    width: 25%;
+    width: 35%;
 }
 
 td>mat-icon:hover {
@@ -459,7 +459,7 @@ td>mat-icon:hover {
 }
 
 .dropdown {
-    width: 90%;
+    width: 70%;
     height: 95%;
     max-height: 56px;
     /* padding-top: 5px; */

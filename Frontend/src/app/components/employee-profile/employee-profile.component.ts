@@ -127,9 +127,7 @@ export class EmployeeProfileComponent extends Unsub{
       .concat(this.person.personCourses.filter(x => x.status === 3))
       .concat(this.person.personCourses.filter(x => x.status === 2))
       .concat(this.person.personCourses.filter(x => x.status === 4))
-      this.storeStatus();
-      console.log('IT HAPPENING');
-      
+      this.storeStatus();      
     }
   }
 
