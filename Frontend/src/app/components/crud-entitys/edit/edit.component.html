@@ -1,10 +1,10 @@
-<div class="grid">
-    <div class="innerBox">
+<div class="content">
+    <div class="left-div div-content">
         <div>
             <div class="picker" (click)="toggleList('departmentList')">Afdeling</div>
             <div *ngIf="isListActive('departmentList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'location')">
                             <tr>
@@ -24,7 +24,7 @@
             <div class="picker" (click)="toggleList('userList')">Bruger</div>
             <div *ngIf="isListActive('userList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'user')">
                             <tr>
@@ -38,12 +38,14 @@
                                     Bruger rolle
                                 </th>
                             </tr>
-                            <tr *ngFor="let user of users, let i = index" (click)="userSelecter(i)">
-                                <td class="column" style="width: 25%;">{{user.userName}}</td>
-                                <td class="column">{{user.name}}</td>
-                                <td class="column" style="width: 20%;">{{userRole[user.userRole]}}</td>
-                            </tr>
-                        </table>
+                            <tbody style="overflow-y: scroll;">
+                                <tr *ngFor="let user of users, let i = index" (click)="userSelecter(i)">
+                                    <td class="column" style="width: 25%;">{{user.userName}}</td>
+                                    <td class="column">{{user.name}}</td>
+                                    <td class="column" style="width: 20%;">{{userRole[user.userRole]}}</td>
+                                </tr>
+                            </tbody>
+                            </table>
                     </div>
                 </div>
             </div>
@@ -51,7 +53,7 @@
         <div>
             <div class="picker" (click)="toggleList('bookList')">Bøger</div>
             <div class="table" *ngIf="isListActive('bookList')">
-                <div class="TableForPeople">
+                <div class="TableForPeople tableScroll">
                     <table class="TableBox" matSort [matSortDisableClear]="true"
                         (matSortChange)="sortData($event, 'book')">
                         <tr>
@@ -78,7 +80,7 @@
             <div class="picker" (click)="toggleList('fileTagList')">Filkategori</div>
             <div *ngIf="isListActive('fileTagList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'fileTag')">
                             <tr>
@@ -134,7 +136,7 @@
             <div class="picker" (click)="toggleList('courseList')">Kursus</div>
             <div *ngIf="isListActive('courseList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'module')">
                             <tr>
@@ -171,7 +173,7 @@
             <div class="picker" (click)="toggleList('locationList')">Lokation</div>
             <div *ngIf="isListActive('locationList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'location')">
                             <tr>
@@ -191,7 +193,7 @@
             <div class="picker" (click)="toggleList('moduleList')">Modul</div>
             <div *ngIf="isListActive('moduleList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'module')">
                             <tr>
@@ -211,7 +213,7 @@
             <div class="picker" (click)="toggleList('personList')">Underviser</div>
             <div *ngIf="isListActive('personList')" class="List">
                 <div class="table">
-                    <div class="TableForPeople">
+                    <div class="TableForPeople tableScroll">
                         <table class="TableBox" matSort [matSortDisableClear]="true"
                             (matSortChange)="sortData($event, 'person')">
                             <tr>
@@ -247,7 +249,7 @@
             </div>
         </div>    
     </div>
-    <div class="innerBox" id="test" *ngIf="activeForm">
+    <div class="right-div div-content" id="test" *ngIf="activeForm">
         <div>
         Rediger:
         </div>

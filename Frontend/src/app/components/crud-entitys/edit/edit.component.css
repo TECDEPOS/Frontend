@@ -69,6 +69,7 @@ textarea {
   text-align: right;
   justify-content: flex-start;
   display: flex;
+  padding: 12px 0px;
 }
 
 mat-option {
@@ -175,7 +176,6 @@ mat-option {
   
 .TableBox{    
   width: 100%;
-  position: absolute;
   font-size: 0.9rem;
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -256,4 +256,48 @@ th {
 .buttons {
   /* display: flex; */
   margin-top: 10px;
+}
+
+.left-div{
+  width: 70%;
+}
+
+.right-div{
+  width: 30%;
+}
+
+.div-content{
+  display: grid;
+  place-content: start start;
+  grid-gap: 10px;
+
+  grid-template-columns: 1fr;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.content{
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+}
+
+/* Hide scrollbar for Chrome */
+.tableScroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Hide scrollbar for Firefox */
+.tableScroll {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for IE, Edge */
+.tableScroll {
+  -ms-overflow-style: none;  /* IE and Edge */
 }

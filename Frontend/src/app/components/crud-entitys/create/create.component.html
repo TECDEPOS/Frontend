@@ -1,5 +1,5 @@
 <div class="grid" style="overflow: auto;">
-    <span class="innerBox">
+    <div class="innerBox left-div">
         <div>
             <div class="picker" (click)="toggleForm('departmentForm')">Afdeling</div>
             <form *ngIf="isFormActive('departmentForm')" class="form" #departmentForm="ngForm"
@@ -401,15 +401,18 @@
                 <br>
             </form>
         </div>
-    </span>
-    <div class="innerBox" *ngIf="resentlyCreated.length > 0">
-        Nyoprettede personer:
+    </div>
+    <div class="innerBox right-div" *ngIf="resentlyCreated.length > 0">
+        <b>Nyoprettede undervisere:</b>
         <div *ngFor="let created of resentlyCreated">
-            <div (click)="personPicker(created.personId)" class="picker">
-                <span>
-                    Navn: {{created.name}}
-                    Initialer: {{created.initials}}
-                </span>
+            <div (click)="personPicker(created.personId)" class="new-teacher">
+                <div>
+                    <p><b>Navn: </b> {{created.name}} </p>
+                </div>
+                <br>
+                <div>
+                    <p><b>Initialer: </b>{{created.initials}}</p>
+                </div>
             </div>
         </div>
     </div>
