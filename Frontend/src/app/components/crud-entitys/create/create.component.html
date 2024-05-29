@@ -48,7 +48,7 @@
                     <mat-form-field subscriptSizing="dynamic" class="dropdown"
                         [ngClass]="{ 'invalid-input': role.invalid && (role.touched || role.dirty || (submitClicked && !role.dirty && !role.touched)) }">
                         <mat-label>Vælg Brugerrole</mat-label>
-                        <mat-select [(ngModel)]="user.userRole" name="userRole" #role="ngModel"
+                        <mat-select [(ngModel)]="user.userRole" name="userRole" #role="ngModel" required
                             (selectionChange)="onRoleChange($event.value)">
                             <mat-option *ngFor="let role of userRole; let i = index" [value]="i">
                                 {{role.replaceAll('_', ' ')}}

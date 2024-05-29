@@ -19,11 +19,11 @@ export class Person{
     svuApplied: boolean = false;
 
   
-    educationalConsultant: User = new User;
-    educationalLeader: User = new User;
-    operationCoordinator: User = new User;
-    department?: Department = new Department;
-    location?: Location = new Location;
+    educationalConsultant: User|null = null;
+    educationalLeader: User|null = null;
+    operationCoordinator: User|null = null;
+    department?: Department|null = null;
+    location?: Location|null = null;;
     files: File[] = [];
     personCourses: PersonCourse[] = [];
 
