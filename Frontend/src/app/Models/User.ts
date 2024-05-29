@@ -13,8 +13,8 @@ export class User{
     userRole: UserRole = 0;
     passwordexpiryDate: Date = new Date;
 
-    department?: Department = new Department;
-    location?: Location = new Location;
+    department?: Department|null = null;
+    location?: Location|null = null;
     educationBoss?: User| null = null;
     educationLeaders: User[] = [];
 }

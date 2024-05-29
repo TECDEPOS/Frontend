@@ -98,30 +98,24 @@ mat-option {
 .grid {
   display: flex;
   overflow: auto;
-}
-
-.innerBox:first-child {
-  flex: 70%;
-}
-
-.innerBox:last-child {
-  height: fit-content;
-  flex: 30%;
+  height: 80vh;
 }
 
 .innerBox {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 10px;
-  border: 1px solid #ccc;
   padding: 20px;
-  /* margin: 20px; */
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  height: 100%;
-  max-height: 100%;
-  place-content: center start;
-  overflow: hidden;
+  place-content: start start;
+}
+
+.left-div{
+  flex: 70%;
+  overflow-y: auto;
+}
+
+.right-div{
+  flex: 30%;
 }
 
 .picker {
@@ -169,4 +163,20 @@ mat-option {
 
 .submit{
   float: right;
+}
+
+.new-teacher{
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2px;
+}
+
+.new-teacher:hover{
+  background-color: #d7d7d7;
 }

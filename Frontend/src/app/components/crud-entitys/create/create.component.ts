@@ -251,11 +251,12 @@ export class CreateComponent extends Unsub implements OnInit {
   }
 
   createPerson() {
-    this.person.endDate = this.person.hiringDate;    
+    this.person.endDate = this.person.hiringDate;
+     
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.created(res)
       this.person = new Person;
-      this.personForm.resetForm();
+      this.personForm.resetForm(this.person);
       this.submitClicked = false;
       this.openSnackBarSuccess('Underviser');
     })
