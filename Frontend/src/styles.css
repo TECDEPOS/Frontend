@@ -117,3 +117,7 @@ td{
       text-overflow: ellipsis;
       padding: 0px 10px;
   }
+
+app-statistics{
+    display: flex;
+}
