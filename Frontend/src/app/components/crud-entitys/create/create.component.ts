@@ -288,8 +288,6 @@ export class CreateComponent extends Unsub implements OnInit {
       }, panelClass: ['red-snackbar'], duration: 3000
     });
   }
-
-
 }
 
 export function moduleIdValidator(): ValidatorFn {

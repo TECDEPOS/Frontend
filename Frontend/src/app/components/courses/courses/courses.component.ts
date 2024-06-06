@@ -51,6 +51,7 @@ export class CoursesComponent extends Unsub {
   selectedBossesIds: any[] = [this.any];
   selectedStatus: Status[] = [this.any];
   selectedTypes: CourseType[] = [this.any];
+  // selectedTypes: Number[] = [this.any];
   module: Module = new Module;
   courses: Course[] = [];
   showedCourseList: Course[] = [];
@@ -97,25 +98,42 @@ export class CoursesComponent extends Unsub {
     this.exportToExcelComponent.exportModulesToExcel(this.modules);
   }
 
-  exportModulesToExcelTypes() {
+  exportModulesToExcelFilter() {
     let newModules: ModuleWithCourseViewModel[] = [];
-    if (this.selectedTypes.includes(this.any)) {
+    if (this.selectedModuleIds.length <= 1) {
       newModules = JSON.parse(JSON.stringify(this.modules));
     }
     else {
       newModules = JSON.parse(JSON.stringify(this.modules.filter(m => this.selectedModuleIds.some(id => id == m.moduleId))));
     }
 
-    newModules.forEach(module => {
-      module.courses = module.courses.filter(course =>
-        this.selectedTypes.includes(CourseType[course.courseType as unknown as keyof typeof CourseType])
-      );
-    });
+    newModules = this.filterForMoudleExcel(newModules);
 
     this.exportToExcelComponent.exportModulesToExcel(newModules);
   }
 
-  exportCoursesToExcel() {    
+  filterForMoudleExcel(newModules: ModuleWithCourseViewModel[]): ModuleWithCourseViewModel[] {
+    if (!this.selectedTypes.includes(this.any) && this.selectedTypes.length != 0)
+      newModules.forEach(module => {
+        module.courses = module.courses.filter(course =>
+          this.selectedTypes.includes(CourseType[course.courseType as unknown as keyof typeof CourseType])
+        );
+      });
+
+    if (!this.selectedStatus.includes(this.any) && this.selectedStatus.length != 0) {
+      newModules.forEach(module => {
+        module.courses.forEach(course => {
+          course.personCourses = course.personCourses.filter(personCourse =>
+            this.selectedStatus.includes(Status[personCourse.status as unknown as keyof typeof Status])
+          )
+        })
+      })
+    }
+
+    return newModules
+  }
+
+  exportCoursesToExcel() {
     this.exportToExcelComponent.exportCoursesToExcel(this.courses.filter(c => this.selectedCourseIds.some(id => id == c.courseId)));
   }
 
@@ -137,6 +155,32 @@ export class CoursesComponent extends Unsub {
     }
 
     this.exportToExcelComponent.exportBossesToExcel(bosses);
+  }
+
+  exportLeadersToExcel() {
+    var newLeaderList: LeaderViewModel[] = JSON.parse(JSON.stringify(this.showedLeaderList))
+
+    if (!this.selectedStatus.includes(this.any)) {
+      newLeaderList.forEach(leader => {
+        leader.educators.forEach(educator => {
+          educator.personCourses = educator.personCourses.filter(personCourse =>
+            this.selectedStatus.some(status => status as unknown as keyof typeof Status === Status[personCourse.status])
+          )
+        })
+      })
+    }
+
+    if (!this.selectedTypes.includes(this.any)) {
+      newLeaderList.forEach(leader => {
+        leader.educators.forEach(educator => {
+          educator.personCourses = educator.personCourses.filter(personCourse =>
+            this.selectedTypes.some(type => type as unknown as keyof typeof CourseType == CourseType[personCourse.course!.courseType])
+          )
+        })
+      });
+    }
+
+    this.exportToExcelComponent.exportLeadersToExcel(newLeaderList);
   }
 
   ngAfterViewInit(): void {
@@ -163,10 +207,13 @@ export class CoursesComponent extends Unsub {
       if (this.activeCourseList[0] === item.moduleId) {
         this.selectedModuleId = null;
         this.courseSelected = false;
+        this.selectedModuleIds = this.selectedModuleIds.filter(id => id != item.moduleId)
         this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
       }
       else {
         this.selectedModuleId = item.moduleId;
+        this.selectedModuleIds = this.selectedModuleIds.filter(id => id != item.moduleId)
+        this.selectedModuleIds.push(item.moduleId)
         this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
         this.activeCourseList.unshift(item.moduleId)
 
@@ -175,7 +222,6 @@ export class CoursesComponent extends Unsub {
       this.sortCourseList()
     }
     else if ('userId' in item) {
-      console.log(item);
       if (this.selectedLeaderId === item.userId) {
         this.selectedLeaderId = null
         this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId)
@@ -186,6 +232,7 @@ export class CoursesComponent extends Unsub {
         const i = this.showedLeaderList.findIndex(x => x.userId == item.userId);
 
         this.leaderPersons = this.showedLeaderList[i].educators;
+        this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId)
         this.activeLeaderList.unshift(item.userId)
       }
     }
@@ -195,15 +242,12 @@ export class CoursesComponent extends Unsub {
     this.userService.getEducationLeadersExcel().subscribe(res => {
       this.educationLeaders = res;
       this.showedLeaderList = this.educationLeaders;
-      console.log(res);
-
     })
   }
 
   getEducationBosses() {
     this.userService.getEducationBossesExcel().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
-      console.log(res);
     })
   }
 
@@ -264,8 +308,6 @@ export class CoursesComponent extends Unsub {
     if (!sort.active || sort.direction === '') {
       return;
     }
-    console.log(type);
-    console.log(sort);
 
 
     if (type == 'mc') {
@@ -371,7 +413,6 @@ export class CoursesComponent extends Unsub {
     else {
       this.selectedBossesIds = selectedValues;
     }
-    console.log(this.selectedBossesIds);
 
     this.sortLeaderList();
   }
@@ -464,8 +505,8 @@ export class CoursesComponent extends Unsub {
     return this.selectedModuleId === moduleId;
   }
 
-  isLeaderListActive(moduleId: number) {
-    return this.selectedLeaderId === moduleId;
+  isLeaderListActive(leaderId: number) {
+    return this.selectedLeaderId === leaderId;
   }
 
   progressBar(): void {

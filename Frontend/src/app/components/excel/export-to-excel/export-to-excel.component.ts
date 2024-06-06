@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { Course } from 'src/app/Models/Course';
 import { CourseType } from 'src/app/Models/CourseType';
-import { Module } from 'src/app/Models/Module';
 import { Person } from 'src/app/Models/Person';
 import { PersonCourse } from 'src/app/Models/PersonCourse';
 import { Status } from 'src/app/Models/Status';
-import { User } from 'src/app/Models/User';
 import { UserRole } from 'src/app/Models/UserRole';
 import { BossViewModel, LeaderViewModel } from 'src/app/Models/ViewModels/BossViewModel';
 import { ModuleWithCourseViewModel } from 'src/app/Models/ViewModels/ModuleWithCourseViewModel';
@@ -82,7 +80,7 @@ export class ExportToExcelComponent {
     this.exportWorkSheetToExcel();
   }
 
-  exportWorkSheetToExcel() {
+  exportWorkSheetToExcel() {    
     this.workSheet = XLSX.utils.aoa_to_sheet(this.workSheetData);
 
     this.excelStyling();
@@ -90,6 +88,7 @@ export class ExportToExcelComponent {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, this.workSheet, 'Sheet1');
     XLSX.writeFile(wb, 'ScoreSheet.xlsx');
+    this.workSheetEnd();
   }
 
   bossesWorkSheetData(bosses: BossViewModel[]) {
@@ -119,7 +118,7 @@ export class ExportToExcelComponent {
         this.headerRows.push(this.rowCounter)
         this.newRow();
         this.newLeaderHeader = false;
-      }
+      }      
       this.newBossHeader = true;
       this.newEducatorHeader = true;
 
@@ -199,9 +198,6 @@ export class ExportToExcelComponent {
       this.workSheetData.push(moduleData);
       this.newRow();
 
-      console.log(module);
-
-
       if (module.courses.length > 0) {
         this.courseWorkSheetData(module.courses);
       }
@@ -219,7 +215,7 @@ export class ExportToExcelComponent {
       this.newModuleHeader = true;
       this.newEducatorHeader = true;
 
-      const courseData = ['', course.courseType, course.startDate, course.endDate];
+      const courseData = ['', CourseType[course.courseType], course.startDate, course.endDate];
       this.workSheetData.push(courseData)
       this.newRow();
 
@@ -230,12 +226,15 @@ export class ExportToExcelComponent {
         this.newCourseHeader = true;
         this.newRow();
         course.personCourses.forEach(personCourse => {
+          
           const educatorData = [
             '',
             personCourse.person!.name, personCourse.person!.initials,
             personCourse.person!.department!.name, personCourse.person!.location!.name,
-            personCourse.status
+            Status[personCourse.status]
           ]
+          this.workSheetData.push(educatorData)
+          this.newRow();
         })
       }
     })
@@ -308,5 +307,11 @@ export class ExportToExcelComponent {
 
   newRow() {
     this.rowCounter++;
+  }
+
+  workSheetEnd() {    
+    this.workSheetData = [];
+    this.headerRows = [];
+    this.rowCounter = 0;
   }
 }
