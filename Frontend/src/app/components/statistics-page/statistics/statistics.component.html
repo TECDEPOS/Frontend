@@ -1,14 +1,35 @@
 <div class="parent">
     <div class="sidebar">
-        <button class="button cancel">Button 1</button>
-        <button class="button cancel">Button 2</button>
-        <button class="button cancel">Button 3</button>
-        <button class="button cancel">Button 4</button>
+        <button class="button cancel" (click)="switchGraph(1)">Button 1</button>
+        <button class="button cancel" (click)="switchGraph(2)">Button 2</button>
+        <button class="button cancel" (click)="switchGraph(3)">Button 3</button>
+        <button class="button cancel" (click)="switchGraph(4)">Button 4</button>
     </div>
-    
+
     <div class="container">
         <div class="graph">
-            <p>Test</p>
+            <div class="selector-graph" *ngIf="selectedGraph === 1">
+                <div class="module-selector">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Modul:</mat-label>
+                        <mat-select name="modules" (selectionChange)="onModuleChange($event.value)">
+                            <mat-option disabled>Vælg Modul</mat-option>
+                            <mat-option *ngFor="let module of modules" [value]="module">
+                                {{module.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="bar-chart">
+                    <canvas id="canvas">{{chart}}</canvas>
+                </div>
+
+
+
+            </div>
+            <div *ngIf="selectedGraph === 2">
+                TEST GRAPH 2
+            </div>
         </div>
     </div>
 </div>

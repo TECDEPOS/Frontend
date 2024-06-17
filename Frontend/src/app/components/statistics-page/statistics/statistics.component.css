@@ -17,7 +17,8 @@
 .graph{
     outline: green solid 1px;
     height: 90%;
-    width: 90%;
+
+    width: 100%;
 }
 
 .sidebar{
@@ -31,4 +32,24 @@
 
 .button{
     margin-bottom: 10px;
+}
+
+.selector-graph{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.module-selector{
+    height: 10%;
+}
+
+
+
+.dropdown{
+    outline: solid 1px #888;
+    border-radius: 5px;
+    margin-left: 65px;
+    width: 30%;
 }

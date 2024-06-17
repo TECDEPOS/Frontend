@@ -121,3 +121,7 @@ td{
 app-statistics{
     display: flex;
 }
+
+mat-dialog-container{
+    min-width: 300px !important;
+}
