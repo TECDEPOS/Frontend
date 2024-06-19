@@ -38,24 +38,12 @@ export class StatisticsComponent extends Unsub {
       this.modules = results;
       console.log(this.modules);
     });
-
-    // this.chart = new Chart('canvas', {
-    //   type: 'bar',
-    //   data: {
-    //     labels: this.departmentNames,
-    //     datasets: [
-    //       {
-    //         label: 'Undervisere per afdeling for valgte modul',
-    //         data: this.teacherCount
-    //       },
-    //     ],
-    //   },
-    // });
   }
 
   switchGraph(graphNumber: number){
     this.selectedGraph = graphNumber;
-    console.log('THIS IS CHART', this.chart);
+
+    //Destroy existing charts to prevent errors
     if (this.chart) {
       this.chart.destroy();
     }
@@ -71,7 +59,7 @@ export class StatisticsComponent extends Unsub {
   }
 
 
-  onModuleChange(selectedModule: Module) {
+  onBarChartModuleChange(selectedModule: Module) {
     this.personService.getPersonsPerDepartmentFromModule(selectedModule.moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
       this.departmentNames = results.map(x => x.departmentName);
       this.teacherCount = results.map(x => x.teacherCount);
@@ -99,7 +87,6 @@ export class StatisticsComponent extends Unsub {
       //The options are for customizing the appearance and how the chart acts
       options: {
         responsive: true,
-        // maintainAspectRatio: false,
         scales: {
           y: {
             ticks: {
@@ -119,3 +106,5 @@ export class StatisticsComponent extends Unsub {
     });
   }
 }
+
+
