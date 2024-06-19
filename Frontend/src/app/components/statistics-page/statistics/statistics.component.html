@@ -1,0 +1,40 @@
+<div class="parent">
+    <div class="sidebar">
+            <button class="button submit" (click)="switchGraph(1)">
+                <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button class="button submit" (click)="switchGraph(2)">
+                <mat-icon>incomplete_circle</mat-icon>
+            </button>
+            <button class="button submit" (click)="switchGraph(3)">
+                <mat-icon>sentiment_satisfied_alt</mat-icon>
+            </button>
+            <button class="button submit" (click)="switchGraph(4)">
+                <mat-icon>sentiment_satisfied_alt</mat-icon>
+            </button>
+    </div>
+
+    <div class="container">
+        <div class="graph">
+            <div class="selector-graph" *ngIf="selectedGraph === 1">
+                <div class="module-selector">
+                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
+                        <mat-label>Vælg Modul:</mat-label>
+                        <mat-select name="modules" (selectionChange)="onBarChartModuleChange($event.value)">
+                            <mat-option disabled>Vælg Modul</mat-option>
+                            <mat-option *ngFor="let module of modules" [value]="module">
+                                {{module.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="bar-chart">
+                    <canvas id="canvas">{{chart}}</canvas>
+                </div>
+            </div>
+            <div *ngIf="selectedGraph === 2">
+                TEST GRAPH 2
+            </div>
+        </div>
+    </div>
+</div>

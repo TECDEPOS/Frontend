@@ -9,6 +9,7 @@ import { EmployeeProfileComponent } from './components/employee-profile/employee
 import { CrudEntityPageComponent } from './components/crud-entity-page/crud-entity-page.component';
 import { CoursePageComponent } from './components/courses/course-page/course-page.component';
 import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
+import { StatisticsComponent } from './components/statistics-page/statistics/statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'employee/:id', component: EmployeeProfileComponent, canActivate:[authGuard]},
   { path: 'administration', component: CrudEntityPageComponent, canActivate:[authGuard],},
   { path: 'excel', component: ExportToExcelComponent, canActivate:[authGuard],},
+  { path: 'statistics', component: StatisticsComponent, canActivate:[authGuard],},
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
 .OuterWrapper{
     background-color: #006E8C;
     display: grid;
-    grid-template-columns: 384px auto 300px 4rem;
+    grid-template-columns: 384px auto 350px 4rem;
     color: white;
     width: 100%;
     top: 0;

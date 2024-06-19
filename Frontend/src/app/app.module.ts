@@ -51,7 +51,8 @@ import { SnackbarIndicatorComponent } from './components/Misc/snackbar-indicator
 import { ExportToExcelComponent } from './components/excel/export-to-excel/export-to-excel.component';
 import { registerLocaleData } from '@angular/common';
 import localeDa from '@angular/common/locales/da';
-import { DndDirective } from './components/pop-ups/fileupload-popup/dnd.directive'
+import { DndDirective } from './components/pop-ups/fileupload-popup/dnd.directive';
+import { StatisticsComponent } from './components/statistics-page/statistics/statistics.component'
 
 registerLocaleData(localeDa);
 
@@ -101,6 +102,7 @@ export const MY_DATE_FORMATS = {
     SnackbarIndicatorComponent,
     ExportToExcelComponent,
     DndDirective,
+    StatisticsComponent,
   ],
   imports: [
     AppRoutingModule,

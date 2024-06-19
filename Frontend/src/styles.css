@@ -117,3 +117,11 @@ td{
       text-overflow: ellipsis;
       padding: 0px 10px;
   }
+
+app-statistics{
+    display: flex;
+}
+
+mat-dialog-container{
+    min-width: 300px !important;
+}
