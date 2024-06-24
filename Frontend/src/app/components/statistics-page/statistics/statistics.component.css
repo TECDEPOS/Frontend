@@ -17,6 +17,10 @@
     height: 90%;
     width: 100%;
     margin: 0 2%;
+
+    /* Test */
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar{
@@ -34,22 +38,33 @@
     margin-bottom: 10px;
 }
 
-.selector-graph{
+.graph-selector{
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
-.module-selector{
-    height: 10%;
+.bar-chart{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.pie-chart-container{
+    height: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.pie-holder{
+    height: 100%;
+    width: 50%;
 }
 
 .dropdown{
     outline: solid 1px #888;
     border-radius: 5px;
     width: 30%;
-    margin-left: 5%;
 }
 
 .button{
@@ -60,4 +75,23 @@
 }
 .button mat-icon{
     transform: scale(2)
+}
+
+.selected,
+.selected:hover{
+    background-color: #00c8ff;
+    border-color: #00aaff;
+}
+
+.button-label {
+    font-size: 12px;
+    color: #333;
+    margin-top: 4px;
+}
+
+.no-data{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 }
