@@ -1,40 +1,82 @@
 <div class="parent">
     <div class="sidebar">
-            <button class="button submit" (click)="switchGraph(1)">
+        <div class="button-group">
+
+            <button class="button submit" (click)="switchGraph(1)" [ngClass]="{ 'selected': selectedGraphType === 1 }">
                 <mat-icon>bar_chart</mat-icon>
             </button>
-            <button class="button submit" (click)="switchGraph(2)">
+            <button class="button submit" (click)="switchGraph(2)" [ngClass]="{ 'selected': selectedGraphType === 2 }">
                 <mat-icon>incomplete_circle</mat-icon>
             </button>
-            <button class="button submit" (click)="switchGraph(3)">
-                <mat-icon>sentiment_satisfied_alt</mat-icon>
-            </button>
-            <button class="button submit" (click)="switchGraph(4)">
-                <mat-icon>sentiment_satisfied_alt</mat-icon>
-            </button>
+        </div>
+        <!-- <button class="button submit" (click)="switchGraph(3)" [ngClass]="{ 'selected': selectedGraphType === 3 }">
+            <mat-icon>sentiment_satisfied_alt</mat-icon>
+        </button>
+        <button class="button submit" (click)="switchGraph(4)" [ngClass]="{ 'selected': selectedGraphType === 4 }">
+            <mat-icon>sentiment_satisfied_alt</mat-icon>
+        </button> -->
     </div>
 
     <div class="container">
         <div class="graph">
-            <div class="selector-graph" *ngIf="selectedGraph === 1">
-                <div class="module-selector">
-                    <mat-form-field subscriptSizing="dynamic" class="dropdown">
-                        <mat-label>Vælg Modul:</mat-label>
-                        <mat-select name="modules" (selectionChange)="onBarChartModuleChange($event.value)">
-                            <mat-option disabled>Vælg Modul</mat-option>
-                            <mat-option *ngFor="let module of modules" [value]="module">
-                                {{module.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="bar-chart">
-                    <canvas id="canvas">{{chart}}</canvas>
-                </div>
+
+            <div class="graph-selector">
+                <mat-form-field subscriptSizing="dynamic" class="dropdown" *ngIf="selectedGraphType === 1">
+                    <mat-label>Vælg statistik:</mat-label>
+                    <mat-select [(ngModel)]="selectedBarChart" name="selectedStatistic"
+                        (selectionChange)="fetchChartData()">
+                        <mat-option disabled>Vælg statistik</mat-option>
+                        <mat-option [value]="1">Moduler per afdeling</mat-option>
+                        <mat-option [value]="2">Undervisere per afdeling</mat-option>
+                        <mat-option [value]="3">Undervisere per lokation</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field subscriptSizing="dynamic" class="dropdown" *ngIf="selectedGraphType === 2">
+                    <mat-label>Vælg statistik:</mat-label>
+                    <mat-select [(ngModel)]="selectedPieChart" name="selectedStatistic"
+                        (selectionChange)="fetchChartData()">
+                        <mat-option disabled>Vælg statistik</mat-option>
+                        <mat-option [value]="1">Undervisere per kursus status</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field subscriptSizing="dynamic" class="dropdown"
+                    *ngIf="selectedGraphType === 1 && selectedBarChart === 1 || selectedGraphType === 2 && selectedPieChart === 1">
+                    <mat-label>Vælg Modul:</mat-label>
+                    <mat-select [(ngModel)]="selectedModule" name="modules"
+                        (selectionChange)="onModuleChange($event.value)">
+                        <mat-option disabled>Vælg Modul</mat-option>
+                        <mat-option *ngFor="let module of modules" [value]="module">
+                            {{module.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
             </div>
-            <div *ngIf="selectedGraph === 2">
-                TEST GRAPH 2
+
+            <div
+                [ngClass]="{ 'no-module': !selectedModule && ((selectedBarChart === 1 && selectedGraphType === 1) || (selectedPieChart === 1 && selectedGraphType === 2)) }">
+                <div>
+                    <div class="bar-chart" *ngIf="selectedGraphType === 1">
+                        <canvas id="canvas1" *ngIf="selectedModule || selectedBarChart !== 1">{{barChart}}</canvas>
+                    </div>
+
+                    <div class="pie-chart-container"
+                        *ngIf="selectedGraphType === 2 && (selectedModule || selectedPieChart !== 1)">
+                        <div class="pie-holder">
+                            <canvas id="canvas2"></canvas>
+                        </div>
+                        <div class="pie-holder">
+                            <canvas id="canvas3"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="no-selection-text"
+                    *ngIf="!selectedModule && ((selectedBarChart === 1 && selectedGraphType === 1) || (selectedPieChart === 1 && selectedGraphType === 2))">
+                    Intet modul valgt</h1>
             </div>
+
         </div>
     </div>
 </div>

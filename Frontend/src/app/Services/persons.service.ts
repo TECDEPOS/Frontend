@@ -37,10 +37,6 @@ export class PersonsService {
     return this.http.get<Person[]>(this.baseApiUrl + 'Person/' + name)
   }
 
-  getPersonsPerDepartmentFromModule(moduleId: number): Observable<any[]> {
-    return this.http.get<any[]>(this.baseApiUrl + 'Person/module/' + moduleId);
-  }
-
   addPerson(person: Person): Observable<Person> {
     return this.http.post<Person>(this.baseApiUrl + 'Person/', person)
   }
