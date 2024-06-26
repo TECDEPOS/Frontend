@@ -1,17 +1,20 @@
 <div class="parent">
     <div class="sidebar">
-        <button class="button submit" (click)="switchGraph(1)" [ngClass]="{ 'selected': selectedGraphType === 1 }">
-            <mat-icon>bar_chart</mat-icon>
-        </button>
-        <button class="button submit" (click)="switchGraph(2)" [ngClass]="{ 'selected': selectedGraphType === 2 }">
-            <mat-icon>incomplete_circle</mat-icon>
-        </button>
-        <button class="button submit" (click)="switchGraph(3)" [ngClass]="{ 'selected': selectedGraphType === 3 }">
+        <div class="button-group">
+
+            <button class="button submit" (click)="switchGraph(1)" [ngClass]="{ 'selected': selectedGraphType === 1 }">
+                <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button class="button submit" (click)="switchGraph(2)" [ngClass]="{ 'selected': selectedGraphType === 2 }">
+                <mat-icon>incomplete_circle</mat-icon>
+            </button>
+        </div>
+        <!-- <button class="button submit" (click)="switchGraph(3)" [ngClass]="{ 'selected': selectedGraphType === 3 }">
             <mat-icon>sentiment_satisfied_alt</mat-icon>
         </button>
         <button class="button submit" (click)="switchGraph(4)" [ngClass]="{ 'selected': selectedGraphType === 4 }">
             <mat-icon>sentiment_satisfied_alt</mat-icon>
-        </button>
+        </button> -->
     </div>
 
     <div class="container">
@@ -35,7 +38,6 @@
                         (selectionChange)="fetchChartData()">
                         <mat-option disabled>Vælg statistik</mat-option>
                         <mat-option [value]="1">Undervisere per kursus status</mat-option>
-                        <mat-option [value]="2">TEST</mat-option>
                     </mat-select>
                 </mat-form-field>
 

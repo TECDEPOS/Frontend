@@ -3,8 +3,6 @@ import { Chart, registerables } from 'chart.js';
 import { takeUntil } from 'rxjs';
 import { Module } from 'src/app/Models/Module';
 import { ModuleService } from 'src/app/Services/module.service';
-import { PersonCourseService } from 'src/app/Services/person-course.service';
-import { PersonsService } from 'src/app/Services/persons.service';
 import { StatisticsService } from 'src/app/Services/statistics.service';
 import { Unsub } from 'src/app/classes/unsub';
 
@@ -36,8 +34,6 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
 
   constructor(
     private moduleService: ModuleService,
-    private personService: PersonsService,
-    private personCourseService: PersonCourseService,
     private statisticsService: StatisticsService
   ) {
     super();
