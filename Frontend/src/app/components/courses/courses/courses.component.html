@@ -231,29 +231,28 @@
             <div class="filterItem" *ngIf="!leaderView">
                 <button mat-raised-button (click)="exportModulesToExcel()">Export moduler til excel</button>
             </div>
-            <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte moduler til excel</button>
+            <div class="filterItem" *ngIf="!leaderView && moduleSelected">
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte modul til excel</button>
             </div>
-            <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcelFilter()">Export kurser efter valdte typer til
-                    excel</button>
-            </div>
-            <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte kurser til excel</button>
+            <div class="filterItem" *ngIf="!leaderView && courseSelected">
+                <button mat-raised-button (click)="exportModulesToExcel()">Export valdte kurses til excel</button>
             </div>
             <div class="filterItem" *ngIf="leaderView">
-                <button mat-raised-button (click)="exportBossesToExcel()">Export valdte ledere til excel</button>
+                <button mat-raised-button (click)="exportLeadersToExcel()">Export viste leder til excel</button>
             </div>
-            <div class="filterItem" *ngIf="leaderView">
-                <button mat-raised-button (click)="exportLeadersToExcel()">Export valdte ledere til excel med filtere</button>
+            <div class="filterItem" *ngIf="leaderView && leaderSelected">
+                <button mat-raised-button (click)="exportChosenLeaderToExcel()">Export valdte ledere til excel </button>
             </div>
-            <div class="filterItem" *ngIf="!leaderView && activeCourseList">
+            <div class="filterItem" *ngIf="leaderView && educatorSelected">
+                <button mat-raised-button (click)="exportLeadersToExcel()">Export valdte underviser til excel</button>
+            </div>
+            <div class="filterItem" *ngIf="!leaderView && moduleSelected">
                 <button mat-raised-button (click)="openAddCourseToModulePopup()">Tilføj kursus til modul</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView && courseSelected">
                 <button mat-raised-button (click)="openAddPersonToCoursePopup()">Tilføj lærer til kursus</button>
             </div>
-            <div class="filterItem" *ngIf="leaderView && personSelected">
+            <div class="filterItem" *ngIf="leaderView && educatorSelected">
                 <button mat-raised-button (click)="openAddPersonCoursePopup()">Tilføj kursus til lærer</button>
             </div>
         </div>

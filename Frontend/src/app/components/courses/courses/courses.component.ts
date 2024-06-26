@@ -33,14 +33,16 @@ export class CoursesComponent extends Unsub {
   anyEducationBoss: boolean = true;
   anyBoss: boolean = true;
   anyType: boolean = true;
+  moduleSelected: boolean = false;
   courseSelected: boolean = false;
-  personSelected: boolean = false;
+  leaderSelected: boolean = false;
+  educatorSelected: boolean = false;
   showEducationBossesDropdown: boolean = false;
   leaderView: boolean = false;
-  activeCourseList: number[] = [];
-  activeLeaderList: number[] = [];
-  selectedModuleIds: number[] = [];
-  selectedCourseIds: number[] = [];
+  // activeCourseList: number[] = [];
+  // activeLeaderList: number[] = [];
+  // selectedModuleIds: number[] = [];
+  // selectedCourseIds: number[] = [];
   selectedModuleId: number | null = 0;
   selectedCourseId: number | null = 0;
   selectedLeaderId: number | null = 0;
@@ -100,12 +102,7 @@ export class CoursesComponent extends Unsub {
 
   exportModulesToExcelFilter() {
     let newModules: ModuleWithCourseViewModel[] = [];
-    if (this.selectedModuleIds.length <= 1) {
-      newModules = JSON.parse(JSON.stringify(this.modules));
-    }
-    else {
-      newModules = JSON.parse(JSON.stringify(this.modules.filter(m => this.selectedModuleIds.some(id => id == m.moduleId))));
-    }
+    newModules = JSON.parse(JSON.stringify(this.modules.filter(m => this.selectedModuleId)));
 
     newModules = this.filterForMoudleExcel(newModules);
 
@@ -134,28 +131,30 @@ export class CoursesComponent extends Unsub {
   }
 
   exportCoursesToExcel() {
-    this.exportToExcelComponent.exportCoursesToExcel(this.courses.filter(c => this.selectedCourseIds.some(id => id == c.courseId)));
+    this.exportToExcelComponent.exportCoursesToExcel(this.courses.filter(c => this.selectedCourseId));
   }
 
-  exportBossesToExcel() {
-    if (this.selectedBossesIds.includes('Alle')) {
-      var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
-        this.educationBosses,
-        this.educationLeaders
-      )
-    }
-    else {
-      var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
-        this.educationBosses.filter(boss =>
-          this.selectedBossesIds.some(selectedBossId =>
-            selectedBossId == boss.userId
-          )),
-        this.educationLeaders
-      )
-    }
+  // exportBossesToExcel() {
+  //   console.log(this.showedLeaderList);
 
-    this.exportToExcelComponent.exportBossesToExcel(bosses);
-  }
+  //   if (this.selectedBossesIds.includes('Alle')) {
+  //     var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
+  //       this.educationBosses,
+  //       this.educationLeaders
+  //     )
+  //   }
+  //   else {
+  //     var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
+  //       this.educationBosses.filter(boss =>
+  //         this.selectedBossesIds.some(selectedBossId =>
+  //           selectedBossId == boss.userId
+  //         )),
+  //       this.educationLeaders
+  //     )
+  //   }
+
+  //   this.exportToExcelComponent.exportBossesToExcel(bosses);
+  // }
 
   exportLeadersToExcel() {
     var newLeaderList: LeaderViewModel[] = JSON.parse(JSON.stringify(this.showedLeaderList))
@@ -183,6 +182,32 @@ export class CoursesComponent extends Unsub {
     this.exportToExcelComponent.exportLeadersToExcel(newLeaderList);
   }
 
+  exportChosenLeaderToExcel() {
+    var selectedLeader: LeaderViewModel[] = JSON.parse(JSON.stringify(this.showedLeaderList.filter(x => x.userId == this.selectedLeaderId)))    
+
+    if (!this.selectedStatus.includes(this.any)) {
+      selectedLeader.forEach(leader => {
+        leader.educators.forEach(educator => {
+          educator.personCourses = educator.personCourses.filter(personCourse =>
+            this.selectedStatus.some(status => status as unknown as keyof typeof Status === Status[personCourse.status])
+          )
+        })
+      })
+    }
+
+    if (!this.selectedTypes.includes(this.any)) {
+      selectedLeader.forEach(leader => {
+        leader.educators.forEach(educator => {
+          educator.personCourses = educator.personCourses.filter(personCourse =>
+            this.selectedTypes.some(type => type as unknown as keyof typeof CourseType == CourseType[personCourse.course!.courseType])
+          )
+        })
+      });
+    }
+
+    this.exportToExcelComponent.exportLeadersToExcel(selectedLeader);
+  }
+
   ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
       this.progressBar()
@@ -204,18 +229,14 @@ export class CoursesComponent extends Unsub {
 
   toggleTable(item: any) {
     if ('moduleId' in item) {
-      if (this.activeCourseList[0] === item.moduleId) {
+      if (this.selectedModuleId === item.moduleId) {
         this.selectedModuleId = null;
+        this.moduleSelected = false;
         this.courseSelected = false;
-        this.selectedModuleIds = this.selectedModuleIds.filter(id => id != item.moduleId)
-        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
       }
       else {
         this.selectedModuleId = item.moduleId;
-        this.selectedModuleIds = this.selectedModuleIds.filter(id => id != item.moduleId)
-        this.selectedModuleIds.push(item.moduleId)
-        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
-        this.activeCourseList.unshift(item.moduleId)
+        this.moduleSelected = true;
 
         this.getCourseTableData(item.moduleId);
       }
@@ -224,16 +245,14 @@ export class CoursesComponent extends Unsub {
     else if ('userId' in item) {
       if (this.selectedLeaderId === item.userId) {
         this.selectedLeaderId = null
-        this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId)
+        this.leaderSelected = false;
       }
       else {
         this.selectedLeaderId = item.userId
-
+        this.leaderSelected = true;
         const i = this.showedLeaderList.findIndex(x => x.userId == item.userId);
 
         this.leaderPersons = this.showedLeaderList[i].educators;
-        this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId)
-        this.activeLeaderList.unshift(item.userId)
       }
     }
   }
@@ -274,13 +293,10 @@ export class CoursesComponent extends Unsub {
       this.persons = [];
       this.courseSelected = false;
       this.selectedCourseId = 0;
-      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId)
     }
     else {
       this.courseSelected = true;
       this.selectedCourseId = courseId;
-      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId)
-      this.selectedCourseIds.push(courseId)
       this.persons = this.modules.find(m => m.moduleId == this.selectedModuleId)!.courses.find(c => c.courseId == courseId)!.personCourses;
       this.showedPersonCourses = this.persons;
     }
@@ -288,12 +304,12 @@ export class CoursesComponent extends Unsub {
 
   setSelectedPersonId(personId: number) {
     if (this.selectedEducatorId == personId) {
-      this.personSelected = false;
+      this.educatorSelected = false;
       this.selectedEducatorId = 0;
       this.personsCoureses = [];
     }
     else {
-      this.personSelected = true;
+      this.educatorSelected = true;
       this.selectedEducatorId = personId;
       this.personCourseService.getPersonCoursesByPerson(personId).subscribe(res => {
         this.personsCoureses = res;
