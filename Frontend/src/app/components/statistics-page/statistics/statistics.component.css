@@ -43,6 +43,13 @@
     justify-content: space-evenly;
 }
 
+.no-module{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
 .bar-chart{
     display: flex;
     flex-direction: column;
@@ -89,9 +96,13 @@
     margin-top: 4px;
 }
 
-.no-data{
+/* .no-data{
     display: flex;
     flex: 1;
     align-items: center;
     justify-content: center;
+} */
+
+.no-selection-text{
+    font-size: xx-large;
 }

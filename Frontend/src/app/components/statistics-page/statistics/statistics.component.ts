@@ -23,8 +23,6 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   barChart: any = null;
   leftPieChart: Chart<'pie'> | null = null;
   rightPieChart: Chart<'pie'> | null = null;
-  // chartInstances: { [key: string]: Chart } = {};
-
 
   //Bar chart
   barChartLabels: string[] = [];
@@ -99,9 +97,6 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         if (this.selectedPieChart === 1 && this.selectedModule) {
           this.getCourseStatusPieChartData(this.selectedModule.moduleId);
         }
-        else if (this.selectedPieChart === 2){
-          this.getDepartmentLocationPieChartData();
-        }
         break;
       default:
         break;
@@ -174,24 +169,6 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         const replaceUnderscores = (status: string) => status.replace(/_/g, ' ');
         this.leftPieLabels = this.leftPieLabels.map(replaceUnderscores);
         this.rightPieLabels = this.rightPieLabels.map(replaceUnderscores);
-
-        this.setupPieChart();
-      });
-  }
-
-  getDepartmentLocationPieChartData() {
-    this.statisticsService.getPersonsPerDepartmentAndLocation()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(results => {
-        console.log(results);
-
-        // Map the results to department names and their teacher counts
-        this.leftPieLabels = results.departments.map((x: any) => x.departmentName);
-        this.leftPieData = results.departments.map((x: any) => x.teacherCount);
-
-        // Map the results to location names and their teacher counts
-        this.rightPieLabels = results.locations.map((x: any) => x.locationName);
-        this.rightPieData = results.locations.map((x: any) => x.teacherCount);
 
         this.setupPieChart();
       });
@@ -289,7 +266,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
               ctx.textBaseline = 'middle';
               ctx.font = '20px Arial';
               ctx.fillStyle = 'gray';
-              ctx.fillText('No data', width / 2, height / 2);
+              ctx.fillText('Ingen data', width / 2, height / 2);
               ctx.restore();
             }
           }
