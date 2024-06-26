@@ -20,20 +20,19 @@
             <div class="graph-selector">
                 <mat-form-field subscriptSizing="dynamic" class="dropdown" *ngIf="selectedGraphType === 1">
                     <mat-label>Vælg statistik:</mat-label>
-                    <mat-select [(ngModel)]="selectedBarChart" name="selectedStatistic">
+                    <mat-select [(ngModel)]="selectedBarChart" name="selectedStatistic" (selectionChange)="fetchChartData()">
                         <mat-option disabled>Vælg statistik</mat-option>
                         <mat-option [value]="1">Moduler per afdeling</mat-option>
-                        <mat-option [value]="2">PLACEHOLDER</mat-option>
+                        <mat-option [value]="2">Undervisere per afdeling</mat-option>
+                        <mat-option [value]="3">Undervisere per lokation</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field subscriptSizing="dynamic" class="dropdown" *ngIf="selectedGraphType === 2">
                     <mat-label>Vælg statistik:</mat-label>
-                    <mat-select [(ngModel)]="selectedPieChart" name="selectedStatistic" (selectionChange)="pieChartChanged($event.value)">
+                    <mat-select [(ngModel)]="selectedPieChart" name="selectedStatistic" (selectionChange)="fetchChartData()">
                         <mat-option disabled>Vælg statistik</mat-option>
                         <mat-option [value]="1">Undervisere per kursus status</mat-option>
-                        <mat-option [value]="2">Undervisere per afdeling og lokation</mat-option>
-                        <mat-option [value]="3">PLACEHOLDER</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -51,15 +50,15 @@
             </div>
 
             <div class="bar-chart" *ngIf="selectedGraphType === 1">
-                <canvas id="canvas1">{{barChart}}</canvas>
+                <canvas id="canvas1" *ngIf="selectedModule || selectedBarChart !== 1">{{barChart}}</canvas>
             </div>
 
             <div class="pie-chart-container" *ngIf="selectedGraphType === 2">
                 <div class="pie-holder">
-                    <canvas id="canvas2">Test</canvas>
+                    <canvas id="canvas2"></canvas>
                 </div>
                 <div class="pie-holder">
-                    <canvas id="canvas3">Test2</canvas>
+                    <canvas id="canvas3"></canvas>
                 </div>
             </div>
 

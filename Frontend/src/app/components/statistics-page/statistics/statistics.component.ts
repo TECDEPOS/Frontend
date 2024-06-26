@@ -5,6 +5,7 @@ import { Module } from 'src/app/Models/Module';
 import { ModuleService } from 'src/app/Services/module.service';
 import { PersonCourseService } from 'src/app/Services/person-course.service';
 import { PersonsService } from 'src/app/Services/persons.service';
+import { StatisticsService } from 'src/app/Services/statistics.service';
 import { Unsub } from 'src/app/classes/unsub';
 
 
@@ -20,27 +21,26 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   selectedBarChart: number = 1;
   selectedPieChart: number = 1;
   barChart: any = null;
-  finishedPieChart: Chart<'pie'> | null = null;
-  unfinishedPieChart: Chart<'pie'> | null = null;
-  chartInstances: { [key: string]: Chart } = {};
+  leftPieChart: Chart<'pie'> | null = null;
+  rightPieChart: Chart<'pie'> | null = null;
+  // chartInstances: { [key: string]: Chart } = {};
 
 
-  //Bar graph
-  departmentNames: string[] = [];
-  teacherCount: number[] = [];
+  //Bar chart
+  barChartLabels: string[] = [];
+  barChartData: number[] = [];
 
   //Pie chart
-  unfinishedStatuses: string[] = [];
-  unfinishedPersonCount: number[] = [];
-  finishedStatuses: string[] = [];
-  finishedPersonCount: number[] = [];
-
-  // pieChartOptions = 2
+  leftPieLabels: string[] = [];
+  leftPieData: number[] = [];
+  rightPieLabels: string[] = [];
+  rightPieData: number[] = [];
 
   constructor(
     private moduleService: ModuleService,
     private personService: PersonsService,
-    private personCourseService: PersonCourseService
+    private personCourseService: PersonCourseService,
+    private statisticsService: StatisticsService
   ) {
     super();
     Chart.register(...registerables);
@@ -60,19 +60,15 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
   }
 
-  switchGraph(graphNumber: number) {
+  switchGraph(graphNumber: number) {    
     // Destroy existing charts using the old selection value
-    if (this.selectedModule) {
       this.destroyCharts(this.selectedGraphType);
-    }
 
     // Update selectedGraph to the new selection value.
     this.selectedGraphType = graphNumber;
 
-    // Fetch new data for the selected graph if a module is already selected
-    if (this.selectedModule) {
-      this.fetchChartData(this.selectedModule.moduleId, this.selectedGraphType);
-    }
+    // Get data based on selected modules and selected Chart
+    this.fetchChartData();
   }
 
   onModuleChange(selectedModule: Module) {
@@ -82,16 +78,30 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
 
     this.selectedModule = selectedModule;
-    this.fetchChartData(selectedModule.moduleId, this.selectedGraphType);
+    this.fetchChartData();
   }
 
-  fetchChartData(moduleId: number, graphNumber: number) {
-    switch (graphNumber) {
+  fetchChartData() {    
+    switch (this.selectedGraphType) {
       case 1:
-        this.getBarChartData(moduleId);
+        if (this.selectedBarChart === 1 && this.selectedModule) {
+          this.getPersonsPerDepartmentFromModuleBarChart(this.selectedModule.moduleId);
+        }
+        else if (this.selectedBarChart === 2){
+          this.getPersonsPerDepartmentBarChart();
+        }
+        else if (this.selectedBarChart === 3){
+          this.getPersonsPerLocationBarChart();
+        }
         break;
       case 2:
-        this.getCourseStatusPieChartData(moduleId);
+        this.destroyCharts(2);
+        if (this.selectedPieChart === 1 && this.selectedModule) {
+          this.getCourseStatusPieChartData(this.selectedModule.moduleId);
+        }
+        else if (this.selectedPieChart === 2){
+          this.getDepartmentLocationPieChartData();
+        }
         break;
       default:
         break;
@@ -106,11 +116,11 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         }
         break;
       case 2:
-        if (this.unfinishedPieChart) {
-          this.destroyChart(this.unfinishedPieChart);
+        if (this.leftPieChart) {
+          this.destroyChart(this.leftPieChart);
         }
-        if (this.finishedPieChart) {
-          this.destroyChart(this.finishedPieChart);
+        if (this.rightPieChart) {
+          this.destroyChart(this.rightPieChart);
         }
         break;
       default:
@@ -118,33 +128,32 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
   }
 
-  pieChartChanged(pieSelected: number) {
-    console.log('pieChartChanged: ', pieSelected);
-    
-    switch (pieSelected) {
-      case 1:
-        if (this.selectedModule) {
-          this.getCourseStatusPieChartData
-        }
-        break;
-      case 2:
-        this.getDepartmentLocationPieChartData();
-        break;
-      default:
-        break;
-    }
+  getPersonsPerDepartmentFromModuleBarChart(moduleId: number) {
+    this.statisticsService.getPersonsPerDepartmentFromModule(moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
+      this.barChartLabels = results.map(x => x.departmentName);
+      this.barChartData = results.map(x => x.teacherCount);
+      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per afdeling for valgte modul');
+    })
   }
 
-  getBarChartData(moduleId: number) {
-    this.personService.getPersonsPerDepartmentFromModule(moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
-      this.departmentNames = results.map(x => x.departmentName);
-      this.teacherCount = results.map(x => x.teacherCount);
-      this.setupBarChart();
+  getPersonsPerDepartmentBarChart(){
+    this.statisticsService.getPersonsPerDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
+      this.barChartLabels = results.map(x => x.departmentName);
+      this.barChartData = results.map(x => x.teacherCount);
+      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per afdeling');
+    })
+  }
+
+  getPersonsPerLocationBarChart(){
+    this.statisticsService.getPersonsPerLocation().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
+      this.barChartLabels = results.map(x => x.locationName);
+      this.barChartData = results.map(x => x.teacherCount);
+      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per lokation');
     })
   }
 
   getCourseStatusPieChartData(moduleId: number) {
-    this.personCourseService.getCourseStatusCount(moduleId)
+    this.statisticsService.getCourseStatusCount(moduleId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(results => {
         // Filter the results where StatusId is less than 2
@@ -154,45 +163,66 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         const filteredResults2AndAbove = results.filter((x: any) => x.statusId >= 2);
 
         // Map the filtered results to unfinished statuses and their personCount for StatusId less than 2
-        this.unfinishedStatuses = filteredResultsLessThan2.map((x: any) => x.courseStatus);
-        this.unfinishedPersonCount = filteredResultsLessThan2.map((x: any) => x.personCount);
+        this.leftPieLabels = filteredResultsLessThan2.map((x: any) => x.courseStatus);
+        this.leftPieData = filteredResultsLessThan2.map((x: any) => x.personCount);
 
         // Map the filtered results to finished statuses and their personCount for StatusId 2 and above
-        this.finishedStatuses = filteredResults2AndAbove.map((x: any) => x.courseStatus);
-        this.finishedPersonCount = filteredResults2AndAbove.map((x: any) => x.personCount);
+        this.rightPieLabels = filteredResults2AndAbove.map((x: any) => x.courseStatus);
+        this.rightPieData = filteredResults2AndAbove.map((x: any) => x.personCount);
+
+        // Replace underscores with space for both statuses
+        const replaceUnderscores = (status: string) => status.replace(/_/g, ' ');
+        this.leftPieLabels = this.leftPieLabels.map(replaceUnderscores);
+        this.rightPieLabels = this.rightPieLabels.map(replaceUnderscores);
 
         this.setupPieChart();
       });
   }
 
-  getDepartmentLocationPieChartData(){
+  getDepartmentLocationPieChartData() {
+    this.statisticsService.getPersonsPerDepartmentAndLocation()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(results => {
+        console.log(results);
 
+        // Map the results to department names and their teacher counts
+        this.leftPieLabels = results.departments.map((x: any) => x.departmentName);
+        this.leftPieData = results.departments.map((x: any) => x.teacherCount);
+
+        // Map the results to location names and their teacher counts
+        this.rightPieLabels = results.locations.map((x: any) => x.locationName);
+        this.rightPieData = results.locations.map((x: any) => x.teacherCount);
+
+        this.setupPieChart();
+      });
   }
 
   //Make sure to destroy chart when leaving page. 
   //Call Unsub's ngOnDestroy to make takeUntil approach still work after overriding here.
   override ngOnDestroy() {
     this.destroyChart(this.barChart);
-    this.destroyChart(this.unfinishedPieChart);
-    this.destroyChart(this.finishedPieChart);
+    this.destroyChart(this.leftPieChart);
+    this.destroyChart(this.rightPieChart);
     super.ngOnDestroy();
   }
 
-  setupBarChart() {
+  setupBarChart(labels: string[], data: number[], dataLabel: string) {
+    this.destroyCharts(1);
     this.barChart = new Chart('canvas1', {
       type: 'bar',
       data: {
-        labels: this.departmentNames,
+        labels: labels,
         datasets: [
           {
-            label: 'Undervisere per afdeling for valgte modul',
-            data: this.teacherCount
+            label: dataLabel,
+            data: data
           },
         ],
       },
       //The options are for customizing the appearance and how the chart acts
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           y: {
             ticks: {
@@ -213,18 +243,13 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   }
 
   setupPieChart() {
-    // Replace underscores with space for both statuses
-    const replaceUnderscores = (status: string) => status.replace(/_/g, ' ');
-    this.finishedStatuses = this.finishedStatuses.map(replaceUnderscores);
-    this.unfinishedStatuses = this.unfinishedStatuses.map(replaceUnderscores);
-
     // Calculate total sum of personCount for percentage tooltips
-    const totalFinished = this.finishedPersonCount.reduce((acc, val) => acc + val, 0);
-    const totalUnfinished = this.unfinishedPersonCount.reduce((acc, val) => acc + val, 0);
+    const totalLeft = this.leftPieData.reduce((acc, val) => acc + val, 0);
+    const totalRight = this.rightPieData.reduce((acc, val) => acc + val, 0);
 
     // Create pie charts
-    this.unfinishedPieChart = this.createPieChart('canvas2', this.unfinishedStatuses, this.unfinishedPersonCount, ['rgb(221, 221, 221)', 'rgb(54, 162, 235)'], totalUnfinished);
-    this.finishedPieChart = this.createPieChart('canvas3', this.finishedStatuses, this.finishedPersonCount, ['rgb(255, 0, 0)', 'rgb(0, 128, 0)', 'rgb(255, 153, 0)'], totalFinished);
+    this.leftPieChart = this.createPieChart('canvas2', this.leftPieLabels, this.leftPieData, ['rgb(221, 221, 221)', 'rgb(54, 162, 235)'], totalLeft);
+    this.rightPieChart = this.createPieChart('canvas3', this.rightPieLabels, this.rightPieData, ['rgb(255, 0, 0)', 'rgb(0, 128, 0)', 'rgb(255, 153, 0)'], totalRight);
   }
 
   // Creates pie charts using these options, saves a lot of repeat chart configs for pies.
@@ -271,7 +296,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         }
       }
     });
-
+    
     return chart;
   };
 }

@@ -25,10 +25,6 @@ export class PersonCourseService {
     return this.http.get<PersonCourse[]>(this.baseApiUrl + 'PersonCourses/course/' + courseId);
   }
 
-  getCourseStatusCount(moduleId: number): Observable<any[]> {
-    return this.http.get<any[]>(this.baseApiUrl + 'PersonCourses/module/' + moduleId);
-  }
-
   addPersonCourse(personCourse: PersonCourse): Observable<PersonCourse>{
     return this.http.post<PersonCourse>(this.baseApiUrl + 'PersonCourses/', personCourse);
   }
