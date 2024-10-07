@@ -93,16 +93,17 @@ export class CoursesComponent extends Unsub {
     this.showEducationBossesDrop();
   }
 
+  // Exports the list of modules to an Excel file
   exportModulesToExcel() {
     this.exportToExcelComponent.exportModulesToExcel(this.modules);
   }
 
+  // Exports filtered modules and their courses based on selected types to an Excel file
   exportModulesToExcelTypes() {
     let newModules: ModuleWithCourseViewModel[] = [];
     if (this.selectedTypes.includes(this.any)) {
       newModules = JSON.parse(JSON.stringify(this.modules));
-    }
-    else {
+    } else {
       newModules = JSON.parse(JSON.stringify(this.modules.filter(m => this.selectedModuleIds.some(id => id == m.moduleId))));
     }
 
@@ -115,109 +116,113 @@ export class CoursesComponent extends Unsub {
     this.exportToExcelComponent.exportModulesToExcel(newModules);
   }
 
-  exportCoursesToExcel() {    
+  // Exports selected courses to an Excel file
+  exportCoursesToExcel() {
     this.exportToExcelComponent.exportCoursesToExcel(this.courses.filter(c => this.selectedCourseIds.some(id => id == c.courseId)));
   }
 
+  // Exports a list of education bosses to an Excel file
   exportBossesToExcel() {
     if (this.selectedBossesIds.includes('Alle')) {
       var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
         this.educationBosses,
         this.educationLeaders
-      )
-    }
-    else {
+      );
+    } else {
       var bosses: BossViewModel[] = this.exportToExcelComponent.bossViewModelConverter(
         this.educationBosses.filter(boss =>
           this.selectedBossesIds.some(selectedBossId =>
             selectedBossId == boss.userId
           )),
         this.educationLeaders
-      )
+      );
     }
 
     this.exportToExcelComponent.exportBossesToExcel(bosses);
   }
 
+  // Runs after the view initialization to set up the progress bar
   ngAfterViewInit(): void {
     this.progress.changes.subscribe(elm => {
-      this.progressBar()
-    })
+      this.progressBar();
+    });
   }
 
+  // Fetches module data with associated courses
   getModuleData() {
     this.moduleService.getModulesWithCourse().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
-    })
+    });
   }
 
+  // Fetches and sorts the courses associated with a specific module
   getCourseTableData(moduleId: number) {
-    this.courses = this.modules.find(m => m.moduleId == moduleId)!.courses
+    this.courses = this.modules.find(m => m.moduleId == moduleId)!.courses;
     this.courses.sort((a, b) => {
       return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
   }
 
+  // Toggles the display of course or leader tables based on selection
   toggleTable(item: any) {
     if ('moduleId' in item) {
       if (this.activeCourseList[0] === item.moduleId) {
         this.selectedModuleId = null;
         this.courseSelected = false;
-        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
-      }
-      else {
+        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId);
+      } else {
         this.selectedModuleId = item.moduleId;
-        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId)
-        this.activeCourseList.unshift(item.moduleId)
+        this.activeCourseList = this.activeCourseList.filter(course => course !== item.moduleId);
+        this.activeCourseList.unshift(item.moduleId);
 
         this.getCourseTableData(item.moduleId);
       }
-      this.sortCourseList()
-    }
-    else if ('userId' in item) {
+      this.sortCourseList();
+    } else if ('userId' in item) {
       console.log(item);
       if (this.selectedLeaderId === item.userId) {
-        this.selectedLeaderId = null
-        this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId)
-      }
-      else {
-        this.selectedLeaderId = item.userId
+        this.selectedLeaderId = null;
+        this.activeLeaderList = this.activeLeaderList.filter(leader => leader !== item.userId);
+      } else {
+        this.selectedLeaderId = item.userId;
 
         const i = this.showedLeaderList.findIndex(x => x.userId == item.userId);
 
         this.leaderPersons = this.showedLeaderList[i].educators;
-        this.activeLeaderList.unshift(item.userId)
+        this.activeLeaderList.unshift(item.userId);
       }
     }
   }
 
+  // Fetches education leaders and sets the leader list
   getEducationLeaders() {
     this.userService.getEducationLeadersExcel().subscribe(res => {
       this.educationLeaders = res;
       this.showedLeaderList = this.educationLeaders;
       console.log(res);
-
-    })
+    });
   }
 
+  // Fetches education bosses data
   getEducationBosses() {
     this.userService.getEducationBossesExcel().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
       console.log(res);
-    })
+    });
   }
 
+  // Shows or hides the education bosses dropdown based on user role
   showEducationBossesDrop() {
     this.role = this.authService.getUserRole();
     if (this.role == 'Uddannelseschef' || this.role == 'Uddannelsesleder') {
       this.showEducationBossesDropdown = false;
-    }
-    else {
+    } else {
       this.showEducationBossesDropdown = true;
       this.getEducationBosses();
     }
   }
 
+  // Toggles the leader view and fetches education leaders if enabled
   toggleView(checked: boolean) {
     this.leaderView = checked;
     if (this.leaderView == true) {
@@ -225,48 +230,46 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Sets or unsets the selected course ID and updates the displayed persons list
   setSelectedCourseId(courseId: number) {
     if (this.selectedCourseId == courseId) {
       this.persons = [];
       this.courseSelected = false;
       this.selectedCourseId = 0;
-      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId)
-    }
-    else {
+      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId);
+    } else {
       this.courseSelected = true;
       this.selectedCourseId = courseId;
-      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId)
-      this.selectedCourseIds.push(courseId)
+      this.selectedCourseIds = this.selectedCourseIds.filter(id => id != courseId);
+      this.selectedCourseIds.push(courseId);
       this.persons = this.modules.find(m => m.moduleId == this.selectedModuleId)!.courses.find(c => c.courseId == courseId)!.personCourses;
       this.showedPersonCourses = this.persons;
     }
   }
 
+  // Sets or unsets the selected person ID and fetches the person's course details
   setSelectedPersonId(personId: number) {
     if (this.selectedEducatorId == personId) {
       this.personSelected = false;
       this.selectedEducatorId = 0;
       this.personsCoureses = [];
-    }
-    else {
+    } else {
       this.personSelected = true;
       this.selectedEducatorId = personId;
       this.personCourseService.getPersonCoursesByPerson(personId).subscribe(res => {
         this.personsCoureses = res;
-
         this.sortCourseList();
-      })
+      });
     }
-
   }
 
+  // Sorts the displayed data based on the specified type and sort criteria
   sortData(sort: Sort, type: string) {
     if (!sort.active || sort.direction === '') {
       return;
     }
     console.log(type);
     console.log(sort);
-
 
     if (type == 'mc') {
       this.showedCourseList = this.showedCourseList.sort((a, b) => {
@@ -282,8 +285,7 @@ export class CoursesComponent extends Unsub {
             return 0;
         }
       });
-    }
-    else if (type == 'mt') {
+    } else if (type == 'mt') {
       this.persons = this.persons.sort((a, b) => {
         const isAsc = sort.direction === 'asc';
         switch (sort.active) {
@@ -303,8 +305,7 @@ export class CoursesComponent extends Unsub {
             return 0;
         }
       });
-    }
-    else if (type == 'lt') {
+    } else if (type == 'lt') {
       this.leaderPersons = this.leaderPersons.sort((a, b) => {
         const isAsc = sort.direction === 'asc';
         switch (sort.active) {
@@ -322,8 +323,7 @@ export class CoursesComponent extends Unsub {
             return 0;
         }
       });
-    }
-    else if (type == 'lc') {
+    } else if (type == 'lc') {
       this.showedTeacherCourseList = this.showedTeacherCourseList.sort((a, b) => {
         const isAsc = sort.direction === 'asc';
         switch (sort.active) {
@@ -344,17 +344,18 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Compares two items and returns -1, 0, or 1 based on comparison
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
     if (itemA && itemB) {
       if (itemA > itemB) retVal = 1;
       else if (itemA < itemB) retVal = -1;
-    }
-    else if (itemA) retVal = 1;
+    } else if (itemA) retVal = 1;
     else if (itemB) retVal = -1;
     return retVal;
   }
 
+  // Handles input for education boss query and updates selected boss IDs
   onEducationBossQueryInput(event: MatSelectChange) {
     const selectedValues = event.value;
 
@@ -362,13 +363,11 @@ export class CoursesComponent extends Unsub {
       if (this.anyBoss) {
         this.selectedBossesIds = selectedValues.filter((value: any) => value !== 'Alle');
         this.anyBoss = false;
-      }
-      else if (!this.anyBoss) {
+      } else if (!this.anyBoss) {
         this.selectedBossesIds = selectedValues.filter((value: any) => value == 'Alle');
         this.anyBoss = true;
       }
-    }
-    else {
+    } else {
       this.selectedBossesIds = selectedValues;
     }
     console.log(this.selectedBossesIds);
@@ -376,6 +375,7 @@ export class CoursesComponent extends Unsub {
     this.sortLeaderList();
   }
 
+  // Filters the education leader list based on selected boss IDs
   sortLeaderList() {
     if (this.selectedBossesIds.includes(this.any)) {
       // If 'Alle' is included, show all education leaders
@@ -391,6 +391,7 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Handles input for status query and updates the selected status
   onStatusQueryInput(event: MatSelectChange) {
     const selectedValues = event.value;
 
@@ -398,30 +399,29 @@ export class CoursesComponent extends Unsub {
       if (this.anyType) {
         this.selectedStatus = selectedValues.filter((value: any) => value !== 'Alle');
         this.anyType = false;
-      }
-      else if (!this.anyType) {
+      } else if (!this.anyType) {
         this.selectedStatus = selectedValues.filter((value: any) => value == 'Alle');
         this.anyType = true;
       }
-    }
-    else {
+    } else {
       this.selectedStatus = selectedValues;
     }
 
     this.sortEducatorList();
   }
 
+  // Filters the educator list based on the selected status
   sortEducatorList() {
     if (this.selectedStatus.includes(this.any)) {
       this.showedPersonCourses = this.persons;
-    }
-    else {
+    } else {
       this.showedPersonCourses = this.persons.filter(personCourse =>
         this.selectedStatus.includes(Status[personCourse.status as unknown as keyof typeof Status])
       );
     }
   }
 
+  // Handles input for course type query and updates selected types
   onTypeQueryInput(event: MatSelectChange) {
     const selectedValues = event.value;
 
@@ -429,25 +429,23 @@ export class CoursesComponent extends Unsub {
       if (this.anyType) {
         this.selectedTypes = selectedValues.filter((value: any) => value !== 'Alle');
         this.anyType = false;
-      }
-      else if (!this.anyType) {
+      } else if (!this.anyType) {
         this.selectedTypes = selectedValues.filter((value: any) => value == 'Alle');
         this.anyType = true;
       }
-    }
-    else {
+    } else {
       this.selectedTypes = selectedValues;
     }
 
     this.sortCourseList();
   }
 
+  // Filters the course list based on selected types and updates the view for educational bosses
   sortCourseList() {
     if (this.selectedTypes.includes(this.any)) {
       this.showedCourseList = this.courses;
       this.showedTeacherCourseList = this.personsCoureses;
-    }
-    else {
+    } else {
       this.showedCourseList = this.courses.filter(course =>
         this.selectedTypes.includes(CourseType[course.courseType as unknown as keyof typeof CourseType])
       );
@@ -460,49 +458,52 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Returns true if the specified module ID is the active course list
   isCourseListActive(moduleId: number) {
     return this.selectedModuleId === moduleId;
   }
 
+  // Returns true if the specified module ID is the active leader list
   isLeaderListActive(moduleId: number) {
     return this.selectedLeaderId === moduleId;
   }
 
+  // Updates the progress bar for each person based on their hiring and end dates
   progressBar(): void {
     this.persons.forEach(person => {
       let objec = this.progress.find(x => x.nativeElement.id == person.personId);
-      let howManyDaysInTotal = (new Date(person!.person!.endDate).getTime() / 1000 - new Date(person!.person!.hiringDate).getTime() / 1000) / 86400
-      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.person!.hiringDate).getTime() / 1000) / 86400
-      let inProcent = 0
+      let howManyDaysInTotal = (new Date(person!.person!.endDate).getTime() / 1000 - new Date(person!.person!.hiringDate).getTime() / 1000) / 86400;
+      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.person!.hiringDate).getTime() / 1000) / 86400;
+      let inProcent = 0;
 
       if (howManyDaysSinceStart < 0) {
-        howManyDaysSinceStart = 0
+        howManyDaysSinceStart = 0;
       }
 
       if (new Date().getTime() / 1000 < new Date(person!.person!.endDate).getTime() / 1000) {
-        inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
-      }
-      else {
-        inProcent = 100
+        inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100;
+      } else {
+        inProcent = 100;
       }
 
       if (objec === undefined) {
-        return
+        return;
       }
 
-      objec!.nativeElement.style.width = inProcent + "%"
+      objec!.nativeElement.style.width = inProcent + "%";
       if (inProcent < 75) {
-        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)";
       }
       if (inProcent > 75 && inProcent < 90) {
-        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)";
       }
       if (inProcent > 90) {
-        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)";
       }
     });
   }
 
+  // Opens a popup to add a course to the selected module
   openAddCourseToModulePopup() {
     this.dialog.open(AddCourseToModuleComponent, {
       data: {
@@ -517,6 +518,7 @@ export class CoursesComponent extends Unsub {
     });
   }
 
+  // Opens a popup to add a person to the selected course
   openAddPersonToCoursePopup() {
     this.dialog.open(AddPersonToCourseComponent, {
       data: {
@@ -531,6 +533,7 @@ export class CoursesComponent extends Unsub {
     });
   }
 
+  // Opens a popup to add a person to a course with detailed information
   openAddPersonCoursePopup() {
     this.dialog.open(AddPersonCourseComponent, {
       data: {
@@ -546,6 +549,7 @@ export class CoursesComponent extends Unsub {
     });
   }
 
+  // Organizes the course list by start date, and end date if necessary
   organizedCourseList() {
     if (this.courses.length !== 0) {
       this.courses = this.courses.sort((a, b) => {
@@ -563,6 +567,7 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Organizes the person table alphabetically by name
   organizedPersonTable() {
     if (this.persons.length !== 0) {
       this.persons = this.persons.sort((a, b) => {
@@ -571,6 +576,7 @@ export class CoursesComponent extends Unsub {
     }
   }
 
+  // Organizes the person-course table by status
   organizedPersonCourseTable() {
     if (this.personsCoureses.length !== 0) {
       this.personsCoureses = this.personsCoureses.filter(x => x.status === 1)

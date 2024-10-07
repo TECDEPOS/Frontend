@@ -39,70 +39,78 @@ export class ExportToExcelComponent {
   constructor() {
   }
 
+  // Method to convert and assign education leaders to each boss
   bossViewModelConverter(bosses: BossViewModel[], leaders: LeaderViewModel[]): BossViewModel[] {
     bosses.forEach(boss => {
+      // Filter leaders based on the educationBossId
       boss.educationLeaders = leaders.filter(x => x.educationBossId == boss.userId);
     });
-
     return bosses;
   }
 
-  // Helper function to remove courses from the original list
+  // Helper function to remove specific courses from the original list
   removeCoursesFromList(courses: Course[], coursesToRemove: Course[]) {
     coursesToRemove.forEach(course => {
+      // Find the index of the course to be removed
       const index = courses.findIndex(c => c.courseId === course.courseId);
       if (index !== -1) {
+        // Remove the course if found
         courses.splice(index, 1);
       }
     });
   }
 
+  // Method to export modules data to Excel
   exportModulesToExcel(modules: ModuleWithCourseViewModel[]) {
     this.moduleWorkSheetData(modules);
     this.exportWorkSheetToExcel();
   }
 
+  // Method to export course data to Excel
   exportCoursesToExcel(course: Course[]) {
     this.courseWorkSheetData(course);
     this.exportWorkSheetToExcel();
   }
 
+  // Method to export bosses data to Excel
   exportBossesToExcel(bosses: BossViewModel[]) {
     this.bossesWorkSheetData(bosses);
     this.exportWorkSheetToExcel();
   }
 
+  // Method to export leaders data to Excel
   exportLeadersToExcel(educationLeaders: LeaderViewModel[]) {
     this.leadersWorkSheetData(educationLeaders);
     this.exportWorkSheetToExcel();
   }
 
+  // Method to export educator data to Excel
   exportEducatorsToExcel(educators: Person[]) {
     this.educatorsWorkSheetData(educators);
     this.exportWorkSheetToExcel();
   }
 
+  // Method to convert and export the worksheet to an Excel file
   exportWorkSheetToExcel() {
     this.workSheet = XLSX.utils.aoa_to_sheet(this.workSheetData);
-
     this.excelStyling();
-
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, this.workSheet, 'Sheet1');
     XLSX.writeFile(wb, 'ScoreSheet.xlsx');
   }
 
+  // Method to prepare worksheet data for bosses
   bossesWorkSheetData(bosses: BossViewModel[]) {
     bosses.forEach(boss => {
       if (this.newBossHeader) {
         this.workSheetData.push(this.bossHeaders);
-        this.headerRows.push(this.rowCounter)
+        this.headerRows.push(this.rowCounter);
         this.newRow();
         this.newBossHeader = false;
       }
-      this.newLeaderHeader = true
+      this.newLeaderHeader = true;
 
-      const bossData = ['', boss.name, UserRole[boss.userRole]]
+      const bossData = ['', boss.name, UserRole[boss.userRole]];
       this.workSheetData.push(bossData);
       this.newRow();
 
@@ -112,11 +120,12 @@ export class ExportToExcelComponent {
     });
   }
 
+  // Method to prepare worksheet data for leaders
   leadersWorkSheetData(educationLeaders: LeaderViewModel[]) {
     educationLeaders.forEach(leader => {
       if (this.newLeaderHeader) {
-        this.workSheetData.push(this.leaderHeaders)
-        this.headerRows.push(this.rowCounter)
+        this.workSheetData.push(this.leaderHeaders);
+        this.headerRows.push(this.rowCounter);
         this.newRow();
         this.newLeaderHeader = false;
       }
@@ -133,30 +142,30 @@ export class ExportToExcelComponent {
     });
   }
 
+  // Method to prepare worksheet data for educators
   educatorsWorkSheetData(educators: Person[]) {
     educators.forEach(educator => {
       if (this.newEducatorHeader) {
-        this.workSheetData.push(this.educatorHeaders)
-        this.headerRows.push(this.rowCounter)
+        this.workSheetData.push(this.educatorHeaders);
+        this.headerRows.push(this.rowCounter);
         this.newRow();
         this.newEducatorHeader = false;
       }
       this.newLeaderHeader = true;
       this.newBossHeader = true;
 
-      let finishedCourses = this.educatorsFinishedCourses(educator.personCourses)
+      let finishedCourses = this.educatorsFinishedCourses(educator.personCourses);
 
       const educatorData = ['', educator.name, educator.initials, educator.department?.name, educator.location?.name, new Date(educator.endDate).toLocaleDateString(), finishedCourses];
       this.workSheetData.push(educatorData);
       this.newRow();
 
       if (educator.personCourses.length > 0) {
-        this.workSheetData.push(this.personCourseHeaders)
-        this.headerRows.push(this.rowCounter)
+        this.workSheetData.push(this.personCourseHeaders);
+        this.headerRows.push(this.rowCounter);
         this.newRow();
         this.newEducatorHeader = true;
-        this.newLeaderHeader = true
-        this.newEducatorHeader = true;
+        this.newLeaderHeader = true;
 
         educator.personCourses.forEach(personCourse => {
           const courseData = [
@@ -165,30 +174,30 @@ export class ExportToExcelComponent {
             CourseType[personCourse.course!.courseType], new Date(personCourse.course!.startDate).toLocaleDateString(), new Date(personCourse.course!.endDate).toLocaleDateString(),
             Status[personCourse.status].replaceAll('_', ' ')
           ];
-          this.workSheetData.push(courseData)
+          this.workSheetData.push(courseData);
           this.newRow();
         });
       }
     });
   }
 
+  // Method to calculate the number of finished courses for an educator
   educatorsFinishedCourses(personCourses: PersonCourse[]): number {
     let finishedCourses = 0;
-
     personCourses.forEach(personCourse => {
       if (personCourse.status == 3) {
         finishedCourses++;
       }
     });
-
     return finishedCourses;
   }
 
+  // Method to prepare worksheet data for modules
   moduleWorkSheetData(modules: ModuleWithCourseViewModel[]) {
     modules.forEach(module => {
       if (this.newModuleHeader) {
-        this.workSheetData.push(this.moduleHeaders)
-        this.headerRows.push(this.rowCounter)
+        this.workSheetData.push(this.moduleHeaders);
+        this.headerRows.push(this.rowCounter);
         this.newModuleHeader = false;
         this.newRow();
       }
@@ -199,20 +208,18 @@ export class ExportToExcelComponent {
       this.workSheetData.push(moduleData);
       this.newRow();
 
-      console.log(module);
-
-
       if (module.courses.length > 0) {
         this.courseWorkSheetData(module.courses);
       }
-    })
+    });
   }
 
+  // Method to prepare worksheet data for courses
   courseWorkSheetData(courses: Course[]) {
     courses.forEach(course => {
       if (this.newCourseHeader) {
-        this.workSheetData.push(this.courseHeaders)
-        this.headerRows.push(this.rowCounter)
+        this.workSheetData.push(this.courseHeaders);
+        this.headerRows.push(this.rowCounter);
         this.newCourseHeader = false;
         this.newRow();
       }
@@ -220,46 +227,47 @@ export class ExportToExcelComponent {
       this.newEducatorHeader = true;
 
       const courseData = ['', course.courseType, course.startDate, course.endDate];
-      this.workSheetData.push(courseData)
+      this.workSheetData.push(courseData);
       this.newRow();
 
       if (course.personCourses.length > 0) {
-        this.workSheetData.push(this.courseEducatorHeader)
+        this.workSheetData.push(this.courseEducatorHeader);
         this.headerRows.push(this.rowCounter);
         this.newModuleHeader = true;
         this.newCourseHeader = true;
         this.newRow();
+
         course.personCourses.forEach(personCourse => {
           const educatorData = [
             '',
             personCourse.person!.name, personCourse.person!.initials,
             personCourse.person!.department!.name, personCourse.person!.location!.name,
             personCourse.status
-          ]
-        })
+          ];
+        });
       }
-    })
+    });
   }
 
+  // Method to style the Excel sheet with borders, alignment, and fonts
   excelStyling() {
-    this.workSheet['!cols'] = [{ wch: 20 }, { wch: 60 }, { wch: 20 }, { wch: 30 }, { wch: 30 }, { wch: 20 }, { wch: 20 }]
+    this.workSheet['!cols'] = [{ wch: 20 }, { wch: 60 }, { wch: 20 }, { wch: 30 }, { wch: 30 }, { wch: 20 }, { wch: 20 }];
 
     for (var i in this.workSheet) {
-      // console.log(ws[i]);
       if (typeof this.workSheet[i] != 'object') continue;
       let cell = XLSX.utils.decode_cell(i);
       let r = cell.r;
       let c = cell.c;
 
       this.workSheet[i].s = {
-        // styling for all cells
+        // Styling for all cells
         font: {
           name: 'arial',
         },
         alignment: {
           vertical: 'center',
           horizontal: 'center',
-          wrapText: '1', // any truthy value here
+          wrapText: '1', // Enables text wrapping
         },
         border: {
           top: {
@@ -282,22 +290,20 @@ export class ExportToExcelComponent {
       };
 
       if (c == 0) {
-        this.workSheet[i].s.font.bold = true
+        this.workSheet[i].s.font.bold = true;
       }
 
       if (r == 0) {
-        // first row
+        // First row styling
         this.workSheet[i].s.border.bottom = {
-          // bottom border
           style: 'thin',
           color: '000000',
         };
       }
 
       if (this.headerRows.includes(r)) {
-        // every other row
+        // Header row background color
         this.workSheet[i].s.fill = {
-          // background color
           patternType: 'solid',
           fgColor: { rgb: 'b2b2b2' },
           bgColor: { rgb: 'b2b2b2' },
@@ -306,6 +312,7 @@ export class ExportToExcelComponent {
     }
   }
 
+  // Method to increment the row counter for the worksheet
   newRow() {
     this.rowCounter++;
   }

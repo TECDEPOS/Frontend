@@ -27,26 +27,29 @@ export class FilePageComponent {
     this.getAllFiles();
   }
 
+  // Fetch all files based on user role
   getAllFiles() {
     let roleId = this.authService.getUserRoleId();
     this.fileService.getFiles(roleId).subscribe(data => {
       this.files = data;
       this.showedList = this.files;
-      this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate) * ('asc' == 'asc' ? 1 : -1))
+      this.files.sort((a, b) => this.compare(a.uploadDate, b.uploadDate) * ('asc' == 'asc' ? 1 : -1));
       this.fileTagService.getFileTag().subscribe(data => {
-        this.fileTags = data
-      })
+        this.fileTags = data;
+      });
     });
   }
 
+  // Delete a specific file by ID and remove it from the list
   deleteFile(fileId: number, i: number) {
     this.fileService.deleteFile(fileId).subscribe(data => { 
       console.log(this.files);
-      this.files.splice(i, 1)
+      this.files.splice(i, 1);
       console.log(this.files);
-    })
+    });
   }
 
+  // Download a file by creating a temporary anchor element and triggering the download
   downloadFile(id: number, contentType: string, fileName: string) {
     this.fileService.downloadFile(id)
       .subscribe((result: Blob) => {
@@ -64,7 +67,7 @@ export class FilePageComponent {
         // Click the anchor element to trigger the download
         a.click();
 
-        // Clean up
+        // Clean up the temporary URL and anchor element
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
 
@@ -72,18 +75,19 @@ export class FilePageComponent {
       });
   }
 
+  // Filter the list of files based on the search query
   onSearchQueryInput(){
     if (this.searchName == '') {
       this.showedList = this.filteredList;
       console.log('if', this.showedList);
     }
-    else{
+    else {
       this.showedList = this.filteredList.filter(file => file.fileName.toLowerCase().includes(this.searchName.toLowerCase()));
       console.log('else', this.showedList);
-      
     }
   }
 
+  // Sort the file data based on the selected column and sort direction
   sortData(sort: Sort) {
     if (!sort.active || sort.direction === '') {
       return;
@@ -106,34 +110,36 @@ export class FilePageComponent {
     });
   }
 
+  // Compare two items for sorting purposes
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
-      if (itemA && itemB) {
-        if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
-        else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
-      }
-      else if (itemA) retVal = 1;
-      else if (itemB) retVal = -1;
-      return retVal;
+    if (itemA && itemB) {
+      if (itemA.toLocaleLowerCase() > itemB.toLocaleLowerCase()) retVal = 1;
+      else if (itemA.toLocaleLowerCase() < itemB.toLocaleLowerCase()) retVal = -1;
+    }
+    else if (itemA) retVal = 1;
+    else if (itemB) retVal = -1;
+    return retVal;
   }
 
-  onFileTagFilterChanged(selectedFileTags: any[]){
+  // Filter the table based on the selected file tags
+  onFileTagFilterChanged(selectedFileTags: any[]) {
     this.filteredFileTags = selectedFileTags;
     console.log(this.filteredFileTags);
-    
     this.filterTable();
   }
 
-  filterTable(){
+  // Filter the list of files based on selected file tags
+  filterTable() {
     this.filteredList = this.files.filter(file => {
       console.log('file', file);
-      
+
       const fileTagFilter = this.filteredFileTags.length === 0 || this.filteredFileTags.some(tag => tag.fileTagId === file.fileTag?.fileTagId);
 
       if (this.filteredFileTags.length === 0) {
         return true;
       }
-      else{        
+      else {
         return fileTagFilter;
       }
     });

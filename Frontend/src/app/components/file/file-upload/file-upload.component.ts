@@ -26,10 +26,12 @@ export class FileUploadComponent {
     })
   }
 
+  // Submit the form data to upload the file
   onSubmit(): void {
-    this.fileService.uploadFile(this.formData, this.userId, this.tagId).subscribe(() => alert("File uploaded"));    
-  }  
+    this.fileService.uploadFile(this.formData, this.userId, this.tagId).subscribe(() => alert("File uploaded"));
+  }
 
+  // Handle file input change and append the selected file to formData
   fileChange(files: any) {
     if (files && files.length > 0) {
       this.file = files[0];
@@ -37,6 +39,7 @@ export class FileUploadComponent {
     }
   }
 
+  // Clear the file data from the form
   cleanFormData() {
     this.file = undefined;
   }

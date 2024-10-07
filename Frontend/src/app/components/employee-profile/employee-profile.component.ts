@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
-import { MAT_SNACK_BAR_DATA, MatSnackBar} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBar } from '@angular/material/snack-bar';
 import { Department } from 'src/app/Models/Department';
 import { Location } from 'src/app/Models/Location';
 import { Person } from 'src/app/Models/Person';
@@ -36,7 +36,7 @@ import { ErrorPopupComponent } from '../pop-ups/error-popup/error-popup.componen
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
-export class EmployeeProfileComponent extends Unsub{
+export class EmployeeProfileComponent extends Unsub {
   moduleTypes = CourseType;
   popupOpened: boolean = false
   status = Status;
@@ -57,21 +57,20 @@ export class EmployeeProfileComponent extends Unsub{
   previousStatuses: Record<number, number> = {};
 
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
-  .filter(key => !isNaN(Number(Status[key])));
+    .filter(key => !isNaN(Number(Status[key])));
 
   constructor(
-    private personService: PersonsService, 
+    private personService: PersonsService,
     private userService: UserService,
-    private departmentService: DepartmentsService, 
+    private departmentService: DepartmentsService,
     private locationService: LocationsService,
-    private aRoute: ActivatedRoute, 
-    private dialog: MatDialog, 
-    private fileService: FileService, 
-    private authService: AuthService, 
+    private aRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private fileService: FileService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private personCourseService: PersonCourseService
-    ) 
-    {super(); }
+  ) { super(); }
 
   ngOnInit() {
     this.getPerson();
@@ -79,12 +78,15 @@ export class EmployeeProfileComponent extends Unsub{
     this.getUsers();
     this.getLocations();
   }
+
+  // Method to get all locations from the service
   getLocations() {
     this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
     });
   }
 
+  // Method to get all users and filter them by roles
   getUsers() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalConsultants = res.filter(x => x.userRole === 4);
@@ -93,24 +95,24 @@ export class EmployeeProfileComponent extends Unsub{
     });
   }
 
+  // Method to get all departments from the service
   getDepartments() {
     this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.departments = res;
     });
   }
 
+  // Method to get a person by ID and set person details
   getPerson() {
     let roleId = this.authService.getUserRoleId();
-    console.log('Role id: ',roleId);
-    
+    console.log('Role id: ', roleId);
+
     this.aRoute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       let personId = Number(params.get('id'))
       this.personService.getPersonById(personId, roleId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.person = res;
         this.shownFiles = res.files;
         console.log(this.person);
-        
-
 
         this.setPersonModules();
         this.setBackupValues(this.person);
@@ -118,72 +120,84 @@ export class EmployeeProfileComponent extends Unsub{
     });
   }
 
+  // Method to organize person modules by status
   setPersonModules() {
     this.person.personCourses = this.person.personCourses.sort((a, b) => a.status - b.status);
 
-    if(this.person.personCourses.length !== 0){      
+    if (this.person.personCourses.length !== 0) {
       this.currentPersonCourses = this.person.personCourses.filter(x => x.status === 1)
-      .concat(this.person.personCourses.filter(x => x.status === 0))
-      .concat(this.person.personCourses.filter(x => x.status === 3))
-      .concat(this.person.personCourses.filter(x => x.status === 2))
-      .concat(this.person.personCourses.filter(x => x.status === 4))
-      this.storeStatus();      
+        .concat(this.person.personCourses.filter(x => x.status === 0))
+        .concat(this.person.personCourses.filter(x => x.status === 3))
+        .concat(this.person.personCourses.filter(x => x.status === 2))
+        .concat(this.person.personCourses.filter(x => x.status === 4))
+      this.storeStatus();
     }
   }
 
+  // Method to submit person details and handle changes
   onSubmit() {
-  
-  if(this.person.hiringDate !== this.CurrentHiringDate){
-    this.saveDisabled = true
-    this.popupOpened = true
-    this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
-      
-      data:{
-        person: this.person,
-        snackbar: this.snackBar
-      }
-    }).afterDismissed().subscribe(() => {
+    // Check if the hiring date has changed
+    if (this.person.hiringDate !== this.CurrentHiringDate) {
+      this.saveDisabled = true;
+      this.popupOpened = true;
+
+      // Open a snackbar to confirm the change in end date
+      this.snackBar.openFromComponent(ChangeEnddateBarComponent, {
+        data: {
+          person: this.person,
+          snackbar: this.snackBar
+        }
+      }).afterDismissed().subscribe(() => {
+
+        // Update the person details after snackbar is dismissed
+        this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+          this.person = res;
+          this.editDisabled = true;
+          this.setBackupValues(this.person);
+          this.saveDisabled = false;
+
+          // Open a snackbar indicating changes were saved
+          this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
+            data: {
+              message: `Ændringer Gemt`,
+              icon: 'done'
+            }, panelClass: ['blue-snackbar'], duration: 3000
+          });
+        });
+      })
+    } else {
+
+      // If no hiring date changes, directly update the person details
       this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.person = res;
         this.editDisabled = true;
         this.setBackupValues(this.person);
-        this.saveDisabled = false
+        this.popupOpened = false;
+
+        // Open a snackbar indicating changes were saved
         this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
           data: {
-            message: `Ændringer Gemt`,
-            icon: 'done'
+            message: `Ændringer Gemt`
           }, panelClass: ['blue-snackbar'], duration: 3000
         });
       });
-    })
-  }
-  else{
-    this.personService.updatePerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.person = res;
-      this.editDisabled = true;
-      this.setBackupValues(this.person);
-      this.popupOpened = false
-      this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
-        data: {
-          message: `Ændringer Gemt`
-        }, panelClass: ['blue-snackbar'], duration: 3000
-      });
-    });
-  }
+    }
   }
 
+
+  // Method to enable edit mode
   enableEditMode() {
     this.editDisabled = false;
-    this.CurrentHiringDate = this.person.hiringDate
+    this.CurrentHiringDate = this.person.hiringDate;
   }
 
+  // Method to cancel edit mode and restore backup values
   cancelEditMode() {
     this.editDisabled = true;
     this.person = JSON.parse(JSON.stringify(this.backupValues));
-    if(this.popupOpened){
-      this.snackBar.dismiss()
+    if (this.popupOpened) {
+      this.snackBar.dismiss();
     }
-    
   }
 
   setBackupValues(values: Person) {
@@ -211,6 +225,7 @@ export class EmployeeProfileComponent extends Unsub{
     }
   }
 
+  // Method to sort person files based on various properties
   sortData(sort: Sort) {
     if (!sort.active || sort.direction === '') {
       return;
@@ -220,19 +235,20 @@ export class EmployeeProfileComponent extends Unsub{
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'fileName':
-          return this.compare(a.fileName, b.fileName) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.fileName, b.fileName) * (isAsc ? 1 : -1);
         case 'fileCategory':
-          return this.compare(a.fileTag?.tagName, b.fileTag?.tagName) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.fileTag?.tagName, b.fileTag?.tagName) * (isAsc ? 1 : -1);
         case 'uploadDate':
-          return this.compare(a.uploadDate, b.uploadDate) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.uploadDate, b.uploadDate) * (isAsc ? 1 : -1);
         case 'fileFormat':
-          return this.compare(a.fileFormat, b.fileFormat) * (sort.direction == 'asc' ? 1 : -1);
+          return this.compare(a.fileFormat, b.fileFormat) * (isAsc ? 1 : -1);
         default:
           return 0;
       }
     });
   }
 
+  // Method to compare two items for sorting
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
     if (itemA && itemB) {
@@ -244,7 +260,7 @@ export class EmployeeProfileComponent extends Unsub{
     return retVal;
   }
 
-
+  // Method to open the file upload popup for a person
   openFileUploadPopUp() {
     this.dialog.open(FileuploadPopupComponent, {
       data: {
@@ -254,52 +270,49 @@ export class EmployeeProfileComponent extends Unsub{
       disableClose: false,
     });
   }
-  
 
+  // Method to download a file by ID
   downloadFile(id: number, contentType: string, fileName: string) {
     this.fileService.downloadFile(id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result: Blob) => {
-        console.log(result);
         const blob = new Blob([result], { type: contentType });
         const url = window.URL.createObjectURL(blob);
 
-        // Create a temporary anchor element to trigger the download
+        // Create and trigger download using a temporary anchor element
         const a = document.createElement('a');
         a.href = url;
-        a.download = fileName; // Set the desired file name
+        a.download = fileName;
         a.style.display = 'none';
         document.body.appendChild(a);
-
-        // Click the anchor element to trigger the download
         a.click();
 
-        // Clean up
+        // Clean up temporary elements
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-
-        console.log("Success");
       });
   }
 
+  // Method to delete a file by ID and remove it from the list
   deleteFile(fileId: number, i: number) {
     this.fileService.deleteFile(fileId).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.shownFiles.splice(i, 1)
-    })
+      this.shownFiles.splice(i, 1);
+    });
   }
 
+  // Method to filter and search files based on input query
   onSearchQueryInput(event: Event) {
     const searchQuery = (event.target as HTMLInputElement).value.toLocaleLowerCase();
-    let tempList: File[] = []
+    let tempList: File[] = [];
     this.person.files.forEach(element => {
       if (element.fileName.toLocaleLowerCase().includes(searchQuery)) {
         tempList.push(element);
-        console.log("Afdeling");
       }
       this.shownFiles = tempList;
     });
   }
 
+  // Method to open the popup to add a person module
   openAddPersonModulePopup() {
     this.dialog.open(AddPersonCourseComponent, {
       data: {
@@ -311,11 +324,11 @@ export class EmployeeProfileComponent extends Unsub{
       height: '45%',
       width: '30%'
     }).afterClosed().subscribe(() => {
-      this.organizedTable()
-    })
-    
+      this.organizedTable();
+    });
   }
 
+  // Method to open the popup to edit a person module
   openEditPersonModulePopup(personCourse: PersonCourse) {
     this.dialog.open(EditPersonmodulePopupComponent, {
       data: {
@@ -326,86 +339,86 @@ export class EmployeeProfileComponent extends Unsub{
       height: '50%',
       width: '25%'
     }).afterClosed().subscribe(() => {
-      this.organizedTable()
-    }) 
+      this.organizedTable();
+    });
   }
 
-  deletepersonCourse(personCourse: PersonCourse){
+  // Method to delete a person course after confirmation
+  deletepersonCourse(personCourse: PersonCourse) {
     this.confirmDelete(personCourse.course?.module.name).pipe(takeUntil(this.unsubscribe$)).subscribe(confirmed => {
-      
-      // Delete entity if user pressed yes in confirmation dialog.
-      if (confirmed) {        
-        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId!).subscribe(res => {
-          this.currentPersonCourses.splice(this.currentPersonCourses.indexOf(personCourse), 1)
-        })
+      if (confirmed) {
+        this.personCourseService.deletePersonCourse(personCourse.personId, personCourse.courseId!).subscribe(() => {
+          this.currentPersonCourses.splice(this.currentPersonCourses.indexOf(personCourse), 1);
+        });
       }
     });
-    
   }
 
-  organizedTable(){
-    if(this.person.personCourses.length !== 0){      
+  // Method to organize and update the table of person courses
+  organizedTable() {
+    if (this.person.personCourses.length !== 0) {
       this.currentPersonCourses = this.currentPersonCourses.filter(x => x.status === 1)
-      .concat(this.currentPersonCourses.filter(x => x.status === 0))
-      .concat(this.currentPersonCourses.filter(x => x.status === 3))
-      .concat(this.currentPersonCourses.filter(x => x.status === 2))
-      .concat(this.currentPersonCourses.filter(x => x.status === 4))
+        .concat(this.currentPersonCourses.filter(x => x.status === 0))
+        .concat(this.currentPersonCourses.filter(x => x.status === 3))
+        .concat(this.currentPersonCourses.filter(x => x.status === 2))
+        .concat(this.currentPersonCourses.filter(x => x.status === 4));
       this.storeStatus();
-      
     }
-  } 
-
-  updatePersonCourse(personCourse: PersonCourse){
-    const personCourseCopy = JSON.parse(JSON.stringify(personCourse))
-      personCourseCopy.course!.module = null!;
-      this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(() => {
-        this.organizedTable();
-      })
   }
 
-  storeStatus(){
-    // Clear previous statuses to get a clean up to date version.
+  // Method to update a person course
+  updatePersonCourse(personCourse: PersonCourse) {
+    const personCourseCopy = JSON.parse(JSON.stringify(personCourse));
+    personCourseCopy.course!.module = null!;
+    this.personCourseService.updatePersonCourse(personCourseCopy).subscribe(() => {
+      this.organizedTable();
+    });
+  }
+
+  // Method to store the status of each person course
+  storeStatus() {
     this.previousStatuses = {};
     for (let index = 0; index < this.currentPersonCourses.length; index++) {
       this.previousStatuses[index] = this.currentPersonCourses[index].status;
-    }    
+    }
   }
 
+  // Method to track items by course ID
   trackById(item: any): number {
-    return item.courseId; // Assuming each item has a unique ID
+    return item.courseId;
   }
 
-  changeStatus(personCourse: PersonCourse, index: number){    
-    personCourse.status = Number(personCourse.status)
-    const alreadyPassed = this.checkPassedModules(personCourse);     
+  // Method to change the status of a person course
+  changeStatus(personCourse: PersonCourse, index: number) {
+    personCourse.status = Number(personCourse.status);
+    const alreadyPassed = this.checkPassedModules(personCourse);
 
     if (personCourse.status === 3 && alreadyPassed) {
-      // TIMEOUT SOMEHOW MAKES THE UI UPDATE WOWOWOWOWOWWOWOWOWOWOWWOWOWOWOW <|,'-[})
       setTimeout(() => {
         personCourse.status = this.previousStatuses[index];
       });
-            
+
       this.dialog.open(ErrorPopupComponent, {
         data: {
           message: `${this.person.name} har allerede bestået modulet: ${personCourse.course?.module.name}`
         }
       });
-    }
-    else{
+    } else {
       this.previousStatuses[index] = personCourse.status;
       this.updatePersonCourse(personCourse);
     }
   }
 
-  checkPassedModules(personCourse: PersonCourse): boolean{
-    // Check if person is on a course already where the status is 'Bestået'
+  // Method to check if the person has already passed the module
+  checkPassedModules(personCourse: PersonCourse): boolean {
     let alreadyPassed = this.currentPersonCourses
-    .some(pc => pc.status === 3 && pc.course?.moduleId === personCourse.course?.moduleId && pc.courseId !== personCourse.courseId);
-    
+      .some(pc => pc.status === 3 && pc.course?.moduleId === personCourse.course?.moduleId && pc.courseId !== personCourse.courseId);
+
     return alreadyPassed;
   }
 
-  confirmDelete(entity: string|undefined): Observable<boolean> {
+  // Method to open a confirmation dialog before deletion
+  confirmDelete(entity: string | undefined): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
       data: {
         message: `Sikker på at fjerne ${entity}?`
@@ -414,9 +427,9 @@ export class EmployeeProfileComponent extends Unsub{
 
     return dialogRef.afterClosed();
   }
-
 }
 
+// Component definition for ChangeEnddateBarComponent
 @Component({
   selector: 'app-change-enddate-bar',
   templateUrl: './change-enddate-bar.component.html',
@@ -426,27 +439,29 @@ export class EmployeeProfileComponent extends Unsub{
 })
 
 export class ChangeEnddateBarComponent {
-  snackbar: any = MatSnackBar
-  person: Person = new Person
+  snackbar: any = MatSnackBar;
+  person: Person = new Person;
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {person:Person, snackbar: MatSnackBar}){
-    if(data.snackbar) this.snackbar = data.snackbar
-    if(data.person) this.person = data.person
+  // Constructor to inject snackbar data (person and snackbar)
+  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: { person: Person, snackbar: MatSnackBar }) {
+    if (data.snackbar) this.snackbar = data.snackbar;
+    if (data.person) this.person = data.person;
   }
 
-  pressedYes(){
+  // Method called when the user presses "Yes"
+  pressedYes() {
+    const temp = new Date(this.person.hiringDate);
+    temp.setHours(new Date(this.person.hiringDate).getHours() + 1);
+    temp.setFullYear(temp.getFullYear() + 4);
+    this.person.endDate = temp;
 
-     const temp = new Date(this.person.hiringDate)
-     temp.setHours(new Date(this.person.hiringDate).getHours() + 1)
-     temp.setFullYear(temp.getFullYear() + 4) 
-     this.person.endDate = temp
-
-    this.snackbar.dismiss()
+    // Dismiss the snackbar after setting the end date
+    this.snackbar.dismiss();
   }
 
-  pressedNo(){
-    this.snackbar.dismiss()
+  // Method called when the user presses "No"
+  pressedNo() {
+    // Dismiss the snackbar without making any changes
+    this.snackbar.dismiss();
   }
-
-
 }
