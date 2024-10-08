@@ -12,42 +12,47 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent {
 
-  constructor(private authService: AuthService,  private dialog: MatDialog, public router: Router) {}
+  constructor(private authService: AuthService, private dialog: MatDialog, public router: Router) { }
   isOpen: boolean = false;
   name: string = "";
   role: string = "";
 
-  ngOnInit(){
+  // Initialize component and get user name and role from local storage
+  ngOnInit() {
     // console.log(this.authService.getName());
-    this.name = String(localStorage.getItem('name'))
-    this.role = this.authService.getUserRole().replaceAll('_', ' ')
+    this.name = String(localStorage.getItem('name'));
+    this.role = this.authService.getUserRole().replaceAll('_', ' ');
   }
 
-  ngOnChange(){
-    this.name
+  // Detect changes in the component
+  ngOnChange() {
+    this.name;
   }
 
-  test(role: string){
-    role.split("")
+  // Split the role string into individual characters
+  test(role: string) {
+    role.split("");
   }
 
-  logout(){
+  // Log out the user
+  logout() {
     this.authService.logout();
   }
-  onShow(){
 
+  // Toggle dropdown visibility
+  onShow() {
     if (!this.isOpen) {
       document.getElementById('dropdown-content')!.style.display = "flex";
       this.isOpen = true;
-    }
-    else {
+    } else {
       document.getElementById('dropdown-content')!.style.display = "none";
       this.isOpen = false;
     }
   }
 
-  openChangePasswordPopup(){
-    this.dialog.open(ChangePasswordPopupComponent, {
-    })
+  // Open the change password popup dialog
+  openChangePasswordPopup() {
+    this.dialog.open(ChangePasswordPopupComponent, {});
   }
+
 }

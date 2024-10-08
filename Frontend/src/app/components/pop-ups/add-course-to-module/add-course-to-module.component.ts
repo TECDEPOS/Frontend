@@ -50,13 +50,16 @@ export class AddCourseToModuleComponent {
     this.dialogRef.close();
   }
 
-  onSubmit() {    
+  // Submits the new course form data
+  onSubmit() {
     console.log(this.module);
-    
+
+    // Assigns the moduleId to the new course
     this.newCourse.moduleId = this.module.moduleId;
 
     console.log(this.newCourse);
 
+    // Sends the new course data to the service and adds the response to the currentCourses list
     this.courseService.addCourses(this.newCourse).subscribe(res => {
       this.currentCourses.push(res)
     });

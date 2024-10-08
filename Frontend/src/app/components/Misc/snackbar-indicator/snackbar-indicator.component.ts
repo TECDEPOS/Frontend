@@ -12,8 +12,13 @@ export class SnackbarIndicatorComponent {
   message: string = '';
   icon: string = '';
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: {message:string, icon:string}){
-    if(data.message) this.message = data.message;
-    if(data.icon) this.icon = data.icon;
+  // Constructor that injects snackbar data (message and icon)
+  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: { message: string, icon: string }) {
+    // If message is provided, assign it to the message property
+    if (data.message) this.message = data.message;
+
+    // If icon is provided, assign it to the icon property
+    if (data.icon) this.icon = data.icon;
   }
+
 }

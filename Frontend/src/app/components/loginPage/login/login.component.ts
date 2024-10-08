@@ -19,41 +19,44 @@ export class LoginComponent {
   invalidLogin: boolean = false;
   loginRequest: LoginViewModel = new LoginViewModel;
 
-  submitLogin(): void {
-    this.authService.login(this.loginRequest)
-      .subscribe({
-        next: (response: AuthenticatedResponse) => {
-          this.authService.storeAccessToken(response.accessToken);
-          this.authService.storeRefreshToken(response.refreshToken);
-          this.invalidLogin = false;
-          this.authService.getUserId();
-          this.authService.getName();
-          this.authService.getRole();
-          this.router.navigate(['/home'])
-          this.checkPasswordExpiryDate(response.passwordExpiryDate);
-        },
-        error: (err: HttpErrorResponse) => this.invalidLogin = true
-      })
-  }
-
-  checkPasswordExpiryDate(passwordExpiryDate: Date) {
-    // Get today's date
-    let today = new Date;
-    // Get the expired date to compare, using 'new Date()' because the parameter is actually a string even if it says Date
-    let passwordExpiredDate = new Date(passwordExpiryDate);
-    console.log('old PasswordExpiredDate: ', passwordExpiredDate);
-    console.log('todays Date: ', today);
-    
-
-    // Check if user's password is expired.
-    if (passwordExpiredDate < today) {
-      this.openPasswordExpiredDialog();
+    // Handle login submission and authentication process
+    submitLogin(): void {
+      this.authService.login(this.loginRequest)
+        .subscribe({
+          next: (response: AuthenticatedResponse) => {
+            this.authService.storeAccessToken(response.accessToken);
+            this.authService.storeRefreshToken(response.refreshToken);
+            this.invalidLogin = false;
+            this.authService.getUserId();
+            this.authService.getName();
+            this.authService.getRole();
+            this.router.navigate(['/home']);
+            this.checkPasswordExpiryDate(response.passwordExpiryDate);
+          },
+          error: (err: HttpErrorResponse) => this.invalidLogin = true
+        })
     }
-  }
-
-  openPasswordExpiredDialog() {
-    this.dialog.open(PasswordExpiredPopupComponent, {
-      disableClose: false,
-    });
-  }
+  
+    // Check if the user's password has expired by comparing the expiry date to the current date
+    checkPasswordExpiryDate(passwordExpiryDate: Date) {
+      // Get today's date
+      let today = new Date();
+      // Parse the password expiry date from string to Date
+      let passwordExpiredDate = new Date(passwordExpiryDate);
+      console.log('old PasswordExpiredDate: ', passwordExpiredDate);
+      console.log('todays Date: ', today);
+  
+      // Check if user's password is expired
+      if (passwordExpiredDate < today) {
+        this.openPasswordExpiredDialog();
+      }
+    }
+  
+    // Open the password expired dialog component
+    openPasswordExpiredDialog() {
+      this.dialog.open(PasswordExpiredPopupComponent, {
+        disableClose: false,
+      });
+    }
+  
 }
