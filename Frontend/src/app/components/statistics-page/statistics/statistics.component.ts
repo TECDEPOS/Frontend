@@ -49,14 +49,20 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
 
   destroyChart(chart: any | null) {
     if (chart) {
+      console.log('Chart before destroying: ', chart);
+      
       chart.destroy();
       chart = null;
+      console.log('Chart after destroying: ', chart);
+      // console.log('Chart was actually destroyed');
     }
   }
 
   switchGraph(graphNumber: number) {    
     // Destroy existing charts using the old selection value
+    console.log('destroyCharts called from switchGraph()');
       this.destroyCharts(this.selectedGraphType);
+      
 
     // Update selectedGraph to the new selection value.
     this.selectedGraphType = graphNumber;
@@ -68,6 +74,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   onModuleChange(selectedModule: Module) {
     // Destroy existing charts to prevent errors
     if (this.selectedModule) {
+      console.log('destroyCharts called from onModuleChange()');
       this.destroyCharts(this.selectedGraphType);
     }
 
@@ -89,7 +96,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         }
         break;
       case 2:
-        this.destroyCharts(2);
+        // this.destroyCharts(2);
         if (this.selectedPieChart === 1 && this.selectedModule) {
           this.getCourseStatusPieChartData(this.selectedModule.moduleId);
         }
@@ -103,15 +110,20 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     switch (graphNumber) {
       case 1:
         if (this.barChart) {
+          console.log('Destroying Bar Chart');          
           this.destroyChart(this.barChart);
         }
         break;
       case 2:
         if (this.leftPieChart) {
+          console.log('Destroying Left Pie Chart');
           this.destroyChart(this.leftPieChart);
+          
         }
         if (this.rightPieChart) {
+          console.log('Destroying Right Pie Chart');
           this.destroyChart(this.rightPieChart);
+          
         }
         break;
       default:
@@ -227,6 +239,11 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
 
   // Creates pie charts using these options, saves a lot of repeat chart configs for pies.
   createPieChart(canvasId: string, labels: string[], data: number[], backgroundColors: string[], total: number): Chart<'pie'> {
+    console.log('Start of createPieChart');
+    console.log('Left pieChart: ', this.leftPieChart);
+    console.log('Right pieChart: ', this.rightPieChart);
+    
+    
     const chart = new Chart(canvasId, {
       type: 'pie',
       data: {
@@ -252,19 +269,21 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         },
         animation: {
           onComplete: () => {
-            if (total === 0) {
-              const ctx = chart.ctx;
-              const width = chart.width;
-              const height = chart.height;
+            // Move logic outside the chart initialization
+            setTimeout(() => this.checkForEmptyData(chart, total), 0);
+            // if ((chart) && total === 0) {
+            //   const ctx = chart.ctx;
+            //   const width = chart.width;
+            //   const height = chart.height;
 
-              ctx.save();
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.font = '20px Arial';
-              ctx.fillStyle = 'gray';
-              ctx.fillText('Ingen data', width / 2, height / 2);
-              ctx.restore();
-            }
+            //   ctx.save();
+            //   ctx.textAlign = 'center';
+            //   ctx.textBaseline = 'middle';
+            //   ctx.font = '20px Arial';
+            //   ctx.fillStyle = 'gray';
+            //   ctx.fillText('Ingen data', width / 2, height / 2);
+            //   ctx.restore();
+            // }
           }
         }
       }
@@ -272,6 +291,23 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     
     return chart;
   };
+
+  // Separate function to check for empty data and draw custom text if necessary
+checkForEmptyData(chart: Chart<'pie'>, total: number) {
+  if (total === 0 && chart) {
+    const ctx = chart.ctx;
+    const width = chart.width;
+    const height = chart.height;
+
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'gray';
+    ctx.fillText('Ingen data', width / 2, height / 2);
+    ctx.restore();
+  }
+}
 }
 
 

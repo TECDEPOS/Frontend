@@ -58,20 +58,21 @@
 }
 
 .pie-chart-container{
-    height: 90%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .pie-holder{
-    height: 100%;
-    width: 50%;
+    width: 45%;
 }
 
 .dropdown{
-    outline: solid 1px #888;
+    /* outline: solid 1px #888; */
+    border: solid 1px #888;
     border-radius: 5px;
-    width: 30%;
+    width: 25%;
+    /* margin-right: 1px !important;; */
 }
 
 .button-group{
