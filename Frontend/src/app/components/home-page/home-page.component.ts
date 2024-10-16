@@ -56,63 +56,64 @@ export class HomePageComponent extends Unsub {
     })
   }
 
+  // Calculate progress bar percentage and apply styles based on date ranges
   progressBar(): void {
     this.Hired.forEach(person => {
       let objec = this.progress.find(x => x.nativeElement.id == person.personId);
-      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
-      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400
-      let inProcent = 0
+      let howManyDaysInTotal = (new Date(person!.endDate).getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400;
+      let howManyDaysSinceStart = (new Date().getTime() / 1000 - new Date(person!.hiringDate).getTime() / 1000) / 86400;
+      let inProcent = 0;
 
       if (howManyDaysSinceStart < 0) {
-        howManyDaysSinceStart = 0
+        howManyDaysSinceStart = 0;
       }
 
       if (new Date().getTime() / 1000 < new Date(person!.endDate).getTime() / 1000) {
-        inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100
+        inProcent = (howManyDaysSinceStart / howManyDaysInTotal) * 100;
+      } else {
+        inProcent = 100;
       }
-      else {
-        inProcent = 100
-      }
-
 
       if (objec === undefined) {
-        return
+        return;
       }
 
-      objec!.nativeElement.style.width = inProcent + "%"
+      objec!.nativeElement.style.width = inProcent + "%";
       if (inProcent < 75) {
-        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(0, 128, 0, 0.30)";
       }
       if (inProcent > 75 && inProcent < 90) {
-        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 255, 0, 0.30)";
       }
       if (inProcent > 90) {
-        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)"
+        objec!.nativeElement.style.backgroundColor = "rgba(255, 0, 0, 0.30)";
       }
     });
   }
 
-  //Fun for fun, hvornår er vi halvejs med vores uddannelse
+  // Fun method to find the halfway point of an education period
   findHalf() {
     var start = 1596441600,
       slut = 1755158400,
-      mid = slut - ((slut - start) / 2)
+      mid = slut - ((slut - start) / 2);
     console.log(mid);
   }
 
+  // Retrieve department data from the department service
   getDepartmentData() {
     this.departmentService.getDepartment().subscribe(res => {
-      this.departments = res
-    })
+      this.departments = res;
+    });
   }
 
+  // Retrieve location data from the location service
   getLocationData() {
     this.locationService.getLocations().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.locations = res;
     });
   }
 
-  // If the order of userroles are changed then this needs to be updated.
+  // Retrieve user data and filter by roles for coordinators and consultants
   getUserFilters() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.operationCoordinators = res.filter(x => x.userRole === 6);
@@ -120,26 +121,29 @@ export class HomePageComponent extends Unsub {
     });
   }
 
+  // Retrieve table data, process modules, and apply filters
   getTableData() {
     this.peronService.getPersons().subscribe(res => {
-      this.Hired = res
+      this.Hired = res;
       this.Hired.forEach(element => {
-        element.completedModules = this.modulesCompleted(element)
+        element.completedModules = this.modulesCompleted(element);
       });
 
       this.getDepartmentData();
       this.getLocationData();
       this.getUserFilters();
-      this.Hired.sort((a, b) => a.name.localeCompare(b.name))
-      this.showedList = this.Hired
+      this.Hired.sort((a, b) => a.name.localeCompare(b.name));
+      this.showedList = this.Hired;
       this.filteredPersons = this.Hired;
-    })
+    });
   }
 
+  // Count the number of completed modules for a person
   modulesCompleted(person: Person) {
     return person.personCourses.filter(x => x.status === 3).length;
   }
 
+  // Sort table data based on user selection
   sortData(sort: Sort) {
     if (!sort.active || sort.direction === '') {
       return;
@@ -168,56 +172,62 @@ export class HomePageComponent extends Unsub {
     });
   }
 
+  // Compare two items for sorting
   compare(itemA: any, itemB: any): number {
     let retVal: number = 0;
     if (itemA && itemB) {
       if (itemA > itemB) retVal = 1;
       else if (itemA < itemB) retVal = -1;
-    }
-    else if (itemA) retVal = 1;
+    } else if (itemA) retVal = 1;
     else if (itemB) retVal = -1;
     return retVal;
   }
 
+  // Filter the table data based on selected departments
   onDepartmentFilterChanged(selectedDepartments: any[]) {
     this.filteredDepartments = selectedDepartments;
     this.filterTable();
   }
 
+  // Filter the table data based on selected locations
   onLocationFilterChanged(selectedLocations: any[]) {
     this.filteredLocations = selectedLocations;
     this.filterTable();
   }
 
+  // Filter the table data based on selected coordinators
   onCoordinatorFilterChanged(selectedCoordinators: any[]) {
     this.filteredCoordinators = selectedCoordinators;
     this.filterTable();
   }
 
+  // Filter the table data based on selected consultants
   onConsultantFilterChanged(selectedConsultants: any[]) {
     this.filteredConsultants = selectedConsultants;
     this.filterTable();
   }
 
+  // Reset all applied filters and dropdown selections
   resetFilters() {
-    this.filteredDepartments = []
-    this.filteredLocations = []
-    this.filteredCoordinators = []
-    this.filteredConsultants = []
+    this.filteredDepartments = [];
+    this.filteredLocations = [];
+    this.filteredCoordinators = [];
+    this.filteredConsultants = [];
     // Removes the selection from each dropdown.
     this.dropdowns.forEach(dropdown => dropdown.resetSelectionValues());
     this.filterTable();
   }
 
+  // Update the displayed list of persons based on the search query input
   onSearchQueryInput() {
     if (this.searchName == '') {
       this.showedList = this.filteredPersons;
-    }
-    else {
+    } else {
       this.showedList = this.filteredPersons.filter(person => person.name.toLowerCase().includes(this.searchName.toLowerCase()));
     }
   }
 
+  // Apply filters to the list of persons based on department, location, coordinator, and consultant filters
   private filterTable() {
     this.filteredPersons = this.Hired.filter(person => {
       // Check if the person's department matches any of the selected departments
@@ -285,6 +295,7 @@ export class HomePageComponent extends Unsub {
       ) {
         return consultantFilter;
       }
+
       // Include persons that match any of the selected departments, locations, coordinators, or consultants
       return departmentFilter && locationFilter && coordinatorFilter && consultantFilter;
     });

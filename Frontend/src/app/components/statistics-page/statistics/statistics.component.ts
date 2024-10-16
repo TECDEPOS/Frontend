@@ -47,6 +47,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     });
   }
 
+  // Destroy the given chart instance and set it to null
   destroyChart(chart: any | null) {
     if (chart) {
       chart.destroy();
@@ -54,6 +55,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
   }
 
+  // Switch between different graph types and fetch new chart data
   switchGraph(graphNumber: number) {    
     // Destroy existing charts using the old selection value
       this.destroyCharts(this.selectedGraphType);
@@ -65,6 +67,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     this.fetchChartData();
   }
 
+  // Handle changes to the selected module and update the chart data
   onModuleChange(selectedModule: Module) {
     // Destroy existing charts to prevent errors
     if (this.selectedModule) {
@@ -75,6 +78,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     this.fetchChartData();
   }
 
+  // Fetch data for the chart based on the selected graph type
   fetchChartData() {    
     switch (this.selectedGraphType) {
       case 1:
@@ -99,6 +103,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
   }
 
+  // Destroy charts based on the given graph number
   destroyCharts(graphNumber: number) {
     switch (graphNumber) {
       case 1:
@@ -119,6 +124,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     }
   }
 
+  // Get data for the bar chart showing persons per department for a specific module
   getPersonsPerDepartmentFromModuleBarChart(moduleId: number) {
     this.statisticsService.getPersonsPerDepartmentFromModule(moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
       this.barChartLabels = results.map(x => x.departmentName);
@@ -127,6 +133,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     })
   }
 
+  // Get data for the bar chart showing persons per department without module filter
   getPersonsPerDepartmentBarChart(){
     this.statisticsService.getPersonsPerDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
       this.barChartLabels = results.map(x => x.departmentName);
@@ -135,6 +142,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     })
   }
 
+  // Get data for the bar chart showing persons per location
   getPersonsPerLocationBarChart(){
     this.statisticsService.getPersonsPerLocation().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
       this.barChartLabels = results.map(x => x.locationName);
@@ -143,6 +151,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     })
   }
 
+  // Get data for the pie chart showing course status for a specific module
   getCourseStatusPieChartData(moduleId: number) {
     this.statisticsService.getCourseStatusCount(moduleId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -170,6 +179,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
       });
   }
 
+  // Cleanup resources when the component is destroyed
   //Make sure to destroy chart when leaving page. 
   //Call Unsub's ngOnDestroy to make takeUntil approach still work after overriding here.
   override ngOnDestroy() {
@@ -179,6 +189,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     super.ngOnDestroy();
   }
 
+  // Setup the bar chart with labels and data
   setupBarChart(labels: string[], data: number[], dataLabel: string) {
     this.destroyCharts(1);
     this.barChart = new Chart('canvas1', {
@@ -215,6 +226,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     });
   }
 
+  // Setup pie charts with data and labels
   setupPieChart() {
     // Calculate total sum of personCount for percentage tooltips
     const totalLeft = this.leftPieData.reduce((acc, val) => acc + val, 0);

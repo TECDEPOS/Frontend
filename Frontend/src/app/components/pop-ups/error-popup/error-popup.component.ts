@@ -13,6 +13,7 @@ export class ErrorPopupComponent {
   buttonText = 'Ok';
   sessionExpired: boolean = false;
 
+  // Constructor to initialize the component with injected data
   constructor(
     @Inject(MAT_DIALOG_DATA)
     private data: {
@@ -21,37 +22,50 @@ export class ErrorPopupComponent {
       buttonText: string;
       sessionExpired: boolean;
     },
-    private dialogRef: MatDialogRef<ErrorPopupComponent>, private authService: AuthService
+    private dialogRef: MatDialogRef<ErrorPopupComponent>,
+    private authService: AuthService
   ) {
+    // Initializes icon if provided
     if (data?.icon) this.icon = data.icon;
+
+    // Initializes message if provided
     if (data?.message) this.message = data.message;
+
+    // Initializes buttonText if provided
     if (data?.buttonText) this.buttonText = data.buttonText;
+
+    // Initializes sessionExpired flag if provided
     if (data?.sessionExpired) this.sessionExpired = data.sessionExpired;
   }
 
+  // Lifecycle hook that runs on component initialization
   ngOninit(): void {
-    this.disable()
+    this.disable();
   }
+
+  // Closes the dialog and handles session expiration logic
   closeDialog() {
     if (this.sessionExpired === true) {
       this.dialogRef.close();
       this.authService.logout();
-      this.enable
-    }
-    else {
+      this.enable();
+    } else {
       this.dialogRef.close();
-      this.enable
+      this.enable();
     }
   }
 
+  // Disables keyboard input by overriding the onkeydown event
   disable() {
     document.onkeydown = function (e) {
       return false;
-    }
+    };
   }
+
+  // Enables keyboard input by restoring the onkeydown event
   enable() {
     document.onkeydown = function (e) {
       return true;
-    }
+    };
   }
 }

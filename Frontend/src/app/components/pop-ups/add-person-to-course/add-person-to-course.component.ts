@@ -25,84 +25,91 @@ export class AddPersonToCourseComponent {
   persons: Person[] = [];
   currentPersons: Person[] = [];
 
-  courseTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
-    .filter(key => !isNaN(Number(CourseType[key])));
+// Retrieves the string representations of CourseType enums for display
+courseTypes: string[] = (Object.values(CourseType) as Array<keyof typeof CourseType>)
+  .filter(key => !isNaN(Number(CourseType[key])));
 
-  statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
-    .filter(key => !isNaN(Number(Status[key])));
+// Retrieves the string representations of Status enums for display
+statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
+  .filter(key => !isNaN(Number(Status[key])));
 
-  constructor(
-    private dialogRef: MatDialogRef<AddPersonCourseComponent>,
-    private courseService: CourseService,
-    private personCourseService: PersonCourseService,
-    private personService: PersonsService,
-    private cdr: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA)
-    private data: {
-      course: Course;
-      persons: Person[];
-    }) {
-    if (data.course) this.course = data.course;
-    if (data.persons) this.currentPersons = data.persons;
-  }
+// Constructor for AddPersonCourseComponent, initializes services and injects data
+constructor(
+  private dialogRef: MatDialogRef<AddPersonCourseComponent>,
+  private courseService: CourseService,
+  private personCourseService: PersonCourseService,
+  private personService: PersonsService,
+  private cdr: ChangeDetectorRef,
+  @Inject(MAT_DIALOG_DATA)
+  private data: {
+    course: Course;
+    persons: Person[];
+  }) {
+  // Initialize course and currentPersons based on injected data
+  if (data.course) this.course = data.course;
+  if (data.persons) this.currentPersons = data.persons;
+}
 
-  ngOnInit() {
-    this.getPersons();
-  }
+// Called on component initialization
+ngOnInit() {
+  this.getPersons();
+}
 
-  getPersons() {
-    this.personService.getPersonNotInCourse(this.course.courseId).subscribe(res => {
-      this.persons = res;
-      console.log(res);
-      console.log(this.persons);
-    })
-  }
+// Retrieves persons who are not in the selected course
+getPersons() {
+  this.personService.getPersonNotInCourse(this.course.courseId).subscribe(res => {
+    this.persons = res;
+    console.log(res);
+    console.log(this.persons);
+  })
+}
 
-  closeDialog() {
-    this.dialogRef.close();
-  }
+// Closes the dialog window
+closeDialog() {
+  this.dialogRef.close();
+}
 
-  compareStartDates(): boolean {
-    let todaysDate = moment().utc();
-    let startDate = moment(this.newPersonCourse.course?.startDate);
-    let startDateAfterToday = moment(startDate).isAfter(todaysDate, 'date');
+// Compares course start dates to today's date
+compareStartDates(): boolean {
+  let todaysDate = moment().utc();
+  let startDate = moment(this.newPersonCourse.course?.startDate);
+  return moment(startDate).isAfter(todaysDate, 'date');
+}
 
-    return startDateAfterToday
-  }
+// Compares course end dates to today's date
+compareEndDates(): boolean {
+  let todaysDate = moment().utc();
+  let endDate = moment(this.newPersonCourse.course?.endDate);
+  return moment(endDate).isAfter(todaysDate, 'date');
+}
 
-  compareEndDates(): boolean {
-    let todaysDate = moment().utc();
-    let endDate = moment(this.newPersonCourse.course?.endDate);
-    let startDateAfterToday = moment(endDate).isAfter(todaysDate, 'date');
+// Comparison function for dropdown selection
+compareFn(optionValue: any, selectionValue: any): boolean {
+  return optionValue === selectionValue;
+}
 
-    return startDateAfterToday
-  }
+// Submits the new person-course association
+onSubmit() {
+  const i = this.persons.indexOf(this.newPersonCourse.person!);
+  console.log(this.newPersonCourse.person);
 
+  // Add the newPersonCourse to the personCourses array
+  this.newPersonCourse.person!.personCourses.unshift(this.newPersonCourse);
+  this.currentPersons.push(this.newPersonCourse.person!);
+  this.newPersonCourse.personId = this.newPersonCourse.person!.personId;
+  this.newPersonCourse.courseId = this.course.courseId;
+  this.newPersonCourse.course = null!;
+  this.newPersonCourse.person = null!;
 
-  // Add this method in your component class
-  compareFn(optionValue: any, selectionValue: any): boolean {
-    return optionValue === selectionValue;
-  }
+  this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+    this.persons.splice(i, 1);
+    this.newPersonCourse = new PersonCourse();
+  });
+}
 
-  onSubmit() {
-    const i = this.persons.indexOf(this.newPersonCourse.person!)
-    console.log(this.newPersonCourse.person);
-    
+// Returns the course type name based on the CourseType enum
+getCourseTypeName(courseType: CourseType): string {
+  return CourseType[courseType];
+}
 
-    this.newPersonCourse.person!.personCourses.unshift(this.newPersonCourse)
-    this.currentPersons.push(this.newPersonCourse.person!);
-    this.newPersonCourse.personId = this.newPersonCourse.person!.personId;
-    this.newPersonCourse.courseId = this.course.courseId;
-    this.newPersonCourse.course = null!;
-    this.newPersonCourse.person = null!;
-
-    this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-      this.persons.splice(i, 1)
-      this.newPersonCourse = new PersonCourse();
-    });
-  }
-
-  getCourseTypeName(courseType: CourseType): string {
-    return CourseType[courseType];
-  }
 }

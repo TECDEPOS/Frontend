@@ -36,120 +36,124 @@ export class ModuleComponent extends Unsub {
     this.getTableData();
   }
 
-  getCourses() {
-    this.courseService.getAllCourses().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.showedList = res;
-    });
-  }
+  // Fetches the list of all courses
+getCourses() {
+  this.courseService.getAllCourses().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.showedList = res;
+  });
+}
 
-  getModuleData() {
-    this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.modules = res;
-    })
-  }
+// Fetches the module data
+getModuleData() {
+  this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+    this.modules = res;
+  })
+}
 
-  getTableData() {
-    this.courseService.getAllCourses().subscribe(res => {
-      this.courses = res
-      console.log(this.courses);
+// Fetches and processes course data for display
+getTableData() {
+  this.courseService.getAllCourses().subscribe(res => {
+    this.courses = res
+    console.log(this.courses);
 
-      this.courses.forEach(element => {
-        //element.completedModules = this.modulesCompletedMethod(element)
-      });
-
-      this.showedList = this.courses
-      this.getModuleData()
-      this.courses.sort((a, b) => {
-        // Convert dates to Date objects and compare them
-        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      });
-      this.showedList = this.courses
-    })
-  }
-
-  onModuleQueryInput(event: any) {
-    let courseList: Course[] = []
-    //Returns all, even null
-    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
-      this.showedList = this.courses
-      this.searchModule = event.value;
-      return
-    }
-
-    //Checks for what matches with the Module and name
+    // Iterate through courses to assign completed modules (commented out for now)
     this.courses.forEach(element => {
-      if (element.module?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())) {
-        courseList.push(element);
-      }
-    })
-    this.showedList = courseList
+      // element.completedModules = this.modulesCompletedMethod(element)
+    });
+
+    this.showedList = this.courses
+    this.getModuleData()
+    
+    // Sorts courses by start date
+    this.courses.sort((a, b) => {
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+    this.showedList = this.courses
+  })
+}
+
+// Filters the courses based on module name input
+onModuleQueryInput(event: any) {
+  let courseList: Course[] = []
+  // Returns all courses if the search is empty
+  if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
+    this.showedList = this.courses
     this.searchModule = event.value;
+    return
   }
 
-  onTypeQueryInput(event: any) {
-    let courseList: Course[] = []
-    //Returns all, even null
-    if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
-      this.showedList = this.courses
-      this.searchModule = event.value;
-      return
+  // Filters courses based on the module name
+  this.courses.forEach(element => {
+    if (element.module?.name.toLocaleLowerCase().includes(event.value.toLocaleLowerCase())) {
+      courseList.push(element);
     }
+  })
+  this.showedList = courseList
+  this.searchModule = event.value;
+}
 
-    const selectedType: CourseType = CourseType[event.value as keyof typeof CourseType];
-
-    //Checks for what matches with the Module and name
-    this.courses.forEach(element => {
-      console.log(element.courseType);
-      console.log(event.value);
-      
-      
-      if (element.courseType === selectedType) {
-        courseList.push(element);
-      }
-    })
-    this.showedList = courseList
-    this.searchType = event.value;
+// Filters the courses based on the course type input
+onTypeQueryInput(event: any) {
+  let courseList: Course[] = []
+  // Returns all courses if the search is empty
+  if (event.value.toLocaleLowerCase() === "" && this.searchName.toLocaleLowerCase() == "") {
+    this.showedList = this.courses
+    this.searchModule = event.value;
+    return
   }
 
-  sortData(sort: Sort) {
-    if (!sort.active || sort.direction === '') {
-      return;
+  // Selects the course type
+  const selectedType: CourseType = CourseType[event.value as keyof typeof CourseType];
+
+  // Filters courses based on course type
+  this.courses.forEach(element => {
+    if (element.courseType === selectedType) {
+      courseList.push(element);
     }
+  })
+  this.showedList = courseList
+  this.searchType = event.value;
+}
 
-    this.showedList = this.showedList.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'Name':
-          return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
-        case 'Type':
-          return this.compareCourseType(a.courseType, b.courseType) * (sort.direction == 'asc' ? 1 : -1);
-        case 'StartDate':
-          let test = this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
-          console.log("test!:" + test);          
-          return test
-        case 'EndDate':
-          return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
-        default:
-          return 0;
-      }
-    });
+// Sorts the displayed courses based on active sorting criteria
+sortData(sort: Sort) {
+  if (!sort.active || sort.direction === '') {
+    return;
   }
 
-  compareCourseType(a: CourseType, b: CourseType): number {
-    const order: CourseType[] = [CourseType.Heltid, CourseType.Flex, CourseType.Deltid];
-  
-    return order[a] - order[b];
-  }
-
-  compare(itemA: any, itemB: any): number {
-    let retVal: number = 0;
-    if (itemA && itemB) {
-      if (itemA > itemB) retVal = 1;
-      else if (itemA < itemB) retVal = -1;
+  this.showedList = this.showedList.sort((a, b) => {
+    const isAsc = sort.direction === 'asc';
+    switch (sort.active) {
+      case 'Name':
+        return this.compare(a.module.name.toLocaleLowerCase(), b.module.name.toLocaleLowerCase()) * (sort.direction == 'asc' ? 1 : -1);
+      case 'Type':
+        return this.compareCourseType(a.courseType, b.courseType) * (sort.direction == 'asc' ? 1 : -1);
+      case 'StartDate':
+        return this.compare(a.startDate, b.startDate) * (sort.direction == 'asc' ? 1 : -1);
+      case 'EndDate':
+        return this.compare(a.endDate, b.endDate) * (sort.direction == 'asc' ? 1 : -1);
+      default:
+        return 0;
     }
-    else if (itemA) retVal = 1;
-    else if (itemB) retVal = -1;
-    return retVal;
-  }
+  });
+}
+
+// Compares the course type based on a predefined order
+compareCourseType(a: CourseType, b: CourseType): number {
+  const order: CourseType[] = [CourseType.Heltid, CourseType.Flex, CourseType.Deltid];
+  return order[a] - order[b];
+}
+
+// Generic comparison function for sorting
+compare(itemA: any, itemB: any): number {
+  let retVal: number = 0;
+  if (itemA && itemB) {
+    if (itemA > itemB) retVal = 1;
+    else if (itemA < itemB) retVal = -1;
+  } else if (itemA) retVal = 1;
+  else if (itemB) retVal = -1;
+  return retVal;
+}
+
 
 }

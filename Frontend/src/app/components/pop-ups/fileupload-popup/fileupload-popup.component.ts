@@ -19,61 +19,64 @@ export class FileuploadPopupComponent {
   selectorFileTags: FileTag[] = [];
   fileTags: (FileTag | null)[] = [];
   files: any[] = [];
-  constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService, 
-    @Inject(MAT_DIALOG_DATA)
-    private data: {
-      personId: number;
-      personFiles: File[];
-    }) {
-      if (data?.personId) this.personId = data.personId;
-      if (data.personFiles) this.personFiles = data.personFiles;
-    }
 
-  ngOnInit(){
-    this.getFileTags();    
+  // Constructor to initialize services and inject data
+  constructor(private dialogRef: MatDialogRef<FileuploadPopupComponent>, private tagService: FileTagService, private fileService: FileService,
+    @Inject(MAT_DIALOG_DATA)
+    private data: { personId: number; personFiles: File[]; }) {
+    if (data?.personId) this.personId = data.personId;
+    if (data.personFiles) this.personFiles = data.personFiles;
   }
 
-  getFileTags(){
+  // On component initialization, fetch file tags
+  ngOnInit() {
+    this.getFileTags();
+  }
+
+  // Fetch available file tags from the service
+  getFileTags() {
     this.tagService.getFileTag().subscribe(res => {
       this.selectorFileTags = res;
-    })
+    });
   }
 
+  // Handle form submission, append form data and send it to the server
   onSubmit(): void {
-    // Build formData before sending request to server
     this.formData.append('personId', this.personId.toString());
     this.formData.append('fileTags', JSON.stringify(this.fileTags));
-    
+
     for (const file of this.files) {
       this.formData.append('file', file);
-    }    
+    }
 
-    this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {      
+    this.fileService.uploadMultipleFiles(this.formData).subscribe(res => {
       this.personFiles.push(...res);
       this.dialogRef.close();
     });
   }
 
-  onFileTagChange(e: Event, index: number){
-    // Native HTML select can't parse objects properly, get selectedIndex and use that to get the correct FileTag
+  // Handle changes in file tags when the user selects a tag for a file
+  onFileTagChange(e: Event, index: number) {
     const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
     if (selectedIndex === 0) {
-      this.fileTags.splice(index, 1, null); // First option in template is 'Ingen Filkategori'
-    }
-    else{
-      this.fileTags.splice(index, 1, this.selectorFileTags[selectedIndex - 1]); // - 1 Because of the extra placeholder option in the HTML
+      this.fileTags.splice(index, 1, null); // No tag selected
+    } else {
+      this.fileTags.splice(index, 1, this.selectorFileTags[selectedIndex - 1]); // Selects the corresponding tag
     }
   }
 
-  fileBrowseHandler(files: any){
+  // Handle file browsing event, pushes files to the array
+  fileBrowseHandler(files: any) {
     this.pushFiles(files);
   }
 
-  onFileDropped($event: any){
+  // Handle files dropped into the component
+  onFileDropped($event: any) {
     this.pushFiles($event);
   }
 
-  pushFiles(files: any[]){
+  // Add files to the array and initialize matching tags
+  pushFiles(files: any[]) {
     for (const item of files) {
       this.files.push(item);
       const matchingFiletag: FileTag | null = null;
@@ -81,17 +84,17 @@ export class FileuploadPopupComponent {
     }
     console.log(this.files);
     console.log(this.fileTags);
-    
   }
 
-  deleteFile(index: number){
+  // Remove file from the list
+  deleteFile(index: number) {
     this.files.splice(index, 1);
     this.fileTags.splice(index, 1);
     console.log(this.files);
     console.log(this.fileTags);
-    
   }
 
+  // Format file size in bytes into a human-readable format
   formatBytes(bytes: any, decimals: any) {
     if (bytes === 0) {
       return '0 Bytes';
