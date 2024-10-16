@@ -51,10 +51,7 @@
 }
 
 .bar-chart{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
+    height: 100%;
 }
 
 .pie-chart-container{
@@ -68,12 +65,11 @@
 }
 
 .dropdown{
-    /* outline: solid 1px #888; */
     border: solid 1px #888;
     border-radius: 5px;
     width: 25%;
-    /* margin-right: 1px !important;; */
 }
+
 
 .button-group{
     display: flex;
@@ -104,12 +100,9 @@
     margin-top: 4px;
 }
 
-/* .no-data{
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-} */
+.charts-container{
+    height: 100%;
+}
 
 .no-selection-text{
     font-size: xx-large;

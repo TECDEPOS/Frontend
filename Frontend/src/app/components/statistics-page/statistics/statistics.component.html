@@ -55,11 +55,10 @@
 
             </div>
 
-            <div
+            <div class="charts-container"
                 [ngClass]="{ 'no-module': !selectedModule && ((selectedBarChart === 1 && selectedGraphType === 1) || (selectedPieChart === 1 && selectedGraphType === 2)) }">
-                <div>
                     <div class="bar-chart" *ngIf="selectedGraphType === 1">
-                        <canvas id="canvas1" *ngIf="selectedModule || selectedBarChart !== 1">{{barChart}}</canvas>
+                            <canvas id="canvas1" *ngIf="selectedModule || selectedBarChart !== 1"></canvas>
                     </div>
 
                     <div class="pie-chart-container"
@@ -71,7 +70,6 @@
                             <canvas id="canvas3"></canvas>
                         </div>
                     </div>
-                </div>
                 <h1 class="no-selection-text"
                     *ngIf="!selectedModule && ((selectedBarChart === 1 && selectedGraphType === 1) || (selectedPieChart === 1 && selectedGraphType === 2))">
                     Intet modul valgt</h1>
