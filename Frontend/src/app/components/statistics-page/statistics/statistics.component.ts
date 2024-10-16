@@ -6,11 +6,10 @@ import { ModuleService } from 'src/app/Services/module.service';
 import { StatisticsService } from 'src/app/Services/statistics.service';
 import { Unsub } from 'src/app/classes/unsub';
 
-
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+  styleUrls: ['./statistics.component.css'],
 })
 export class StatisticsComponent extends Unsub implements OnDestroy {
   selectedModule: Module | null = null;
@@ -41,10 +40,13 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   }
 
   ngOnInit() {
-    this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
-      this.modules = results;
-      console.log(this.modules);
-    });
+    this.moduleService
+      .getModules()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((results) => {
+        this.modules = results;
+        console.log(this.modules);
+      });
   }
 
   // Destroy the given chart instance and set it to null
@@ -58,7 +60,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   // Switch between different graph types and fetch new chart data
   switchGraph(graphNumber: number) {    
     // Destroy existing charts using the old selection value
-      this.destroyCharts(this.selectedGraphType);
+    this.destroyCharts(this.selectedGraphType);
 
     // Update selectedGraph to the new selection value.
     this.selectedGraphType = graphNumber;
@@ -83,17 +85,16 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     switch (this.selectedGraphType) {
       case 1:
         if (this.selectedBarChart === 1 && this.selectedModule) {
-          this.getPersonsPerDepartmentFromModuleBarChart(this.selectedModule.moduleId);
-        }
-        else if (this.selectedBarChart === 2){
+          this.getPersonsPerDepartmentFromModuleBarChart(
+            this.selectedModule.moduleId
+          );
+        } else if (this.selectedBarChart === 2) {
           this.getPersonsPerDepartmentBarChart();
-        }
-        else if (this.selectedBarChart === 3){
+        } else if (this.selectedBarChart === 3) {
           this.getPersonsPerLocationBarChart();
         }
         break;
       case 2:
-        this.destroyCharts(2);
         if (this.selectedPieChart === 1 && this.selectedModule) {
           this.getCourseStatusPieChartData(this.selectedModule.moduleId);
         }
@@ -126,52 +127,87 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
 
   // Get data for the bar chart showing persons per department for a specific module
   getPersonsPerDepartmentFromModuleBarChart(moduleId: number) {
-    this.statisticsService.getPersonsPerDepartmentFromModule(moduleId).pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
-      this.barChartLabels = results.map(x => x.departmentName);
-      this.barChartData = results.map(x => x.teacherCount);
-      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per afdeling for valgte modul');
-    })
+    this.statisticsService
+      .getPersonsPerDepartmentFromModule(moduleId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((results) => {
+        this.barChartLabels = results.map((x) => x.departmentName);
+        this.barChartData = results.map((x) => x.teacherCount);
+        this.setupBarChart(
+          this.barChartLabels,
+          this.barChartData,
+          'Undervisere per afdeling for valgte modul'
+        );
+      });
   }
 
   // Get data for the bar chart showing persons per department without module filter
-  getPersonsPerDepartmentBarChart(){
-    this.statisticsService.getPersonsPerDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
-      this.barChartLabels = results.map(x => x.departmentName);
-      this.barChartData = results.map(x => x.teacherCount);
-      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per afdeling');
-    })
+  getPersonsPerDepartmentBarChart() {
+    this.statisticsService
+      .getPersonsPerDepartment()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((results) => {
+        this.barChartLabels = results.map((x) => x.departmentName);
+        this.barChartData = results.map((x) => x.teacherCount);
+        this.setupBarChart(
+          this.barChartLabels,
+          this.barChartData,
+          'Undervisere per afdeling'
+        );
+      });
   }
 
   // Get data for the bar chart showing persons per location
-  getPersonsPerLocationBarChart(){
-    this.statisticsService.getPersonsPerLocation().pipe(takeUntil(this.unsubscribe$)).subscribe(results => {
-      this.barChartLabels = results.map(x => x.locationName);
-      this.barChartData = results.map(x => x.teacherCount);
-      this.setupBarChart(this.barChartLabels, this.barChartData, 'Undervisere per lokation');
-    })
+  getPersonsPerLocationBarChart() {
+    this.statisticsService
+      .getPersonsPerLocation()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((results) => {
+        this.barChartLabels = results.map((x) => x.locationName);
+        this.barChartData = results.map((x) => x.teacherCount);
+        this.setupBarChart(
+          this.barChartLabels,
+          this.barChartData,
+          'Undervisere per lokation'
+        );
+      });
   }
 
   // Get data for the pie chart showing course status for a specific module
   getCourseStatusPieChartData(moduleId: number) {
-    this.statisticsService.getCourseStatusCount(moduleId)
+    this.statisticsService
+      .getCourseStatusCount(moduleId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(results => {
+      .subscribe((results) => {
         // Filter the results where StatusId is less than 2
-        const filteredResultsLessThan2 = results.filter((x: any) => x.statusId < 2);
+        const filteredResultsLessThan2 = results.filter(
+          (x: any) => x.statusId < 2
+        );
 
         // Filter the results where StatusId is 2 or above
-        const filteredResults2AndAbove = results.filter((x: any) => x.statusId >= 2);
+        const filteredResults2AndAbove = results.filter(
+          (x: any) => x.statusId >= 2
+        );
 
         // Map the filtered results to unfinished statuses and their personCount for StatusId less than 2
-        this.leftPieLabels = filteredResultsLessThan2.map((x: any) => x.courseStatus);
-        this.leftPieData = filteredResultsLessThan2.map((x: any) => x.personCount);
+        this.leftPieLabels = filteredResultsLessThan2.map(
+          (x: any) => x.courseStatus
+        );
+        this.leftPieData = filteredResultsLessThan2.map(
+          (x: any) => x.personCount
+        );
 
         // Map the filtered results to finished statuses and their personCount for StatusId 2 and above
-        this.rightPieLabels = filteredResults2AndAbove.map((x: any) => x.courseStatus);
-        this.rightPieData = filteredResults2AndAbove.map((x: any) => x.personCount);
+        this.rightPieLabels = filteredResults2AndAbove.map(
+          (x: any) => x.courseStatus
+        );
+        this.rightPieData = filteredResults2AndAbove.map(
+          (x: any) => x.personCount
+        );
 
         // Replace underscores with space for both statuses
-        const replaceUnderscores = (status: string) => status.replace(/_/g, ' ');
+        const replaceUnderscores = (status: string) =>
+          status.replace(/_/g, ' ');
         this.leftPieLabels = this.leftPieLabels.map(replaceUnderscores);
         this.rightPieLabels = this.rightPieLabels.map(replaceUnderscores);
 
@@ -180,7 +216,6 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
   }
 
   // Cleanup resources when the component is destroyed
-  //Make sure to destroy chart when leaving page. 
   //Call Unsub's ngOnDestroy to make takeUntil approach still work after overriding here.
   override ngOnDestroy() {
     this.destroyChart(this.barChart);
@@ -199,7 +234,7 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
         datasets: [
           {
             label: dataLabel,
-            data: data
+            data: data,
           },
         ],
       },
@@ -213,16 +248,16 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
               // Display labels on Y-axis with no decimals
               callback: function (value) {
                 return Number.isInteger(value) ? value : '';
-              }
-            }
+              },
+            },
           },
           x: {
             ticks: {
-              autoSkip: false //Don't hide labels when resizing
-            }
-          }
-        }
-      }
+              autoSkip: false, //Don't hide labels when resizing
+            },
+          },
+        },
+      },
     });
   }
 
@@ -233,22 +268,42 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
     const totalRight = this.rightPieData.reduce((acc, val) => acc + val, 0);
 
     // Create pie charts
-    this.leftPieChart = this.createPieChart('canvas2', this.leftPieLabels, this.leftPieData, ['rgb(221, 221, 221)', 'rgb(54, 162, 235)'], totalLeft);
-    this.rightPieChart = this.createPieChart('canvas3', this.rightPieLabels, this.rightPieData, ['rgb(255, 0, 0)', 'rgb(0, 128, 0)', 'rgb(255, 153, 0)'], totalRight);
+    this.leftPieChart = this.createPieChart(
+      'canvas2',
+      this.leftPieLabels,
+      this.leftPieData,
+      ['rgb(221, 221, 221)', 'rgb(54, 162, 235)'],
+      totalLeft
+    );
+    this.rightPieChart = this.createPieChart(
+      'canvas3',
+      this.rightPieLabels,
+      this.rightPieData,
+      ['rgb(255, 0, 0)', 'rgb(0, 128, 0)', 'rgb(255, 153, 0)'],
+      totalRight
+    );
   }
 
   // Creates pie charts using these options, saves a lot of repeat chart configs for pies.
-  createPieChart(canvasId: string, labels: string[], data: number[], backgroundColors: string[], total: number): Chart<'pie'> {
+  createPieChart(
+    canvasId: string,
+    labels: string[],
+    data: number[],
+    backgroundColors: string[],
+    total: number
+  ): Chart<'pie'> {
     const chart = new Chart(canvasId, {
       type: 'pie',
       data: {
         labels: labels,
-        datasets: [{
-          label: 'Antal',
-          data: data,
-          backgroundColor: backgroundColors,
-          hoverOffset: 4
-        }]
+        datasets: [
+          {
+            label: 'Antal',
+            data: data,
+            backgroundColor: backgroundColors,
+            hoverOffset: 4,
+          },
+        ],
       },
       options: {
         plugins: {
@@ -256,34 +311,39 @@ export class StatisticsComponent extends Unsub implements OnDestroy {
             callbacks: {
               label: function (context) {
                 const value = context.raw as number;
-                const percentage = total > 0 ? ((value / total) * 100).toFixed(2) + '%' : '0%';
+                const percentage =
+                  total > 0 ? ((value / total) * 100).toFixed(2) + '%' : '0%';
                 return 'Antal: ' + value + ' (' + percentage + ')';
-              }
-            }
-          }
+              },
+            },
+          },
         },
         animation: {
           onComplete: () => {
-            if (total === 0) {
-              const ctx = chart.ctx;
-              const width = chart.width;
-              const height = chart.height;
-
-              ctx.save();
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.font = '20px Arial';
-              ctx.fillStyle = 'gray';
-              ctx.fillText('Ingen data', width / 2, height / 2);
-              ctx.restore();
-            }
-          }
-        }
-      }
+            // Move logic outside the chart initialization to prevent exception by accessing chart before it's ready
+            setTimeout(() => this.checkForEmptyData(chart, total), 0);
+          },
+        },
+      },
     });
-    
+
     return chart;
-  };
+  }
+
+  // Separate function to check for empty data and draw custom text if necessary
+  checkForEmptyData(chart: Chart<'pie'>, total: number) {
+    if (total === 0 && chart) {
+      const ctx = chart.ctx;
+      const width = chart.width;
+      const height = chart.height;
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '20px Arial';
+      ctx.fillStyle = 'gray';
+      ctx.fillText('Ingen data', width / 2, height / 2);
+      ctx.restore();
+    }
+  }
 }
-
-
