@@ -16,14 +16,17 @@ export class ChangePasswordPopupComponent {
     this.changePasswordModel.userId = this.authService.getUserId()
   }
 
-  closeDialog() {
-    this.dialogRef.close();
-  }
+// Closes the dialog window
+closeDialog() {
+  this.dialogRef.close();
+}
 
-  changepassword(){
-    this.authService.changePassword(this.changePasswordModel).subscribe(value =>{
-      console.log(value);
-      this.dialogRef.close();
-    })
-  }
+// Submits the password change request and closes the dialog on success
+changepassword() {
+  this.authService.changePassword(this.changePasswordModel).subscribe(value => {
+    console.log(value);
+    this.dialogRef.close();
+  });
+}
+
 }

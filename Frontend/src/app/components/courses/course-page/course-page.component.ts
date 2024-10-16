@@ -11,21 +11,25 @@ export class CoursePageComponent {
 
   constructor() { }
 
+  // Sets the active tab based on the provided index
   setActiveTab(index: number) {
     this.activeTabIndex = index;
   }
 
+  // Toggles the active component between the specified component or null if already active
   toggleComponent(componentName: string) {
     if (this.activeComponent === componentName) {
-      this.activeComponent = null
+      this.activeComponent = null;
     }
     else {
-      this.activeComponent = componentName
+      this.activeComponent = componentName;
     }
   }
 
+  // Checks if the specified form is the active component
   isActiveComponent(formName: string) {
     return this.activeComponent === formName;
   }
+
 
 }

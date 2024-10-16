@@ -55,7 +55,7 @@ export class CreateComponent extends Unsub implements OnInit {
   activeForm: string | null = null
   role: string = '';
   submitClicked: boolean = false;
-  
+
 
   @ViewChild('bookForm') bookForm!: NgForm;
   @ViewChild('courseForm') courseForm!: NgForm;
@@ -94,51 +94,49 @@ export class CreateComponent extends Unsub implements OnInit {
     this.role = this.authService.getUserRole();
   }
 
+  // Toggles the active form and loads corresponding data based on the selected form
   toggleForm(formName: string) {
     if (this.activeForm === formName) {
-      this.activeForm = null
-    }
-    else {
-      this.activeForm = formName
+      this.activeForm = null;
+    } else {
+      this.activeForm = formName;
       this.submitClicked = false; // set to false so required fields aren't immediately shown when switching forms
-      
+
       if (this.activeForm == 'bookForm') {
         this.getModules();
-      }
-      else if (this.activeForm == 'courseForm') {
+      } else if (this.activeForm == 'courseForm') {
         this.getModules();
-      }
-      else if (this.activeForm == 'personForm') {
+      } else if (this.activeForm == 'personForm') {
         this.getForPerson();
-      }
-      else if (this.activeForm == 'userForm')
-      {
+      } else if (this.activeForm == 'userForm') {
         this.getForUser();
       }
     }
   }
 
+  // Checks if the specified form is the active form
   isFormActive(formName: string) {
     return this.activeForm === formName;
   }
 
+  // Fetches the list of modules
   getModules() {
     this.moduleService.getModules().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.modules = res;
       console.log(this.modules);
-      
-    })
+    });
   }
-  
+
+  // Fetches data for the person form (users, departments, and locations)
   getForPerson() {
     this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationalLeaders = res.filter(x => x.userRole === 2);
       this.educationalConsultants = res.filter(x => x.userRole === 4);
       console.log(this.educationalConsultants);
-      
+
       this.operationCoordinators = res.filter(x => x.userRole === 6);
       console.log(this.operationCoordinators);
-      
+
       this.departmentService.getDepartment().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
         this.departments = res;
       });
@@ -147,8 +145,9 @@ export class CreateComponent extends Unsub implements OnInit {
       });
     });
   }
-  
-  getForUser() {    
+
+  // Fetches data for the user form (education bosses, departments, and locations)
+  getForUser() {
     this.userService.getUsersByUserRole(3).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.educationBosses = res;
     });
@@ -160,30 +159,30 @@ export class CreateComponent extends Unsub implements OnInit {
     });
   }
 
+  // Redirects to a person's profile based on the selected person ID
   personPicker(id: number) {
-    this.router.navigate(['/employee/', id])
+    this.router.navigate(['/employee/', id]);
   }
 
+  // Handles role change and toggles visibility for education boss-related fields
   onRoleChange(userRole: UserRole) {
-    if(userRole == 2)
-    {
-      this.showEducationBoss = true;      
-    }
-    else
-    {
+    if (userRole == 2) {
+      this.showEducationBoss = true;
+    } else {
       this.showEducationBoss = false;
       this.user.educationBossId = null;
       this.user.departmentId = null;
       this.user.locationId = null;
     }
-
     this.cdr.detectChanges();
   }
 
+  // Adds a newly created entity to the recently created list
   created(created: any) {
-    this.resentlyCreated.unshift(created)
+    this.resentlyCreated.unshift(created);
   }
 
+  // Creates a new book
   createBook() {
     this.bookService.addBook(this.book).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.book = new Book;
@@ -193,86 +192,94 @@ export class CreateComponent extends Unsub implements OnInit {
     });
   }
 
+  // Creates a new department
   createDepartment() {
     this.departmentService.addDepartment(this.department).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.department = new Department;
       this.departmentForm.resetForm();
       this.submitClicked = false;
       this.openSnackBarSuccess('Afdeling');
-    })
+    });
   }
 
+  // Creates a new file tag
   createFileTag() {
     this.fileTagService.createFileTag(this.fileTag).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.fileTag = new FileTag;
       this.fileTagForm.resetForm();
       this.submitClicked = false;
       this.openSnackBarSuccess('Filkategori');
-    })
+    });
   }
 
+  // Creates a new course
   createCourse() {
     console.log(this.course);
-    
+
     this.courseService.addCourses(this.course).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.course = new Course;
       this.courseForm.resetForm();
       this.submitClicked = false;
-      this.openSnackBarSuccess('Kursus');      
-    })
+      this.openSnackBarSuccess('Kursus');
+    });
   }
 
+  // Creates a new location
   createLocation() {
     this.locationService.addLocation(this.location).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.location = new Location;
       this.locationForm.resetForm();
       this.submitClicked = false;
       this.openSnackBarSuccess('Lokation');
-    })
+    });
   }
 
-  checkForm(form: NgForm){
+  // Validates the form before submission
+  checkForm(form: NgForm) {
     this.submitClicked = true;
     console.log(this.course);
-    
+
     if (!form.valid) {
       this.openSnackBarFailed();
     }
     console.log('TEST SUBMIT', this.submitClicked);
   }
 
+  // Creates a new module
   createModule() {
     this.moduleService.addModule(this.module).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.module = new Module;
       this.moduleForm.resetForm();
       this.submitClicked = false;
       this.openSnackBarSuccess('Modul');
-    })
+    });
   }
 
+  // Creates a new person
   createPerson() {
     this.person.endDate = this.person.hiringDate;
-     
+
     this.personService.addPerson(this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.created(res)
+      this.created(res);
       this.person = new Person;
       this.personForm.resetForm(this.person);
       this.submitClicked = false;
       this.openSnackBarSuccess('Underviser');
-    })
+    });
   }
 
+  // Creates a new user
   createUser() {
     this.userService.addUsers(this.user).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       this.user = new userViewModel;
       this.userForm.resetForm();
       this.submitClicked = false;
       this.openSnackBarSuccess('Bruger');
-    })
+    });
   }
 
-  // Opens a snackbar for 3 seconds indicating the entity was created.
-  openSnackBarSuccess(entity: string){
+  // Opens a snackbar for 3 seconds indicating the entity was created successfully
+  openSnackBarSuccess(entity: string) {
     this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
       data: {
         message: `${entity} oprettet`,
@@ -281,7 +288,8 @@ export class CreateComponent extends Unsub implements OnInit {
     });
   }
 
-  openSnackBarFailed(){
+  // Opens a snackbar for 3 seconds indicating that a required field is missing
+  openSnackBarFailed() {
     this.snackBar.openFromComponent(SnackbarIndicatorComponent, {
       data: {
         message: `Udfyld alle påkrævede felter`,
@@ -289,10 +297,9 @@ export class CreateComponent extends Unsub implements OnInit {
       }, panelClass: ['red-snackbar'], duration: 3000
     });
   }
-
-
 }
 
+// Validator function to check if the module ID is greater than 0
 export function moduleIdValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const moduleId = control.value;

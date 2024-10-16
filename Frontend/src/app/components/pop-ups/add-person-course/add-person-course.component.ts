@@ -19,7 +19,7 @@ import { ModuleService } from 'src/app/Services/module.service';
 })
 export class AddPersonCourseComponent {
   closeAfter: boolean = false;
-  moduleSelected: boolean = false;  
+  moduleSelected: boolean = false;
   modulePassed: boolean = false;
   module: Module = new Module;
   person: Person = new Person;
@@ -31,6 +31,7 @@ export class AddPersonCourseComponent {
   statuses: string[] = (Object.values(Status) as Array<keyof typeof Status>)
     .filter(key => !isNaN(Number(Status[key])));
 
+  // Constructor for AddPersonCourseComponent, initializes services and injects data
   constructor(
     private dialogRef: MatDialogRef<AddPersonCourseComponent>,
     private courseService: CourseService,
@@ -43,21 +44,25 @@ export class AddPersonCourseComponent {
       currentPersonCourses: PersonCourse[];
       closeAfter: boolean;
     }) {
+    // Initialize person, currentCourses, and closeAfter based on injected data
     if (data.person) this.person = data.person;
     if (data.currentPersonCourses) this.currentCourses = data.currentPersonCourses;
     if (data.closeAfter) this.closeAfter = data.closeAfter;
   }
 
+  // Called on component initialization
   ngOnInit() {
     this.getModules();
   }
 
+  // Retrieves the list of modules
   getModules() {
     this.moduleService.getModules().subscribe(res => {
       this.modules = res;
     })
   }
 
+  // Fetches courses by moduleId and userId
   getCourses(id: number) {
     console.log(this.person);
     console.log(this.person.personId);
@@ -68,7 +73,8 @@ export class AddPersonCourseComponent {
     })
   }
 
-  filterCoursesPassedModules(){
+  // Filters courses based on passed modules
+  filterCoursesPassedModules() {
     this.modulePassed = this.currentCourses.some(pc => pc.course?.moduleId === this.module.moduleId && pc.status === 3);
 
     if (this.modulePassed) {
@@ -76,39 +82,40 @@ export class AddPersonCourseComponent {
     }
   }
 
+  // Closes the dialog window
   closeDialog() {
     this.dialogRef.close();
   }
 
+  // Compares course start dates to today's date
   compareStartDates(): boolean {
     let todaysDate = moment().utc();
     let startDate = moment(this.newPersonCourse.course?.startDate);
-    let startDateAfterToday = moment(startDate).isAfter(todaysDate, 'date');
-
-    return startDateAfterToday
+    return moment(startDate).isAfter(todaysDate, 'date');
   }
 
+  // Compares course end dates to today's date
   compareEndDates(): boolean {
     let todaysDate = moment().utc();
     let endDate = moment(this.newPersonCourse.course?.endDate);
-    let startDateAfterToday = moment(endDate).isAfter(todaysDate, 'date');
-
-    return startDateAfterToday
+    return moment(endDate).isAfter(todaysDate, 'date');
   }
 
+  // Called when a module is selected
   onModuleChange(module: Module) {
     console.log(module);
-    
+
     this.getCourses(module.moduleId);
     this.moduleSelected = true;
     this.module = module;
 
-    // Remove selected course on module change
+    // Clear selected course on module change
     this.newPersonCourse.course = null;
-    
+
     this.cdr.detectChanges();
   }
 
+  // Called when a course is selected
   onCourseChange(course: Course) {
     this.newPersonCourse.course = course;
     console.log(this.newPersonCourse);
@@ -117,46 +124,41 @@ export class AddPersonCourseComponent {
 
     if (endDateBeforeToday) {
       let startDateAfterToday = this.compareStartDates();
-      if (startDateAfterToday) {
-        this.newPersonCourse.status = 0;
-      } else {
-        this.newPersonCourse.status = 1
-      }
-    }
-    else {
+      this.newPersonCourse.status = startDateAfterToday ? 0 : 1;
+    } else {
       this.newPersonCourse.status = 3;
     }
 
     this.cdr.detectChanges();
   }
 
+  // Comparison function for dropdown selection
+  compareFn(optionValue: any, selectionValue: any): boolean {
+    return optionValue === selectionValue;
+  }
 
-// Add this method in your component class
-compareFn(optionValue: any, selectionValue: any): boolean {
-  return optionValue === selectionValue;
-}
+  // Submits the new person course data
+  onSubmit() {
+    const newPersonCourseCopy: PersonCourse = { ...this.newPersonCourse }
+    newPersonCourseCopy.course!.module = this.module;
 
-onSubmit() {
-  // Add the newPersonModule to the arrays injected into this component, this makes the PersonModules outside the popup update without having to refresh  
-  const newPersonCourseCopy: PersonCourse = { ...this.newPersonCourse}
-   newPersonCourseCopy.course!.module = this.module;
-  
-  this.newPersonCourse.personId = this.person.personId;
-  this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
-  this.newPersonCourse.course = null!;
-  this.newPersonCourse.person = null!;
+    this.newPersonCourse.personId = this.person.personId;
+    this.newPersonCourse.courseId = this.newPersonCourse.course!.courseId;
+    this.newPersonCourse.course = null!;
+    this.newPersonCourse.person = null!;
 
-  this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
-    res.course = newPersonCourseCopy.course
-    this.currentCourses.push(res)
-    if (this.closeAfter) {
-      this.closeDialog();
-    }
-    this.courses.splice(this.courses.findIndex(x => x.courseId == this.newPersonCourse.courseId), 1)
-  });
-}
+    this.personCourseService.addPersonCourse(this.newPersonCourse).subscribe(res => {
+      res.course = newPersonCourseCopy.course;
+      this.currentCourses.push(res);
+      if (this.closeAfter) {
+        this.closeDialog();
+      }
+      this.courses.splice(this.courses.findIndex(x => x.courseId == this.newPersonCourse.courseId), 1);
+    });
+  }
 
-getCourseTypeName(courseType: CourseType): string {
-  return CourseType[courseType];
-}
+  // Returns the course type name based on the CourseType enum
+  getCourseTypeName(courseType: CourseType): string {
+    return CourseType[courseType];
+  }
 }

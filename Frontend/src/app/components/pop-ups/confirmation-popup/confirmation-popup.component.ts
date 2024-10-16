@@ -9,18 +9,26 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ConfirmationPopupComponent {
   message: string = '';
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    private data: {
-      message: string;
-    },
-    private dialogRef: MatDialogRef<ConfirmationPopupComponent>) {if (data?.message) this.message = data.message;}
+  // Constructor for initializing the component with injected data
+constructor(
+  @Inject(MAT_DIALOG_DATA)
+  private data: {
+    message: string;
+  },
+  private dialogRef: MatDialogRef<ConfirmationPopupComponent>
+) {
+  // Assigns the message if it exists in the provided data
+  if (data?.message) this.message = data.message;
+}
 
-  confirmClicked() {
-    this.dialogRef.close(true);
-  }
+// Closes the dialog with a confirmation (true) when confirm is clicked
+confirmClicked() {
+  this.dialogRef.close(true);
+}
 
-  cancelClicked() {
-    this.dialogRef.close(false);
-  }
+// Closes the dialog with a cancellation (false) when cancel is clicked
+cancelClicked() {
+  this.dialogRef.close(false);
+}
+
 }
