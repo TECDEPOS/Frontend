@@ -231,8 +231,8 @@
             <div class="filterItem" *ngIf="!leaderView">
                 <button mat-raised-button (click)="exportModulesToExcel()">Export moduler til excel</button>
             </div>
-            <div class="filterItem" *ngIf="!leaderView">
-                <button mat-raised-button (click)="exportModulesToExcel()">Export valgte moduler til excel</button>
+            <div class="filterItem" *ngIf="!leaderView && selectedModules.length !== 0">
+                <button mat-raised-button (click)="exportSelectedModulesToExcel()">Export valgte moduler til excel</button>
             </div>
             <div class="filterItem" *ngIf="!leaderView">
                 <button mat-raised-button (click)="exportModulesToExcelTypes()">Export kurser efter valgte typer til

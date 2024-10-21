@@ -41,7 +41,8 @@ export class CoursesComponent extends Unsub {
   activeLeaderList: number[] = [];
   selectedModuleIds: number[] = [];
   selectedCourseIds: number[] = [];
-  selectedModuleId: number | null = 0;
+  selectedModuleId: number | null = null;
+  selectedModules: ModuleWithCourseViewModel[] = [];
   selectedCourseId: number | null = 0;
   selectedLeaderId: number | null = 0;
   selectedEducatorId: number | null = 0;
@@ -95,7 +96,15 @@ export class CoursesComponent extends Unsub {
 
   // Exports the list of modules to an Excel file
   exportModulesToExcel() {
+    console.log('exportModulesToExcel: ', this.modules);
+    
     this.exportToExcelComponent.exportModulesToExcel(this.modules);
+  }
+
+  exportSelectedModulesToExcel() {
+    console.log('exportModulesToExcel: ', this.modules);
+    
+    this.exportToExcelComponent.exportModulesToExcel(this.selectedModules);
   }
 
   // Exports filtered modules and their courses based on selected types to an Excel file
@@ -165,7 +174,20 @@ export class CoursesComponent extends Unsub {
 
   // Toggles the display of course or leader tables based on selection
   toggleTable(item: any) {
+    console.log(this.modules);
+    console.log('what is this: ', item);
+    
+    if (!this.selectedModules.includes(item)) {
+      this.selectedModules.push(item);
+    }
+    else{
+      this.selectedModules = this.selectedModules.filter(x => x.moduleId !== item.moduleId);
+    }
+    console.log('These are the selected modules: ', this.selectedModules);
+    
+    
     if ('moduleId' in item) {
+      
       if (this.activeCourseList[0] === item.moduleId) {
         this.selectedModuleId = null;
         this.courseSelected = false;
@@ -177,6 +199,7 @@ export class CoursesComponent extends Unsub {
 
         this.getCourseTableData(item.moduleId);
       }
+      console.log(this.activeCourseList);
       this.sortCourseList();
     } else if ('userId' in item) {
       console.log(item);

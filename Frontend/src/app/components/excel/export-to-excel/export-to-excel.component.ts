@@ -32,7 +32,7 @@ export class ExportToExcelComponent {
   leaderHeaders: string[] = ['Uddannelsesleder', 'Navn', 'Role']
   educatorHeaders: string[] = ['Underviser', 'Navn', 'Initialer', 'Afdeling', 'Lokation', 'Slut dato', 'Færdige moduler']
   personCourseHeaders: string[] = ['Kurser', 'Navn', 'Type', 'Start dato', 'Slut dato', 'Status']
-  moduleHeaders: string[] = ['Mudul', 'Navn'];
+  moduleHeaders: string[] = ['Modul', 'Navn'];
   courseHeaders: string[] = ['Kursus', 'Type', 'Start dato', 'Slut dato']
   courseEducatorHeader: string[] = ['Underviser', 'Navn', 'Initialer', 'Afdeling', 'Lokation', 'Status'];
 
@@ -194,6 +194,8 @@ export class ExportToExcelComponent {
 
   // Method to prepare worksheet data for modules
   moduleWorkSheetData(modules: ModuleWithCourseViewModel[]) {
+    console.log('ModuleWithCourseViewModel[]: ', modules);
+    
     modules.forEach(module => {
       if (this.newModuleHeader) {
         this.workSheetData.push(this.moduleHeaders);
@@ -209,6 +211,8 @@ export class ExportToExcelComponent {
       this.newRow();
 
       if (module.courses.length > 0) {
+        console.log('Line 212. Module.courses.length: ', module.courses.length);
+        
         this.courseWorkSheetData(module.courses);
       }
     });
@@ -226,7 +230,7 @@ export class ExportToExcelComponent {
       this.newModuleHeader = true;
       this.newEducatorHeader = true;
 
-      const courseData = ['', course.courseType, course.startDate, course.endDate];
+      const courseData = ['', CourseType[course!.courseType], new Date(course!.startDate).toLocaleDateString(), new Date(course!.endDate).toLocaleDateString()];
       this.workSheetData.push(courseData);
       this.newRow();
 
@@ -241,9 +245,11 @@ export class ExportToExcelComponent {
           const educatorData = [
             '',
             personCourse.person!.name, personCourse.person!.initials,
-            personCourse.person!.department!.name, personCourse.person!.location!.name,
-            personCourse.status
+            personCourse.person?.department?.name, personCourse.person?.location?.name,
+            Status[personCourse.status].replaceAll('_', ' ')
           ];
+          this.workSheetData.push(educatorData);
+          this.newRow();
         });
       }
     });
